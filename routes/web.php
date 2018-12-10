@@ -19,6 +19,7 @@ Route::get('/exam', function () {
     return view('exam');
 });
 
+
 Route::group(['prefix' => 'admin'],function()
 {
 	// dashboard routes
