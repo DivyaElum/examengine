@@ -32,6 +32,16 @@
             <i class="fa fa-bars"></i> <span>Repository</span>
           </a>
         </li>
+        <li class="">
+          <a href="{{ url('/admin/siteSetting') }}">
+            <i class="fa fa-bars"></i> <span>Site setting</span>
+          </a>
+        </li>
+        <li class="">
+          <a href="{{ url('/admin/concilMembers') }}">
+            <i class="fa fa-bars"></i> <span>Council Members</span>
+          </a>
+        </li>
 
       </ul>
     </section>
