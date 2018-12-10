@@ -29,7 +29,7 @@ class SiteSettingController extends Controller
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Site Setting';
-        $this->ModuleView  = 'admin.siteSetting.';
+        $this->ModuleView  = 'admin.site-setting.';
     }
     public function index()
     {
@@ -98,7 +98,7 @@ class SiteSettingController extends Controller
         if ($SiteSetting->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/siteSetting/create';
+            $this->JsonData['url']      = '/admin/siteSetting/';
             $this->JsonData['msg']      = 'Site setting saved successfully.';
         }
         else
