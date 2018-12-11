@@ -3,33 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Request\Admin\QestionCategoryRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CouncilMemberRequest;
 
-use App\Models\CouncilMemberModel;
+use App\models\QuestionCategoryModel;
 use Validator;
-use Storage;
-use Image;
 
-class CouncilMemberController extends Controller
+class QuestionCategoryController extends Controller
 {
-    private $concilMember;
+    private $QuestionCategory;
 
     // use MultiModelTrait;
 
     public function __construct(
 
-        CouncilMemberModel $CouncilMemberModel
+        QuestionCategoryModel $QuestionCategoryModel
     )
     {
-        $this->CouncilMemberModel  = $CouncilMemberModel;
+        $this->QuestionCategoryModel  = $QuestionCategoryModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Council Member';
-        $this->ModuleView  = 'admin.councilMember.';
-        $this->ModulePath = 'concil-member';
+        $this->ModuleView  = 'admin.questionCategory.';
+        $this->ModulePath  = 'question-category';
     }
     /**
      * Display a listing of the resource.
@@ -37,7 +35,7 @@ class CouncilMemberController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         $this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
@@ -65,51 +63,12 @@ class CouncilMemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CouncilMemberRequest $request)
+    public function store(QestionCategoryRequest $request)
     {
-        $CouncilMemberModel = new $this->CouncilMemberModel;
-
-        if($request->hasFile('txtImage')){
-            $strImage = $request->txtImage;
-        
-            //$filename = Storage::put('avatars', $strImage);
-
-            //Store thumbnail image
-            $strImgName = time().$strImage->getClientOriginalName();
-            $strThumbdesignationPath = public_path().'/upload/council-member/thumb_img' ;
-            $thumb_img = Image::make($strImage->getRealPath())->resize(125, 125);
-            $thumb_img->save($strThumbdesignationPath.'/'.$strImgName,80);
-
-            //Store orignal image
-            $strImgName = time().$strImage->getClientOriginalName();
-            $strOriginalImgdesignationPath = public_path().'/upload/council-member' ;
-            $strImage->move($strOriginalImgdesignationPath, $strImgName);
-
-            $CouncilMemberModel->image = $strImgName;
-        }
-
-        $CouncilMemberModel->name         = $request->txtName;
-        $CouncilMemberModel->email        = $request->txtEmail;
-        $CouncilMemberModel->description  = $request->txtDescription;
-        $CouncilMemberModel->designation  = $request->txtDesignation;
-        $CouncilMemberModel->status       = $request->txtStatus;
-        
-        if ($CouncilMemberModel->save()) 
-        {
-            $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/concil-member/';
-            $this->JsonData['msg']      = 'Concil member saved successfully.';
-        }
-        else
-        {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Concil member, Something went wrong.';
-        } 
-
-        return response()->json($this->JsonData);
+        //txtCategory
     }
 
-    public function changeStatus(Request $request)
+     public function changeStatus(QestionCategoryRequest $request)
     {
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
@@ -132,7 +91,7 @@ class CouncilMemberController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getMembers(Request $request)
+        public function getQuestionCategory(QestionCategoryRequest $request)
         {
             /*--------------------------------------
             |  Variables
@@ -235,6 +194,7 @@ class CouncilMemberController extends Controller
             return response()->json($this->JsonData);
         }
 
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -243,15 +203,7 @@ class CouncilMemberController extends Controller
      */
     public function edit($id)
     {
-        $CouncilMemberModel = new $this->CouncilMemberModel;
-
-        $intId = base64_decode(base64_decode($id));
-        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = 'Edit '. $this->ModuleTitle;
-        $this->ViewData['modulePath']   = $this->ModulePath;
-        $this->ViewData['object']       = $this->CouncilMemberModel->find($intId);
-
-        return view($this->ModuleView.'edit', $this->ViewData);
+        //
     }
 
     /**
@@ -261,47 +213,9 @@ class CouncilMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CouncilMemberRequest $request, $id)
+    public function update(QestionCategoryRequest $request, $id)
     {
-        $CouncilMemberModel = new $this->CouncilMemberModel;
-
-        $intId              = base64_decode(base64_decode($id));
-        $CouncilMemberModel = $this->CouncilMemberModel->find($intId);
-
-        if($request->hasFile('txtImage')){
-            $strImage = $request->txtImage;
-
-            //Store thumbnail image
-            $strImgName = time().$strImage->getClientOriginalName();
-            $strThumbdesignationPath = public_path().'/upload/council-member/thumb_img' ;
-            $thumb_img = Image::make($strImage->getRealPath())->resize(125, 125);
-            $thumb_img->save($strThumbdesignationPath.'/'.$strImgName,80);
-
-            //Store orignal image
-            $strOriginalImgdesignationPath = public_path().'/upload/council-member' ;
-            $strImage->move($strOriginalImgdesignationPath, $strImgName);
-
-            $CouncilMemberModel->image = $strImgName;
-        }
-
-        $CouncilMemberModel->name         = $request->txtName;
-        $CouncilMemberModel->email        = $request->txtEmail;
-        $CouncilMemberModel->description  = $request->txtDescription;
-        $CouncilMemberModel->designation  = $request->txtDesignation;
-        $CouncilMemberModel->status       = $request->txtStatus;
-        
-        if ($CouncilMemberModel->save()) 
-        {
-            $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/concil-member/';
-            $this->JsonData['msg']      = 'Concil member saved successfully.';
-        }
-        else
-        {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Concil member, Something went wrong.';
-        } 
-        return response()->json($this->JsonData);
+        //
     }
 
     /**
@@ -312,19 +226,6 @@ class CouncilMemberController extends Controller
      */
     public function destroy($id)
     {
-        $intId = base64_decode(base64_decode($id));
-
-        if($this->CouncilMemberModel->where('id', $intId)->delete())
-        {
-            $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Council member deleted successfully.';
-        }
-        else
-        {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Council member, Something went wrong.';
-        }
-        
-        return response()->json($this->JsonData);
+        //
     }
 }

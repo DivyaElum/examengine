@@ -26,7 +26,11 @@
             <i class="fa fa-bars"></i> <span>Question Types</span>
           </a>
         </li>
-
+        <li class="{{ active(['admin/question-category','admin/question-category/*']) }}">
+          <a href="{{ url('/admin/question-category') }}">
+            <i class="fa fa-bars"></i> <span>Question Category</span>
+          </a>
+        </li>
         <li class="{{ active(['admin/repository','admin/repository/*']) }}">
           <a href="{{ route('repository.index') }}">
             <i class="fa fa-bars"></i> <span>Repository</span>

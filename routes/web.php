@@ -61,5 +61,10 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function(
 	// council member routes
 	Route::get('concil-member/getMembers', 'Admin\CouncilMemberController@getMembers');
 	Route::post('concil-member/changeStatus', 'Admin\CouncilMemberController@changeStatus');
-	Route::resource('concil-member', 'Admin\CouncilMemberController');	
+	Route::resource('concil-member', 'Admin\CouncilMemberController');
+
+	// question category routes
+	Route::get('question-category/getMembers', 'Admin\QuestionCategoryController@getMembers');
+	Route::post('question-category/changeStatus', 'Admin\QuestionCategoryController@changeStatus');
+	Route::resource('question-category', 'Admin\QuestionCategoryController');	
 });
