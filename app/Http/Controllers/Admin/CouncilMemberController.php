@@ -27,7 +27,8 @@ class CouncilMemberController extends Controller
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Council Member';
-        $this->ModuleView  = 'admin.council_members.';
+        $this->ModuleView  = 'admin.council-member.';
+        $this->ModulePath = 'concil-member';
     }
     /**
      * Display a listing of the resource.
@@ -35,7 +36,8 @@ class CouncilMemberController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        $this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
 
@@ -49,6 +51,7 @@ class CouncilMemberController extends Controller
      */
     public function create()
     {
+        $this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
 
@@ -63,7 +66,27 @@ class CouncilMemberController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        $validator = Validator::make($request->all(), [
+         'txtName'        => 'required|email',
+         'txtEmail'       => 'required|email',
+         'txtDescription' => 'required|email',
+         'txtDesignation' => 'required|min:3|max:20',
+        ])->validate();
+        
+        $post = Post::find($id);
+
+        if($request->hasFile('featured')){
+            $strImage = $request->txtImage;
+        
+            $filename = Storage::put('avatars', $strImage);
+
+            $featured_newName = time().$strImage->getClientOriginalName();
+            $destinationPath = public_path().'/upload/council-member' ;
+            $strImage->move($destinationPath, $featured_newName);
+
+            $post->strImage = $featured_newName;
+        }
+        return response()->json($this->JsonData);
     }
 
     /**

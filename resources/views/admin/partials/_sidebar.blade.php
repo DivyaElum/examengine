@@ -38,7 +38,7 @@
           </a>
         </li>
         <li class="">
-          <a href="{{ url('/admin/concilMembers') }}">
+          <a href="{{ url('/admin/concil-member') }}">
             <i class="fa fa-bars"></i> <span>Council Members</span>
           </a>
         </li>

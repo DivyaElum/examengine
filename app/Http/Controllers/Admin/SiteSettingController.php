@@ -30,6 +30,7 @@ class SiteSettingController extends Controller
 
         $this->ModuleTitle = 'Site Setting';
         $this->ModuleView  = 'admin.site-setting.';
+        
     }
     public function index()
     {

@@ -28,7 +28,7 @@
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title">{{ $moduleAction }}</h3>
 		          	<div class="box-tools pull-right">
-		            	<a title="Back to Repository" href="{{ route('siteSetting.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
+		            	<a title="Back to Repository" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
 	        	</div>
         	 	<form onsubmit="return saveSiteSetting(this)" action="{{route('siteSetting.store')}}" >

@@ -32,7 +32,7 @@
 		          	<h3 class="box-title">{{ $moduleAction }}
 		          	</h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="Add New Question" href="{{ url('/admin/concilMembers/create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New Site Setting'}}</a>
+		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New Site Setting'}}</a>
 		          	</div>
 	        	</div>
 

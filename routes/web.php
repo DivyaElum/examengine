@@ -54,5 +54,5 @@ Route::get('/exam', function () {
 		Route::resource('siteSetting', 'Admin\SiteSettingController');	
 
 		// council member routes
-		Route::resource('concilMembers', 'Admin\CouncilMemberController');	
+		Route::resource('concil-member', 'Admin\CouncilMemberController');	
 	});
