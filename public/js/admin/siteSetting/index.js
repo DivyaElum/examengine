@@ -1,7 +1,7 @@
 $(document).ready(function() 
 {
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/siteSetting/getSettings'; 
+    var targetURL = adminPath+'/site-setting/getSettings'; 
 
     $('#questionsListingTable').DataTable( 
     {
@@ -31,48 +31,48 @@ $(document).ready(function()
     } );
 });
 
-function deleteQuestionFromRepository(element)
-{
-    var $this = $(element);
-    var id = $this.attr('data-qsnid');
+// function deleteQuestionFromRepository(element)
+// {
+//     var $this = $(element);
+//     var id = $this.attr('data-qsnid');
     
-    var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/repository/'+id; 
+//     var adminPath = $('meta[name="admin-path"]').attr('content');
+//     var targetURL = adminPath+'/repository/'+id; 
 
 
-    if (id != '') 
-    {
-        swal({
-          title: "Are you sure !!",
-          text: "You want to delete ?",
-          type: "info",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          showLoaderOnConfirm: true
-        }, 
-        function () 
-        {
-            $.ajax({
-                type:'DELETE',
-                url:targetURL,
-                dataType:'json',
-                success: function(data)
-                {
-                    setTimeout(function () 
-                    {
-                        if (data.status == 'success') 
-                        {
-                            $('#questionsListingTable').DataTable().ajax.reload();
-                            swal("Success", data.msg,'success');
-                        }
-                        else
-                        {
-                            swal("Error",data.msg,'error');
-                        }
-                    }, 1000);
-                }
-            })
-        });
-    }
+//     if (id != '') 
+//     {
+//         swal({
+//           title: "Are you sure !!",
+//           text: "You want to delete ?",
+//           type: "info",
+//           showCancelButton: true,
+//           closeOnConfirm: false,
+//           showLoaderOnConfirm: true
+//         }, 
+//         function () 
+//         {
+//             $.ajax({
+//                 type:'DELETE',
+//                 url:targetURL,
+//                 dataType:'json',
+//                 success: function(data)
+//                 {
+//                     setTimeout(function () 
+//                     {
+//                         if (data.status == 'success') 
+//                         {
+//                             $('#questionsListingTable').DataTable().ajax.reload();
+//                             swal("Success", data.msg,'success');
+//                         }
+//                         else
+//                         {
+//                             swal("Error",data.msg,'error');
+//                         }
+//                     }, 1000);
+//                 }
+//             })
+//         });
+//     }
    
-}
+// }
