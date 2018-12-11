@@ -31,14 +31,14 @@
 		            	<a title="Back to Repository" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
 	        	</div>
-        	 	<form onsubmit="return saveQuestionCategory(this)" action="{{route($modulePath.'.index')}}" method="post" enctype="multipart/form-data">
+        	 	<form onsubmit="return saveQuestionCategory(this)" action="{{route($modulePath.'.index')}}" method="post">
 	              	<div class="box-body">
 	              		<div class="row">
 	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="txtCategory">Question Category </label>
 				                  	<input type="text" name="txtCategory" id="txtCategory" class="form-control">
-				                  	<span class="help-block err_txtName"></span>
+				                  	<span class="help-block err_txtCategory"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="">Status </label>&nbsp;&nbsp;
@@ -48,6 +48,7 @@
 								    <label class="radio-inline">
 								      <input type="radio" name="txtStatus" value="0">Inactive
 								    </label>
+								    <span class="help-block err_txtStatus"></span>
 				                </div>
 	              			</div>	
 	              		</div>

@@ -41,7 +41,6 @@
           				<table id="listingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
           						<th>Sr. No</th>
-          						<th>Name</th>
           						<th>Category</th>
           						<th>Status</th>
           						<th>Created Date</th>

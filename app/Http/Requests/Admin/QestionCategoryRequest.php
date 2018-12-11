@@ -24,21 +24,16 @@ class QestionCategoryRequest extends FormRequest
     public function rules()
     {
        return [
-            'txtName'           => 'required',
-            'txtEmail'          => 'required|email',
-            'txtDescription'    => 'required',
-            'txtDesignation'     => 'required'
+            'txtCategory'  => 'required',
+            'txtStatus'    => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'txtName.required'          => 'Name field is required.',
-            'txtEmail.required'         => 'email field is required.',
-            'txtEmail.email'            => 'email is Invalid.',
-            'txtDescription.required'   => 'Description field is required.',
-            'txtDesignation.required'   => 'Designation field is required.'
+            'txtCategory.required' => 'Category field is required.',
+            'txtStatus.required'   => 'Status field is required.',
         ];
     }
 }

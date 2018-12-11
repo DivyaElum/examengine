@@ -4,7 +4,7 @@ var $Module = '/question-category';
 $(document).ready(function() 
 {
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/'+$Module+'getMembers'; 
+    var targetURL = adminPath+'/question-category/getQuestionCategory'; 
 
     $('#listingTable').DataTable( 
     {
@@ -14,7 +14,7 @@ $(document).ready(function()
         ajax: targetURL,
         columns: [
             { "data": "id",             "ordereble": "true"},
-            { "data": "Category",       "ordereble": "true"},
+            { "data": "category",       "ordereble": "true"},
             { "data": "status",         "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
             { "data": "actions"}
@@ -40,7 +40,7 @@ function deleteQuestionCategory(element)
     var id = $this.attr('data-qsnid');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/'+$Module+'/'+id; 
+    var targetURL = adminPath+$Module+'/'+id; 
 
 
     if (id != '') 
@@ -67,11 +67,6 @@ function deleteQuestionCategory(element)
                         {
                             $('#listingTable').DataTable().ajax.reload();
                             swal("Success", data.msg,'success');
-                            setTimeout(function ()
-                            {
-                                window.location.href = document.referrer;
-
-                            }, 3000)
                         }
                         else
                         {
@@ -86,14 +81,12 @@ function deleteQuestionCategory(element)
 
 function rwChanceStatus(element)
 {
-    var $this = $(element);
-    
-    var id = $this.attr('data-rwid');
-    var status = $this.attr('data-rwst');
+    var $this   = $(element);
+    var id      = $this.attr('data-rwid');
+    var status  = $this.attr('data-rwst');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/concil-member/changeStatus';
-
+    var targetURL = adminPath+$Module+'/changeStatus';
 
     if (id != '') 
     {
@@ -122,11 +115,6 @@ function rwChanceStatus(element)
                         {
                             $('#listingTable').DataTable().ajax.reload();
                             swal("Success", data.msg,'success');
-                            setTimeout(function ()
-                            {
-                                window.location.href = document.referrer;
-
-                            }, 3000)
                         }
                         else
                         {

@@ -32,47 +32,26 @@
 		          	</div>
 	        	</div>
 
-        	 	<form onsubmit="return saveQuestionCategory(this)" action="{{route($modulePath.'.update', [ base64_encode(base64_encode($object->id)) ])}}" method="post" enctype="multipart/form-data">
+        	 	<form onsubmit="return saveQuestionCategory(this)" action="{{route($modulePath.'.update', [ base64_encode(base64_encode($object->id)) ])}}" method="post">
         	 		<input name="_method" type="hidden" value="PUT">
 	              	<div class="box-body">
 	              		<div class="row">
 	              			<div class="col-md-12">
+				                <div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="txtName">Name </label>
-				                  	<input type="text" name="txtName" id="txtName" class="form-control" value="{{$object->name}}">
-				                  	<span class="help-block err_txtName"></span>
-				                </div>
-				                <div class="form-group">
-				                  	<label for="txtEmail">Email </label>
-				                  	<input type="Email" name="txtEmail" id="txtEmail" class="form-control" value="{{$object->email}}">
-				                  	<span class="help-block err_txtEmail"></span>
-				                </div>
-				                <div class="form-group">
-				                  	<label for="txtDescription">Description </label>
-				                  	<textarea class="form-control" name="txtDescription" id="txtDescription">{{$object->description}}</textarea>
-				                  	<span class="help-block err_txtDescription"></span>
-				                </div>
-				                 <div class="form-group">
-				                  	<label for="txtDesignation">Designation </label>
-				                  	<input type="text" name="txtDesignation" id="txtDesignation" class="form-control" value="{{$object->designation}}" />
-				                  	<span class="help-block err_txtDescription"></span>
-				                </div>
-				                <div class="form-group">
-				                  	<label for="txtDesignation">Image </label>
-				                  	<input type="file" name="txtImage" id="txtImage" class="form-control"  /><br />
-				                  	@if(isset($object->image))
-				                  		<img src="{{ asset('/upload/council-member/thumb_img/'.$object->image) }}" />
-				                  	@endif
-				                  	<span class="help-block err_txtImage"></span>
+				                  	<label for="txtCategory">Question Category </label>
+				                  	<input type="text" name="txtCategory" id="txtCategory" class="form-control" value="{{ $object->category_name }}">
+				                  	<span class="help-block err_txtCategory"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="">Status </label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
-								      <input type="radio" name="txtStatus"  value="1" <?php if($object->status == '1'){echo 'checked';} ?>>Active
+								      <input type="radio" name="txtStatus" value="1" <?php if($object->status == '1'){echo 'checked';} ?>>Active
 								    </label>
 								    <label class="radio-inline">
 								      <input type="radio" name="txtStatus" value="0" <?php if($object->status == '0'){echo 'checked';} ?>>Inactive
 								    </label>
+								    <span class="help-block err_txtStatus"></span>
 				                </div>
 	              			</div>	
 	              		</div>

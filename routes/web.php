@@ -64,7 +64,7 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function(
 	Route::resource('council-member', 'Admin\CouncilMemberController');
 
 	// question category routes
-	Route::get('question-category/getMembers', 'Admin\QuestionCategoryController@getMembers');
+	Route::get('question-category/getQuestionCategory', 'Admin\QuestionCategoryController@getQuestionCategory');
 	Route::post('question-category/changeStatus', 'Admin\QuestionCategoryController@changeStatus');
 	Route::resource('question-category', 'Admin\QuestionCategoryController');	
 });

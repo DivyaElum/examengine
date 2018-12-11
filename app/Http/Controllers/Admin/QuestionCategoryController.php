@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Request\Admin\QestionCategoryRequest;
+use App\Http\Requests\Admin\QestionCategoryRequest;
 use App\Http\Controllers\Controller;
 
 use App\models\QuestionCategoryModel;
@@ -65,10 +65,27 @@ class QuestionCategoryController extends Controller
      */
     public function store(QestionCategoryRequest $request)
     {
-        //txtCategory
+        $QuestionCategoryModel = new $this->QuestionCategoryModel;
+
+        $QuestionCategoryModel->category_name = $request->txtCategory;
+        $QuestionCategoryModel->status        = $request->txtStatus;
+        
+        if ($QuestionCategoryModel->save()) 
+        {
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['url']      = 'admin/question-category';
+            $this->JsonData['msg']      = 'Question Category saved successfully.';
+        }
+        else
+        {
+            $this->JsonData['status']   ='error';
+            $this->JsonData['msg']      ='Failed to save Question Category, Something went wrong.';
+        } 
+
+        return response()->json($this->JsonData);
     }
 
-     public function changeStatus(QestionCategoryRequest $request)
+     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
@@ -78,7 +95,7 @@ class QuestionCategoryController extends Controller
             $id = base64_decode(base64_decode($request->id));
             $status = $request->status;
 
-            if($this->CouncilMemberModel->where('id', $id)->update(['status' => $status]))
+            if($this->QuestionCategoryModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
                 $this->JsonData['msg']    = 'Status changed successfully.';
@@ -91,7 +108,7 @@ class QuestionCategoryController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getQuestionCategory(QestionCategoryRequest $request)
+        public function getQuestionCategory(Request $request)
         {
             /*--------------------------------------
             |  Variables
@@ -111,9 +128,7 @@ class QuestionCategoryController extends Controller
                 // filter columns
                 $filter = array(
                     0 => 'id',
-                    1 => 'Name',
-                    2 => 'Email',
-                    2 => 'designation',
+                    1 => 'category',
                     2 => 'status',
                     4 => 'created_at',
                     5 => 'id'
@@ -124,7 +139,7 @@ class QuestionCategoryController extends Controller
             ------------------------------*/
 
                 // start model query
-                $modelQuery = $this->CouncilMemberModel;
+                $modelQuery = $this->QuestionCategoryModel;
 
                 // get total count 
                 $countQuery = clone($modelQuery);            
@@ -137,9 +152,8 @@ class QuestionCategoryController extends Controller
                     $modelQuery = $modelQuery->where(function ($query) use($search)
                         {
                             $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('Name', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('Email', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('designation', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('category', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('status', 'LIKE', '%'.$search.'%');   
                             $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
                         });
                 }
@@ -162,10 +176,8 @@ class QuestionCategoryController extends Controller
                 {
                     foreach ($object as $key => $row) 
                     {
-                        $data[$key]['id']           = ($key+$start+1).'.';
-                        $data[$key]['Name']        = '<span title="'.$row->name.'">'.str_limit($row->name, '55', '...').'</span>';
-                        $data[$key]['Email']        = $row->email;
-                        $data[$key]['Designation']  = $row->designation;
+                        $data[$key]['id']         = ($key+$start+1).'.';
+                        $data[$key]['category']   = '<span title="'.$row->category_name.'">'.str_limit($row->category_name, '55', '...').'</span>';
 
                         if (!empty($row->status)) 
                         {
@@ -179,8 +191,8 @@ class QuestionCategoryController extends Controller
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('concil-member.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
-                        $delete = '<a title="Delete" onclick="return deleteMember(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('question-category.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $delete = '<a title="Delete" onclick="return deleteQuestionCategory(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
                         $data[$key]['actions'] = $view.$edit.$delete;
                     }
                 }
@@ -203,7 +215,15 @@ class QuestionCategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $QuestionCategoryModel = new $this->QuestionCategoryModel;
+
+        $intId = base64_decode(base64_decode($id));
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
+        $this->ViewData['moduleAction'] = 'Edit '. $this->ModuleTitle;
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['object']       = $this->QuestionCategoryModel->find($intId);
+
+        return view($this->ModuleView.'edit', $this->ViewData);
     }
 
     /**
@@ -215,7 +235,26 @@ class QuestionCategoryController extends Controller
      */
     public function update(QestionCategoryRequest $request, $id)
     {
-        //
+        $QuestionCategoryModel = new $this->QuestionCategoryModel;
+
+        $intId              = base64_decode(base64_decode($id));
+        $QuestionCategoryModel = $this->QuestionCategoryModel->find($intId);
+
+        $QuestionCategoryModel->category_name = $request->txtCategory;
+        $QuestionCategoryModel->status        = $request->txtStatus;
+        
+        if ($QuestionCategoryModel->save()) 
+        {
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['url']      = '/admin/question-category/';
+            $this->JsonData['msg']      = 'Question Category saved successfully.';
+        }
+        else
+        {
+            $this->JsonData['status']   ='error';
+            $this->JsonData['msg']      ='Failed to save Question Category, Something went wrong.';
+        } 
+        return response()->json($this->JsonData);
     }
 
     /**
@@ -226,6 +265,19 @@ class QuestionCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+         $intId = base64_decode(base64_decode($id));
+
+        if($this->QuestionCategoryModel->where('id', $intId)->delete())
+        {
+            $this->JsonData['status'] = 'success';
+            $this->JsonData['msg'] = 'Council member deleted successfully.';
+        }
+        else
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg'] = 'Failed to delete Council member, Something went wrong.';
+        }
+        
+        return response()->json($this->JsonData);
     }
 }

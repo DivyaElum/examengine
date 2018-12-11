@@ -69,11 +69,6 @@ function deleteMember(element)
                         {
                             $('#listingTable').DataTable().ajax.reload();
                             swal("Success", data.msg,'success');
-                            setTimeout(function ()
-                            {
-                                window.location.href = document.referrer;
-
-                            }, 3000)
                         }
                         else
                         {
@@ -124,11 +119,6 @@ function rwChanceStatus(element)
                         {
                             $('#listingTable').DataTable().ajax.reload();
                             swal("Success", data.msg,'success');
-                            setTimeout(function ()
-                            {
-                                window.location.href = document.referrer;
-
-                            }, 3000)
                         }
                         else
                         {
