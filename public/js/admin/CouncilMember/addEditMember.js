@@ -25,8 +25,10 @@ function saveMember(element)
 	    	{
 	    		$this[0].reset();
     			toastr.success(data.msg);
-	    		$('#submit_button').show();
-	    		window.location.href = data.url;
+	    		setTimeout(function ()
+	    		{
+	    			window.location.href = data.url;
+	    		}, 2000)
 	    	}
 	    	else
 	    	{
