@@ -29,7 +29,7 @@ class CouncilMemberController extends Controller
 
         $this->ModuleTitle = 'Council Member';
         $this->ModuleView  = 'admin.councilMember.';
-        $this->ModulePath = 'concil-member';
+        $this->ModulePath = 'council-member';
     }
     /**
      * Display a listing of the resource.
@@ -220,7 +220,7 @@ class CouncilMemberController extends Controller
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('concil-member.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('council-member.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
                         $delete = '<a title="Delete" onclick="return deleteMember(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
                         $data[$key]['actions'] = $view.$edit.$delete;
                     }

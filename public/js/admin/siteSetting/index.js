@@ -3,7 +3,7 @@ $(document).ready(function()
     var adminPath = $('meta[name="admin-path"]').attr('content');
     var targetURL = adminPath+'/site-setting/getSettings'; 
 
-    $('#questionsListingTable').DataTable( 
+    $('#listingTable').DataTable( 
     {
         responsive: 'true',
         serverSide: 'true',

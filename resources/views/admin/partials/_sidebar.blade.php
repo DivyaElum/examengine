@@ -49,8 +49,8 @@
           </a>
         </li>
         
-        <li class="{{ active(['admin/concil-members','admin/concil-members/*']) }}">
-          <a href="{{ url('/admin/concil-member') }}">
+        <li class="{{ active(['admin/council-members','admin/council-members/*']) }}">
+          <a href="{{ url('/admin/council-member') }}">
             <i class="fa fa-bars"></i> <span>Council Members</span>
           </a>
         </li>

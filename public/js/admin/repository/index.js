@@ -3,7 +3,7 @@ $(document).ready(function()
     var adminPath = $('meta[name="admin-path"]').attr('content');
     var targetURL = adminPath+'/repository/getRepositoryQuestions'; 
 
-    $('#questionsListingTable').DataTable( 
+    $('#listingTable').DataTable( 
     {
         responsive: 'true',
         serverSide: 'true',
@@ -65,7 +65,7 @@ function deleteMember(element)
                     {
                         if (data.status == 'success') 
                         {
-                            $('#questionsListingTable').DataTable().ajax.reload();
+                            $('#listingTable').DataTable().ajax.reload();
                             swal("Success", data.msg,'success');
                         }
                         else

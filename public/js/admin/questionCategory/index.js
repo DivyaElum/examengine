@@ -1,9 +1,12 @@
+var $Path = $('meta[name="admin-path"]').attr('content');
+var $Module = '/question-category';
+
 $(document).ready(function() 
 {
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/concil-member/getMembers'; 
+    var targetURL = adminPath+'/'+$Module+'getMembers'; 
 
-    $('#questionsListingTable').DataTable( 
+    $('#listingTable').DataTable( 
     {
         responsive: 'true',
         serverSide: 'true',
@@ -37,7 +40,7 @@ function deleteQuestionCategory(element)
     var id = $this.attr('data-qsnid');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/concil-member/'+id; 
+    var targetURL = adminPath+'/'+$Module+'/'+id; 
 
 
     if (id != '') 
@@ -62,7 +65,7 @@ function deleteQuestionCategory(element)
                     {
                         if (data.status == 'success') 
                         {
-                            $('#questionsListingTable').DataTable().ajax.reload();
+                            $('#listingTable').DataTable().ajax.reload();
                             swal("Success", data.msg,'success');
                             setTimeout(function ()
                             {

@@ -1,9 +1,12 @@
+var $Path = $('meta[name="admin-path"]').attr('content');
+var $Module = '/council-member';
+
 $(document).ready(function() 
 {
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/concil-member/getMembers'; 
+    var targetURL = adminPath+'/council-member/getMembers'; 
 
-    $('#questionsListingTable').DataTable( 
+    $('#listingTable').DataTable( 
     {
         responsive: 'true',
         serverSide: 'true',
@@ -38,8 +41,8 @@ function deleteMember(element)
     var $this = $(element);
     var id = $this.attr('data-qsnid');
     
-    var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/concil-member/'+id; 
+    var $Action = '/'+id; 
+    var $URL    = $Path+$Module+$Action; 
 
 
     if (id != '') 
@@ -64,7 +67,7 @@ function deleteMember(element)
                     {
                         if (data.status == 'success') 
                         {
-                            $('#questionsListingTable').DataTable().ajax.reload();
+                            $('#listingTable').DataTable().ajax.reload();
                             swal("Success", data.msg,'success');
                             setTimeout(function ()
                             {
@@ -91,7 +94,7 @@ function rwChanceStatus(element)
     var status = $this.attr('data-rwst');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/concil-member/changeStatus';
+    var targetURL = adminPath+'/council-member/changeStatus';
 
 
     if (id != '') 
