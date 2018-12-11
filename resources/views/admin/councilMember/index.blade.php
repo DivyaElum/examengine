@@ -32,7 +32,7 @@
 		          	<h3 class="box-title">{{ $moduleAction }}
 		          	</h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="Add New Question" href="{{ url('/admin/concilMembers/create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New Site Setting'}}</a>
+		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New Site Setting'}}</a>
 		          	</div>
 	        	</div>
 
@@ -41,9 +41,10 @@
           				<table id="questionsListingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
           						<th>Sr. No</th>
-          						<th>Question Text</th>
-          						<th>Question Type</th>
-          						<th>Right Marks</th>
+          						<th>Name</th>
+          						<th>Email</th>
+          						<th>Designation</th>
+          						<th>Status</th>
           						<th>Created Date</th>
           						<th>Action</th>
           					</thead>
@@ -73,5 +74,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.html5.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.print.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/repository/index.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/councilMember/index.js') }}"></script>
 @stop

@@ -32,13 +32,13 @@ $(document).ready(function()
     } );
 });
 
-function deleteQuestionFromRepository(element)
+function deleteMember(element)
 {
     var $this = $(element);
     var id = $this.attr('data-qsnid');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/repository/'+id; 
+    var targetURL = adminPath+'/concil-member/'+id; 
 
 
     if (id != '') 
