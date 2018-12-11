@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 // models
-use App\Models\PrerequisiteModel
+use App\Models\PrerequisiteModel;
 
 class PrerequisiteController extends Controller
 {
@@ -30,16 +30,16 @@ class PrerequisiteController extends Controller
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Repository';
-        $this->ModuleView = 'admin.repository.';
-        $this->ModulePath = 'repository';
+        $this->ModuleTitle = 'Prerequisite';
+        $this->ModuleView = 'admin.prerequisite.';
+        $this->ModulePath = 'prerequisite';
     }
     
     public function index()
     {
         $this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = 'Manage Questions';
+        $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
 
         return view($this->ModuleView.'index', $this->ViewData);
     }
@@ -181,12 +181,32 @@ class PrerequisiteController extends Controller
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Question deleted successfully.';
+            $this->JsonData['msg'] = 'Question type deleted successfully.';
         }
         else
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Question, Something went wrong.';
+            $this->JsonData['msg'] = 'Failed to delete Question type, Something went wrong.';
+        }
+        
+        return response()->json($this->JsonData);
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $this->JsonData['status']   = 'error';
+        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+
+        if ($request->has('id') && $request->has('status') ) 
+        {
+            $id = base64_decode(base64_decode($request->id));
+            $status = $request->status;
+
+            if($this->BaseModel->where('id', $id)->update(['status' => $status]))
+            {
+                $this->JsonData['status'] = 'success';
+                $this->JsonData['msg'] = 'Status changed successfully.';
+            } 
         }
         
         return response()->json($this->JsonData);
@@ -195,7 +215,7 @@ class PrerequisiteController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getQuestions(Request $request)
+        public function getPrerequisite(Request $request)
         {
             /*--------------------------------------
             |  Variables
@@ -215,11 +235,10 @@ class PrerequisiteController extends Controller
                 // filter columns
                 $filter = array(
                     0 => 'id',
-                    1 => 'question_text',
-                    2 => 'question_type',
-                    3 => 'right_marks',
-                    4 => 'created_at',
-                    5 => 'id'
+                    1 => 'title',
+                    2 => 'created_at',
+                    3 => 'status',
+                    4 => 'id'
                 );
 
             /*--------------------------------------
@@ -240,10 +259,9 @@ class PrerequisiteController extends Controller
                     $modelQuery = $modelQuery->where(function ($query) use($search)
                             {
                                 $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('question_text', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('question_type', 'LIKE', '%'.str_replace(" ", '-',$search).'%');   
-                                $query->orwhere('right_marks', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
+                                $query->orwhere('title', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');
+                                $query->orwhere('status', 'LIKE', '%'.$search.'%');   
                             });
                 }
 
@@ -267,15 +285,22 @@ class PrerequisiteController extends Controller
                     {
                         $data[$key]['id']             = ($key+$start+1).'.';
 
-                        $data[$key]['question_text']  = '<span title="'.$row->question_text.'">'.ucfirst(str_limit($row->question_text, '55', '...')).'</span>';
+                        $data[$key]['title']  = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
                         
-                        $data[$key]['question_type']  = ucfirst(str_replace('-', " ", $row->question_type));
-                        $data[$key]['right_marks']    = $row->right_marks;
                         $data[$key]['created_at']     = Date('d-m-Y', strtotime($row->created_at));
                         
+                        if (!empty($row->status)) 
+                        {
+                            $data[$key]['status'] = '<a title="Click to Change Status" onclick="return rwChanceStatus(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" data-rwst="0"  class="btn btn-default btn-circle" href="javascript:void(0)" ><i class="fa fa-check" aria-hidden="true"></i></a>&nbsp';
+                        }
+                        else
+                        {
+                            $data[$key]['status'] = '<a title="Click to Change Status" onclick="return rwChanceStatus(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" data-rwst="1"  class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>&nbsp';
+                        }
+                        
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('repository.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
-                        $delete = '<a title="Delete" onclick="return deleteQuestionFromRepository(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('question-type.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $delete = '<a title="Delete" onclick="return rwDelete(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
 
                         $data[$key]['actions'] = $view.$edit.$delete;
                     }
@@ -290,61 +315,8 @@ class PrerequisiteController extends Controller
             return response()->json($this->JsonData);
         }
 
-        public function getStructure($end_id)
-        {
-            $id = base64_decode(base64_decode($end_id));
-            $structure = $this->QuestionTypeStructureModel->where('question_type_id', $id)->first();
-            
-            if (!empty($structure)) 
-            {
-                $this->JsonData = $structure->structure;
-            }
-            else
-            {
-                $this->JsonData = 'Not Found';
-            }
-
-            return response()->json($this->JsonData);
-        }
-
-        public function getOptionsAnswer($index)
-        {
-            $object = $this->QuestionOptionsAnswer->where('index', $index)->first();
-
-            if (!empty($object))
-            {
-                $this->JsonData['status'] = 'success';
-                $this->JsonData['value'] = $object->answer;
-                $this->JsonData['name'] = $object->option;
-            }
-            else
-            {
-                $this->JsonData['status'] = 'error';
-                $this->JsonData['msg'] = 'Given index was not found.';
-            }
-            
-            return response()->json($this->JsonData);
-        }
-
     /*-----------------------------------------------------
     |  Supportive Functions
     */
 
-        public function _BuildTypeWiseAnswer($type, $answer)
-        {
-            $correct_answer = '';
-
-            switch ($type) 
-            {
-                case 'radio':
-                    $correct_answer = $answer;
-                break;
-
-                case 'checkbox':
-                    $correct_answer = implode(',', $answer);
-                break;
-            }
-
-            return $correct_answer;
-        }
 }

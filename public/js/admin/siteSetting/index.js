@@ -27,6 +27,5 @@ $(document).ready(function()
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
         aaSorting: [[0, 'DESC']]
-
     });
 });

@@ -13,7 +13,6 @@ use App\Models\OptionStructureModel;
 // requests
 use App\Http\Requests\QuestionTypeRequest;
 
-
 // others
 use Validator;
 use DB;
@@ -343,5 +342,4 @@ class QuestionTypeController extends Controller
 
             return response()->json($this->JsonData);
         }
-
 }

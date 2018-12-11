@@ -36,11 +36,19 @@
             <i class="fa fa-bars"></i> <span>Repository</span>
           </a>
         </li>
+
+        <li class="{{ active(['admin/prerequisite','admin/prerequisite/*']) }}">
+          <a href="{{ route('prerequisite.index') }}">
+            <i class="fa fa-bars"></i> <span>Prerequisite</span>
+          </a>
+        </li>
+
         <li class="{{ active(['admin/site-setting','admin/site-setting/*']) }}">
           <a href="{{ route('site-setting.index') }}">
             <i class="fa fa-bars"></i> <span>Site setting</span>
           </a>
         </li>
+        
         <li class="{{ active(['admin/concil-members','admin/concil-members/*']) }}">
           <a href="{{ url('/admin/concil-member') }}">
             <i class="fa fa-bars"></i> <span>Council Members</span>

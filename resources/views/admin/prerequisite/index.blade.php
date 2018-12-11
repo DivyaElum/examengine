@@ -32,19 +32,18 @@
 		          	<h3 class="box-title">{{ $moduleAction }}
 		          	</h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New Question'}}</a>
+		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New '.$moduleTitle}}</a>
 		          	</div>
 	        	</div>
 
               	<div class="box-body">
           			<div class="dataTables_wrapper form-inline dt-bootstrap">
-          				<table id="questionsListingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+          				<table id="listingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
           						<th>Sr. No</th>
-          						<th>Question Text</th>
-          						<th>Question Type</th>
-          						<th>Right Marks</th>
+          						<th>Title</th>
           						<th>Created Date</th>
+          						<th>Status</th>
           						<th>Action</th>
           					</thead>
           					<tbody>
@@ -73,5 +72,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.html5.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.print.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/repository/index.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/prerequisite/index.js') }}"></script>
 @stop
