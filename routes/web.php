@@ -49,6 +49,11 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function(
 	Route::get('repository/getOptionsAnswer/{id}', 'Admin\RepositoryController@getOptionsAnswer');	
 	Route::resource('repository', 'Admin\RepositoryController');	
 
+	// Prerequisite routes
+	Route::get('prerequisite/getPrerequisite', 'Admin\PrerequisiteController@getPrerequisite');	
+	Route::post('prerequisite/changeStatus', 'Admin\PrerequisiteController@changeStatus');	
+	Route::resource('prerequisite', 'Admin\PrerequisiteController');
+
 	// site setting routes
 	Route::get('site-setting/getSettings', 'Admin\SiteSettingController@getSettings');
 	Route::resource('site-setting', 'Admin\SiteSettingController');	
