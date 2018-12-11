@@ -21,11 +21,11 @@ Route::get('/exam', function () {
 
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()
 {
-	Route::get('/login', 'Auth\LoginController@index');//login
-	Route::post('/login', 'Auth\LoginController@checkLogin');
+	Route::get('/login', 'Admin\Auth\LoginController@index');//login
+	Route::post('/login', 'Admin\Auth\LoginController@checkLogin');
 
-	Route::get('/forgot','Auth\LoginController@forgot');//forgot password
-	Route::post('/forgot','Auth\LoginController@forgot');
+	Route::get('/forgot','Admin\Auth\LoginController@forgot');//forgot password
+	Route::post('/forgot','Admin\Auth\LoginController@forgot');
 
 	Route::get('/resetpassword/{id}','Auth\LoginController@resetpassword');//reset password
 	Route::post('/resetpassword','Auth\LoginController@resetpass');
@@ -54,5 +54,5 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function(
 	Route::resource('site-setting', 'Admin\SiteSettingController');	
 
 	// council member routes
-	Route::resource('concilMembers', 'Admin\CouncilMemberController');	
+	Route::resource('concil-member', 'Admin\CouncilMemberController');	
 });
