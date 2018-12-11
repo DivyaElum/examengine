@@ -29,12 +29,14 @@ class SiteSettingController extends Controller
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Site Setting';
-        $this->ModuleView  = 'admin.site-setting.';
+        $this->ModuleView  = 'admin.siteSetting.';
+        $this->ModulePath  = 'site-setting';
     }
     public function index()
     {
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
+        $this->ViewData['modulePath'] = $this->ModulePath;
 
         return view($this->ModuleView.'index', $this->ViewData);
     }
@@ -48,44 +50,10 @@ class SiteSettingController extends Controller
     {
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Add '. $this->ModuleTitle;
+        $this->ViewData['modulePath'] = $this->ModulePath;
 
        return view($this->ModuleView.'create', $this->ViewData);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(SiteSettingRequest $request)
-    // {
-    //     $SiteSetting = new $this->SiteSetting;
-
-    //     $SiteSetting->user_id           = auth()->id();
-    //     $SiteSetting->site_name         = $request->txtSitename;
-    //     $SiteSetting->address           = $request->txtAddress;
-    //     $SiteSetting->phone             = $request->txtPhone;
-    //     $SiteSetting->email_id          = $request->txtEmail;
-    //     $SiteSetting->admin_email_id    = $request->txtAdminEmail;
-    //     $SiteSetting->api               = $request->txtApi ?? NULL;;
-    //     $SiteSetting->meta_keyword      = $request->txtMetaKey ?? NULL;;
-    //     $SiteSetting->meta_description  = $request->txtMetaDesc ?? NULL;;
-        
-
-    //     if ($SiteSetting->save()) 
-    //     {
-    //         $this->JsonData['status']   = 'success';
-    //         $this->JsonData['url']      = '/admin/siteSetting/create';
-    //         $this->JsonData['msg']      = 'Site setting saved successfully.';
-    //     }
-    //     else
-    //     {
-    //         $this->JsonData['status']   ='error';
-    //         $this->JsonData['msg']      ='Failed to save Site setting, Something went wrong.';
-    //     }  
-    //     return response()->json($this->JsonData);
-    // }
 
     public function store(Request $request)
     {
@@ -186,7 +154,7 @@ class SiteSettingController extends Controller
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('siteSetting.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('site-setting.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
 
                         $data[$key]['actions'] = $view.$edit;
                     }
@@ -214,6 +182,7 @@ class SiteSettingController extends Controller
         $intId = base64_decode(base64_decode($id));
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Edit '. $this->ModuleTitle;
+        $this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['object'] = $this->SiteSetting->find($intId);
 
         return view($this->ModuleView.'edit', $this->ViewData);

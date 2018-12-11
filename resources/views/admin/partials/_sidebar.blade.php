@@ -32,12 +32,12 @@
             <i class="fa fa-bars"></i> <span>Repository</span>
           </a>
         </li>
-        <li class="">
-          <a href="{{ url('/admin/siteSetting') }}">
+        <li class="{{ active(['admin/site-setting','admin/site-setting/*']) }}">
+          <a href="{{ route('site-setting.index') }}">
             <i class="fa fa-bars"></i> <span>Site setting</span>
           </a>
         </li>
-        <li class="">
+        <li class="{{ active(['admin/concil-members','admin/concil-members/*']) }}">
           <a href="{{ url('/admin/concilMembers') }}">
             <i class="fa fa-bars"></i> <span>Council Members</span>
           </a>
