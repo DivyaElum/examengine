@@ -38,7 +38,7 @@
 
               	<div class="box-body">
           			<div class="dataTables_wrapper form-inline dt-bootstrap">
-          				<table id="questionsListingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+          				<table id="listingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
           						<th>Sr. No</th>
           						<th>Question Text</th>

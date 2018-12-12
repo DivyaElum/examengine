@@ -26,7 +26,11 @@
             <i class="fa fa-bars"></i> <span>Question Types</span>
           </a>
         </li>
-
+        <li class="{{ active(['admin/question-category','admin/question-category/*']) }}">
+          <a href="{{ url('/admin/question-category') }}">
+            <i class="fa fa-bars"></i> <span>Question Category</span>
+          </a>
+        </li>
         <li class="{{ active(['admin/repository','admin/repository/*']) }}">
           <a href="{{ route('repository.index') }}">
             <i class="fa fa-bars"></i> <span>Repository</span>
@@ -45,8 +49,8 @@
           </a>
         </li>
         
-        <li class="{{ active(['admin/concil-members','admin/concil-members/*']) }}">
-          <a href="{{ url('/admin/concil-member') }}">
+        <li class="{{ active(['admin/council-members','admin/council-members/*']) }}">
+          <a href="{{ url('/admin/council-member') }}">
             <i class="fa fa-bars"></i> <span>Council Members</span>
           </a>
         </li>

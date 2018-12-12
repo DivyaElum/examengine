@@ -3,33 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\QestionCategoryRequest;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\CouncilMemberRequest;
 
-use App\Models\CouncilMemberModel;
+use App\models\QuestionCategoryModel;
 use Validator;
-use Storage;
-use Image;
 
-class CouncilMemberController extends Controller
+class QuestionCategoryController extends Controller
 {
-    private $concilMember;
+    private $QuestionCategory;
 
     // use MultiModelTrait;
 
     public function __construct(
 
-        CouncilMemberModel $CouncilMemberModel
+        QuestionCategoryModel $QuestionCategoryModel
     )
     {
-        $this->CouncilMemberModel  = $CouncilMemberModel;
+        $this->QuestionCategoryModel  = $QuestionCategoryModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Council Member';
-        $this->ModuleView  = 'admin.councilMember.';
-        $this->ModulePath = 'council-member';
+        $this->ModuleView  = 'admin.questionCategory.';
+        $this->ModulePath  = 'question-category';
     }
     /**
      * Display a listing of the resource.
@@ -37,7 +35,7 @@ class CouncilMemberController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         $this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
@@ -65,51 +63,29 @@ class CouncilMemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CouncilMemberRequest $request)
+    public function store(QestionCategoryRequest $request)
     {
-        $CouncilMemberModel = new $this->CouncilMemberModel;
+        $QuestionCategoryModel = new $this->QuestionCategoryModel;
 
-        if($request->hasFile('txtImage')){
-            $strImage = $request->txtImage;
+        $QuestionCategoryModel->category_name = $request->txtCategory;
+        $QuestionCategoryModel->status        = $request->txtStatus;
         
-            //$filename = Storage::put('avatars', $strImage);
-
-            //Store thumbnail image
-            $strImgName = time().$strImage->getClientOriginalName();
-            $strThumbdesignationPath = public_path().'/upload/council-member/thumb_img' ;
-            $thumb_img = Image::make($strImage->getRealPath())->resize(125, 125);
-            $thumb_img->save($strThumbdesignationPath.'/'.$strImgName,80);
-
-            //Store orignal image
-            $strImgName = time().$strImage->getClientOriginalName();
-            $strOriginalImgdesignationPath = public_path().'/upload/council-member' ;
-            $strImage->move($strOriginalImgdesignationPath, $strImgName);
-
-            $CouncilMemberModel->image = $strImgName;
-        }
-
-        $CouncilMemberModel->name         = $request->txtName;
-        $CouncilMemberModel->email        = $request->txtEmail;
-        $CouncilMemberModel->description  = $request->txtDescription;
-        $CouncilMemberModel->designation  = $request->txtDesignation;
-        $CouncilMemberModel->status       = $request->txtStatus;
-        
-        if ($CouncilMemberModel->save()) 
+        if ($QuestionCategoryModel->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/concil-member/';
-            $this->JsonData['msg']      = 'Concil member saved successfully.';
+            $this->JsonData['url']      = 'admin/question-category';
+            $this->JsonData['msg']      = 'Question Category saved successfully.';
         }
         else
         {
             $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Concil member, Something went wrong.';
+            $this->JsonData['msg']      ='Failed to save Question Category, Something went wrong.';
         } 
 
         return response()->json($this->JsonData);
     }
 
-    public function changeStatus(Request $request)
+     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
@@ -119,7 +95,7 @@ class CouncilMemberController extends Controller
             $id = base64_decode(base64_decode($request->id));
             $status = $request->status;
 
-            if($this->CouncilMemberModel->where('id', $id)->update(['status' => $status]))
+            if($this->QuestionCategoryModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
                 $this->JsonData['msg']    = 'Status changed successfully.';
@@ -132,7 +108,7 @@ class CouncilMemberController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getMembers(Request $request)
+        public function getQuestionCategory(Request $request)
         {
             /*--------------------------------------
             |  Variables
@@ -152,9 +128,7 @@ class CouncilMemberController extends Controller
                 // filter columns
                 $filter = array(
                     0 => 'id',
-                    1 => 'Name',
-                    2 => 'Email',
-                    2 => 'designation',
+                    1 => 'category',
                     2 => 'status',
                     4 => 'created_at',
                     5 => 'id'
@@ -165,7 +139,7 @@ class CouncilMemberController extends Controller
             ------------------------------*/
 
                 // start model query
-                $modelQuery = $this->CouncilMemberModel;
+                $modelQuery = $this->QuestionCategoryModel;
 
                 // get total count 
                 $countQuery = clone($modelQuery);            
@@ -178,9 +152,8 @@ class CouncilMemberController extends Controller
                     $modelQuery = $modelQuery->where(function ($query) use($search)
                         {
                             $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('Name', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('Email', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('designation', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('category', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('status', 'LIKE', '%'.$search.'%');   
                             $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
                         });
                 }
@@ -203,10 +176,8 @@ class CouncilMemberController extends Controller
                 {
                     foreach ($object as $key => $row) 
                     {
-                        $data[$key]['id']           = ($key+$start+1).'.';
-                        $data[$key]['Name']        = '<span title="'.$row->name.'">'.str_limit($row->name, '55', '...').'</span>';
-                        $data[$key]['Email']        = $row->email;
-                        $data[$key]['Designation']  = $row->designation;
+                        $data[$key]['id']         = ($key+$start+1).'.';
+                        $data[$key]['category']   = '<span title="'.$row->category_name.'">'.str_limit($row->category_name, '55', '...').'</span>';
 
                         if (!empty($row->status)) 
                         {
@@ -220,8 +191,8 @@ class CouncilMemberController extends Controller
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('council-member.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
-                        $delete = '<a title="Delete" onclick="return deleteMember(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('question-category.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $delete = '<a title="Delete" onclick="return deleteQuestionCategory(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
                         $data[$key]['actions'] = $view.$edit.$delete;
                     }
                 }
@@ -235,6 +206,7 @@ class CouncilMemberController extends Controller
             return response()->json($this->JsonData);
         }
 
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -243,13 +215,13 @@ class CouncilMemberController extends Controller
      */
     public function edit($id)
     {
-        $CouncilMemberModel = new $this->CouncilMemberModel;
+        $QuestionCategoryModel = new $this->QuestionCategoryModel;
 
         $intId = base64_decode(base64_decode($id));
         $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Edit '. $this->ModuleTitle;
         $this->ViewData['modulePath']   = $this->ModulePath;
-        $this->ViewData['object']       = $this->CouncilMemberModel->find($intId);
+        $this->ViewData['object']       = $this->QuestionCategoryModel->find($intId);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
@@ -261,45 +233,26 @@ class CouncilMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CouncilMemberRequest $request, $id)
+    public function update(QestionCategoryRequest $request, $id)
     {
-        $CouncilMemberModel = new $this->CouncilMemberModel;
+        $QuestionCategoryModel = new $this->QuestionCategoryModel;
 
         $intId              = base64_decode(base64_decode($id));
-        $CouncilMemberModel = $this->CouncilMemberModel->find($intId);
+        $QuestionCategoryModel = $this->QuestionCategoryModel->find($intId);
 
-        if($request->hasFile('txtImage')){
-            $strImage = $request->txtImage;
-
-            //Store thumbnail image
-            $strImgName = time().$strImage->getClientOriginalName();
-            $strThumbdesignationPath = public_path().'/upload/council-member/thumb_img' ;
-            $thumb_img = Image::make($strImage->getRealPath())->resize(125, 125);
-            $thumb_img->save($strThumbdesignationPath.'/'.$strImgName,80);
-
-            //Store orignal image
-            $strOriginalImgdesignationPath = public_path().'/upload/council-member' ;
-            $strImage->move($strOriginalImgdesignationPath, $strImgName);
-
-            $CouncilMemberModel->image = $strImgName;
-        }
-
-        $CouncilMemberModel->name         = $request->txtName;
-        $CouncilMemberModel->email        = $request->txtEmail;
-        $CouncilMemberModel->description  = $request->txtDescription;
-        $CouncilMemberModel->designation  = $request->txtDesignation;
-        $CouncilMemberModel->status       = $request->txtStatus;
+        $QuestionCategoryModel->category_name = $request->txtCategory;
+        $QuestionCategoryModel->status        = $request->txtStatus;
         
-        if ($CouncilMemberModel->save()) 
+        if ($QuestionCategoryModel->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/concil-member/';
-            $this->JsonData['msg']      = 'Concil member saved successfully.';
+            $this->JsonData['url']      = '/admin/question-category/';
+            $this->JsonData['msg']      = 'Question Category saved successfully.';
         }
         else
         {
             $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Concil member, Something went wrong.';
+            $this->JsonData['msg']      ='Failed to save Question Category, Something went wrong.';
         } 
         return response()->json($this->JsonData);
     }
@@ -312,9 +265,9 @@ class CouncilMemberController extends Controller
      */
     public function destroy($id)
     {
-        $intId = base64_decode(base64_decode($id));
+         $intId = base64_decode(base64_decode($id));
 
-        if($this->CouncilMemberModel->where('id', $intId)->delete())
+        if($this->QuestionCategoryModel->where('id', $intId)->delete())
         {
             $this->JsonData['status'] = 'success';
             $this->JsonData['msg'] = 'Council member deleted successfully.';

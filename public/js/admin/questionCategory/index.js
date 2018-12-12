@@ -1,10 +1,10 @@
 var $Path = $('meta[name="admin-path"]').attr('content');
-var $Module = '/council-member';
+var $Module = '/question-category';
 
 $(document).ready(function() 
 {
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/council-member/getMembers'; 
+    var targetURL = adminPath+'/question-category/getQuestionCategory'; 
 
     $('#listingTable').DataTable( 
     {
@@ -14,9 +14,7 @@ $(document).ready(function()
         ajax: targetURL,
         columns: [
             { "data": "id",             "ordereble": "true"},
-            { "data": "Name",           "ordereble": "true"},
-            { "data": "Email",          "ordereble": "true"},
-            { "data": "Designation",    "ordereble": "true"},
+            { "data": "category",       "ordereble": "true"},
             { "data": "status",         "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
             { "data": "actions"}
@@ -36,13 +34,13 @@ $(document).ready(function()
     } );
 });
 
-function deleteMember(element)
+function deleteQuestionCategory(element)
 {
     var $this = $(element);
     var id = $this.attr('data-qsnid');
     
-    var $Action = '/'+id; 
-    var $URL    = $Path+$Module+$Action; 
+    var adminPath = $('meta[name="admin-path"]').attr('content');
+    var targetURL = adminPath+$Module+'/'+id; 
 
 
     if (id != '') 
@@ -83,14 +81,12 @@ function deleteMember(element)
 
 function rwChanceStatus(element)
 {
-    var $this = $(element);
-    
-    var id = $this.attr('data-rwid');
-    var status = $this.attr('data-rwst');
+    var $this   = $(element);
+    var id      = $this.attr('data-rwid');
+    var status  = $this.attr('data-rwst');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/council-member/changeStatus';
-
+    var targetURL = adminPath+$Module+'/changeStatus';
 
     if (id != '') 
     {

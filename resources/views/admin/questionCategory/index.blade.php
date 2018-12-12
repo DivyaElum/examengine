@@ -22,7 +22,7 @@
 	      </h1>
 	      <ol class="breadcrumb">
 	        <li class=""><a href="{{ url('/admin/dashboard') }}">Dashboard</a></li>
-	        <li class="active">{{ $moduleAction }}</li>
+	        <li class="active">{{ $moduleTitle }}</li>
 	      </ol>
 	    </section>
 	    
@@ -32,7 +32,7 @@
 		          	<h3 class="box-title">{{ $moduleAction }}
 		          	</h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New Site Setting'}}</a>
+		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New '.$moduleTitle}}</a>
 		          	</div>
 	        	</div>
 
@@ -41,8 +41,8 @@
           				<table id="listingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
           						<th>Sr. No</th>
-          						<th>Title</th>
-          						<th>value</th>
+          						<th>Category</th>
+          						<th>Status</th>
           						<th>Created Date</th>
           						<th>Action</th>
           					</thead>
@@ -72,5 +72,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.html5.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.print.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/siteSetting/index.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/questionCategory/index.js') }}"></script>
 @stop
