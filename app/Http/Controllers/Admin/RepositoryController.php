@@ -11,6 +11,7 @@ use App\Models\QuestionTypesModel;
 use App\Models\RepositoryModel;
 use App\Models\QuestionTypeStructureModel;
 use App\Models\QuestionOptionsAnswer;
+use App\models\QuestionCategoryModel;
 
 // requests
 use App\Http\Requests\RepositoryRequest;
@@ -36,13 +37,15 @@ class RepositoryController extends Controller
         QuestionTypesModel $QuestionTypesModel,
         QuestionOptionsAnswer $QuestionOptionsAnswer,
         RepositoryModel $RepositoryModel,
-        QuestionTypeStructureModel $QuestionTypeStructureModel
+        QuestionTypeStructureModel $QuestionTypeStructureModel,
+        QuestionCategoryModel $QuestionCategoryModel
     )
     {
         $this->BaseModel                    = $RepositoryModel;
         $this->QuestionOptionsAnswer        = $QuestionOptionsAnswer;
         $this->QuestionTypesModel           = $QuestionTypesModel;
         $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
+        $this->QuestionCategoryModel        = $QuestionCategoryModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -63,11 +66,12 @@ class RepositoryController extends Controller
 
     public function create()
     {
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Add Question';
-        $this->ViewData['types'] = $this->QuestionTypesModel->where('status', 1)->get(); 
-
+        $this->ViewData['types']        = $this->QuestionTypesModel->where('status', 1)->get(); 
+        $this->ViewData['category']     = $this->QuestionCategoryModel->where('status', 1)->get(); 
+        
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
@@ -86,6 +90,8 @@ class RepositoryController extends Controller
             
         $repository->question_type      = $questionTypeObject->slug;
         
+        $repository->category_id        = $request->category;
+
         $repository->question_text      = $request->question_text;
         
         $repository->right_marks        = $request->right_marks;
@@ -129,11 +135,12 @@ class RepositoryController extends Controller
     public function edit($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Edit Question';
-        $this->ViewData['object'] = $this->BaseModel->with(['questionFormat'])->find($id);
-        $this->ViewData['types'] = $this->QuestionTypesModel->where('status', 1)->get();
+        $this->ViewData['object']       = $this->BaseModel->with(['questionFormat'])->find($id);
+        $this->ViewData['types']        = $this->QuestionTypesModel->where('status', 1)->get();
+        $this->ViewData['category']     = $this->QuestionCategoryModel->where('status', 1)->get();
 
 
         return view($this->ModuleView.'edit', $this->ViewData);
@@ -154,6 +161,8 @@ class RepositoryController extends Controller
         $repository->correct_answer     = $correct_answer;
             
         $repository->question_type      = $questionTypeObject->slug;
+
+        $repository->category_id        = $request->category;
         
         $repository->question_text      = $request->question_text;
         
@@ -234,6 +243,7 @@ class RepositoryController extends Controller
                     0 => 'id',
                     1 => 'question_text',
                     2 => 'question_type',
+                    2 => 'question_name',
                     3 => 'right_marks',
                     4 => 'created_at',
                     5 => 'id'
@@ -272,8 +282,7 @@ class RepositoryController extends Controller
                 $object = $modelQuery->orderBy($filter[$column], $dir)
                                      ->skip($start)
                                      ->take($length)
-                                     ->get();            
-
+                                     ->get();    
             /*--------------------------------------
             |  data binding
             ------------------------------*/
@@ -287,6 +296,7 @@ class RepositoryController extends Controller
                         $data[$key]['question_text']  = '<span title="'.$row->question_text.'">'.ucfirst(str_limit($row->question_text, '55', '...')).'</span>';
                         
                         $data[$key]['question_type']  = ucfirst(str_replace('-', " ", $row->question_type));
+                        $data[$key]['question_name']  = ucfirst(str_replace('-', " ", $row->caregory->name));
                         $data[$key]['right_marks']    = $row->right_marks;
                         $data[$key]['created_at']     = Date('d-m-Y', strtotime($row->created_at));
                         

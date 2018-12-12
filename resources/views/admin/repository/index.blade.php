@@ -43,6 +43,8 @@
           						<th>Sr. No</th>
           						<th>Question Text</th>
           						<th>Question Type</th>
+          						<th>Question Name</th>
+          						<th>category</th>
           						<th>Right Marks</th>
           						<th>Created Date</th>
           						<th>Action</th>
