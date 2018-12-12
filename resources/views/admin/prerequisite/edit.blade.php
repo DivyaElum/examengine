@@ -28,300 +28,79 @@
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title">{{ $moduleAction }}</h3>
 		          	<div class="box-tools pull-right">
-		            	<a title="Back to Repository" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
+		            	<a title="Back" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
 	        	</div>
 
-        	 	<form onsubmit="return saveQuestion(this)" action="{{route('repository.update', [ base64_encode(base64_encode($object->id)) ])}}" >
+        	 	<form onsubmit="return saveFormData(this)" action="{{route($modulePath.'.update', [ base64_encode(base64_encode($object->id)) ])}}" >
         	 		<input name="_method" type="hidden" value="PUT">
+	              	
 	              	<div class="box-body">
 	              		<div class="row">
 
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="">Type</label>
-				                  	<select onchange="getStructure(this)" class="form-control" name="type" >
-				                  		<option value="" >Please Select</option>
-				                  		@if(!empty($types) && count($types) > 0)
-				                  			@foreach($types as $key => $type)
-				                  				<option value="{{ base64_encode(base64_encode($type->id)) }}" @if($object->question_type == $type->slug ) selected @endif>{{ $type->title }}</option>
-				                  			@endforeach
-				                  		@endif
+				                  	<label for="">Title</label>
+					                  	<input type="text" value="{{ $object->title }}" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="">
 				                  	</select>
 				                </div>
 	              			</div>	
 
-	                  		<div class="html_data">
+	              			<div class="col-md-12">
+	              				<label>Video Type</label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" @if(!empty($object->video_file)) checked @endif onclick="setVideoType(true)" name="video_type" checked value="file">Video File
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" @if(!empty($object->video_url)) checked @endif onclick="setVideoType(true)" name="video_type" value="url">Video URL
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" @if(!empty($object->youtube_url)) checked @endif onclick="setVideoType(true)" name="video_type" value="youtube">Youtube URL
+								    </label>
+				                </div>
+	              			</div>	
 
-	                  			<div class="col-md-12">
-		                  			<label>Type your question</label>
-		                  			<textarea type="text" class="form-control" name="question_text" rows="5">{{ $object->question_text }}</textarea><br>
-		                  		</div>
+	              			<div class="options file" style="display: none;">
+				                <div class=" col-md-12 form-group video_file_class " style="display: none">
+				                  	<label for="">Video File</label>
+					                  	<input type="file" value="{{ $object->video_file_original_name }}" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >				                  		
+				                  	</select>
+				                </div>
+				                <div class="old_video_file_class">
+					                <div class="form-group col-md-12">
+				                		<label>Old Video File</label>&nbsp;<a title="delete" onclick="return hideOldVideoFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
+					                  	<input type="text" value="{{ $object->video_file_original_name }}" name="old_video_file" id="old_video_file" class="form-control" readonly>
+					                </div>
+				                </div>
+	              			</div>
 
-	                  			@if($object->questionFormat->option == 'radio')
-	                  				<div class="multiple_choice">
+	              			<div class="col-md-12 options url" style="display: none;">
+				                <div class="form-group">
+				                  	<label for="">Video URL</label>
+					                  	<input type="text" value="{{ $object->video_url }}" name="video_url" id="video_url" class="form-control option_input" placeholder="Enter Video URL" >
+				                  	</select>
+				                </div>
+	              			</div>	
 
-			              			<div class="options">
-				              			<div class="col-md-11">
-				              				Correct
-				              				<div class="input-group">
-						                        <span class="input-group-addon">
-				              						<label>A</label><br>
-						                          <input type="radio" @if( $object->correct_answer == 'a' ) checked @endif name="correct" value="a">
-						                        </span>
-						                    	<textarea type="text" name="option1"  class="form-control">{{ $object->option1 }}</textarea>
-						                  	</div><br>
-					                  	</div>
-				                  	</div>
-			              			
-			              			<div class="options">
-				              			<div class="col-md-11">
-						                  	<div class="input-group">
-						                        <span class="input-group-addon">
-						                        	<label>B</label><br>
-						                          <input type="radio" @if( $object->correct_answer == 'b' ) checked @endif name="correct" value="b">
-						                        </span>
-						                    	<textarea type="text" name="option2" class="form-control">{{ $object->option2 }}</textarea>
-						                  	</div><br>
-					                  	</div>
-				                  	</div>
-			              			
-			              			<div class="options">
-				              			<div class="col-md-11">
-						                  	<div class="input-group">
-						                        <span class="input-group-addon">
-						                        	<label>C</label><br>
-						                          <input type="radio" @if( $object->correct_answer == 'c' ) checked @endif name="correct" value="c">
-						                        </span>
-						                    	<textarea type="text" name="option3" class="form-control">{{ $object->option3 }}</textarea>
-						                  	</div><br>
-					                  	</div>
-				                  	</div>
-			              			
-			              			<div class="options">
-				              			<div class="col-md-11">
-						                  	<div class="input-group">
-						                        <span class="input-group-addon">
-						                        	<label>D</label><br>
-						                          <input type="radio" @if( $object->correct_answer == 'd' ) checked @endif name="correct" value="d">
-						                        </span>
-						                    	<textarea type="text" name="option4" class="form-control">{{ $object->option4 }}</textarea>
-				                  			</div><br>
-				              			</div>
-			              			</div>
+	              			<div class="col-md-12 options youtube" style="display: none;" >
+				                <div class="form-group">
+				                  	<label for="">Youtube URL</label>
+					                  	<input type="text" value="{{ $object->youtube_url }}" name="youtube_url" id="youtube_url" class="form-control option_input" placeholder="Enter Youtube URL">
+				                </div>
+	              			</div>	
 
-			              			@if(!empty($object->option5))
-			              			<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>E</label><br>
-							                      <input type="radio" @if( $object->correct_answer == 'e' ) checked @endif name="correct" value="e">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option5">{{ $object->option5 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleChoiceOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-									@if(!empty($object->option6))
-									<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>F</label><br>
-							                      <input type="radio" @if( $object->correct_answer == 'f' ) checked @endif name="correct" value="f">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option6">{{ $object->option6 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleChoiceOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-									@if(!empty($object->option7))
-									<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>G</label><br>
-							                      <input type="radio" @if( $object->correct_answer == 'g' ) checked @endif name="correct" value="g">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option7">{{ $object->option7 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleChoiceOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-									@if(!empty($object->option8))
-									<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>H</label><br>
-							                      <input type="radio" @if( $object->correct_answer == 'h' ) checked @endif name="correct" value="h">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option8">{{ $object->option8 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleChoiceOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-			              			<div class="col-md-11" >
-			              				<a class="btn btn-info add_new_choice" onclick="return AddMultipleChoiceOption(this)" style="float: right;" >Add new</a>
-			              			</div>
-		              				</div>
-		              			@endif
-
-		              			@if($object->questionFormat->option == 'checkbox')
-
-		              				@php 
-		              					$correct_answers = explode(',', $object->correct_answer); 
-		              				@endphp
-		              				<div class="multiple_response">
-			                  		
-			              			<div class="options">
-				              			<div class="col-md-11">
-				              				Correct
-				              				<div class="input-group">
-						                        <span class="input-group-addon">
-				              						<label>A</label><br>
-						                          <input type="checkbox" name="correct[]" @if(in_array('a',$correct_answers)) checked @endif value="a">
-						                        </span>
-						                    	<textarea type="text" name="option1" class="form-control">{{ $object->option1 }}</textarea>
-						                  	</div><br>
-					                  	</div>
-				                  	</div>
-			              			
-			              			<div class="options">
-				              			<div class="col-md-11">
-						                  	<div class="input-group">
-						                        <span class="input-group-addon">
-						                        	<label>B</label><br>
-						                          <input type="checkbox" name="correct[]" @if(in_array('b',$correct_answers)) checked @endif value="b">
-						                        </span>
-						                    	<textarea type="text" name="option2" class="form-control">{{ $object->option2 }}</textarea>
-						                  	</div><br>
-					                  	</div>
-				                  	</div>
-			              			
-			              			<div class="options">
-				              			<div class="col-md-11">
-						                  	<div class="input-group">
-						                        <span class="input-group-addon">
-						                        	<label>C</label><br>
-						                          <input type="checkbox" name="correct[]" @if(in_array('c',$correct_answers)) checked @endif value="c">
-						                        </span>
-						                    	<textarea type="text" name="option3" class="form-control">{{ $object->option3 }}</textarea>
-						                  	</div><br>
-					                  	</div>
-				                  	</div>
-			              			
-			              			<div class="options">
-				              			<div class="col-md-11">
-						                  	<div class="input-group">
-						                        <span class="input-group-addon">
-						                        	<label>D</label><br>
-						                          <input type="checkbox" name="correct[]" @if(in_array('d',$correct_answers)) checked @endif value="d">
-						                        </span>
-						                    	<textarea type="text" name="option4" class="form-control">{{ $object->option4 }}</textarea>
-				                  			</div><br>
-				              			</div>
-			              			</div>
-
-			              			@if(!empty($object->option5))
-			              			<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>E</label><br>
-							                      <input type="radio" name="correct[]" @if(in_array('e',$correct_answers)) checked @endif  value="e">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option5">{{ $object->option5 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleResponseOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-									@if(!empty($object->option6))
-									<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>F</label><br>
-							                      <input type="radio" name="correct[]"  @if(in_array('f',$correct_answers)) checked @endif value="f">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option6">{{ $object->option6 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleResponseOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-									@if(!empty($object->option7))
-									<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>G</label><br>
-							                      <input type="radio" name="correct[]"  @if(in_array('g',$correct_answers)) checked @endif  value="g">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option7">{{ $object->option7 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleResponseOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-									@if(!empty($object->option8))
-									<div class="options">
-										<div class="col-md-11">
-							              	<div class="input-group">
-							                    <span class="input-group-addon">
-							                    	<label>H</label><br>
-							                      <input type="radio" name="correct[]"  @if(in_array('h',$correct_answers)) checked @endif  value="h">
-							                    </span>
-							                	<textarea type="text" class="form-control" name="option8">{{ $object->option8 }}</textarea>
-							      			</div><br>
-							  			</div>
-										<div class="col-md-1">
-											<i class="fa fa-trash" onclick="return removeMultipleResponseOption(this)"></i>
-										</div>
-									</div>
-									@endif
-
-			              			<div class="col-md-11" >
-			              				<a class="btn btn-info add_new_response" onclick="return AddMultipleResponseOption(this)" style="float: right;" >Add new</a>
-			              			</div>
-		              				</div>
-		              			@endif
-
-		              			<div class="col-md-2">
-		                  			<div class="form-group">
-				                  		<label for="">Right Marks</label>
-				                  		<input type="number" class="form-control" placeholder="0" value="{{ $object->right_marks }}" name="right_marks">
-				                	</div>
-		                  		</div>
-
-	                  		</div>
+	              			<div class="col-md-12">
+				                  	<label for="">Status </label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" name="status" @if($object->status == 1) checked @endif value="1">Active
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" name="status" @if($object->status == 0) checked @endif value="0">Inactive
+								    </label>
+				                </div>
+	              			</div>	
 
 	              		</div>
 	              	</div>
@@ -339,5 +118,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/repository/create&edit.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/prerequisite/create&edit.js') }}"></script>
 @stop

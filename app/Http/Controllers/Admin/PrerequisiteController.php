@@ -67,26 +67,36 @@ class PrerequisiteController extends Controller
 
         if (Input::hasFile('video_file')) 
         {            
-            $object->video_file     = 'Pending';
+            // getting origin file content
+            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
+            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
+            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
+
+            $object->video_file_original_name   = $originalName;
+            $object->video_file_mime            = $extension;
+            $object->video_file                 = $video_file;
+
             $object->youtube_url    = NULL;
             $object->video_url      = NULL;
         }
 
-        if ($request->has('video_url')) 
+        if (!empty($request->video_url)) 
         {            
             $object->video_url      = $request->video_url;
-            $object->video_file     = NULL;
             $object->youtube_url    = NULL;
+            $object->video_file     = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
         }
 
-        if ($request->has('youtube_url')) 
+        if (!empty($request->youtube_url)) 
         {            
             $object->youtube_url    = $request->youtube_url;
             $object->video_file     = NULL;
             $object->video_url      = NULL;
-        }    
-
-        dd('pass');   
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }   
         
         $object->title   = $request->title;
         $object->status  = $request->status;
@@ -108,62 +118,67 @@ class PrerequisiteController extends Controller
     public function edit($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
-
+        
         $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
-        $this->ViewData['object'] = $this->BaseModel->with(['questionFormat'])->find($id);
+        $this->ViewData['object'] = $this->BaseModel->find($id);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    public function update(RepositoryRequest $request, $enc_id)
+    public function update(PrerequisiteRequest $request, $enc_id)
     {
-        // get type 
-        $typeId = base64_decode(base64_decode($request->type));
-        $questionTypeObject = $this->QuestionTypesModel->where('id', $typeId)->first();
-
-        // get answer by type
-        $correct_answer = self::_BuildTypeWiseAnswer($questionTypeObject->option, $request->correct);    
+        $this->JsonData['status']   = 'error';
+        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
 
         $id = base64_decode(base64_decode($enc_id));
-        $repository = $this->BaseModel->find($id);
+        $object = $this->BaseModel->find($id);
 
-        $repository->correct_answer     = $correct_answer;
-            
-        $repository->question_type      = $questionTypeObject->slug;
-        
-        $repository->question_text      = $request->question_text;
-        
-        $repository->right_marks        = $request->right_marks;
-        
-        // options
-        $repository->option1 = $request->option1 ?? NULL;
-        $repository->option2 = $request->option2 ?? NULL;
-        $repository->option3 = $request->option3 ?? NULL;
-        $repository->option4 = $request->option4 ?? NULL;
-        $repository->option5 = $request->option5 ?? NULL;
-        $repository->option6 = $request->option6 ?? NULL;
-        $repository->option7 = $request->option7 ?? NULL;
-        $repository->option8 = $request->option8 ?? NULL;
-        $repository->option9 = $request->option9 ?? NULL;
-        $repository->option10 = $request->option10 ?? NULL;
-        $repository->option11 = $request->option11 ?? NULL;
-        $repository->option12 = $request->option12 ?? NULL;
-        $repository->option13 = $request->option13 ?? NULL;
-        $repository->option14 = $request->option14 ?? NULL;
-        $repository->option15 = $request->option15 ?? NULL;
-        $repository->option16 = $request->option16 ?? NULL;
 
-        if ($repository->save()) 
-        {
-            $this->JsonData['status'] ='success';
-            $this->JsonData['msg'] ='Question saved successfully.';
+
+        if (Input::hasFile('video_file')) 
+        {            
+            // getting origin file content
+            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
+            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
+            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
+
+            $object->video_file_original_name   = $originalName;
+            $object->video_file_mime            = $extension;
+            $object->video_file                 = $video_file;
+
+            $object->youtube_url    = NULL;
+            $object->video_url      = NULL;
         }
-        else
+
+
+        if (!empty($request->video_url)) 
+        {            
+            $object->video_url      = $request->video_url;
+            $object->youtube_url    = NULL;
+            $object->video_file     = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }
+
+        if (!empty($request->youtube_url)) 
+        {            
+            $object->youtube_url    = $request->youtube_url;
+            $object->video_file     = NULL;
+            $object->video_url      = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }    
+
+        $object->title   = $request->title;
+        $object->status  = $request->status;
+
+
+        if ($object->save()) 
         {
-            $this->JsonData['status'] ='error';
-            $this->JsonData['msg'] ='Failed to save question, Something went wrong.';
-        }   
-        
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+        }
+
         return response()->json($this->JsonData);
     }
 
@@ -292,7 +307,7 @@ class PrerequisiteController extends Controller
                         }
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('question-type.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('prerequisite.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
                         $delete = '<a title="Delete" onclick="return rwDelete(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
 
                         $data[$key]['actions'] = $view.$edit.$delete;

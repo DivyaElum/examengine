@@ -48,13 +48,13 @@
 	              				<label>Video Type</label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
-								      <input type="radio" onclick="setVideoType()" name="video_type" checked value="file">Video File
+								      <input type="radio" onclick="setVideoType(true)" name="video_type" checked value="file">Video File
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" onclick="setVideoType()" name="video_type" value="url">Video URL
+								      <input type="radio" onclick="setVideoType(true)" name="video_type" value="url">Video URL
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" onclick="setVideoType()" name="video_type" value="youtube">Youtube URL
+								      <input type="radio" onclick="setVideoType(true)" name="video_type" value="youtube">Youtube URL
 								    </label>
 				                </div>
 	              			</div>	
@@ -62,7 +62,7 @@
 	              			<div class="col-md-12 options file" style="display: none;">
 				                <div class="form-group">
 				                  	<label for="">Video File</label>
-					                  	<input type="file" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control" >
+					                  	<input type="file"  name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >
 				                  	</select>
 				                </div>
 	              			</div>
@@ -70,7 +70,7 @@
 	              			<div class="col-md-12 options url" style="display: none;">
 				                <div class="form-group">
 				                  	<label for="">Video URL</label>
-					                  	<input type="text" name="video_url" id="video_url" class="form-control" placeholder="Enter Video URL" >
+					                  	<input type="text" name="video_url" id="video_url" class="form-control option_input" placeholder="Enter Video URL" >
 				                  	</select>
 				                </div>
 	              			</div>	
@@ -78,7 +78,7 @@
 	              			<div class="col-md-12 options youtube" style="display: none;" >
 				                <div class="form-group">
 				                  	<label for="">Youtube URL</label>
-					                  	<input type="text" name="youtube_url" id="youtube_url" class="form-control" placeholder="Enter Youtube URL">
+					                  	<input type="text" name="youtube_url" id="youtube_url" class="form-control option_input" placeholder="Enter Youtube URL">
 				                </div>
 	              			</div>	
 

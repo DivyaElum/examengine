@@ -4,7 +4,7 @@ var $Module = '/prerequisite';
 
 $(document).ready(function ()
 {
-	setVideoType();	
+	setVideoType(false);	
 })
 
 
@@ -41,7 +41,6 @@ function saveFormData(element)
 	    		{
 	    			$('#submit_button').show();
 	    			window.location.href = document.referrer;
-
 	    		}, 3000)
 	    	}
 	    	else
@@ -84,10 +83,21 @@ function saveFormData(element)
 }
 
 
-function setVideoType()
+function setVideoType(flag)
 {
 	var checkedType = $('input[name="video_type"]:checked').val();
-	$('.options').find('input').val('');
+	
+	if(flag)
+	{
+		$('.options').find('.option_input').val('');
+	}
+
 	$('.options').hide();
 	$('.'+checkedType).show();
+}
+
+function hideOldVideoFile(element)
+{
+	$('.old_video_file_class').hide().find('input').val('');
+	$('.video_file_class').show();
 }
