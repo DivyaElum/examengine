@@ -4,16 +4,15 @@ var $Module = '/prerequisite';
 
 $(document).ready(function() 
 {
-    var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/prerequisite/getPrerequisite'; 
+    var $Action = '/getPrerequisite'; 
+    var $URL    = $Path+$Module+$Action; 
 
     $('#listingTable').DataTable( 
     {
         responsive: 'true',
         serverSide: 'true',
         processing: 'true',
-        ajax: targetURL,
-        
+        ajax: $URL,
         columns: [
             { "data": "id",             "ordereble": "true"},
             { "data": "title",          "ordereble": "true"},

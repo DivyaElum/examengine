@@ -32,7 +32,7 @@
 		          	<h3 class="box-title">{{ $moduleAction }}
 		          	</h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New '.$moduleTitle}}</a>
+		          		<a title="{{'Add New '.$moduleTitle}}" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New '.$moduleTitle}}</a>
 		          	</div>
 	        	</div>
 

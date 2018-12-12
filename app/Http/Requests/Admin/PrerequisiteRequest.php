@@ -6,25 +6,27 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PrerequisiteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
-            //
+            'title'         => 'required',
+            'status'        => 'required',
+            'video_file'   => 'required_without_all:video_url,youtube_url',
+            'video_url'    => 'required_without_all:youtube_url,video_file',
+            'youtube_url'  => 'required_without_all:video_file,video_url',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.required'  => 'Title field is required.',
+            'status.required' => 'Status field is required.',
         ];
     }
 }

@@ -88,7 +88,7 @@ class QuestionTypeController extends Controller
         DB::beginTransaction();
 
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = 'Failed to save question, Something went wrong.';
 
         $structure  = $this->OptionStructureModel->where('option', $request->option)->pluck('structure')->first();
 

@@ -28,30 +28,71 @@
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title">{{ $moduleAction }}</h3>
 		          	<div class="box-tools pull-right">
-		            	<a title="Back to Repository" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
+		            	<a title="Back" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
 	        	</div>
 
-        	 	<form onsubmit="return saveQuestion(this)" action="{{route('repository.store')}}" >
+        	 	<form onsubmit="return saveFormData(this)" action="{{route($modulePath.'.store')}}" >
 	              	<div class="box-body">
 	              		<div class="row">
 
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="">Type</label>
-				                  	<select onchange="getStructure(this)" class="form-control" name="type" >
-				                  		<option value="" >Please Select</option>
-				                  		@if(!empty($types) && count($types) > 0)
-				                  			@foreach($types as $key => $type)
-				                  				<option value="{{ base64_encode(base64_encode($type->id)) }}">{{ $type->title }}</option>
-				                  			@endforeach
-				                  		@endif
+				                  	<label for="">Title</label>
+					                  	<input type="text" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="">
 				                  	</select>
 				                </div>
 	              			</div>	
 
-	                  		<div class="html_data">
-	                  		</div>
+	              			<div class="col-md-12">
+	              				<label>Video Type</label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" onclick="setVideoType()" name="video_type" checked value="file">Video File
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" onclick="setVideoType()" name="video_type" value="url">Video URL
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" onclick="setVideoType()" name="video_type" value="youtube">Youtube URL
+								    </label>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-12 options file" style="display: none;">
+				                <div class="form-group">
+				                  	<label for="">Video File</label>
+					                  	<input type="file" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control" >
+				                  	</select>
+				                </div>
+	              			</div>
+
+	              			<div class="col-md-12 options url" style="display: none;">
+				                <div class="form-group">
+				                  	<label for="">Video URL</label>
+					                  	<input type="text" name="video_url" id="video_url" class="form-control" placeholder="Enter Video URL" >
+				                  	</select>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-12 options youtube" style="display: none;" >
+				                <div class="form-group">
+				                  	<label for="">Youtube URL</label>
+					                  	<input type="text" name="youtube_url" id="youtube_url" class="form-control" placeholder="Enter Youtube URL">
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-12">
+				                  	<label for="">Status </label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" name="status" checked value="1">Active
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" name="status" value="0">Inactive
+								    </label>
+				                </div>
+	              			</div>	
 
 	              		</div>
 	              	</div>
@@ -69,5 +110,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/repository/create&edit.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/prerequisite/create&edit.js') }}"></script>
 @stop

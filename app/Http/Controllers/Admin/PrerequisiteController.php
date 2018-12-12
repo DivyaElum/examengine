@@ -8,6 +8,14 @@ use App\Http\Controllers\Controller;
 // models
 use App\Models\PrerequisiteModel;
 
+// request
+use App\Http\Requests\Admin\PrerequisiteRequest;
+
+// others
+use Illuminate\Support\Facades\Input;
+use Storage;
+
+
 class PrerequisiteController extends Controller
 {
     private $BaseModel;
@@ -25,7 +33,7 @@ class PrerequisiteController extends Controller
 
     )
     {
-        $this->BaseModel                    = $PrerequisiteModel;
+        $this->BaseModel = $PrerequisiteModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -33,76 +41,62 @@ class PrerequisiteController extends Controller
         $this->ModuleTitle = 'Prerequisite';
         $this->ModuleView = 'admin.prerequisite.';
         $this->ModulePath = 'prerequisite';
+    
+        $this->ViewData['modulePath'] = $this->ModulePath;
+        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
     }
     
     public function index()
     {
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
-
         return view($this->ModuleView.'index', $this->ViewData);
     }
 
     public function create()
     {
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = 'Add Question';
-        $this->ViewData['types'] = $this->QuestionTypesModel->where('status', 1)->get(); 
-
+        $this->ViewData['moduleAction'] = 'Add '.$this->ModuleTitle;
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    public function store(RepositoryRequest $request)
+    public function store(PrerequisiteRequest $request)
     {
-        // get type 
-        $id = base64_decode(base64_decode($request->type));
-        $questionTypeObject = $this->QuestionTypesModel->where('id', $id)->first();
+        $this->JsonData['status']   = 'error';
+        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
 
-        // get answer by type
-        $correct_answer = self::_BuildTypeWiseAnswer($questionTypeObject->option, $request->correct);    
+        $object = new $this->BaseModel;
 
-        $repository = new $this->BaseModel;
-
-        $repository->correct_answer     = $correct_answer;
-            
-        $repository->question_type      = $questionTypeObject->slug;
-        
-        $repository->question_text      = $request->question_text;
-        
-        $repository->right_marks        = $request->right_marks;
-        
-        // options
-        $repository->option1 = $request->option1 ?? NULL;
-        $repository->option2 = $request->option2 ?? NULL;
-        $repository->option3 = $request->option3 ?? NULL;
-        $repository->option4 = $request->option4 ?? NULL;
-        $repository->option5 = $request->option5 ?? NULL;
-        $repository->option6 = $request->option6 ?? NULL;
-        $repository->option7 = $request->option7 ?? NULL;
-        $repository->option8 = $request->option8 ?? NULL;
-        $repository->option9 = $request->option9 ?? NULL;
-        $repository->option10 = $request->option10 ?? NULL;
-        $repository->option11 = $request->option11 ?? NULL;
-        $repository->option12 = $request->option12 ?? NULL;
-        $repository->option13 = $request->option13 ?? NULL;
-        $repository->option14 = $request->option14 ?? NULL;
-        $repository->option15 = $request->option15 ?? NULL;
-        $repository->option16 = $request->option16 ?? NULL;
-
-        if ($repository->save()) 
-        {
-            $this->JsonData['status'] ='success';
-            $this->JsonData['msg'] ='Question saved successfully.';
+        if (Input::hasFile('video_file')) 
+        {            
+            $object->video_file     = 'Pending';
+            $object->youtube_url    = NULL;
+            $object->video_url      = NULL;
         }
-        else
+
+        if ($request->has('video_url')) 
+        {            
+            $object->video_url      = $request->video_url;
+            $object->video_file     = NULL;
+            $object->youtube_url    = NULL;
+        }
+
+        if ($request->has('youtube_url')) 
+        {            
+            $object->youtube_url    = $request->youtube_url;
+            $object->video_file     = NULL;
+            $object->video_url      = NULL;
+        }       
+        
+        $object->title   = $request->title;
+        $object->status  = $request->status;
+
+        if ($object->save()) 
         {
-            $this->JsonData['status'] ='error';
-            $this->JsonData['msg'] ='Failed to save question, Something went wrong.';
-        }   
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+        }
 
         return response()->json($this->JsonData);
+
     }
 
     public function show($id)
@@ -112,12 +106,9 @@ class PrerequisiteController extends Controller
     public function edit($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = 'Edit Question';
-        $this->ViewData['object'] = $this->BaseModel->with(['questionFormat'])->find($id);
-        $this->ViewData['types'] = $this->QuestionTypesModel->where('status', 1)->get();
 
+        $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
+        $this->ViewData['object'] = $this->BaseModel->with(['questionFormat'])->find($id);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
@@ -181,12 +172,12 @@ class PrerequisiteController extends Controller
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Question type deleted successfully.';
+            $this->JsonData['msg'] = 'Record deleted successfully.';
         }
         else
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Question type, Something went wrong.';
+            $this->JsonData['msg'] = 'Failed to delete record, Something went wrong.';
         }
         
         return response()->json($this->JsonData);
