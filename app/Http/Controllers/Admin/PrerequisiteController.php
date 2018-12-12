@@ -84,7 +84,9 @@ class PrerequisiteController extends Controller
             $object->youtube_url    = $request->youtube_url;
             $object->video_file     = NULL;
             $object->video_url      = NULL;
-        }       
+        }    
+
+        dd('pass');   
         
         $object->title   = $request->title;
         $object->status  = $request->status;
