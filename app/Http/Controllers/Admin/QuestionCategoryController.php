@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\QestionCategoryRequest;
 use App\Http\Controllers\Controller;
 
-use App\models\QuestionCategoryModel;
+use App\Models\QuestionCategoryModel;
 use Validator;
 
 class QuestionCategoryController extends Controller

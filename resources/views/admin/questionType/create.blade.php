@@ -46,24 +46,29 @@
 				                </div>
 	              			</div>	
 
-	              			<div class="options form-group">
-								<div class="col-md-12">
-									<label for="">Option Types</label>
-									<div class="input-group">
-										<label for="radio">
-							              	<input type="radio" checked name="option" id="radio" value="radio" >
-											  Radio Box 
-										</label>
-							      	</div>
-							      	<div class="input-group">
-										<label for="checkbox"> 
-											<input type="radio" name="option" id="checkbox" value="checkbox" >
-											 Check Box
-										</label>
-							      	</div>
-								  	<span class="help-block err_option"></span>
-							  	</div>
-							</div>
+							<div class="col-md-12">
+				                  	<label for="">Option Types </label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" checked name="option" id="radio" value="radio" >Radio Box 
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" name="option" id="checkbox" value="checkbox" >Check Box
+								    </label>
+				                </div>
+	              			</div>	
+
+							<div class="col-md-12">
+				                  	<label for="">Status </label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" name="status" checked value="1">Active
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" name="status" value="0">Inactive
+								    </label>
+				                </div>
+	              			</div>	
 
 
 	              		</div>

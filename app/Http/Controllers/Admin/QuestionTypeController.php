@@ -96,7 +96,7 @@ class QuestionTypeController extends Controller
         $question_type->title   = $request->title;
         $question_type->option  = $request->option;
         $question_type->slug    = str_slug($request->title,'-');
-        $question_type->status  = 1;
+        $question_type->status  = $request->status;
 
         if ($question_type->save()) 
         {
@@ -170,8 +170,9 @@ class QuestionTypeController extends Controller
         $id = base64_decode(base64_decode($enc_id));
         $question_type = $this->BaseModel->find($id);
         $question_type->title   = $request->title;
-        $question_type->option   = $request->option;
+        $question_type->option  = $request->option;
         $question_type->slug    = str_slug($request->title,'-');
+        $question_type->status  = $request->status;
 
         if ($question_type->save()) 
         {

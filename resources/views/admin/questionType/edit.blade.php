@@ -65,6 +65,30 @@
 							  	</div>
 							</div>
 
+							<div class="col-md-12">
+				                  	<label for="">Option Types </label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" @if($object->option == 'radio') checked  @endif name="option" id="radio" value="radio" >Radio Box 
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" @if($object->option == 'checkbox') checked  @endif name="option" id="checkbox" value="checkbox" >Check Box
+								    </label>
+				                </div>
+	              			</div>	
+
+
+							<div class="col-md-12">
+				                  	<label for="">Status </label>
+				                <div class="form-group">
+				                  	<label class="radio-inline">
+								      <input type="radio" name="status" @if($object->status == 1) checked @endif value="1">Active
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" name="status" @if($object->status == 0) checked @endif value="0">Inactive
+								    </label>
+				                </div>
+	              			</div>	
 
 	              		</div>
 	              	</div>

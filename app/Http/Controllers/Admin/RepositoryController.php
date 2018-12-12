@@ -11,13 +11,14 @@ use App\Models\QuestionTypesModel;
 use App\Models\RepositoryModel;
 use App\Models\QuestionTypeStructureModel;
 use App\Models\QuestionOptionsAnswer;
-use App\models\QuestionCategoryModel;
+use App\Models\QuestionCategoryModel;
 
 // requests
 use App\Http\Requests\RepositoryRequest;
 
 // others
 use Validator;
+use DB;
 
 // use App\Trait\MultiModelTrait;
 
@@ -243,7 +244,7 @@ class RepositoryController extends Controller
                     0 => 'id',
                     1 => 'question_text',
                     2 => 'question_type',
-                    2 => 'question_name',
+                    2 => 'category_id',
                     3 => 'right_marks',
                     4 => 'created_at',
                     5 => 'id'
@@ -253,8 +254,9 @@ class RepositoryController extends Controller
             |  Model query and filter
             ------------------------------*/
 
+                // DB::enableQueryLog();
                 // start model query
-                $modelQuery =  $this->BaseModel;
+                $modelQuery =  $this->BaseModel->with('category');
 
                 // get total count 
                 $countQuery = clone($modelQuery);            
@@ -271,6 +273,10 @@ class RepositoryController extends Controller
                                 $query->orwhere('question_type', 'LIKE', '%'.str_replace(" ", '-',$search).'%');   
                                 $query->orwhere('right_marks', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
+                                $query->orWhereHas('category', function ($nested_query) use($search)
+                                {
+                                    $nested_query->where('category_name', 'LIKE', '%'.$search.'%');
+                                });   
                             });
                 }
 
@@ -282,7 +288,9 @@ class RepositoryController extends Controller
                 $object = $modelQuery->orderBy($filter[$column], $dir)
                                      ->skip($start)
                                      ->take($length)
-                                     ->get();    
+                                     ->get();  
+ 
+                // dd(DB::getQueryLog());
             /*--------------------------------------
             |  data binding
             ------------------------------*/
@@ -296,8 +304,11 @@ class RepositoryController extends Controller
                         $data[$key]['question_text']  = '<span title="'.$row->question_text.'">'.ucfirst(str_limit($row->question_text, '55', '...')).'</span>';
                         
                         $data[$key]['question_type']  = ucfirst(str_replace('-', " ", $row->question_type));
-                        $data[$key]['question_name']  = ucfirst(str_replace('-', " ", $row->caregory->name));
+
+                        $data[$key]['category']       = ucfirst($row->category->category_name);
+                        
                         $data[$key]['right_marks']    = $row->right_marks;
+                        
                         $data[$key]['created_at']     = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
