@@ -46,25 +46,6 @@
 				                </div>
 	              			</div>	
 
-	              			<div class="options form-group">
-								<div class="col-md-12">
-									<label for="">Option Types</label>
-									<div class="input-group">
-										<label for="radio">
-							              	<input type="radio" @if($object->option == 'radio') checked  @endif name="option" id="radio" value="radio" >
-											  Radio Box 
-										</label>
-							      	</div>
-							      	<div class="input-group">
-										<label for="checkbox"> 
-											<input type="radio" @if($object->option == 'checkbox') checked  @endif name="option" id="checkbox" value="checkbox" >
-											 Check Box
-										</label>
-							      	</div>
-								  	<span class="help-block err_option"></span>
-							  	</div>
-							</div>
-
 							<div class="col-md-12">
 				                  	<label for="">Option Types </label>
 				                <div class="form-group">
