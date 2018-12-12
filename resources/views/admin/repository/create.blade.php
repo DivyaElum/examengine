@@ -35,7 +35,6 @@
         	 	<form onsubmit="return saveQuestion(this)" action="{{route('repository.store')}}" >
 	              	<div class="box-body">
 	              		<div class="row">
-
 	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="">Type</label>
@@ -49,13 +48,23 @@
 				                  	</select>
 				                </div>
 	              			</div>	
-
+	              			<div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Category</label>
+				                  	<select class="form-control" name="category" >
+				                  		<option value="" >Please Select</option>
+				                  		@if(!empty($types) && count($category) > 0)
+				                  			@foreach($category as $key => $type)
+				                  				<option value="{{ $type->id }}">{{ $type->category_name }}</option>
+				                  			@endforeach
+				                  		@endif
+				                  	</select>
+				                </div>
+	              			</div>
 	                  		<div class="html_data">
 	                  		</div>
-
 	              		</div>
 	              	</div>
-
 	              	<div class="box-footer">
 		                <button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
             	  	</div>

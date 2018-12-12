@@ -27,7 +27,7 @@ function saveQuestionCategory(element)
     			toastr.success(data.msg);
 	    		setTimeout(function ()
 	    		{
-	    			window.location.href = data.url;
+	    			window.location.href = document.referrer;
 	    		}, 2000)
 	    	}
 	    	else

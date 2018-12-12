@@ -50,7 +50,19 @@
 				                  	</select>
 				                </div>
 	              			</div>	
-
+	              			<div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Category</label>
+				                  	<select class="form-control" name="category" >
+				                  		<option value="" >Please Select</option>
+				                  		@if(!empty($types) && count($category) > 0)
+				                  			@foreach($category as $key => $type)
+				                  				<option value="{{ $type->id }}"  @if($object->category_id == $type->id ) selected @endif>{{ $type->category_name }}</option>
+				                  			@endforeach
+				                  		@endif
+				                  	</select>
+				                </div>
+	              			</div>
 	                  		<div class="html_data">
 
 	                  			<div class="col-md-12">

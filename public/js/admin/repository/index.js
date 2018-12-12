@@ -14,6 +14,8 @@ $(document).ready(function()
             { "data": "id",             "ordereble": "true"},
             { "data": "question_text",  "ordereble": "true"},
             { "data": "question_type",  "ordereble": "true"},
+            { "data": "question_name",  "ordereble": "true"},
+            { "data": "category",       "ordereble": "true"},
             { "data": "right_marks",    "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
             { "data": "actions"}
