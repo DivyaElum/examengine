@@ -2,71 +2,129 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+
+use App\User;
+use App\Models\UserInfoModels;
+use App\Models\Auth\RegisterModel;
+
+// others
+use Validator;
+use DB;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+    private $User;
+    private $RegisterModel;
+    private $UserInfoModels;
 
-    use RegistersUsers;
+    public function __construct(
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+        User $User,
+        RegisterModel $RegisterModel,
+        UserInfoModels $UserInfoModels
+    )
     {
-        $this->middleware('guest');
+        $this->RegisterModel    = $RegisterModel;
+        $this->User             = $User;
+        $this->UserInfoModels   = $UserInfoModels;
+
+        $this->ViewData = [];
+        $this->JsonData = [];
+
+        $this->ModuleTitle = 'register Member';
+        $this->ModuleView  = 'auth.';
+        $this->ModulePath  = 'register';
+    }
+    public function index()
+    {
+        $this->ViewData['modulePath'] = $this->ModulePath;
+        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
+
+        return view($this->ModuleView.'registration', $this->ViewData);
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Store a newly created resource in storage.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    protected function validator(array $data)
+    public function store(RegisterRequest $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-        ]);
+
+        DB::beginTransaction();
+        
+        $User           = new $this->User;
+
+        $User->name         = $request->txtFirstName.'_'.$request->txtLastName;
+        $User->email        = $request->email;
+        $User->password     = Hash::make($request->txtPassword);
+        
+        if ($User->save()) 
+        {
+            // $User->assignRole('candidate');
+            
+            $UserInfoModels               = new $this->UserInfoModels;
+            $UserInfoModels->user_id      = $User->id;
+            $UserInfoModels->first_name   = $request->txtFirstName;
+            $UserInfoModels->last_name    = $request->txtLastName;
+            $UserInfoModels->phone        = $request->txtPhone;
+
+            if ($UserInfoModels->save()) 
+            {
+                DB::commit();
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = 'member saved successfully.';
+            }else{
+                 DB::rollBack();
+                $this->JsonData['status']   ='error';
+                $this->JsonData['msg']      ='Failed to save member, Something went wrong.';
+            }
+        }
+        else
+        {
+             DB::rollBack();
+            $this->JsonData['status']   ='error';
+            $this->JsonData['msg']      ='Failed to save member, Something went wrong.';
+        }
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Show the form for editing the specified resource.
      *
-     * @param  array  $data
-     * @return \App\User
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    protected function create(array $data)
+    public function edit($id)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
     }
 }

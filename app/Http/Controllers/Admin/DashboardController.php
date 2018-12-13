@@ -31,6 +31,7 @@ class DashboardController extends Controller
 
    	public function index()
    	{
+
    		$this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = $this->ModuleTitle;
