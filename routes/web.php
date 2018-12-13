@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function(
 	Route::resource('prerequisite', 'Admin\PrerequisiteController');
 
 	// Exam routes
+	Route::post('exam/getDynamicQuesions', 'Admin\ExamController@getDynamicQuesions');	
 	Route::get('exam/getRecords', 'Admin\ExamController@getRecords');	
 	Route::post('exam/changeStatus', 'Admin\ExamController@changeStatus');	
 	Route::resource('exam', 'Admin\ExamController');

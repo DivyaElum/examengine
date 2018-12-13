@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ExamModel;
 use App\Models\ExamQuestionsModel;
 use App\Models\QuestionCategoryModel;
+use App\Models\RepositoryModel;
 
 // request
 use App\Http\Requests\Admin\ExamRequest;
@@ -33,13 +34,15 @@ class ExamController extends Controller
 
         ExamModel $ExamModel,
     	ExamQuestionsModel $ExamQuestionsModel,
-        QuestionCategoryModel $QuestionCategoryModel
+        QuestionCategoryModel $QuestionCategoryModel,
+        RepositoryModel $RepositoryModel
 
     )
     {
         $this->BaseModel = $ExamModel;
         $this->ExamQuestionsModel = $ExamQuestionsModel;
         $this->QuestionCategoryModel = $QuestionCategoryModel;
+        $this->RepositoryModel      = $RepositoryModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -68,8 +71,10 @@ class ExamController extends Controller
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    public function store(PrerequisiteRequest $request)
+    public function store(ExamRequest $request)
     {
+        dd($request->all());
+
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
 
@@ -341,6 +346,19 @@ class ExamController extends Controller
                 $this->JsonData['data']             = $data;
 
             return response()->json($this->JsonData);
+        }
+
+        public function getDynamicQuesions(Request $request)
+        {
+            if (!empty($request->categories)) 
+            {
+                $categories = explode(',', $request->categories);
+                $this->JsonData['questions'] = $this->RepositoryModel
+                                                    ->whereIn('category_id', $categories)
+                                                    ->get(['id', 'question_text']);
+            }
+
+            return response()->json($this->JsonData); 
         }
 
     /*-----------------------------------------------------

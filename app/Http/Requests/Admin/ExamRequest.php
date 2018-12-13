@@ -24,8 +24,14 @@ class ExamRequest extends FormRequest
     public function rules()
     {
        return [
-            'txtCategory'  => 'required',
-            'txtStatus'    => 'required',
+            'title'             => 'required',
+            'category'          => 'required',
+            'exam_questions'    => 'required',
+            'duration'          => 'required|numeric',
+            'total_questions'   => 'required|numeric',
+            'status'            => 'required',
+            'exam_days[0][day]' => 'required',
+            'exam_days[0][start_time]'  => 'required',
         ];
     }
 
