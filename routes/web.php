@@ -11,6 +11,7 @@
 |
 */
 
+// Front section
 Route::get('/', function () {
     return view('welcome');
 });
@@ -19,6 +20,11 @@ Route::get('/exam', function () {
     return view('exam');
 });
 
+	Route::resource('/register', 'Auth\RegisterController');
+
+	Route::resource('/login', 'Auth\LoginController');
+
+// Admin section
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()
 {
 	Route::get('/login', 'Admin\Auth\LoginController@index');//login
@@ -34,8 +40,8 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'
 Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function()
 {
 	Route::redirect('/', 'admin/dashboard');						//dashboard
-	Route::get('/logout', 'Auth\LoginController@logout');			//logout
-	Route::post('/logout', 'Auth\LoginController@logout');
+	Route::get('/logout', 'Admin\Auth\LoginController@logout');			//logout
+	Route::post('/logout', 'Admin\Auth\LoginController@logout');
 	Route::get('/dashboard', 'Admin\DashboardController@index');
 
 	// Question type routes

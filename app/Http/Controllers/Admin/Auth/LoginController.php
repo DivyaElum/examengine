@@ -5,43 +5,44 @@ namespace App\Http\Controllers\Admin\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
-use App\Models\QuestionTypesModel;
-use App\Models\RepositoryModel;
-use App\Models\QuestionTypeStructureModel;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Auth\LoginRequest;
 
 use App\User;
-use App\PasswordReset;
+use App\Models\Auth\CheckLoginModel;
 use Validator;
-use Session;
 
 class LoginController extends Controller
 {
+	private $User;
+	private $CheckLoginModel;
+
 	public function __construct(
-        User $User
+        User $User,
+        CheckLoginModel $CheckLoginModel
     )
     {       
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Repository';
-        $this->ModuleView = 'admin.repository.';
+        $this->ModuleTitle = 'Login';
+        $this->ModuleView  = 'admin.auth.';
+        $this->ModulePath  = 'admin.auth';
     }
 
     public function index()
     {
-        return view('admin.login');
+    	$this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
+        $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
+
+        return view($this->ModuleView.'login', $this->ViewData);
     }
 
     //Function for check login details
-    public function checkLogin(Request $request){
+    public function checkLogin(LoginRequest $request){
     	//Custome validation messages
- 		$validator = Validator::make($request->all(), [
-   	 	 'txtEmail'             => 'required|email',
-		 'txtPassword'          => 'required|min:3|max:20',
-		])->validate();
-	 	
+ 		
     	if(!empty($request->input())){
 			$strEmail 	  = $request->input('txtEmail');
 			$strPassword  = $request->input('txtPassword');

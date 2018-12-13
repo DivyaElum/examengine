@@ -40,12 +40,11 @@ function saveSiteSetting(element)
 	  	},
 	  	error: function (data)
 	  	{
-	  		$(element).closest('.box').LoadingOverlay("hide");
 	  		$('.form-group').removeClass('has-error');
-		   	$('.form-group').find('.help-block').html('');
+		   	$('.form-group').find('.error').html('');
 
 		   	$('.form-group').removeClass('has-error');
-			$('.form-group').find('.help-block').html('');
+			$('.form-group').find('.error').html('');
 
 	      	if( data.status === 422 ) 
 	      	{

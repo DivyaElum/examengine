@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
             Watson\Active\ActiveServiceProvider::class,
+            Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Application Service Providers...
          */
