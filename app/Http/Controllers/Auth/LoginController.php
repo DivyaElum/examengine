@@ -29,7 +29,7 @@ class LoginController extends Controller
 
         $this->ModuleTitle = 'Login';
         $this->ModuleView  = 'auth.';
-        $this->ModulePath  = 'ulogin';
+        $this->ModulePath  = 'login';
     }
 
     public function index()

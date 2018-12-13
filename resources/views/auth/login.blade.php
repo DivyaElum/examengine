@@ -64,7 +64,8 @@
             $strPassword = base64_decode(base64_decode($_COOKIE['setPassword']));
             $chkRememberMe = '1';
        }else{
-            $strEmail = $strPassword = '';
+            $strEmail = '';
+            $strPassword = '';
             $chkRememberMe = '0';
        }
        ?>
@@ -79,7 +80,8 @@
                     <span class="error_txtEmail help-block"></span>
                 </div>
                 <div class="form-group error">
-                    <input type="password" class="form-control" name="txtPassword" id="txtPassword" placeholder="Your Password *" value={{$strPassword}}" />
+                    <input type="password" class="form-control" name="txtPassword" id="txtPassword" placeholder="Your Password *" 
+                    value="{{$strPassword}}" />
                     <span class="error_txtPassword help-block"></span>
                 </div>
                 <div class="form-group">

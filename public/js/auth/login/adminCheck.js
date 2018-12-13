@@ -55,7 +55,7 @@ function checkLogin(element)
 		    {
 		      alert('Something went wrong, Please try again later.');
 		    }
-	  		alert('Login unsuccessful');
+	  		//alert('Login unsuccessful');
 	  	}
 	});
 

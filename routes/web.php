@@ -22,7 +22,7 @@ Route::get('/exam', function () {
 
 	Route::resource('/register', 'Auth\RegisterController');
 
-	Route::resource('/ulogin', 'Auth\LoginController');
+	Route::resource('/login', 'Auth\LoginController');
 
 // Admin section
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()

@@ -50,11 +50,11 @@ $.ajaxSetup({
 		 </div>
 	   @endif
 	   <?php 	   
-	   	if(isset($_COOKIE['setEmail'])){
+	   	if(isset($_COOKIE['setEmail'])){die('if');
 	   		$strEmail 	 = $_COOKIE['setEmail'];
 	   		$strPassword = base64_decode(base64_decode($_COOKIE['setPassword']));
 	   		$chkRememberMe = '1';
-	   }else{
+	   }else{die('else');
 	   		$strEmail = $strPassword = '';
 	   		$chkRememberMe = '0';
 	   }
