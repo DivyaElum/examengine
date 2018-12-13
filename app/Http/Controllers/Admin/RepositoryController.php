@@ -14,7 +14,7 @@ use App\Models\QuestionOptionsAnswer;
 use App\Models\QuestionCategoryModel;
 
 // requests
-use App\Http\Requests\RepositoryRequest;
+use App\Http\Requests\Admin\RepositoryRequest;
 
 // others
 use Validator;

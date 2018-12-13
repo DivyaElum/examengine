@@ -6,19 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 // models
-use App\Models\QuestionTypesModel;
-use App\Models\QuestionTypeStructureModel;
-use App\Models\OptionStructureModel;
+use App\Models\PrerequisiteModel;
 
-// requests
-use App\Http\Requests\Admin\QuestionTypeRequest;
+// request
+use App\Http\Requests\Admin\CourseRequest;
 
 // others
-use Validator;
-use DB;
+use Illuminate\Support\Facades\Input;
+use Storage;
 
 
-class QuestionTypeController extends Controller
+class CourseController extends Controller
 {
     private $BaseModel;
     private $ViewData;
@@ -31,178 +29,159 @@ class QuestionTypeController extends Controller
 
     public function __construct(
 
-        QuestionTypesModel $QuestionTypesModel,
-        QuestionTypeStructureModel $QuestionTypeStructureModel,
-        OptionStructureModel $OptionStructureModel
+    	PrerequisiteModel $PrerequisiteModel
+
     )
     {
-        $this->BaseModel                    = $QuestionTypesModel;
-        $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
-        $this->OptionStructureModel         = $OptionStructureModel;
+        $this->BaseModel = $PrerequisiteModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Question Type';
-        $this->ModuleView = 'admin.questionType.';
-        $this->ModulePath = 'question-type';
+        $this->ModuleTitle = 'Course';
+        $this->ModuleView = 'admin.course.';
+        $this->ModulePath = 'course';
+    
+        $this->ViewData['modulePath'] = $this->ModulePath;
+        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
+    
     public function index()
     {
-        $this->ViewData['modulePath']   = $this->ModulePath;    
-        $this->ViewData['moduleTitle']  = str_plural($this->ModuleTitle);
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
-
         return view($this->ModuleView.'index', $this->ViewData);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $this->ViewData['modulePath']   = $this->ModulePath; 
-        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Add '.$this->ModuleTitle;
-
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(QuestionTypeRequest $request)
+    public function store(PrerequisiteRequest $request)
     {
-        DB::beginTransaction();
-
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to save question, Something went wrong.';
+        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
 
-        $structure  = $this->OptionStructureModel->where('option', $request->option)->pluck('structure')->first();
+        $object = new $this->BaseModel;
 
-        $question_type = new $this->BaseModel;
-        $question_type->title   = $request->title;
-        $question_type->option  = $request->option;
-        $question_type->slug    = str_slug($request->title,'-');
-        $question_type->status  = $request->status;
+        if (Input::hasFile('video_file')) 
+        {            
+            // getting origin file content
+            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
+            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
+            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
 
-        if ($question_type->save()) 
-        {
-            $question_type_structure = new $this->QuestionTypeStructureModel;
-            $question_type_structure->question_type_id = $question_type->id;
-            // $question_type_structure->question_slug = str_slug($request->title,'-');
-            $question_type_structure->structure = $structure;
-            if($question_type_structure->save())
-            {
-                DB::commit();
-                $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Question type saved successfully';
-            }
-            else{
-                DB::rollBack();
-            }
+            $object->video_file_original_name   = $originalName;
+            $object->video_file_mime            = $extension;
+            $object->video_file                 = $video_file;
+
+            $object->youtube_url    = NULL;
+            $object->video_url      = NULL;
         }
-        else{
-            DB::rollBack();
+
+        if (!empty($request->video_url)) 
+        {            
+            $object->video_url      = $request->video_url;
+            $object->youtube_url    = NULL;
+            $object->video_file     = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }
+
+        if (!empty($request->youtube_url)) 
+        {            
+            $object->youtube_url    = $request->youtube_url;
+            $object->video_file     = NULL;
+            $object->video_url      = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }   
+        
+        $object->title   = $request->title;
+        $object->status  = $request->status;
+
+        if ($object->save()) 
+        {
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = 'Prerequisite saved successfully';
         }
 
         return response()->json($this->JsonData);
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        dd('pending');
-        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
         
-        $this->ViewData['modulePath']   = $this->ModulePath; 
-        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = 'Add '.$this->ModuleTitle;
+        $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
         $this->ViewData['object'] = $this->BaseModel->find($id);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(QuestionTypeRequest $request, $enc_id)
+    public function update(PrerequisiteRequest $request, $enc_id)
     {
-        DB::beginTransaction();
-
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
-
-        $structure  = $this->OptionStructureModel->where('option', $request->option)->pluck('structure')->first();
+        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
 
         $id = base64_decode(base64_decode($enc_id));
-        $question_type = $this->BaseModel->find($id);
-        $question_type->title   = $request->title;
-        $question_type->option  = $request->option;
-        $question_type->slug    = str_slug($request->title,'-');
-        $question_type->status  = $request->status;
+        $object = $this->BaseModel->find($id);
 
-        if ($question_type->save()) 
-        {
-            $question_type_structure = $this->QuestionTypeStructureModel->where('question_type_id', $question_type->id)->first();
-            $question_type_structure->structure = $structure;
-            if($question_type_structure->save())
-            {
-                DB::commit();
-                $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Question type saved successfully';
-            }
-            else
-            {
-                DB::rollBack();
-            }
+
+
+        if (Input::hasFile('video_file')) 
+        {            
+            // getting origin file content
+            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
+            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
+            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
+
+            $object->video_file_original_name   = $originalName;
+            $object->video_file_mime            = $extension;
+            $object->video_file                 = $video_file;
+
+            $object->youtube_url    = NULL;
+            $object->video_url      = NULL;
         }
-        else
+
+
+        if (!empty($request->video_url)) 
+        {            
+            $object->video_url      = $request->video_url;
+            $object->youtube_url    = NULL;
+            $object->video_file     = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }
+
+        if (!empty($request->youtube_url)) 
+        {            
+            $object->youtube_url    = $request->youtube_url;
+            $object->video_file     = NULL;
+            $object->video_url      = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }    
+
+        $object->title   = $request->title;
+        $object->status  = $request->status;
+
+
+        if ($object->save()) 
         {
-            DB::rollBack();
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = 'Prerequisite saved successfully';
         }
 
         return response()->json($this->JsonData);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
@@ -210,12 +189,12 @@ class QuestionTypeController extends Controller
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Question type deleted successfully.';
+            $this->JsonData['msg'] = 'Record deleted successfully.';
         }
         else
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Question type, Something went wrong.';
+            $this->JsonData['msg'] = 'Failed to delete record, Something went wrong.';
         }
         
         return response()->json($this->JsonData);
@@ -244,7 +223,7 @@ class QuestionTypeController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getTypes(Request $request)
+        public function getPrerequisite(Request $request)
         {
             /*--------------------------------------
             |  Variables
@@ -282,15 +261,15 @@ class QuestionTypeController extends Controller
                 $totalData  = $countQuery->count();
 
                 // filter options
-                if (!empty($search) || $search == '0') 
+                if (!empty($search)) 
                 {
                 
                     $modelQuery = $modelQuery->where(function ($query) use($search)
                             {
                                 $query->orwhere('id', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('title', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');
                                 $query->orwhere('status', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
                             });
                 }
 
@@ -314,7 +293,9 @@ class QuestionTypeController extends Controller
                     {
                         $data[$key]['id']             = ($key+$start+1).'.';
 
-                        $data[$key]['title']  = '<span title="'.$row->title.'">'.str_limit($row->title, '55', '...').'</span>';
+                        $data[$key]['title']  = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
+                        
+                        $data[$key]['created_at']     = Date('d-m-Y', strtotime($row->created_at));
                         
                         if (!empty($row->status)) 
                         {
@@ -324,11 +305,9 @@ class QuestionTypeController extends Controller
                         {
                             $data[$key]['status'] = '<a title="Click to Change Status" onclick="return rwChanceStatus(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" data-rwst="1"  class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>&nbsp';
                         }
-
-                        $data[$key]['created_at']     = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('question-type.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('prerequisite.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
                         $delete = '<a title="Delete" onclick="return rwDelete(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
 
                         $data[$key]['actions'] = $view.$edit.$delete;
@@ -343,4 +322,9 @@ class QuestionTypeController extends Controller
 
             return response()->json($this->JsonData);
         }
+
+    /*-----------------------------------------------------
+    |  Supportive Functions
+    */
+
 }

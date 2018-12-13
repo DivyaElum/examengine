@@ -97,7 +97,7 @@ function rwChanceStatus(element)
     {
         swal({
           title: "Are you sure !!",
-          text: "You want to chaange status ?",
+          text: "You want to change status ?",
           type: "warning",
           showCancelButton: true,
           confirmButtonText: "Change",

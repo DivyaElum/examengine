@@ -54,6 +54,16 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function(
 	Route::post('prerequisite/changeStatus', 'Admin\PrerequisiteController@changeStatus');	
 	Route::resource('prerequisite', 'Admin\PrerequisiteController');
 
+	// Exam routes
+	Route::get('exam/getRecords', 'Admin\ExamController@getRecords');	
+	Route::post('exam/changeStatus', 'Admin\ExamController@changeStatus');	
+	Route::resource('exam', 'Admin\ExamController');
+
+	// Coure routes
+	Route::get('course/getRecords', 'Admin\CourseController@getRecords');	
+	Route::post('course/changeStatus', 'Admin\CourseController@changeStatus');	
+	Route::resource('course', 'Admin\CourseController');
+
 	// site setting routes
 	Route::get('site-setting/getSettings', 'Admin\SiteSettingController@getSettings');
 	Route::resource('site-setting', 'Admin\SiteSettingController');	

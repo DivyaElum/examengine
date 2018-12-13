@@ -1,22 +1,25 @@
+
 var $Path = $('meta[name="admin-path"]').attr('content');
-var $Module = '/question-category';
+var $Module = '/exam';
 
 $(document).ready(function() 
 {
-    var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/question-category/getQuestionCategory'; 
+    var $Action = '/getRecords'; 
+    var $URL    = $Path+$Module+$Action; 
 
     $('#listingTable').DataTable( 
     {
         responsive: 'true',
         serverSide: 'true',
         processing: 'true',
-        ajax: targetURL,
+        ajax: $URL,
         columns: [
             { "data": "id",             "ordereble": "true"},
-            { "data": "category",       "ordereble": "true"},
-            { "data": "status",         "ordereble": "true"},
+            { "data": "title",          "ordereble": "true"},
+            { "data": "duration",       "ordereble": "true"},
+            { "data": "total_question", "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
+            { "data": "status",         "ordereble": "true"},
             { "data": "actions"}
         ],
 
@@ -30,26 +33,26 @@ $(document).ready(function()
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
         aaSorting: [[0, 'DESC']]
-
     } );
 });
 
-function deleteQuestionCategory(element)
+function rwDelete(element)
 {
     var $this = $(element);
-    var id = $this.attr('data-qsnid');
-    
-    var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+$Module+'/'+id; 
+    var id = $this.attr('data-rwid');
 
+    var $Action = '/'+id; 
+    var $URL    = $Path+$Module+$Action; 
 
     if (id != '') 
     {
         swal({
           title: "Are you sure !!",
           text: "You want to delete ?",
-          type: "info",
+          type: "warning",
           showCancelButton: true,
+          confirmButtonText: "Delete",
+          confirmButtonClass: "btn-danger",
           closeOnConfirm: false,
           showLoaderOnConfirm: true
         }, 
@@ -57,7 +60,7 @@ function deleteQuestionCategory(element)
         {
             $.ajax({
                 type:'DELETE',
-                url:targetURL,
+                url:$URL,
                 dataType:'json',
                 success: function(data)
                 {
@@ -76,7 +79,7 @@ function deleteQuestionCategory(element)
                 }
             })
         });
-    }  
+    } 
 }
 
 function rwChanceStatus(element)
@@ -84,9 +87,9 @@ function rwChanceStatus(element)
     var $this   = $(element);
     var id      = $this.attr('data-rwid');
     var status  = $this.attr('data-rwst');
-    
-    var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+$Module+'/changeStatus';
+     
+    var $Action     = '/changeStatus';
+    var $URL        = $Path+$Module+$Action; 
 
     if (id != '') 
     {
@@ -105,7 +108,7 @@ function rwChanceStatus(element)
             $.ajax({
                 type:'POST',
                 data:{'id':id,'status':status},
-                url:targetURL,
+                url:$URL,
                 dataType:'json',
                 success: function(data)
                 {
