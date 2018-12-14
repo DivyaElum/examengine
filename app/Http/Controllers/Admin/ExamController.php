@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Models\ExamModel;
 use App\Models\ExamQuestionsModel;
 use App\Models\QuestionCategoryModel;
+use App\Models\RepositoryModel;
+use App\Models\ExamSlotModel;
 
 // request
 use App\Http\Requests\Admin\ExamRequest;
@@ -16,7 +18,7 @@ use App\Http\Requests\Admin\ExamRequest;
 // others
 use Illuminate\Support\Facades\Input;
 use Storage;
-
+use DB;
 
 class ExamController extends Controller
 {
@@ -33,13 +35,17 @@ class ExamController extends Controller
 
         ExamModel $ExamModel,
     	ExamQuestionsModel $ExamQuestionsModel,
-        QuestionCategoryModel $QuestionCategoryModel
+        QuestionCategoryModel $QuestionCategoryModel,
+        RepositoryModel $RepositoryModel,
+        ExamSlotModel $ExamSlotModel
 
     )
     {
         $this->BaseModel = $ExamModel;
         $this->ExamQuestionsModel = $ExamQuestionsModel;
+        $this->ExamSlotModel = $ExamSlotModel;
         $this->QuestionCategoryModel = $QuestionCategoryModel;
+        $this->RepositoryModel      = $RepositoryModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -68,53 +74,106 @@ class ExamController extends Controller
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    public function store(PrerequisiteRequest $request)
+    public function store(ExamRequest $request)
     {
+        // dd($request->all());
+
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
+        $this->JsonData['msg']      = 'Failed to save exam, Something went wrong.';
 
-        $object = new $this->BaseModel;
-
-        if (Input::hasFile('video_file')) 
-        {            
-            // getting origin file content
-            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
-            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
-            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
-
-            $object->video_file_original_name   = $originalName;
-            $object->video_file_mime            = $extension;
-            $object->video_file                 = $video_file;
-
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
+        // validation 
+        if (count($request->exam_questions) < $request->total_questions) 
+        {
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = 'Exam question must be greater than total number of questions';
+             return response()->json($this->JsonData);
+             exit;
         }
 
-        if (!empty($request->video_url)) 
-        {            
-            $object->video_url      = $request->video_url;
-            $object->youtube_url    = NULL;
-            $object->video_file     = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }
+        DB::beginTransaction();
 
-        if (!empty($request->youtube_url)) 
-        {            
-            $object->youtube_url    = $request->youtube_url;
-            $object->video_file     = NULL;
-            $object->video_url      = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }   
-        
-        $object->title   = $request->title;
-        $object->status  = $request->status;
+        $object                 = new $this->BaseModel;
+        $object->title          = $request->title;
+        $object->duration       = $request->duration;
+        $object->total_question = $request->total_questions;
+        $object->status         = $request->status;
 
         if ($object->save()) 
         {
-            $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+            $exam_id = $object->id;
+            
+            // exam slots
+            if (!empty($request->exam_days) && count($request->exam_days) > 0) 
+            {
+                $slots = [];
+                foreach ($request->exam_days as $key => $exam_day) 
+                {
+                    foreach($exam_day['start_time'] as $key_time => $start_time)
+                    {
+                        $exam_slots = new $this->ExamSlotModel;
+                        $exam_slots->exam_id = $exam_id;
+                        $exam_slots->day     = $exam_day['day'];
+                        $exam_slots->start_time = $start_time;
+
+                        //find end time
+                        $minuts                 = $request->duration*60;
+                        $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
+                        $end_time               = date('H:i', $enc_end_time);
+                        
+                        $exam_slots->end_time   = $end_time;
+                        
+                        if($exam_slots->save())
+                        {
+                            $slots[] = 1;
+                        }
+                        else
+                        {
+                            $slots[] = 0;
+                        }
+
+                    }
+                }   
+            }
+            
+            // dd('pass');
+
+            // exam questions
+            if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
+            {
+                $questions = [];
+                foreach ($request->exam_questions as $key => $question) 
+                {
+                    $category_id = $this->RepositoryModel->where('id', $question)->pluck('category_id')->first();
+                    $exam_question                  = new $this->ExamQuestionsModel;
+                    $exam_question->exam_id         = $exam_id;
+                    $exam_question->category_id     = $category_id;
+                    $exam_question->question_id     = $question;
+                    
+                    if($exam_question->save())
+                    {
+                        $questions[] = 1;
+                    }
+                    else
+                    {
+                        $questions[] = 0;
+                    }
+                }   
+            }
+
+            if (!in_array(0,$questions) && !in_array(0,$slots)) 
+            {
+                DB::commit();
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = 'Exam saved successfully';   
+            }
+            else
+            {
+                 DB::rollBack();
+            }
+        }
+        else
+        {
+            DB::rollBack();
         }
 
         return response()->json($this->JsonData);
@@ -341,6 +400,19 @@ class ExamController extends Controller
                 $this->JsonData['data']             = $data;
 
             return response()->json($this->JsonData);
+        }
+
+        public function getDynamicQuesions(Request $request)
+        {
+            if (!empty($request->categories)) 
+            {
+                $categories = explode(',', $request->categories);
+                $this->JsonData['questions'] = $this->RepositoryModel
+                                                    ->whereIn('category_id', $categories)
+                                                    ->get(['id', 'question_text']);
+            }
+
+            return response()->json($this->JsonData); 
         }
 
     /*-----------------------------------------------------

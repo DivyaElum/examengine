@@ -30,7 +30,7 @@ class RepositoryRequest extends FormRequest
             'option1'       => 'required',
             'option2'       => 'required',
             'correct'       => 'required',
-            'right_marks'   => 'required'
+            'right_marks'   => 'required|numeric'
         ];
     }
 

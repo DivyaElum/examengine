@@ -5,12 +5,13 @@
 @stop
 
 @section('styles')
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datepicker/bootstrap-datetimepicker.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/multiselect/bootstrap-multiselect.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 @stop
 
 @section('content')
-	
+
 	<div class="content-wrapper">
 
 	    <section class="content-header">
@@ -45,7 +46,7 @@
 				                </div>
 	              			</div>
 
-	              			<div class="col-md-12">
+	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Question Category</label><br>
 					                  	<select name="category[]" multiple="multiple" id="category" class="form-control">
@@ -59,53 +60,73 @@
 				                </div>
 	              			</div>
 
-	              			<div class="col-md-12">
+	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Questions</label><br>
-					                  	<select name="exam_questions[]" multiple="multiple" id="exam_questions" class="form-control">
+					                  	<select name="exam_questions[]"  multiple="multiple" id="exam_questions" class="form-control">
 					                  	</select>
 				                  	</select>
 				                </div>
 	              			</div>
 
-	              			<div class="col-md-12">
+	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Duration (Hrs)</label>
-					                  	<input type="number" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" maxlength="2">
+					                  	<input type="text" maxlength="2" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" >
 				                  	</select>
 				                </div>
 	              			</div>
 
-	              			<div class="col-md-12">
-				                <div class="form-group">
-				                  	<label for="">Exam Days</label><br>
-					                  	<select name="exam_days[]" multiple="multiple" id="exam_days" class="form-control">
-					                  		@if(!empty($weekdays))
-					                  			@foreach($weekdays as $key => $day)
-					                  				<option value="{{ strtolower($day) }}">{{ $day }}</option>
-					                  			@endforeach
-					                  		@endif
-					                  	</select>
-				                  	</select>
-				                </div>
-	              			</div>
-
-	              			<div class="col-md-12">
-				                <div class="form-group">
-				                  	<label for="">Time Slot</label>
-					                  	<input type="number" name="time_slot" id="time_slot" class="form-control" placeholder="Time Slot" maxlength="6">
-				                  	</select>
-				                </div>
-	              			</div>
-
-	              			<div class="col-md-12">
+	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Total Number Of Questions</label>
-					                  	<input type="number" name="total_questions" id="total_questions" class="form-control" placeholder="50" maxlength="6">
-				                  	</select>
+				                  	<input type="text" maxlength="3" name="total_questions" id="total_questions" class="form-control" placeholder="50" maxlength="6">
 				                </div>
 	              			</div>
 
+
+              				<div class="exam_days_wrapper">
+
+		              			<div class="exam_days_div">
+			              			<div class="col-md-9">
+						                <div class="form-group">
+						                  	<label for="">Exam Days</label><br>
+							                  	<select name="exam_days[0][day]" class="form-control exam_days">
+							                  		@if(!empty($weekdays))
+							                  			@foreach($weekdays as $key => $day)
+							                  				<option value="{{ strtolower($day) }}">{{ $day }}</option>
+							                  			@endforeach
+							                  		@endif
+							                  	</select>
+						                  	</select>
+						                </div>
+			              			</div>
+			              			<div class="col-md-2">
+						                <div class="form-group">
+						                  	<label for="">Start Time</label><br>
+						                  	<div class="row">
+						                  		<div class="col-md-9">
+						                  			<div class='input-group datetimepicker' >
+									                    <input type='text' name="exam_days[0][start_time][]" class="form-control start_time" />
+									                    <span class="input-group-addon" >
+									                        <span class="glyphicon glyphicon-time"></span>
+									                    </span>
+									                </div>
+						                  		</div>
+						                  		<div class="col-md-2">
+													<a class="btn btn-info add_new_slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+						                  		</div>
+						                  	</div>
+						                </div>
+			              			</div>
+			              			<div class="col-md-1">
+			              			</div>
+		              			</div>
+
+	              				<div class="col-md-12">
+									<a class="btn btn-info add_new_day" onclick="return addNewDay(this)" style="float: right;">Add more exam days</a>
+								</div>
+              				</div>
 	              			
 	              			<div class="col-md-12">
 			                  	<label for="">Status </label>
@@ -132,6 +153,20 @@
 @stop
 
 @section('scripts')
+	
+	<script>
+		var daysOptions = '';
+		@if(!empty($weekdays))
+  			@foreach($weekdays as $key => $day)
+  				var value = "{{ strtolower($day) }}";
+  				var title = "{{ $day }}";
+  				daysOptions = daysOptions + '<option value="'+value+'">'+title+'</option>';
+  			@endforeach
+  		@endif	    
+	</script>
+
+	<script type="text/javascript" src="{{ asset('plugins/datepicker/moment.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/datepicker/bootstrap-datetimepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
