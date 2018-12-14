@@ -10,6 +10,12 @@ $(function () {
 
 $(document).ready(function()
 {	
+	var count = $('.exam_days_div').length;
+	if (count >= 3) 
+	{
+		$('.add_new_day').hide();
+	}
+
 	$('#category').multiselect(
 	{ 	
 		enableFiltering: true, 
@@ -192,8 +198,8 @@ function addNewDay(element)
 {
 	var $this = $(element);
 
-	var count = ($('.exam_days_div').length + 1);
 	var index = $('.exam_days_div').length;
+	var count = ($('.exam_days_div').length + 1);
 	if (count == 3) 
 	{
 		$this.hide();

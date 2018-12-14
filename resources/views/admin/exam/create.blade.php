@@ -80,7 +80,7 @@
 	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Total Number Of Questions</label>
-				                  	<input type="text" maxlength="3" name="total_questions" id="total_questions" class="form-control" placeholder="50" maxlength="6">
+				                  	<input type="text" maxlength="3" name="total_question" id="total_question" class="form-control" placeholder="50" maxlength="6">
 				                </div>
 	              			</div>
 
