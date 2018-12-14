@@ -7,10 +7,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Admin\ForgotPasswordRequest;
+use App\Http\Requests\Admin\resetPasswordRequest;
+use App\Mail\passwordResetMail;
 
 use App\User;
+use App\PasswordReset;
 use App\Models\Auth\CheckLoginModel;
 use Validator;
+use Mail;
 
 class LoginController extends Controller
 {
@@ -44,8 +49,8 @@ class LoginController extends Controller
     	//Custome validation messages
  		
     	if(!empty($request->input())){
-			$strEmail 	  = $request->input('txtEmail');
-			$strPassword  = $request->input('txtPassword');
+			$strEmail 	  = $request->input('email');
+			$strPassword  = $request->input('password');
 			$strHashPass  =  Hash::make($strPassword);
 
 			//check user exists in db
@@ -84,54 +89,53 @@ class LoginController extends Controller
     	return response()->json($this->JsonData);
     }
 
-    //Function for forgot password
-    public function forgot(Request $request){
-    	if($request->input()){
-			//dd($request);
-    		//Custome validation messages
-	 		$validator = Validator::make($request->all(), [
-	   	 	 'txtEmail'   => 'required|email',
-			])->validate();
+    public function forgotpassword(){
+    	return view('admin.auth.forgotPassword');
+    }
 
+    //Function for forgot password
+    public function forgot(ForgotPasswordRequest $request)
+    {
+    	if($request->input()){
 	 		$strEmail = $request->input('txtEmail');
 			//check user exists in db
 		  	$arrUserData = User::where('email',$strEmail)->first();
-		  	//dd(count($arrUserData));
+		  	//dd($arrUserData);
 		  	if (count($arrUserData)<=0) {
 		  		//wrong email entered
 			    $this->JsonData['status'] ='error';
             	$this->JsonData['msg'] 	  ='Please enter valid Email Id';
 		  	}else{
-		  		$intId = auth()->id();
-		  		$intEncId = time();
-				$url = 'http://localhost:8000/admin/resetpassword/'.base64_encode($intEncId);
+		  		$intId = $arrUserData->id;
+		  		$strEmail = $arrUserData->email;
+		  		
+		  		//Mail::to($strEmail)->send(new passwordResetMail);
+				echo $url = url('admin/resetpassword/'.base64_encode(base64_encode($intId)));
 
 				//save token 
 				$post = PasswordReset::create([
 					'email' => $strEmail,
-					'token' => base64_encode($intEncId)
+					'token' => base64_encode(base64_encode($intId))
 				]);
 				$this->JsonData['status'] = 'success';
 	            //$this->JsonData['url'] 	  = '/admin/login';
             	$this->JsonData['msg'] 	  =  $url;
             	//$this->JsonData['msg'] 	  = 'Password has been updated successfully.';
+            	die;
 		  	}
 		  	return response()->json($this->JsonData);
     	}
     	return view('admin.auth.forgotPassword');
     }
-
      //Function for reset password
-    public function resetpassword($intId){
-    	$arrData = PasswordReset::where('token',$intId)->first();
+    public function resetpassword($intToken){    
+    	$arrData = PasswordReset::where('token',$intToken)->first();
     	$strEmail = $arrData->email;
 		$arrUserData['arrUserData'] = User::where('email',$strEmail)->first();
     	return view('admin.auth.resetpassword',$arrUserData);
     }
-
-    public function resetpass(Request $request){
-    	//dd($request);
-		//Custome validation messages
+    
+    public function resetpass(resetPasswordRequest $request){
  		$validator = Validator::make($request->all(), [
    	 	 	'txtEmail'         	=> 'required|email',
 		 	'txtNewPassword'	=> 'required|min:8|max:20',

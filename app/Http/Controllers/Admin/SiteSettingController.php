@@ -66,7 +66,7 @@ class SiteSettingController extends Controller
         if ($SiteSetting->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/siteSetting/';
+            $this->JsonData['url']      = '/admin/site-setting/';
             $this->JsonData['msg']      = 'Site setting saved successfully.';
         }
         else
@@ -209,7 +209,7 @@ class SiteSettingController extends Controller
         if ($SiteSetting->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/siteSetting';
+            $this->JsonData['url']      = '/admin/site-setting';
             $this->JsonData['msg']      = 'Site setting Updated successfully.';
         }
         else

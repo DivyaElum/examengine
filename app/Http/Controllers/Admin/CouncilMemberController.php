@@ -97,7 +97,7 @@ class CouncilMemberController extends Controller
         if ($CouncilMemberModel->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/concil-member/';
+            $this->JsonData['url']      = '/admin/council-member/';
             $this->JsonData['msg']      = 'Concil member saved successfully.';
         }
         else
@@ -293,7 +293,7 @@ class CouncilMemberController extends Controller
         if ($CouncilMemberModel->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = '/admin/concil-member/';
+            $this->JsonData['url']      = '/admin/council-member/';
             $this->JsonData['msg']      = 'Concil member saved successfully.';
         }
         else

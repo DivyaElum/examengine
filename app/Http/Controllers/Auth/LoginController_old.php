@@ -86,7 +86,7 @@ class LoginController extends Controller
     //Function for forgot password
     public function forgot(Request $request){
     	if($request->input()){
-			//dd($request);
+			dd($request);
     		//Custome validation messages
 	 		$validator = Validator::make($request->all(), [
 	   	 	 'txtEmail'   => 'required|email',

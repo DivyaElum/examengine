@@ -1,155 +1,152 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
+@extends('master')
+
+@section('title')
+	{{ $moduleAction }}
+@stop
+
+@section('styles')
 <style type="text/css">
-    .register{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-    margin-top: 3%;
-    padding: 3%;
+.error, .help-block {
+	color: red !important;
+	font-weight: 500;
 }
-.register-left{
-    text-align: center;
-    color: #fff;
-    margin-top: 4%;
-}
-.register-left input{
-    border: none;
-    border-radius: 1.5rem;
-    padding: 2%;
-    width: 60%;
-    background: #f8f9fa;
-    font-weight: bold;
-    color: #383d41;
-    margin-top: 30%;
-    margin-bottom: 3%;
-    cursor: pointer;
-}
-.register-right{
-    background: #f8f9fa;
-    border-top-left-radius: 10% 50%;
-    border-bottom-left-radius: 10% 50%;
-}
-.register-left img{
-    margin-top: 15%;
-    margin-bottom: 5%;
-    width: 25%;
-    -webkit-animation: mover 2s infinite  alternate;
-    animation: mover 1s infinite  alternate;
-}
-@-webkit-keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
-}
-@keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
-}
-.register-left p{
-    font-weight: lighter;
-    padding: 12%;
-    margin-top: -9%;
-}
-.register .register-form{
-    padding: 10%;
-    margin-top: 10%;
-}
-.btnRegister{
-    float: right;
-    margin-top: 10%;
-    border: none;
-    border-radius: 1.5rem;
-    padding: 2%;
-    background: #0062cc;
-    color: #fff;
-    font-weight: 600;
-    width: 50%;
-    cursor: pointer;
-}
-.register .nav-tabs{
-    margin-top: 3%;
-    border: none;
-    background: #0062cc;
-    border-radius: 1.5rem;
-    width: 28%;
-    float: right;
-}
-.register .nav-tabs .nav-link{
-    padding: 2%;
-    height: 34px;
-    font-weight: 600;
-    color: #fff;
-    border-top-right-radius: 1.5rem;
-    border-bottom-right-radius: 1.5rem;
-}
-.register .nav-tabs .nav-link:hover{
-    border: none;
-}
-.register .nav-tabs .nav-link.active{
-    width: 100px;
-    color: #0062cc;
-    border: 2px solid #0062cc;
-    border-top-left-radius: 1.5rem;
-    border-bottom-left-radius: 1.5rem;
-}
-.register-heading{
-    text-align: center;
-    margin-top: 8%;
-    margin-bottom: -15%;
-    color: #495057;
-}
-.has-error{
-    color: red;
+.errorMsgAlrt , .successMsgAlrt , .successLoginMsgAlrt , .errorLoginMsgAlrt{display: none;}
+.radio-inline {
+	color: #000;
 }
 </style>
-<div class="container register">
-    <div class="row">
-        <div class="col-md-3 register-left">
-            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
-            <h3>Welcome</h3>
-            <p>You are 30 seconds away from earning your own money!</p>
-            <input type="submit" name="" value="Login"/><br/>
-        </div>
-        <div class="col-md-9 register-right">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <form name="frmRegistration" id="frmRegistration" onsubmit="return saveMember(this)" action="{{ route($modulePath.'.index') }}" method="post">
-                        <h3 class="register-heading">Registration</h3>
-                        <div class="row register-form">
-                            @csrf
-                            <div class="col-md-8">
-                                <div class="form-group error">
-                                    <input type="text" class="form-control" name="txtFirstName" id="txtFirstName" placeholder="First Name *" value="" />
-                                    <span class="error_txtFirstName help-block"></span>
-                                </div>
-                                <div class="form-group error">
-                                    <input type="text" class="form-control" name="txtLastName" id="txtLastName" placeholder="Last Name *" value="" />
-                                    <span class="error_txtLastName help-block "></span>
-                                </div>
-                                <div class="form-group error">
-                                    <input type="password" class="form-control" name="txtPassword" id="txtPassword" placeholder="Password *" value="" />
-                                    <span class="error_txtPassword help-block"></span>
-                                </div>
-                                <div class="form-group error">
-                                    <input type="password" class="form-control"  name="txtComfirmPassword" id="txtComfirmPassword" placeholder="Confirm Password *" value="" />
-                                    <span class="error_txtComfirmPassword help-block"></span>
-                                </div>
-                                <div class="form-group error">
-                                    <input type="email" class="form-control" placeholder="Your Email *" name="email" id="email" value="" />
-                                    <span class="error_email help-block"></span>
-                                </div>
+@stop
 
-                                <div class="form-group error">
-                                    <input type="text" minlength="10" maxlength="10" name="txtPhone" id="txtPhone" class="form-control" placeholder="Your Phone *" value="" />
-                                    <span class=" error_txtPhone help-block"></span>
-                                </div>
-                                <input type="submit" class="btnRegister"  value="Register"/>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+@section('content')
+@php 
+$strUser = app('request')->input('type');
+@endphp
+<div class="login-page-form">
+	<div class="container">
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="left-form-box">
+				<h2>Log In</h2>
+				<div class="alert alert-success alert-dismissible successLoginMsgAlrt">
+				    <strong><span class="successLoginMessage"></span></strong>
+				  </div>
+				  <div class="alert alert-danger alert-dismissible errorLoginMsgAlrt">
+				    <strong><span class="dangerLoginMessage"></span></strong>
+				  </div>
+				  <form class="form-horizontal" onsubmit="return checkLogin(this)" action="{{ route($modulePath.'.index') }}" method="post">
+					<div class="form-group error">
+					  <div class="col-sm-12">
+						<input type="email" class="form-control" id="email" placeholder="Email Address" name="email">
+						<span class="errors_email help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">          
+						<input type="password" class="form-control" id="password" placeholder="Password" name="password">
+						<span class="errors_password help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group">        
+					  <div class="col-sm-12">
+						<div class="checkbox">
+						  <label><input type="checkbox" name="remember"> Remember me</label>
+						<a href="#" class="forgot-password">Forget Password?</a>
+						</div>
+					  </div>
+					</div>
+					<div class="form-group">        
+					  <div class="col-sm-12">
+						<button type="submit" class="btn btn-default blue-button">log In</button>
+					  </div>
+					</div>
+				  </form>
+			</div>
+		</div>
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="right-form-box">
+				<h2>Registration</h2>
+				  <div class="alert alert-success alert-dismissible successMsgAlrt">
+				    <strong><span class="successMessage"></span></strong>
+				  </div>
+				  <div class="alert alert-danger alert-dismissible errorMsgAlrt">
+				    <strong><span class="dangerMessage"></span></strong>
+				  </div>
+				  <form class="form-horizontal" name="frmRegister" id="frmRegister" action="{{ route($modulePath.'.index') }}"  method="post" enctype="multipart/form-data">
+				  	<div class="form-group error col-md-8">
+				  		<label class="radio-inline">
+					      	<input type="radio" name="user_role" id="canditate" value="candidate" <?php if($strUser == 'candidate'){echo 'checked';}else{ echo 'checked';} ?> /> Canditate
+					    </label>
+					    <label class="radio-inline">
+					      <input type="radio" name="user_role" id="customer" value="customer" <?php if($strUser == 'customer'){echo 'checked';} ?> />Service provider
+					    </label>
+				  	</div>
+
+					@if($strUser == 'customer')
+					<div class="organisationFiledDiv">
+					<div class="form-group error">
+					  <div class="col-sm-12">          
+						<input type="text" class="form-control" name="organisation_name" id="organisation_name" placeholder="Organisation Name">
+						<span class="error_organisation_name help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">          
+						<input type="file" class="form-control" name="organisation_image" id="organisation_image">
+						<span class="error_organisation_image help-block"></span>
+					  </div>
+					</div>
+					</div>
+					@endif
+					<div class="form-group error">
+					  <div class="col-sm-12">
+						<input class="form-control" placeholder="First Name" name="first_name" id="first_name">
+						<span class="error_first_name help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">          
+						<input class="form-control" id="last_name" name="last_name" placeholder="Last Name">
+						<span class="error_last_name help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">
+						<input type="email" class="form-control" id="email" placeholder="Email Address" name="email">
+						<span class="error_email help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">          
+						<input type="password" class="form-control" id="password" placeholder="Password" name="password">
+						<span class="error_password help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">          
+						<input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" name="confirm_password">
+						<span class="error_confirm_password help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">          
+						<input type="text" class="form-control" name="telephone_no" id="telephone_no" placeholder="Telephone Number">
+						<span class="error_telephone_no help-block"></span>
+					  </div>
+					</div>
+					<div class="form-group">        
+					  <div class="col-sm-12">
+						<button type="submit" class="btn btn-default green-button" id="btn_register">Register</button>
+					  </div>
+					</div>
+				  </form>
+			</div>
+		</div>
+	</div>
 </div>
+@stop
+@section('scripts')
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script type="text/javascript" src="{{ asset('js/auth/registration/addEditMember.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/auth/login/adminCheck.js') }}"></script>
+@stop

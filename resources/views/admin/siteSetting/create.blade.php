@@ -37,12 +37,12 @@
 	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="txtTitle">Title </label>
-				                  	<input type="text" name="txtTitle" id="txtTitle" class="form-control">
+				                  	<input type="text" name="txtTitle" id="txtTitle" class="form-control" required="">
 				                  	<span class="help-block err_txtTitle"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="txtValue">Value </label>
-				                  	<input type="text" name="txtValue" id="txtValue" class="form-control">
+				                  	<input type="text" name="txtValue" id="txtValue" class="form-control" required="">
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
