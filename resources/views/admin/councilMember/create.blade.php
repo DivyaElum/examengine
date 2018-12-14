@@ -84,5 +84,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/CouncilMember/addEditMember.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/councilMember/addEditMember.js') }}"></script>
 @stop

@@ -134,6 +134,8 @@ class CouncilMemberController extends Controller
     */
         public function getMembers(Request $request)
         {
+            // dd('pass');
+            
             /*--------------------------------------
             |  Variables
             ------------------------------*/

@@ -210,12 +210,12 @@ class SiteSettingController extends Controller
         {
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = '/admin/site-setting';
-            $this->JsonData['msg']      = 'Site setting Updated successfully.';
+            $this->JsonData['msg']      = 'Site setting saved successfully.';
         }
         else
         {
             $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to Updated Site setting, Something went wrong.';
+            $this->JsonData['msg']      ='Failed to save site setting, Something went wrong.';
         }  
         return response()->json($this->JsonData);
     }

@@ -48,12 +48,14 @@ function deleteMember(element)
     if (id != '') 
     {
         swal({
-          title: "Are you sure !!",
-          text: "You want to delete ?",
-          type: "info",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          showLoaderOnConfirm: true
+            title: "Are you sure !!",
+            text: "You want to delete ?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            confirmButtonClass: "btn-danger",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
         }, 
         function () 
         {

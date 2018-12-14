@@ -24,9 +24,11 @@ class RepositoryRequest extends FormRequest
      */
     public function rules()
     {
+        $id = base64_decode(base64_decode($this->route('repository'))) ?? null;
+
         return [
             'type'          => 'required',
-            'question_text' => 'required',
+            'question_text' => 'required|unique:repository,question_text,'.$id,
             'option1'       => 'required',
             'option2'       => 'required',
             'correct'       => 'required',

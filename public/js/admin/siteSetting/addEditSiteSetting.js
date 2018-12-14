@@ -11,7 +11,7 @@ function saveSiteSetting(element)
 	var $this = $(element);            		
 	var formData = new FormData($this[0]);	
 	var action = $this.attr('action');
-	//$('#submit_button').hide();
+	$('#submit_button').hide();
 
 	$.ajax(
 	{
@@ -27,7 +27,11 @@ function saveSiteSetting(element)
 	    		$this[0].reset();
     			toastr.success(data.msg);
 	    		$('#submit_button').show();
-	    		window.location.href = data.url;
+	    		setTimeout(function()
+    			{
+    				window.location.href = data.url;
+
+    			}, 3000);
 	    	}
 	    	else
 	    	{
@@ -40,29 +44,25 @@ function saveSiteSetting(element)
 	  	},
 	  	error: function (data)
 	  	{
-	  		$('.form-group').removeClass('has-error');
-		   	$('.form-group').find('.error').html('');
+	  		$(element).closest('.box').LoadingOverlay("hide");
+	    	$('#submit_button').show();
 
-		   	$('.form-group').removeClass('has-error');
-			$('.form-group').find('.error').html('');
-
-	      	if( data.status === 422 ) 
-	      	{
-		      var errorBag = $.parseJSON(data.responseText);
-		      if (errorBag) 
-		       {
-		        $.each(errorBag.errors, function(row, fields)
-		        {
-		         $('.err_'+row).closest('.form-group').addClass('has-error');
-		         $('.err_'+row).html(fields);
-		          });
-		       }
+  		 	if( data.status === 422 ) 
+  		 	{
+	  			var errorBag = $.parseJSON(data.responseText);
+		  		if (errorBag) 
+		    	{
+			    	$.each(errorBag.errors, function(row, fields)
+			    	{
+			    		toastr.error(fields);
+		      		});
+		    	}
 		    }
 		    else
 		    {
-		      toastr.error('Something went wrong, Please try again later.');
+	  			toastr.error('Something went wrong, Please try again later.');
+		    	
 		    }
-	  		//toastr.error('Something went wrong, Please try again later.');
 	  	}
 	});
 

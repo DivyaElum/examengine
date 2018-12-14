@@ -195,7 +195,7 @@ class ExamController extends Controller
         $this->ViewData['weekdays']     = $this->getWeekdays();
         $this->ViewData['categories']   = $this->QuestionCategoryModel->where('status', 1)->get();
         $this->ViewData['object']       = $this->BaseModel->with(['slots','questions'])->find($id);
-        // dump($this->ViewData['object']);
+
         /*---------------------------------------------------
         |   Questions 
         ----------------------*/

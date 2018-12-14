@@ -238,10 +238,11 @@ class QuestionCategoryController extends Controller
         $QuestionCategoryModel = new $this->QuestionCategoryModel;
 
         $intId              = base64_decode(base64_decode($id));
+        
         $QuestionCategoryModel = $this->QuestionCategoryModel->find($intId);
 
-        $QuestionCategoryModel->category_name = $request->txtCategory;
-        $QuestionCategoryModel->status        = $request->txtStatus;
+        $QuestionCategoryModel->category_name = $request->category;
+        $QuestionCategoryModel->status        = $request->status;
         
         if ($QuestionCategoryModel->save()) 
         {
