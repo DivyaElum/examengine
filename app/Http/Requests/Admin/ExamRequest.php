@@ -30,16 +30,22 @@ class ExamRequest extends FormRequest
             'duration'          => 'required|numeric',
             'total_questions'   => 'required|numeric',
             'status'            => 'required',
-            'exam_days[0][day]' => 'required',
-            'exam_days[0][start_time]'  => 'required',
+            'exam_days.*.day'   => 'required',
+            'exam_days.*.start_time.*' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'txtCategory.required' => 'Category field is required.',
-            'txtStatus.required'   => 'Status field is required.',
+            'title.required'                    => 'Title field is required.',
+            'category.required'                 => 'Category field is required.',
+            'exam_questions.required'           => 'Wxam question field is required.',
+            'duration.required'                 => 'Duration field is required.',
+            'total_questions.required'          => 'Total question field is required.',
+            'status.required'                   => 'Status field is required.',
+            'exam_days.*.day.required'          => 'Exam days field is required.',
+            'exam_days.*.start_time.*.required' => 'Exam days start time field is required.',
         ];
     }
 }

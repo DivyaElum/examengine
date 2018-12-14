@@ -63,7 +63,7 @@
 	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Questions</label><br>
-					                  	<select name="exam_questions[]" multiple="multiple" id="exam_questions" class="form-control">
+					                  	<select name="exam_questions[]"  multiple="multiple" id="exam_questions" class="form-control">
 					                  	</select>
 				                  	</select>
 				                </div>
@@ -72,7 +72,7 @@
 	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Duration (Hrs)</label>
-					                  	<input type="number" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" maxlength="2">
+					                  	<input type="text" maxlength="2" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" >
 				                  	</select>
 				                </div>
 	              			</div>
@@ -80,7 +80,7 @@
 	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Total Number Of Questions</label>
-				                  	<input type="number" name="total_questions" id="total_questions" class="form-control" placeholder="50" maxlength="6">
+				                  	<input type="text" maxlength="3" name="total_questions" id="total_questions" class="form-control" placeholder="50" maxlength="6">
 				                </div>
 	              			</div>
 
