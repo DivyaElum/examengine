@@ -37,16 +37,16 @@
 	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="txtCategory">Question Category </label>
-				                  	<input type="text" name="txtCategory" id="txtCategory" class="form-control">
+				                  	<input type="text" name="category" id="category" class="form-control">
 				                  	<span class="help-block err_txtCategory"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="">Status </label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
-								      <input type="radio" name="txtStatus" checked value="1">Active
+								      <input type="radio" name="status" checked value="1">Active
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" name="txtStatus" value="0">Inactive
+								      <input type="radio" name="status" value="0">Inactive
 								    </label>
 								    <span class="help-block err_txtStatus"></span>
 				                </div>

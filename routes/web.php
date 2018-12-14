@@ -20,9 +20,17 @@ Route::get('/exam', function () {
     return view('exam');
 });
 
-	Route::resource('/register', 'Auth\RegisterController');
+	Route::resource('/sign-up', 'Auth\RegisterController');
+
+	Route::post('/sign-up/login', 'Auth\RegisterController@checkLogin');
 
 	Route::resource('/login', 'Auth\LoginController');
+
+	Route::get('/forgot','Auth\LoginController@forgot');//forgot password
+	Route::post('/forgot','Auth\LoginController@forgot');
+
+	//Route::get('/resetpassword/{id}','Auth\LoginController@resetpassword');//reset password
+	//Route::post('/resetpassword','Auth\LoginController@resetpass');
 
 // Admin section
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()
@@ -30,11 +38,11 @@ Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'
 	Route::get('/login', 'Admin\Auth\LoginController@index');//login
 	Route::post('/login', 'Admin\Auth\LoginController@checkLogin');
 
-	Route::get('/forgot','Admin\Auth\LoginController@forgot');//forgot password
+	Route::get('/forgot','Admin\Auth\LoginController@forgotpassword');//forgot password
 	Route::post('/forgot','Admin\Auth\LoginController@forgot');
 
-	Route::get('/resetpassword/{id}','Auth\LoginController@resetpassword');//reset password
-	Route::post('/resetpassword','Auth\LoginController@resetpass');
+	Route::get('/resetpassword/{token}','Admin\Auth\LoginController@resetpassword');//reset password
+	Route::post('/resetpassword','Admin\Auth\LoginController@resetpass');
 });
 
 Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function()

@@ -4,8 +4,8 @@ function checkLogin(element)
 {
 	var $this = $(element);            		
 	var formData = new FormData($this[0]);	
-	var action = $this.attr('action');
-	$('#submit_button').hide();
+	var action = '/sign-up/login';
+	//$('#submit_button').hide();
 	
 	$.ajax(
 	{
@@ -18,20 +18,21 @@ function checkLogin(element)
 	  	{
 	  		$('.error').removeClass('has-error');
 		   	$('.error').find('.help-block').html('');
+		   	
 	    	if (data.status == 'success') 
 	    	{
 	    		$this[0].reset();
-    			alert(data.msg);	
-	    		$('#submit_button').show();
-    			window.location.href = data.url;
+	    		$('.errorLoginMsgAlrt').hide();
+			    $('.dangerLoginMessage').html('');
+    			$('.successLoginMsgAlrt').show();
+			    $('.successLoginMessage').html(data.msg);
 	    	}
 	    	else
 	    	{
-	    		$('#submit_button').show();
-	    		alert(data.msg);
+	    		//$('#submit_button').show();
+	    		$('.errorLoginMsgAlrt').show();
+			    $('.dangerLoginMessage').html(data.msg);
 	    	}
-
-	    	$(element).closest('.box').LoadingOverlay("hide");
 	  	},
 	  	error: function (data)
 	  	{
@@ -46,16 +47,18 @@ function checkLogin(element)
 		       {
 		        $.each(errorBag.errors, function(row, fields)
 		        {
-		        	$('.error_'+row).closest('.form-group').addClass('has-error');
-		         	$('.error_'+row).html(fields);
+		        	$('.errors_'+row).closest('.form-group').addClass('has-error');
+		         	$('.errors_'+row).html(fields);
 		        });
 		       }
 		    }
 		    else
 		    {
-		      alert('Something went wrong, Please try again later.');
+		  		$('.errorLoginMsgAlrt').show();
+				$('.dangerLoginMessage').html('Something went wrong, Please try again later.');
 		    }
-	  		//alert('Login unsuccessful');
+	  // 		$('.errorLoginMsgAlrt').show();
+			// $('.dangerLoginMessage').html('Login unsuccessful');
 	  	}
 	});
 

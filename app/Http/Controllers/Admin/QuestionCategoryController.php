@@ -25,7 +25,7 @@ class QuestionCategoryController extends Controller
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Council Member';
+        $this->ModuleTitle = 'Question Category';
         $this->ModuleView  = 'admin.questionCategory.';
         $this->ModulePath  = 'question-category';
     }
@@ -67,8 +67,8 @@ class QuestionCategoryController extends Controller
     {
         $QuestionCategoryModel = new $this->QuestionCategoryModel;
 
-        $QuestionCategoryModel->category_name = $request->txtCategory;
-        $QuestionCategoryModel->status        = $request->txtStatus;
+        $QuestionCategoryModel->category_name = $request->category;
+        $QuestionCategoryModel->status        = $request->status;
         
         if ($QuestionCategoryModel->save()) 
         {

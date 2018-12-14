@@ -88,7 +88,7 @@
                     <input type="submit" class="btnSubmit" value="Login" />
                 </div>
                 <div class="form-group">
-                    <!-- <a href="#" class="ForgetPwd">Forget Password?</a> -->
+                    <a href="{{ URL('/login/forgot')}" class="ForgetPwd">Forget Password?</a>
                     <input type="checkbox" name="chkRememberMe" <?php if($chkRememberMe == '1')echo 'checked'; ?>> Remember Me
                 </div>
             </form>

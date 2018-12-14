@@ -50,11 +50,11 @@ $.ajaxSetup({
 		 </div>
 	   @endif
 	   <?php 	   
-	   	if(isset($_COOKIE['setEmail'])){die('if');
+	   	if(isset($_COOKIE['setEmail'])){
 	   		$strEmail 	 = $_COOKIE['setEmail'];
 	   		$strPassword = base64_decode(base64_decode($_COOKIE['setPassword']));
 	   		$chkRememberMe = '1';
-	   }else{die('else');
+	   }else{
 	   		$strEmail = $strPassword = '';
 	   		$chkRememberMe = '0';
 	   }
@@ -63,12 +63,12 @@ $.ajaxSetup({
 	  	<form onsubmit="return checkLogin(this)" action="{{asset('admin/login')}}" method="post">
 	  		@csrf
 	      <div class="form-group has-feedback">
-	        <input type="Email" name="txtEmail" id="txtEmail" class="form-control" placeholder="Email" value="{{$strEmail}}">
+	        <input type="Email" name="email" id="email" class="form-control" placeholder="Email" value="{{$strEmail}}">
 	        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 	        <span class="help-block errortxtEmail"></span>
 	      </div>
 	      <div class="form-group has-feedback">
-	        <input type="password" id="txtPassword" name="txtPassword" class="form-control" placeholder="Password" value="{{$strPassword}}">
+	        <input type="password" id="password" name="password" class="form-control" placeholder="Password" value="{{$strPassword}}">
 	        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 	        <span class="help-block errortxtPassword"></span>
 	      </div>

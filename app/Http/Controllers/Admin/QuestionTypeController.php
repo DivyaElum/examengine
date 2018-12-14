@@ -44,8 +44,8 @@ class QuestionTypeController extends Controller
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Question Type';
-        $this->ModuleView = 'admin.questionType.';
-        $this->ModulePath = 'question-type';
+        $this->ModuleView  = 'admin.questionType.';
+        $this->ModulePath  = 'question-type';
     }
 
     /**

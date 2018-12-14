@@ -24,16 +24,16 @@ class QestionCategoryRequest extends FormRequest
     public function rules()
     {
        return [
-            'txtCategory'  => 'required',
-            'txtStatus'    => 'required',
+            'category'  => 'required',
+            'status'    => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'txtCategory.required' => 'Category field is required.',
-            'txtStatus.required'   => 'Status field is required.',
+            'category.required' => 'Category field is required.',
+            'status.required'   => 'Status field is required.',
         ];
     }
 }
