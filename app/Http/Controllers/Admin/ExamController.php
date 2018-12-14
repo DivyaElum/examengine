@@ -82,7 +82,7 @@ class ExamController extends Controller
         $this->JsonData['msg']      = 'Failed to save exam, Something went wrong.';
 
         // validation 
-        if (count($request->exam_questions) < $request->total_questions) 
+        if (count($request->exam_questions) < $request->total_question) 
         {
             $this->JsonData['status']   = 'error';
             $this->JsonData['msg']      = 'Exam question must be greater than total number of questions';
@@ -95,7 +95,7 @@ class ExamController extends Controller
         $object                 = new $this->BaseModel;
         $object->title          = $request->title;
         $object->duration       = $request->duration;
-        $object->total_question = $request->total_questions;
+        $object->total_question = $request->total_question;
         $object->status         = $request->status;
 
         if ($object->save()) 
@@ -108,29 +108,32 @@ class ExamController extends Controller
                 $slots = [];
                 foreach ($request->exam_days as $key => $exam_day) 
                 {
+                    $exam_slots = new $this->ExamSlotModel;
+                    $exam_slots->exam_id = $exam_id;
+                    $exam_slots->day     = $exam_day['day'];
+
+                    // getting start and end time
+                    $out = [];
                     foreach($exam_day['start_time'] as $key_time => $start_time)
                     {
-                        $exam_slots = new $this->ExamSlotModel;
-                        $exam_slots->exam_id = $exam_id;
-                        $exam_slots->day     = $exam_day['day'];
-                        $exam_slots->start_time = $start_time;
-
-                        //find end time
+                        $tmp = [];
                         $minuts                 = $request->duration*60;
                         $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
                         $end_time               = date('H:i', $enc_end_time);
-                        
-                        $exam_slots->end_time   = $end_time;
-                        
-                        if($exam_slots->save())
-                        {
-                            $slots[] = 1;
-                        }
-                        else
-                        {
-                            $slots[] = 0;
-                        }
+                        $tmp['start_time']      = $start_time;
+                        $tmp['end_time']        = $end_time;
+                        $out[] = $tmp;
+                    }
+                    
+                    $exam_slots->time    = json_encode($out);
 
+                    if($exam_slots->save())
+                    {
+                        $slots[] = 1;
+                    }
+                    else
+                    {
+                        $slots[] = 0;
                     }
                 }   
             }
@@ -189,65 +192,162 @@ class ExamController extends Controller
         $id = base64_decode(base64_decode($enc_id));
         
         $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
-        $this->ViewData['weekdays'] = $this->getWeekdays();
+        $this->ViewData['weekdays']     = $this->getWeekdays();
+        $this->ViewData['categories']   = $this->QuestionCategoryModel->where('status', 1)->get();
+        $this->ViewData['object']       = $this->BaseModel->with(['slots','questions'])->find($id);
+        // dump($this->ViewData['object']);
+        /*---------------------------------------------------
+        |   Questions 
+        ----------------------*/
+            $this->ViewData['object_quesitons'] = [];
+            $this->ViewData['object_quesitons_categories'] = [];
+            if (!empty($this->ViewData['object']->questions)) 
+            {
+                foreach ($this->ViewData['object']->questions as $key => $question) 
+                {
+                    $this->ViewData['object_quesitons'][] = $question->question_id;
+                    $this->ViewData['object_quesitons_categories'][] = $question->category_id;
+                }
 
-        $this->ViewData['object'] = $this->BaseModel->find($id);
+                // only unique values
+                if(!empty($this->ViewData['object_quesitons']))
+                {
+                    $this->ViewData['object_quesitons'] = array_unique($this->ViewData['object_quesitons']);
+                }
+            }
+
+            // find category questions
+            $this->ViewData['all_categories_questions'] = '';
+            if (!empty($this->ViewData['object_quesitons_categories'])) 
+            {
+                $this->ViewData['all_categories_questions'] = $this->RepositoryModel->whereIn('category_id', $this->ViewData['object_quesitons_categories'])->get();
+            }
+
+        /*---------------------------------------------------
+        |   Slots 
+        ----------------------*/
+            if (!empty($this->ViewData['object']->slots)) 
+            {
+                $out = [];
+                foreach ($this->ViewData['object']->slots as $slot_key => $slot) 
+                {
+                    $tmp = [];
+                    $tmp['day'] = $slot->day;
+                    $tmp['time'] = json_decode($slot->time);
+                    $out[] = $tmp;
+                }
+            }
+
+            $this->ViewData['slots'] = $out;
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    public function update(PrerequisiteRequest $request, $enc_id)
+    public function update(Request $request, $enc_id)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
+        $this->JsonData['msg']      = 'Failed to save exam, Something went wrong.';
 
-        $id = base64_decode(base64_decode($enc_id));
-        $object = $this->BaseModel->find($id);
-
-
-
-        if (Input::hasFile('video_file')) 
-        {            
-            // getting origin file content
-            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
-            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
-            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
-
-            $object->video_file_original_name   = $originalName;
-            $object->video_file_mime            = $extension;
-            $object->video_file                 = $video_file;
-
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
+        // validation 
+        if (count($request->exam_questions) < $request->total_question) 
+        {
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = 'Exam question must be greater than total number of questions';
+             return response()->json($this->JsonData);
+             exit;
         }
 
+        DB::beginTransaction();
 
-        if (!empty($request->video_url)) 
-        {            
-            $object->video_url      = $request->video_url;
-            $object->youtube_url    = NULL;
-            $object->video_file     = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }
+        $exam_id = base64_decode(base64_decode($enc_id));
 
-        if (!empty($request->youtube_url)) 
-        {            
-            $object->youtube_url    = $request->youtube_url;
-            $object->video_file     = NULL;
-            $object->video_url      = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }    
-
-        $object->title   = $request->title;
-        $object->status  = $request->status;
-
+        $object                 = $this->BaseModel->find($exam_id);
+        $object->title          = $request->title;
+        $object->duration       = $request->duration;
+        $object->total_question = $request->total_question;
+        $object->status         = $request->status;
 
         if ($object->save()) 
         {
-            $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+            $exam_id = $object->id;
+
+            // Delete previouse slots and questions
+            $this->ExamSlotModel->where('exam_id', $exam_id)->delete();
+            $this->ExamQuestionsModel->where('exam_id', $exam_id)->delete();
+
+            // exam slots
+            if (!empty($request->exam_days) && count($request->exam_days) > 0) 
+            {
+                $slots = [];
+                foreach ($request->exam_days as $key => $exam_day) 
+                {
+                    $exam_slots = new $this->ExamSlotModel;
+                    $exam_slots->exam_id = $exam_id;
+                    $exam_slots->day     = $exam_day['day'];
+
+                    // getting start and end time
+                    $out = [];
+                    foreach($exam_day['start_time'] as $key_time => $start_time)
+                    {
+                        $tmp = [];
+                        $minuts                 = $request->duration*60;
+                        $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
+                        $end_time               = date('H:i', $enc_end_time);
+                        $tmp['start_time']      = $start_time;
+                        $tmp['end_time']        = $end_time;
+                        $out[] = $tmp;
+                    }
+                    
+                    $exam_slots->time    = json_encode($out);
+
+                    if($exam_slots->save())
+                    {
+                        $slots[] = 1;
+                    }
+                    else
+                    {
+                        $slots[] = 0;
+                    }
+                }   
+            }
+
+            // exam questions
+            if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
+            {
+                $questions = [];
+                foreach ($request->exam_questions as $key => $question) 
+                {
+                    $category_id = $this->RepositoryModel->where('id', $question)->pluck('category_id')->first();
+                    $exam_question                  = new $this->ExamQuestionsModel;
+                    $exam_question->exam_id         = $exam_id;
+                    $exam_question->category_id     = $category_id;
+                    $exam_question->question_id     = $question;
+                    
+                    if($exam_question->save())
+                    {
+                        $questions[] = 1;
+                    }
+                    else
+                    {
+                        $questions[] = 0;
+                    }
+                }   
+            }
+
+            if (!in_array(0,$questions) && !in_array(0,$slots)) 
+            {
+                DB::commit();
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = 'Exam saved successfully';   
+            }
+            else
+            {
+                 DB::rollBack();
+            }
+        }
+        else
+        {
+            DB::rollBack();
         }
 
         return response()->json($this->JsonData);
@@ -386,7 +486,7 @@ class ExamController extends Controller
                         }
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('prerequisite.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('exam.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
                         $delete = '<a title="Delete" onclick="return rwDelete(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
 
                         $data[$key]['actions'] = $view.$edit.$delete;

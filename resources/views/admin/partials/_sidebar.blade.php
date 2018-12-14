@@ -49,11 +49,11 @@
           </a>
         </li>
 
-        <li class="{{ active(['admin/course','admin/course/*']) }}">
+      {{--   <li class="{{ active(['admin/course','admin/course/*']) }}">
           <a href="{{ route('course.index') }}">
             <i class="fa fa-bars"></i> <span>Course</span>
           </a>
-        </li>
+        </li> --}}
 
         <li class="{{ active(['admin/site-setting','admin/site-setting/*']) }}">
           <a href="{{ route('site-setting.index') }}">
