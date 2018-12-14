@@ -29,7 +29,7 @@ class QuestionTypeRequest extends FormRequest
         // $id = null;
         return [
 
-            'title' => 'required|unique:question_types,title,'.$id,
+            'title' => 'required|min:4|unique:question_types,title,'.$id,
             'option' => 'required',
         ];
     }

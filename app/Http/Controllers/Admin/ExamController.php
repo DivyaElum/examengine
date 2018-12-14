@@ -106,8 +106,31 @@ class ExamController extends Controller
             if (!empty($request->exam_days) && count($request->exam_days) > 0) 
             {
                 $slots = [];
+                $error_bag = [];
                 foreach ($request->exam_days as $key => $exam_day) 
                 {
+                    // exam day validation 
+                    if (empty($error_bag)) 
+                    {
+                        $error_bag[] = $exam_day;
+                    }
+                    else
+                    {
+                        if (in_array($exam_day, $error_bag)) 
+                        {
+                            DB::rollBack();
+                            $this->JsonData['status']   = 'error';
+                            $this->JsonData['msg']      = 'Exam days must not be same.';
+                            return response()->json($this->JsonData);
+                            exit;
+                        }
+                        else
+                        {
+                            $error_bag[] = $exam_day;
+                        }
+                    }
+
+                    // saving exam days
                     $exam_slots = new $this->ExamSlotModel;
                     $exam_slots->exam_id = $exam_id;
                     $exam_slots->day     = $exam_day['day'];
@@ -116,6 +139,28 @@ class ExamController extends Controller
                     $out = [];
                     foreach($exam_day['start_time'] as $key_time => $start_time)
                     {
+                        // start time validation
+                        if (empty($error_bag)) 
+                        {
+                            $error_bag[] = $start_time;
+                        }
+                        else
+                        {
+                            if (in_array($start_time, $error_bag)) 
+                            {
+                                DB::rollBack();
+                                $this->JsonData['status']   = 'error';
+                                $this->JsonData['msg']      = 'Exam start time must not be same.';
+                                return response()->json($this->JsonData);
+                                exit;
+                            }
+                            else
+                            {
+                                $error_bag[] = $start_time;
+                            }
+                        }
+
+
                         $tmp = [];
                         $minuts                 = $request->duration*60;
                         $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
@@ -137,8 +182,6 @@ class ExamController extends Controller
                     }
                 }   
             }
-            
-            // dd('pass');
 
             // exam questions
             if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
@@ -243,7 +286,7 @@ class ExamController extends Controller
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    public function update(Request $request, $enc_id)
+    public function update(ExamRequest $request, $enc_id)
     {
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to save exam, Something went wrong.';
@@ -253,8 +296,8 @@ class ExamController extends Controller
         {
             $this->JsonData['status']   = 'error';
             $this->JsonData['msg']      = 'Exam question must be greater than total number of questions';
-             return response()->json($this->JsonData);
-             exit;
+            return response()->json($this->JsonData);
+            exit;
         }
 
         DB::beginTransaction();
@@ -279,8 +322,31 @@ class ExamController extends Controller
             if (!empty($request->exam_days) && count($request->exam_days) > 0) 
             {
                 $slots = [];
+                $error_bag = [];
                 foreach ($request->exam_days as $key => $exam_day) 
                 {
+                    // exam day validation 
+                    if (empty($error_bag)) 
+                    {
+                        $error_bag[] = $exam_day;
+                    }
+                    else
+                    {
+                        if (in_array($exam_day, $error_bag)) 
+                        {
+                            DB::rollBack();
+                            $this->JsonData['status']   = 'error';
+                            $this->JsonData['msg']      = 'Exam days must not be same.';
+                            return response()->json($this->JsonData);
+                            exit;
+                        }
+                        else
+                        {
+                            $error_bag[] = $exam_day;
+                        }
+                    }
+
+                    // saving exam days
                     $exam_slots = new $this->ExamSlotModel;
                     $exam_slots->exam_id = $exam_id;
                     $exam_slots->day     = $exam_day['day'];
@@ -289,6 +355,28 @@ class ExamController extends Controller
                     $out = [];
                     foreach($exam_day['start_time'] as $key_time => $start_time)
                     {
+                        // start time validation
+                        if (empty($error_bag)) 
+                        {
+                            $error_bag[] = $start_time;
+                        }
+                        else
+                        {
+                            if (in_array($start_time, $error_bag)) 
+                            {
+                                DB::rollBack();
+                                $this->JsonData['status']   = 'error';
+                                $this->JsonData['msg']      = 'Exam start time must not be same.';
+                                return response()->json($this->JsonData);
+                                exit;
+                            }
+                            else
+                            {
+                                $error_bag[] = $start_time;
+                            }
+                        }
+
+
                         $tmp = [];
                         $minuts                 = $request->duration*60;
                         $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));

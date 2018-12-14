@@ -23,7 +23,8 @@ class ExamRequest extends FormRequest
      */
     public function rules()
     {
-        $id = base64_decode(base64_decode($this->route('question_type'))) ?? null;
+        
+        $id = base64_decode(base64_decode($this->route('exam'))) ?? null;
 
         return [
             'title'             => 'required|unique:exam,title,'.$id,
