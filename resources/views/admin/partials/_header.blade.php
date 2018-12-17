@@ -2,7 +2,7 @@
 <header class="main-header">
     <a href="{{ url('/') }}" class="logo">
       <span class="logo-mini"><b>Exam</span>
-      <span class="logo-lg"><b>Exam</b>DEMO</span>
+      <span class="logo-lg"><b>MSC</b></span>
     </a>
     <nav class="navbar navbar-static-top">
 
