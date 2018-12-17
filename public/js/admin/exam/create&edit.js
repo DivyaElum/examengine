@@ -164,7 +164,7 @@ function addNewSlot(element)
 							</div>
 							<div class="col-md-2">
 				            <div class="form-group">
-				              	<label for="">Start Time</label><br>
+				              	<label for="">Start Time <span style="color: red">*</span></label><br>
 				              	<div class="row">
 				              		<div class="col-md-9">
 				              			<div class='input-group datetimepicker' >
@@ -209,7 +209,7 @@ function addNewDay(element)
 			<div class="exam_days_div">
       			<div class="col-md-9">
 	                <div class="form-group">
-	                  	<label for="">Exam Days</label><br>
+	                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
 		                  	<select name="exam_days[${index}][day]" class="form-control exam_days">
 		                  	${daysOptions}
 		                  	</select>
@@ -218,7 +218,7 @@ function addNewDay(element)
       			</div>
       			<div class="col-md-2">
 	                <div class="form-group">
-	                  	<label for="">Start Time</label><br>
+	                  	<label for="">Start Time <span style="color: red">*</span></label><br>
 	                  	<div class="row">
 	                  		<div class="col-md-9">
 	                  			<div class='input-group datetimepicker' >

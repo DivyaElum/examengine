@@ -1,10 +1,9 @@
-
 var $Path = $('meta[name="admin-path"]').attr('content');
-var $Module = '/prerequisite';
+var $Module = '/course';
 
 $(document).ready(function() 
 {
-    var $Action = '/getPrerequisite'; 
+    var $Action = '/getRecords'; 
     var $URL    = $Path+$Module+$Action; 
 
     $('#listingTable').DataTable( 
@@ -16,6 +15,9 @@ $(document).ready(function()
         columns: [
             { "data": "id",             "ordereble": "true"},
             { "data": "title",          "ordereble": "true"},
+            { "data": "amount",         "ordereble": "true"},
+            { "data": "discount",       "ordereble": "true"},
+            { "data": "total",          "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
             { "data": "status",         "ordereble": "true"},
             { "data": "actions"}

@@ -47,7 +47,7 @@
 	              			</div>	
 
 							<div class="col-md-12">
-				                  	<label for="">Option Types </label>
+				                  	<label for="">Option Types <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
 								      <input type="radio" @if($object->option == 'radio') checked  @endif name="option" id="radio" value="radio" >Radio Box 
@@ -60,7 +60,7 @@
 
 
 							<div class="col-md-12">
-				                  	<label for="">Status </label>
+				                  	<label for="">Status <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
 								      <input type="radio" name="status" @if($object->status == 1) checked @endif value="1">Active

@@ -39,7 +39,7 @@
 
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="">Type</label>
+				                  	<label for="">Type <span style="color: red">*</span></label>
 				                  	<select onchange="getStructure(this)" class="form-control" name="type" >
 				                  		<option value="" >Please Select</option>
 				                  		@if(!empty($types) && count($types) > 0)
@@ -52,7 +52,7 @@
 	              			</div>	
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="">Category</label>
+				                  	<label for="">Category <span style="color: red">*</span></label>
 				                  	<select class="form-control" name="category" >
 				                  		<option value="" >Please Select</option>
 				                  		@if(!empty($types) && count($category) > 0)

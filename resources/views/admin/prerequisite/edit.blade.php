@@ -40,14 +40,14 @@
 
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="">Title</label>
-					                  	<input type="text" value="{{ $object->title }}" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="">
+				                  	<label for="">Title <span style="color: red">*</span></label>
+					                  	<input type="text" value="{{ $object->title }}" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="100">
 				                  	</select>
 				                </div>
 	              			</div>	
 
 	              			<div class="col-md-12">
-	              				<label>Video Type</label>
+	              				<label>Video Type <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
 								      <input type="radio" @if(!empty($object->video_file)) checked @endif onclick="setVideoType(true)" name="video_type" checked value="file">Video File
@@ -91,7 +91,7 @@
 	              			</div>	
 
 	              			<div class="col-md-12">
-				                  	<label for="">Status </label>
+				                  	<label for="">Status <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
 								      <input type="radio" name="status" @if($object->status == 1) checked @endif value="1">Active
