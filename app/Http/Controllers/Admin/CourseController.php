@@ -16,6 +16,7 @@ use App\Http\Requests\Admin\CourseRequest;
 // others
 use Illuminate\Support\Facades\Input;
 use Storage;
+use Image;
 
 
 class CourseController extends Controller
@@ -65,50 +66,37 @@ class CourseController extends Controller
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    public function store(PrerequisiteRequest $request)
+    public function store(CourseRequest $request)
     {
-        dd('pass');
-
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to save course, Something went wrong.';
 
         $object = new $this->BaseModel;
 
-        if (Input::hasFile('video_file')) 
+        if (Input::hasFile('featured_image')) 
         {            
-            // getting origin file content
-            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
-            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
-            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
+            $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
+            $featured_image     = Storage::disk('local')->put('course/featuredImage', Input::file('featured_image'), 'public');
+            
+            $featured_thumbnail_image = time().$original_name;
+            $str_thumb_designation_path = storage_path().'/app/public/course/featuredImageThumbnails' ;
+            $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
+            $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
 
-            $object->video_file_original_name   = $originalName;
-            $object->video_file_mime            = $extension;
-            $object->video_file                 = $video_file;
+            $object->featured_image               = $featured_image;
+            $object->featured_image_thumbnail     = $featured_thumbnail_image;
+            $object->featured_image_original_name = $original_name;
 
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
         }
-
-        if (!empty($request->video_url)) 
-        {            
-            $object->video_url      = $request->video_url;
-            $object->youtube_url    = NULL;
-            $object->video_file     = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }
-
-        if (!empty($request->youtube_url)) 
-        {            
-            $object->youtube_url    = $request->youtube_url;
-            $object->video_file     = NULL;
-            $object->video_url      = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }   
         
-        $object->title   = $request->title;
-        $object->status  = $request->status;
+        $object->title              = $request->title;
+        $object->exam_id            = $request->exam;
+        $object->prerequisite_id    = json_encode($request->prerequisites);
+        $object->amount             = $request->amount;
+        $object->discount           = $request->discount;
+        $object->discount_by        = $request->discount_by;
+        $object->calculated_amount  = $request->calculated_amount;
+        $object->status             = $request->status;
 
         if ($object->save()) 
         {
@@ -127,65 +115,68 @@ class CourseController extends Controller
     public function edit($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
-        
+
         $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
+        $this->ViewData['prerequisites'] = $this->PrerequisiteModel->where('status', 1)->get(['title','id']);
+        $this->ViewData['exams'] =  $this->ExamModel->where('status', 1)->get(['title','id']);
         $this->ViewData['object'] = $this->BaseModel->find($id);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    public function update(PrerequisiteRequest $request, $enc_id)
+    public function update(CourseRequest $request, $enc_id)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
+        $this->JsonData['msg']      = 'Failed to save course, Something went wrong.';
 
         $id = base64_decode(base64_decode($enc_id));
         $object = $this->BaseModel->find($id);
 
-
-
-        if (Input::hasFile('video_file')) 
+        if (Input::hasFile('featured_image')) 
         {            
-            // getting origin file content
-            $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
-            $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
-            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
+            $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
+            $featured_image     = Storage::disk('local')->put('course/featuredImage', Input::file('featured_image'), 'public');
+            
+            $featured_thumbnail_image = time().$original_name;
+            $str_thumb_designation_path = storage_path().'/app/public/course/featuredImageThumbnails' ;
+            $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
+            $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
 
-            $object->video_file_original_name   = $originalName;
-            $object->video_file_mime            = $extension;
-            $object->video_file                 = $video_file;
+            $object->featured_image               = $featured_image;
+            $object->featured_image_thumbnail     = $featured_thumbnail_image;
+            $object->featured_image_original_name = $original_name;
+        }
+        else
+        if(empty($request->old_image))
+        {
+            if (file_exists(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail)) 
+            {
+                unlink(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail);
+            }
 
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
+            if (file_exists(storage_path().'/app/public/'.$object->featured_image)) 
+            {
+                unlink(storage_path().'/app/public/'.$object->featured_image);
+            }
+
+            $object->featured_image               = NULL;
+            $object->featured_image_thumbnail     = NULL;
+            $object->featured_image_original_name = NULL;
         }
 
-
-        if (!empty($request->video_url)) 
-        {            
-            $object->video_url      = $request->video_url;
-            $object->youtube_url    = NULL;
-            $object->video_file     = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }
-
-        if (!empty($request->youtube_url)) 
-        {            
-            $object->youtube_url    = $request->youtube_url;
-            $object->video_file     = NULL;
-            $object->video_url      = NULL;
-            $object->video_file_mime          = NULL;
-            $object->video_file_original_name = NULL;
-        }    
-
-        $object->title   = $request->title;
-        $object->status  = $request->status;
-
+        $object->title              = $request->title;
+        $object->exam_id            = $request->exam;
+        $object->prerequisite_id    = json_encode($request->prerequisites);
+        $object->amount             = $request->amount;
+        $object->discount           = $request->discount;
+        $object->discount_by        = $request->discount_by;
+        $object->calculated_amount  = $request->calculated_amount;
+        $object->status             = $request->status;
 
         if ($object->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+            $this->JsonData['msg']      = 'Course saved successfully';
         }
 
         return response()->json($this->JsonData);
@@ -313,7 +304,7 @@ class CourseController extends Controller
                         
                         $data[$key]['amount']       = $row->amount;
 
-                        $data[$key]['discount']     = $row->discount.' '. $row->discount_by;
+                        $data[$key]['discount']     = $row->discount.' '. $row->discount_by != 'Price' ? $row->discount_by : '';
 
                         $data[$key]['total']        = $row->calculated_amount;
                         

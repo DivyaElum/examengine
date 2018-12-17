@@ -5,6 +5,7 @@
 @stop
 
 @section('styles')
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/multiselect/bootstrap-multiselect.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 @stop
 
@@ -34,64 +35,114 @@
 
         	 	<form onsubmit="return saveFormData(this)" action="{{route($modulePath.'.update', [ base64_encode(base64_encode($object->id)) ])}}" >
         	 		<input name="_method" type="hidden" value="PUT">
-	              	
+
 	              	<div class="box-body">
 	              		<div class="row">
 
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="">Title</label>
-					                  	<input type="text" value="{{ $object->title }}" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="">
+				                  	<label for="">Title <span style="color: red">*</span></label>
+					                  	<input type="text" value="{{ $object->title }}" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="200">
 				                  	</select>
 				                </div>
-	              			</div>	
-
-	              			<div class="col-md-12">
-	              				<label>Video Type</label>
+				            </div>
+			                <div class="col-md-6">
 				                <div class="form-group">
-				                  	<label class="radio-inline">
-								      <input type="radio" @if(!empty($object->video_file)) checked @endif onclick="setVideoType(true)" name="video_type" checked value="file">Video File
-								    </label>
-								    <label class="radio-inline">
-								      <input type="radio" @if(!empty($object->video_url)) checked @endif onclick="setVideoType(true)" name="video_type" value="url">Video URL
-								    </label>
-								    <label class="radio-inline">
-								      <input type="radio" @if(!empty($object->youtube_url)) checked @endif onclick="setVideoType(true)" name="video_type" value="youtube">Youtube URL
-								    </label>
+				                  	<label for="">Prerequisites</label>
+				                  		@php
+				                  			$arr_prerequisites = json_decode($object->prerequisite_id);
+				                  		@endphp
+				                  		<select name="prerequisites[]" multiple id="prerequisites" class="form-control">
+				                  			@if(!empty($prerequisites) && sizeof($prerequisites) > 0)
+				                  				@foreach($prerequisites as $pkey => $prerequisite)
+				                  					<option value="{{$prerequisite->id}}" @if(in_array($prerequisite->id, $arr_prerequisites)) selected @endif >{{ ucfirst($prerequisite->title) }}</option>
+				                  				@endforeach
+				                  			@endif
+				                  		</select>
+				                  	</select>
+				                </div>
+	              			</div>	 
+
+	              			<div class="col-md-6">
+				                <div class="form-group">
+				                  	<label for="">Exams</label>
+					                  	<select name="exam" id="exam" class="form-control">
+					                  		<option value="">Please select exam</option>
+				                  			@if(!empty($exams) && sizeof($exams) > 0)
+				                  				@foreach($exams as $pkey => $exam)
+				                  					<option value="{{$exam->id}}" @if($object->exam_id == $exam->id ) selected @endif >{{ ucfirst($exam->title) }}</option>
+				                  				@endforeach
+				                  			@endif
+				                  		</select>
+				                  	</select>
 				                </div>
 	              			</div>	
 
-	              			<div class="options file" style="display: none;">
-				                <div class=" col-md-12 form-group video_file_class " style="display: none">
-				                  	<label for="">Video File</label>
-					                  	<input type="file" value="{{ $object->video_file_original_name }}" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >				                  		
-				                  	</select>
+	              			<div class="col-md-6">
+				                <div class="form-group">
+				                  	<label for="">Course Fee <span style="color: red">*</span></label>
+				                  	<input type="text" oninput="return calculateAmount(this)" value="{{ $object->amount }}" placeholder="Course Fee" name="amount" id="amount" class="form-control">
 				                </div>
-				                <div class="old_video_file_class">
-					                <div class="form-group col-md-12">
-				                		<label>Old Video File</label>&nbsp;<a title="delete" onclick="return hideOldVideoFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
-					                  	<input type="text" value="{{ $object->video_file_original_name }}" name="old_video_file" id="old_video_file" class="form-control" readonly>
-					                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Discount</label>
+				                  	<input type="text"  oninput="return calculateAmount(this)" value="{{ $object->discount }}" placeholder="Course Discount" name="discount" id="discount" class="form-control">
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Discount By</label>
+				                  	<select name="discount_by" onchange="return calculateAmount(this)" id="discount_by" class="form-control">
+				                  		<option value="Price" @if($object->discount_by == 'Price') selected @endif >Price</option>
+				                  		<option value="%" @if($object->discount_by == '%') selected @endif >%</option>
+				                  	</select>
 				                </div>
 	              			</div>
 
-	              			<div class="col-md-12 options url" style="display: none;">
+	              			<div class="col-md-2">
 				                <div class="form-group">
-				                  	<label for="">Video URL</label>
-					                  	<input type="text" value="{{ $object->video_url }}" name="video_url" id="video_url" class="form-control option_input" placeholder="Enter Video URL" >
-				                  	</select>
+				                  	<label for="">Calculated Course Fee <span style="color: red">*</span></label>
+				                  	<input type="number" readonly placeholder="Calculated Course Fee" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
+				                	<span class="err_calculated_amount" style="color: red"></span>
 				                </div>
-	              			</div>	
+	              			</div>
 
-	              			<div class="col-md-12 options youtube" style="display: none;" >
+	              			<div class="col-md-6">
+	              				<div class="row">
+	              					<div class="col-md-4">
+	              						@php 
+	              							if(file_exists(storage_path('app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail)))
+	              							{
+	              								$featured = url('/storage/course/featuredImageThumbnails/'.$object->featured_image_thumbnail);
+	              								$show = 1;
+	              							}
+	              							else
+	              							{
+	              								$featured = url('/storage/prerequisite/no-image.png');
+	              							}
+	              						@endphp 
+	              						<img id="preview"  src="{{ $featured }}" alt="Featured Image" style="width: 100%;height: 200px;border: 1px solid #ccc;margin-left: 5px" />
+	              						<input type="hidden" name="old_image" value="{{ $object->featured_image_thumbnail }}" id="old_image">
+	              					</div>
+	              				</div>
+	              				<div class="row" id="delete_button" @if(empty($show))style="display: none"@endif>
+				                	<div class="col-md-4" > 
+				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" style="margin-left: 5px">Delete</a>
+				                	</div>
+	              				</div>
+				                <br>
 				                <div class="form-group">
-				                  	<label for="">Youtube URL</label>
-					                  	<input type="text" value="{{ $object->youtube_url }}" name="youtube_url" id="youtube_url" class="form-control option_input" placeholder="Enter Youtube URL">
+				                  	<label for="">Featured Image </label>
+				                  	<input type="file" name="featured_image" accept="image/x-png,image/gif,image/jpeg" id="featured_image" onchange="readURL(this)" class="form-control">
+				                	<span class="err_featured_image" style="color: red"></span>
 				                </div>
-	              			</div>	
+	              			</div>
 
 	              			<div class="col-md-12">
-				                  	<label for="">Status </label>
+				                  	<label for="">Status <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
 								      <input type="radio" name="status" @if($object->status == 1) checked @endif value="1">Active
@@ -115,6 +166,11 @@
 @stop
 
 @section('scripts')
+	<script type="text/javascript">
+		var defaultImaage = "{{ url('/storage/prerequisite/no-image.png') }}";
+	</script>
+	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
