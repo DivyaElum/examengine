@@ -2,31 +2,65 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+
+use App\User;
+use App\PasswordReset;
 
 class ForgotPasswordController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Password Reset Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller is responsible for handling password reset emails and
-    | includes a trait which assists in sending these notifications from
-    | your application to your users. Feel free to explore this trait.
-    |
-    */
+	private $User;
+    private $CheckLoginModel;
 
-    use SendsPasswordResetEmails;
+    public function __construct(
+        User $User
+    )
+    {       
+        $this->ViewData = [];
+        $this->JsonData = [];
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
+        $this->ModuleTitle = 'Forgot Password';
+        $this->ModuleView  = 'auth.';
+        $this->ModulePath  = 'ForgotPasswordController';
+    }
+    public function index(){
+        $this->ViewData['modulePath'] = $this->ModulePath;
+        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['moduleAction'] = 'forgot password';
+
+        return view($this->ModuleView.'forgot', $this->ViewData);
+    }
+    public function forgotpassword(Request $request){
+    	if($request->input()){
+	 		$strEmail = $request->input('email');
+			//check user exists in db
+		  	$arrUserData = User::where('email',$strEmail)->first();
+		  	//dd($arrUserData);
+		  	if (count($arrUserData)<=0) {
+		  		//wrong email entered
+			    $this->JsonData['status'] ='error';
+            	$this->JsonData['msg'] 	  ='Please enter valid Email Id';
+		  	}else{
+		  		$intId = $arrUserData->id;
+		  		$strEmail = $arrUserData->email;
+		  		
+		  		//Mail::to($strEmail)->send(new passwordResetMail);
+				echo $url = url('/resetpassword/'.base64_encode(base64_encode($intId)));
+
+				//save token 
+				$post = PasswordReset::create([
+					'email' => $strEmail,
+					'token' => base64_encode(base64_encode($intId))
+				]);
+				$this->JsonData['status'] = 'success';
+	            $this->JsonData['url'] 	  = '/admin/login';
+            	$this->JsonData['msg'] 	  =  $url;
+            	//$this->JsonData['msg'] 	  = 'Password has been updated successfully.';
+            	die;
+		  	}
+		  	return response()->json($this->JsonData);
+    	}
+    	return view('auth.forgotPassword');
     }
 }

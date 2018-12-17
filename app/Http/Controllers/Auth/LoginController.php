@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Models\Auth\CheckLoginModel;
 
-use Validator;
-use Session;
-
 class LoginController extends Controller
 {
     private $User;
@@ -82,13 +79,5 @@ class LoginController extends Controller
             $this->JsonData['msg'] ='Please enter a data';
         }
         return response()->json($this->JsonData);
-    }
-
-    public function forgot(){
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = 'forgot password';
-
-        return view($this->ModuleView.'forgot', $this->ViewData);
     }
 }

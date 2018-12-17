@@ -39,9 +39,11 @@ class RegisterController extends Controller
         $this->ModuleTitle = '';
         $this->ModuleView  = 'auth.';
         $this->ModulePath  = 'sign-up';
+
     }
     public function index()
     {
+        $this->ViewData['page_title'] = 'Become a Candidate';
         $this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Sign-up '.str_plural($this->ModuleTitle);

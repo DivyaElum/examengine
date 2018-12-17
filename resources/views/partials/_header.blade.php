@@ -26,6 +26,9 @@
 <!-- Style CSS -->
 <link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css">
 @yield('styles')
+<style type="text/css">
+.login-banner h1 {font-size: 50px !important;}
+</style>
 </head>
 <body class="drawer drawer--right drawer--navbarTopGutter">
 <div class="first-header">
@@ -39,9 +42,9 @@
       </div>
       <div class="top-right">
         <ul>
-          <li><a href="about-us.php">About Us</a></li>
-          <li><a href="faq.php">FAQ</a></li>
-          <li><a href="contact-us.php">Contact Us</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact Us</a></li>
         </ul>
       </div>
     </div>
@@ -49,13 +52,14 @@
   <div class="nav-container">
   <div class="container"> <a href="index.php" class="navbar-brand"><img src="images/msc-logo.png" alt="logo" /></a>
     <ul class="navigation">
-      <li class="active"> <a href="index.php">Home</a> </li>
-      <li> <a href="certifications.php">Certifications</a> </li>
-      <li> <a href="membership.php">Membership</a> </li>
+      <li class="active"> <a href="/sign-up">Home</a> </li>
+      <!-- <li> <a href="#">Certifications</a> </li> -->
+      <li> <a href="/certification-list">Certifications listing</a> </li>
+      <li> <a href="#">Membership</a> </li>
     <div class="show-mobile">
-      <li> <a href="about-us.php">About Us</a> </li>
-      <li> <a href="faq.php">faq</a> </li>
-      <li> <a href="contact-us.php">Contact Us</a> </li>
+      <li> <a href="#">About Us</a> </li>
+      <li> <a href="#">faq</a> </li>
+      <li> <a href="#">Contact Us</a> </li>
     </div>
       <li class="become-a-canditate-btn"> <a href="{{ route('sign-up.index') }}?type=candidate">Become A Candidate</a> </li>
       <li class="become-a-service-provider-btn"> <a href="{{ route('sign-up.index') }}?type=customer">Become A Service Provider</a> </li>
@@ -69,8 +73,7 @@
 <div class="login-banner">
   <div class="container">
     <h1>
-      <span>Become a </span><br/>
-      Candidate
+      @yield('page_title')
     </h1>
   </div>  
 </div>
