@@ -2,7 +2,7 @@
 <header class="main-header">
     <a href="{{ url('/') }}" class="logo">
       <span class="logo-mini"><b>Exam</span>
-      <span class="logo-lg"><b>Exam</b>DEMO</span>
+      <span class="logo-lg"><b>MSC</b></span>
     </a>
     <nav class="navbar navbar-static-top">
 
@@ -18,20 +18,20 @@
 
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
-              <span class="hidden-xs">Sheshkumar Prajapati</span>
+              <img src="{{asset('dist/img/admin_avatar.png')}}" class="user-image" alt="User Image">
+              <span class="hidden-xs">Admin</span>
             </a>
             <ul class="dropdown-menu">
 
               <li class="user-header">
-                <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
+                <img src="{{asset('dist/img/admin_avatar.png')}}" class="img-circle" alt="User Image">
                 <p>
-                  Alexander Pierce - Web Developer
+                  Admin
                 </p>
               </li>                          
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <!-- <a href="#" class="btn btn-default btn-flat">Profile</a> -->
                 </div>
                 <div class="pull-right">
                   <a href="{{ url('/admin/logout') }}" class="btn btn-default btn-flat">Log out</a>

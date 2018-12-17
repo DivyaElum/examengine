@@ -91,7 +91,7 @@ function forgotpass(element)
     			toastr.success(data.msg);	
 	    		$('#submit_button').show();
     			//window.location.href = data.url;
-    			console.log(data.url);
+    			//console.log(data.url);
 	    	}
 	    	else
 	    	{

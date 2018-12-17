@@ -20,11 +20,11 @@
   });
 </script>
 <!-- Bootstrap core CSS -->
-<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
 <!-- Bootstrap core CSS -->
-<link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+<link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet">
 <!-- Style CSS -->
-<link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css">
 @yield('styles')
 </head>
 <body class="drawer drawer--right drawer--navbarTopGutter">

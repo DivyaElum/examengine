@@ -27,10 +27,8 @@ Route::post('/sign-up/login', 'Auth\RegisterController@checkLogin');
 Route::resource('/login', 'Auth\LoginController');
 
 Route::get('/forgot','Auth\LoginController@forgot');//forgot password
-Route::post('/forgot','Auth\LoginController@forgot');
+Route::post('/forgot','Auth\LoginController@forgotpassword');
 
-	//Route::get('/resetpassword/{id}','Auth\LoginController@resetpassword');//reset password
-	//Route::post('/resetpassword','Auth\LoginController@resetpass');
 
 // Admin section
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()
