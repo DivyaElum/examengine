@@ -41,14 +41,14 @@
 
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="">Title</label>
-					                  	<input type="text" name="title" value="{{ $object->title }}" id="title" class="form-control" placeholder="Enter Title" maxlength="150">
+				                  	<label for="">Title <span style="color: red">*</span></label>
+					                  	<input type="text" name="title" value="{{ $object->title }}" id="title" class="form-control" placeholder="Enter Title" maxlength="100">
 				                  	</select>
 				                </div>
 	              			</div>
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Question Category</label><br>
+				                  	<label for="">Question Category <span style="color: red">*</span></label><br>
 					                  	<select name="category[]" multiple="multiple" id="category" class="form-control" data >
 					                  		@if(!empty($categories))
 					                  			@foreach($categories as $key => $category)
@@ -62,7 +62,7 @@
 
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Questions</label><br>
+				                  	<label for="">Questions <span style="color: red">*</span></label><br>
 					                  	<select name="exam_questions[]"  multiple="multiple" id="exam_questions" class="form-control">
 					                  		@if(!empty($all_categories_questions))
 					                  			@foreach($all_categories_questions as $key => $categories_question)
@@ -76,7 +76,7 @@
 
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Duration (Hrs)</label>
+				                  	<label for="">Duration (Hrs) <span style="color: red">*</span></label>
 					                  	<input type="text" maxlength="2" value="{{ $object->duration }}" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" >
 				                  	</select>
 				                </div>
@@ -84,7 +84,7 @@
 
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Total Number Of Questions</label>
+				                  	<label for="">Total Number Of Questions <span style="color: red">*</span></label>
 				                  	<input type="text" maxlength="3" value="{{ $object->total_question }}" name="total_question" id="total_question" class="form-control" placeholder="50" maxlength="6">
 				                </div>
 	              			</div>
@@ -95,7 +95,7 @@
 										<div class="exam_days_div">
 					              			<div class="col-md-9">
 								                <div class="form-group">
-								                  	<label for="">Exam Days</label><br>
+								                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
 									                  	<select name="exam_days[{{ $slot_key }}][day]" class="form-control exam_days">
 									                  		@if(!empty($weekdays))
 									                  			@foreach($weekdays as $key => $day)
@@ -108,7 +108,7 @@
 					              			</div>
 					              			<div class="col-md-2">
 								                <div class="form-group">
-								                  	<label for="">Start Time</label><br>
+								                  	<label for="">Start Time <span style="color: red">*</span></label><br>
 								                  	<div class="row">
 								                  		<div class="col-md-9">
 								                  			<div class='input-group datetimepicker' >
@@ -172,7 +172,7 @@
 		              				<div class="exam_days_div">
 				              			<div class="col-md-9">
 							                <div class="form-group">
-							                  	<label for="">Exam Days</label><br>
+							                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
 								                  	<select name="exam_days[0][day]" class="form-control exam_days">
 								                  		@if(!empty($weekdays))
 								                  			@foreach($weekdays as $key => $day)
@@ -185,7 +185,7 @@
 				              			</div>
 				              			<div class="col-md-2">
 							                <div class="form-group">
-							                  	<label for="">Start Time</label><br>
+							                  	<label for="">Start Time <span style="color: red">*</span></label><br>
 							                  	<div class="row">
 							                  		<div class="col-md-9">
 							                  			<div class='input-group datetimepicker' >
@@ -212,7 +212,7 @@
               				</div>
 	              			
 	              			<div class="col-md-12">
-			                  	<label for="">Status </label>
+			                  	<label for="">Status <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
 								      <input type="radio" name="status" @if($object->status == 1) checked @endif value="1">Active

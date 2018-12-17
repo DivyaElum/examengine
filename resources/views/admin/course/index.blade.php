@@ -42,6 +42,9 @@
           					<thead>
           						<th>Sr. No</th>
           						<th>Title</th>
+          						<th>Course Fee</th>
+          						<th>Discount</th>
+          						<th>Total Fee</th>
           						<th>Created Date</th>
           						<th>Status</th>
           						<th>Action</th>

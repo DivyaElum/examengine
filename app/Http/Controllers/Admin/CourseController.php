@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 // models
-use App\Models\PrerequisiteModel;
+use App\Models\CourseModel;
 
 // request
 use App\Http\Requests\Admin\CourseRequest;
@@ -29,11 +29,11 @@ class CourseController extends Controller
 
     public function __construct(
 
-    	PrerequisiteModel $PrerequisiteModel
+    	CourseModel $CourseModel
 
     )
     {
-        $this->BaseModel = $PrerequisiteModel;
+        $this->BaseModel = $CourseModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -60,8 +60,10 @@ class CourseController extends Controller
 
     public function store(PrerequisiteRequest $request)
     {
+        dd('pass');
+
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
+        $this->JsonData['msg']      = 'Failed to save course, Something went wrong.';
 
         $object = new $this->BaseModel;
 
@@ -104,7 +106,7 @@ class CourseController extends Controller
         if ($object->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+            $this->JsonData['msg']      = 'Course saved successfully';
         }
 
         return response()->json($this->JsonData);
@@ -223,7 +225,7 @@ class CourseController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getPrerequisite(Request $request)
+        public function getRecords(Request $request)
         {
             /*--------------------------------------
             |  Variables
@@ -244,9 +246,12 @@ class CourseController extends Controller
                 $filter = array(
                     0 => 'id',
                     1 => 'title',
-                    2 => 'created_at',
-                    3 => 'status',
-                    4 => 'id'
+                    2 => 'amount',
+                    3 => 'discount',
+                    4 => 'calculated_amount',
+                    5 => 'created_at',
+                    6 => 'status',
+                    7 => 'id'
                 );
 
             /*--------------------------------------
@@ -268,6 +273,10 @@ class CourseController extends Controller
                             {
                                 $query->orwhere('id', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('title', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('amount', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('discount', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('discount_by', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('calculated_amount', 'LIKE', '%'.$search.'%');
                                 $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');
                                 $query->orwhere('status', 'LIKE', '%'.$search.'%');   
                             });
@@ -291,11 +300,17 @@ class CourseController extends Controller
                 {
                     foreach ($object as $key => $row) 
                     {
-                        $data[$key]['id']             = ($key+$start+1).'.';
+                        $data[$key]['id']           = ($key+$start+1).'.';
 
-                        $data[$key]['title']  = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
+                        $data[$key]['title']        = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
                         
-                        $data[$key]['created_at']     = Date('d-m-Y', strtotime($row->created_at));
+                        $data[$key]['amount']       = $row->amount;
+
+                        $data[$key]['discount']     = $row->discount.' '. $row->discount_by;
+
+                        $data[$key]['total']        = $row->calculated_amount;
+                        
+                        $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
                         if (!empty($row->status)) 
                         {
@@ -307,7 +322,7 @@ class CourseController extends Controller
                         }
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('prerequisite.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('course.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
                         $delete = '<a title="Delete" onclick="return rwDelete(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
 
                         $data[$key]['actions'] = $view.$edit.$delete;
