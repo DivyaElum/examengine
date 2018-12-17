@@ -180,7 +180,7 @@ class ExamController extends Controller
                     {
                         $slots[] = 0;
                     }
-                }   
+                }
             }
 
             // exam questions
