@@ -49,7 +49,7 @@ $strUser = app('request')->input('type');
 					  <div class="col-sm-12">
 						<div class="checkbox">
 						  <label><input type="checkbox" name="remember"> Remember me</label>
-						<a href="#" class="forgot-password">Forget Password?</a>
+						<a href="{{url('/forgot')}}" class="forgot-password">Forget Password?</a>
 						</div>
 					  </div>
 					</div>

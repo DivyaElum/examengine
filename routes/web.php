@@ -27,10 +27,7 @@ Route::get('/exam', function () {
 	Route::resource('/login', 'Auth\LoginController');
 
 	Route::get('/forgot','Auth\LoginController@forgot');//forgot password
-	Route::post('/forgot','Auth\LoginController@forgot');
-
-	//Route::get('/resetpassword/{id}','Auth\LoginController@resetpassword');//reset password
-	//Route::post('/resetpassword','Auth\LoginController@resetpass');
+	Route::post('/forgot','Auth\LoginController@forgotpassword');
 
 // Admin section
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()

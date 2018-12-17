@@ -48,7 +48,7 @@
 	</div>
 </footer>	
 <!--/  Jquery.min  --> 
-<script src="{{ asset('assets/back-to-top.js') }}"></script> 
+<script src="{{ asset('js/back-to-top.js') }}"></script> 
 <!-- <script src="{{ asset('js/custom.js') }}"></script>  -->
 @yield('scripts')
 </body>

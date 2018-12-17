@@ -43,8 +43,6 @@ class LoginController extends Controller
 
     public function store(LoginRequest $request)
     {
-        //$User = new $this->User;
-
         if(!empty($request->input())){
             $strEmail     = $request->input('txtEmail');
             $strPassword  = $request->input('txtPassword');
@@ -84,6 +82,13 @@ class LoginController extends Controller
             $this->JsonData['msg'] ='Please enter a data';
         }
         return response()->json($this->JsonData);
+    }
 
+    public function forgot(){
+        $this->ViewData['modulePath'] = $this->ModulePath;
+        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['moduleAction'] = 'forgot password';
+
+        return view($this->ModuleView.'forgot', $this->ViewData);
     }
 }
