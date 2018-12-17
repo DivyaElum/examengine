@@ -23,17 +23,30 @@ class CourseRequest extends FormRequest
      */
     public function rules()
     {
-       return [
-            'txtCategory'  => 'required',
-            'txtStatus'    => 'required',
+
+        $id = base64_decode(base64_decode($this->route('exam'))) ?? null;
+
+        return [
+            'title'             => 'required|unique:exam,title,'.$id,
+            'prerequisites'     => 'required_without_all:exam',
+            'exam'              => 'required_without_all:prerequisites',
+            'amount'            => 'required|numeric',
+            'description'       => 'required',
+            'discount'          => 'numeric',
+            'calculated_amount' => 'required|numeric',
+            'featured_image'    => 'mimes:jpeg,jpg,png,gif',
+            'status'            => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'txtCategory.required' => 'Category field is required.',
-            'txtStatus.required'   => 'Status field is required.',
+            'title.required'              => 'Title field is required.',
+            'amount.required'             => 'Course fee field is required.',
+            'calculated_amount.required'  => 'Calculated course fee field is required.',
+            'status.required'             => 'Status field is required.',
+            'description.required'             => 'Description field is required.',
         ];
     }
 }

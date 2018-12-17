@@ -1,13 +1,100 @@
-
 var $Path = $('meta[name="admin-path"]').attr('content');
-var $Module = '/prerequisite';
+var $Module = '/course';
 
-$(document).ready(function ()
+$(document).ready(function()
 {
-	setVideoType(false);	
+	$('#discount').mask('9999999');
+	$('#amount').mask('9999999');
+
+	$('#prerequisites').multiselect({ enableFiltering: true, buttonWidth: '100%' });
 })
 
+function calculateAmount()
+{
+	$('.err_calculated_amount').html('');
+	var amount = $('#amount').val();
+	var discount = $('#discount').val();
+	var discount_by = $('#discount_by').val();
 
+	var totalAmount = 0;
+
+	if (amount == '' || isNaN(amount)) 
+	{
+		$('#calculated_amount').val('');
+		return false;
+	}
+	else
+	{
+		totalAmount = amount;
+	}
+
+	if(discount != '' && !isNaN(discount))
+	{
+		discount_by = discount_by.toLowerCase();
+		switch(discount_by)
+		{
+			case 'price':
+				totalAmount = amount-discount;
+			break;
+
+			case '%':
+				discounte_amount = (amount*discount)/100; 
+				totalAmount = amount-discounte_amount;
+			break;
+		} 
+	}
+
+	console.log(totalAmount);
+
+
+	if (totalAmount > 0) 
+	{	
+		$('#calculated_amount').val(totalAmount);
+	}
+	else if(totalAmount != '') 
+	{
+		$('.err_calculated_amount').html('Fee should be greater than 0.');
+	}
+}
+
+// priview image
+function readURL(input) 
+{
+    $('.err_featured_image').html('');
+
+	var value = (input.value).toLowerCase();
+
+	var allowedExtensions = /(\.jpeg|\.jpg|\.png|\.gif)$/i;
+  	if(!allowedExtensions.exec(value))
+  	{
+	    $('.err_featured_image').html('Image format not supported, Image format should be in png, jpg or gif.')
+	    $("#featured_image").val('');
+	    $('#delete_button').hide();
+	    return false;
+  	}
+
+  	if (input.files && input.files[0]) 
+  	{
+    	var reader = new FileReader();
+    	reader.onload = function(e) 
+    	{
+      		$('#preview').attr('src', e.target.result);
+      		 $('#delete_button').show();
+    	}
+    	
+    	reader.readAsDataURL(input.files[0]);
+  	}
+}
+
+function deletePreviewImage(element)
+{
+	$('#preview').attr('src', defaultImaage);
+	$("#featured_image").val('');
+	$('#delete_button').hide();
+	$('#old_image').val('');
+}
+
+// save form data
 function saveFormData(element)
 {
 	$(element).closest('.box').LoadingOverlay("show", 
@@ -80,24 +167,4 @@ function saveFormData(element)
 	});
 
 	return false
-}
-
-
-function setVideoType(flag)
-{
-	var checkedType = $('input[name="video_type"]:checked').val();
-	
-	if(flag)
-	{
-		$('.options').find('.option_input').val('');
-	}
-
-	$('.options').hide();
-	$('.'+checkedType).show();
-}
-
-function hideOldVideoFile(element)
-{
-	$('.old_video_file_class').hide().find('input').val('');
-	$('.video_file_class').show();
 }

@@ -43,9 +43,9 @@ class ExamRequest extends FormRequest
         return [
             'title.required'                    => 'Title field is required.',
             'category.required'                 => 'Category field is required.',
-            'exam_questions.required'           => 'Wxam question field is required.',
+            'exam_questions.required'           => 'Exam question field is required.',
             'duration.required'                 => 'Duration field is required.',
-            'total_question.required'          => 'Total question field is required.',
+            'total_question.required'           => 'Total question field is required.',
             'status.required'                   => 'Status field is required.',
             'exam_days.*.day.required'          => 'Exam days field is required.',
             'exam_days.*.start_time.*.required' => 'Exam days start time field is required.',
