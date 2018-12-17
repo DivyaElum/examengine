@@ -90,6 +90,7 @@ class CourseController extends Controller
         }
         
         $object->title              = $request->title;
+        $object->description              = $request->description;
         $object->exam_id            = $request->exam;
         $object->prerequisite_id    = json_encode($request->prerequisites);
         $object->amount             = $request->amount;
@@ -165,6 +166,7 @@ class CourseController extends Controller
         }
 
         $object->title              = $request->title;
+        $object->description        = $request->description;
         $object->exam_id            = $request->exam;
         $object->prerequisite_id    = json_encode($request->prerequisites);
         $object->amount             = $request->amount;

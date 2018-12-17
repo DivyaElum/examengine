@@ -31,6 +31,7 @@ class CourseRequest extends FormRequest
             'prerequisites'     => 'required_without_all:exam',
             'exam'              => 'required_without_all:prerequisites',
             'amount'            => 'required|numeric',
+            'description'       => 'required',
             'discount'          => 'numeric',
             'calculated_amount' => 'required|numeric',
             'featured_image'    => 'mimes:jpeg,jpg,png,gif',
@@ -45,6 +46,7 @@ class CourseRequest extends FormRequest
             'amount.required'             => 'Course fee field is required.',
             'calculated_amount.required'  => 'Calculated course fee field is required.',
             'status.required'             => 'Status field is required.',
+            'description.required'             => 'Description field is required.',
         ];
     }
 }

@@ -44,7 +44,13 @@
 				                  	</select>
 				                </div>
 				            </div>
-
+				            <div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Title <span style="color: red">*</span></label>
+					                  	<textarea  name="description" id="description" class="form-control" placeholder="Enter Description" ></textarea>
+				                  	</select>
+				                </div>
+				            </div>
 			                <div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Prerequisites</label>

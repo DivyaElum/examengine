@@ -46,6 +46,13 @@
 				                  	</select>
 				                </div>
 				            </div>
+				            <div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Title <span style="color: red">*</span></label>
+					                  	<textarea  name="description" id="description" class="form-control" placeholder="Enter Description" >{{ $object->description }}</textarea>
+				                  	</select>
+				                </div>
+				            </div>
 			                <div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Prerequisites</label>
@@ -114,7 +121,7 @@
 	              				<div class="row">
 	              					<div class="col-md-4">
 	              						@php 
-	              							if(file_exists(storage_path('app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail)))
+	              							if(file_exists(storage_path('app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail)) && !empty($object->featured_image_thumbnail))
 	              							{
 	              								$featured = url('/storage/course/featuredImageThumbnails/'.$object->featured_image_thumbnail);
 	              								$show = 1;
@@ -122,6 +129,7 @@
 	              							else
 	              							{
 	              								$featured = url('/storage/prerequisite/no-image.png');
+
 	              							}
 	              						@endphp 
 	              						<img id="preview"  src="{{ $featured }}" alt="Featured Image" style="width: 100%;height: 200px;border: 1px solid #ccc;margin-left: 5px" />
