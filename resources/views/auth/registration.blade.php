@@ -16,7 +16,9 @@
 }
 </style>
 @stop
-
+@section('page_title')
+	{{ $page_title }}
+@stop
 @section('content')
 @php 
 $strUser = app('request')->input('type');

@@ -14,24 +14,35 @@
 
 @section('content')
 @php 
-$strUser = app('request')->input('type');
+$remember_token = \Request::segment(2);
 @endphp
 <div class="login-page-form">
 	<div class="container">
 		<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
 			<div class="left-form-box">
 				<h2>Forgot Password</h2>
-				<div class="alert alert-success alert-dismissible successLoginMsgAlrt">
-				    <strong><span class="successLoginMessage"></span></strong>
+				<div class="alert alert-success alert-dismissible successMsgAlrt">
+				    <strong><span class="successMessage"></span></strong>
 				  </div>
 				  <div class="alert alert-danger alert-dismissible errorLoginMsgAlrt">
 				    <strong><span class="dangerLoginMessage"></span></strong>
 				  </div>
-				  <form class="form-horizontal" name="frmForgotPassword" onsubmit="return forgotPassword(this)" method="post">
+				  <form class="form-horizontal" name="frmResetPassword" method="post">
+				  	@csrf
+				  	<input type="hidden" class="form-control" id="urltoken" placeholder="Email Address" name="urltoken"  value="{{$remember_token}}" />
 					<div class="form-group error">
 					  <div class="col-sm-12">
-						<input type="email" class="form-control" id="email" placeholder="Email Address" name="email" />
-						<span class="errors_email help-block"></span>
+						<input type="email" class="form-control" id="email" placeholder="Email Address" name="email"  value="{{$arrUserData->email}}" readonly="" />
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">
+						<input type="Password" class="form-control" id="password" placeholder="Password" name="password"  value="" />
+					  </div>
+					</div>
+					<div class="form-group error">
+					  <div class="col-sm-12">
+						<input type="Password" class="form-control" id="confirm_password" placeholder="confirm password" name="confirm_password"  value="" />
 					  </div>
 					</div>
 					<div class="form-group">        
@@ -48,5 +59,5 @@ $strUser = app('request')->input('type');
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-<script type="text/javascript" src="{{ asset('js/auth/forgotPassword.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/auth/resetPassword.js') }}"></script>
 @stop

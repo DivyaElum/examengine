@@ -20,14 +20,22 @@ Route::get('/exam', function () {
     return view('exam');
 });
 
-Route::resource('/sign-up', 'Auth\RegisterController');
+Route::resource('/sign-up', 'Auth\RegisterController'); //registration
 
-Route::post('/sign-up/login', 'Auth\RegisterController@checkLogin');
+Route::post('/sign-up/login', 'Auth\RegisterController@checkLogin'); // login
 
 Route::resource('/login', 'Auth\LoginController');
 
-Route::get('/forgot','Auth\LoginController@forgot');//forgot password
-Route::post('/forgot','Auth\LoginController@forgotpassword');
+Route::get('/forgot','Auth\ForgotPasswordController@index'); //forgot password
+Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
+
+Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index'); //reset password
+Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
+
+
+Route::get('/certification-list','Candidate\CertificationController@index'); //
+
+Route::get('/certification-detail/{id}','Candidate\CertificationDetail@index'); //
 
 
 // Admin section

@@ -24,15 +24,41 @@ $(document).ready(function()
 
         dom: 'Blfrtip',
         buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5',
-            'print'
+            {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend:  'pdfHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            'colvis'
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
         aaSorting: [[0, 'DESC']]
-
     } );
 });
 
@@ -41,21 +67,21 @@ function deleteMember(element)
     var $this = $(element);
     var id = $this.attr('data-qsnid');
     
-    var $Action = '/'+id; 
-    var $URL    = $Path+$Module+$Action; 
+    var adminPath = $('meta[name="admin-path"]').attr('content');
+    var targetURL = adminPath+$Module+'/'+id; 
 
 
     if (id != '') 
     {
         swal({
-            title: "Are you sure !!",
-            text: "You want to delete ?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Delete",
-            confirmButtonClass: "btn-danger",
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
+           title: "Are you sure !!",
+          text: "You want to delete ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Delete",
+          confirmButtonClass: "btn-danger",
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
         }, 
         function () 
         {

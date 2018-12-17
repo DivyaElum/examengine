@@ -71,6 +71,7 @@
 	<script type="text/javascript" src="{{ asset('plugins/datatable/vfs_fonts.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.html5.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.print.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.colVis.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/admin/siteSetting/index.js') }}"></script>
 @stop

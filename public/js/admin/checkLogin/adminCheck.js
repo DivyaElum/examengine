@@ -16,15 +16,10 @@ function checkLogin(element)
 	  	contentType: false,
 	  	success: function(data)
 	  	{
-	  		// $('.errortxtEmail').html('');
-    	// 	$('.errortxtEmail').closest('.form-group').removeClass('has-error');
-    	// 	$('.errortxtPassword').html('');
-    	// 	$('.errortxtPassword').closest('.form-group').removeClass('has-error');
-
 	    	if (data.status == 'success') 
 	    	{
 	    		$this[0].reset();
-    			toastr.success(data.msg);	
+    			//toastr.success(data.msg);	
 	    		$('#submit_button').show();
     			window.location.href = data.url;
 	    	}
