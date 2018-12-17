@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 
 // models
 use App\Models\CourseModel;
+use App\Models\PrerequisiteModel;
+use App\Models\ExamModel;
 
 // request
 use App\Http\Requests\Admin\CourseRequest;
@@ -29,11 +31,14 @@ class CourseController extends Controller
 
     public function __construct(
 
-    	CourseModel $CourseModel
-
+    	CourseModel $CourseModel,
+        PrerequisiteModel $PrerequisiteModel,
+        ExamModel $ExamModel
     )
     {
         $this->BaseModel = $CourseModel;
+        $this->PrerequisiteModel = $PrerequisiteModel;
+        $this->ExamModel = $ExamModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -55,6 +60,8 @@ class CourseController extends Controller
     public function create()
     {
         $this->ViewData['moduleAction'] = 'Add '.$this->ModuleTitle;
+        $this->ViewData['prerequisites'] = $this->PrerequisiteModel->where('status', 1)->get(['title','id']);
+        $this->ViewData['exams'] =  $this->ExamModel->where('status', 1)->get(['title','id']);
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
