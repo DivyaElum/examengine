@@ -64,7 +64,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <img src="images/certification_detail/certificate.jpeg" class="img-responsive certificate_img_lg" alt="">
+        <img src="{{ asset('images/certification_detail/certificate.jpeg') }}" class="img-responsive certificate_img_lg" alt="">
       </div>
     </div>
   </div>
