@@ -42,7 +42,7 @@
           					<thead>
           						<th>Sr. No</th>
           						<th>Category</th>
-          						<th>Status</th>
+          						<th>Status (Active/Inactive)</th>
           						<th>Created Date</th>
           						<th>Action</th>
           					</thead>

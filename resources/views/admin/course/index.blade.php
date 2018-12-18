@@ -46,7 +46,7 @@
           						<th>Discount</th>
           						<th>Total Fee</th>
           						<th>Created Date</th>
-          						<th>Status</th>
+          						<th>Status (Active/Inactive)</th>
           						<th>Action</th>
           					</thead>
           					<tbody>
