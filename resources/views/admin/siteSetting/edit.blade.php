@@ -37,22 +37,42 @@
 	              		<div class="row">
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="txtTitle">Title </label>
-				                  	<input type="text" name="txtTitle" id="txtTitle" class="form-control" value="{{ $object->title}}">
+				                  	<label for="site_title">Site Title  <span style="color: red">*</span></label>
+				                  	<input type="text" name="site_title" id="site_title" class="form-control" value="{{$object->site_title}}" >
 				                  	<span class="help-block err_txtTitle"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="txtValue">Value </label>
-				                  	<input type="text" name="txtValue" id="txtValue" class="form-control" value="{{ $object->value}}">
+				                  	<label for="Address">Address <span style="color: red">*</span></label>
+				                  	<input type="text" name="address" id="address" class="form-control"  value="{{$object->site_title}}" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="">Status </label>&nbsp;&nbsp;
+				                  	<label for="Address">Contact Number <span style="color: red">*</span></label>
+				                  	<input type="text" name="contact_no" id="contact_no" class="form-control"  value="{{$object->contact_no}}" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="email_id">Email Id <span style="color: red">*</span></label>
+				                  	<input type="email" name="email_id" id="email_id" class="form-control"  value="{{$object->email_id}}" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="meta_keywords">Meta Keywords</label>
+				                  	<input type="text" name="meta_keywords" id="meta_keywords" class="form-control"  value="{{$object->meta_keywords}}" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="meta_desc">Meta Descriptions </label>
+				                  	<textarea name="meta_desc" id="meta_desc" class="form-control">{{$object->meta_desc}}</textarea>
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="status">Status </label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
-								      <input type="radio" name="txtStatus" value="1" <?php if($object->status == '1') echo 'checked'; ?>>Active
+								      <input type="radio" name="status" <?php if($object->status == '1'){ echo 'checked';} ?>  value="1">Active
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" name="txtStatus" value="0" <?php if($object->status == '0') echo 'checked'; ?>>Inactive
+								      <input type="radio" name="status" value="0" <?php if($object->status == '0'){ echo 'checked';} ?>  >Inactive
 								    </label>
 				                </div>
 	              			</div>
@@ -72,5 +92,7 @@
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 	<script type="text/javascript" src="{{ asset('js/admin/siteSetting/addEditSiteSetting.js') }}"></script>
 @stop

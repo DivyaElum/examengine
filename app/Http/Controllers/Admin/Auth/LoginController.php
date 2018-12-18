@@ -16,6 +16,7 @@ use App\PasswordReset;
 use App\Models\Auth\CheckLoginModel;
 use Validator;
 use Mail;
+use Session;
 
 class LoginController extends Controller
 {
@@ -130,9 +131,14 @@ class LoginController extends Controller
      //Function for reset password
     public function resetpassword($intToken){    
     	$arrData = PasswordReset::where('token',$intToken)->first();
-    	$strEmail = $arrData->email;
-		$arrUserData['arrUserData'] = User::where('email',$strEmail)->first();
-    	return view('admin.auth.resetpassword',$arrUserData);
+    	if(!empty($arrData)){
+	    	$strEmail = $arrData->email;
+			$arrUserData['arrUserData'] = User::where('email',$strEmail)->first();
+	    	return view('admin.auth.resetpassword',$arrUserData);
+    	}else{
+    		Session::flash('errorMsg', 'Invalid Token');
+            return redirect('/admin/forgot');
+    	}
     }
     
     public function resetpass(resetPasswordRequest $request){

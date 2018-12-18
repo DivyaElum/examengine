@@ -42,6 +42,11 @@ $.ajaxSetup({
   <div class="login-box-body">
   <div class="">
     <div class="form-content">
+   	@if (session('errorMsg'))
+	 <div class="alert alert-danger">
+			 {{ session('errorMsg') }}
+	 </div>
+   	@endif
   	<div class="login-logo">
     	<p><b>Forgot Password</b></p>
   	</div>

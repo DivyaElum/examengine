@@ -176,7 +176,7 @@ class QuestionCategoryController extends Controller
                 {
                     foreach ($object as $key => $row) 
                     {
-                        $data[$key]['id']         = ($key+$start+1).'.';
+                        $data[$key]['id']         = ($key+$start+1);
                         $data[$key]['category']   = '<span title="'.$row->category_name.'">'.str_limit($row->category_name, '55', '...').'</span>';
 
                         if (!empty($row->status)) 

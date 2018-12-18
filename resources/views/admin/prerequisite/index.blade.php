@@ -32,7 +32,7 @@
 		          	<h3 class="box-title">{{ $moduleAction }}
 		          	</h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="{{'Add New '.$moduleTitle}}" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New '.$moduleTitle}}</a>
+		          		<a title="{{'Add New '.$moduleTitle}}" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>
 		          	</div>
 	        	</div>
 
@@ -40,7 +40,7 @@
           			<div class="dataTables_wrapper form-inline dt-bootstrap">
           				<table id="listingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
-          						<th>Sr. No</th>
+          						<th>Sr. No.</th>
           						<th>Title</th>
           						<th>Created Date</th>
           						<th>Status (Active/Inactive)</th>

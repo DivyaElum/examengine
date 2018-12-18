@@ -1,20 +1,19 @@
+<style type="text/css">
+.user-panel {height: 50px !important;}
+.user-panel > .info {left: 0px !important; font-size: 20px;}
+.dropdown.user.user-menu a {background-color: #3c8dbc;border-color: #3c8dbc;border-color: #3c8dbc;font-size: 16px;font-weight: 700;}
+</style>
 <aside class="main-sidebar">
     <section class="sidebar">
 
       <div class="user-panel">
-        <div class="pull-left image">
-          <img src="{{asset('dist/img/admin_avatar.png')}}" class="img-circle" alt="User Image">
-        </div>
         <div class="pull-left info">
-          <p>Admin</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <p>Welcome Admin</p>
         </div>
       </div>
 
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">MAIN NAVIGATION</li>
-
         <li class="{{ active('admin/dashboard') }}">
           <a href="{{ url('/admin') }}">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -57,7 +56,7 @@
 
         <li class="{{ active(['admin/site-setting','admin/site-setting/*']) }}">
           <a href="{{ route('site-setting.index') }}">
-            <i class="fa fa-bars"></i> <span>Site setting</span>
+            <i class="fa fa-bars"></i> <span>Site Setting</span>
           </a>
         </li>
         

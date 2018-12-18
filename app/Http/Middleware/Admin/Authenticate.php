@@ -4,6 +4,7 @@ namespace App\Http\Middleware\Admin;
 
 use Closure;
 
+use App\SiteSetting;
 class Authenticate
 {
     /**
@@ -18,13 +19,13 @@ class Authenticate
         //$user = auth()->check();
         if(auth()->check())
         {
+            $arrSiteSetting = SiteSetting::find('1');
+            view()->share('siteSetting', $arrSiteSetting);
             return $next($request);
         }
         else
         {
             return redirect('/admin/login');
         }
-        
-        
     }
 }

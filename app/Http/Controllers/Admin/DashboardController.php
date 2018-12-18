@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
+use App\SiteSetting;
+
 class DashboardController extends Controller
 {
 	private $BaseModel;
@@ -13,14 +16,16 @@ class DashboardController extends Controller
     private $ModuleTitle;
     private $ModuleView;
     private $ModulePath;
+    private $SiteSetting;
 
     // use MultiModelTrait;
 
     public function __construct(
-
-
+        SiteSetting $SiteSetting
     )
     {
+        $this->SiteSetting  = $SiteSetting;
+
         $this->ViewData = [];
         $this->JsonData = [];
 
@@ -31,11 +36,10 @@ class DashboardController extends Controller
 
    	public function index()
    	{
-
    		$this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = $this->ModuleTitle;
-
+        $this->ViewData['object']       = $this->SiteSetting->find('1');
         return view($this->ModuleView, $this->ViewData);
    	}
 }
