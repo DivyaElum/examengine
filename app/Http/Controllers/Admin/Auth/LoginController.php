@@ -110,7 +110,7 @@ class LoginController extends Controller
 		  		$strEmail = $arrUserData->email;
 		  		
 		  		//Mail::to($strEmail)->send(new passwordResetMail);
-				echo $url = url('admin/resetpassword/'.base64_encode(base64_encode($intId)));die('Password has been updated successfully.');
+				echo $url = url('admin/resetpassword/'.base64_encode(base64_encode($intId)));
 
 				//save token 
 				$post = PasswordReset::create([
