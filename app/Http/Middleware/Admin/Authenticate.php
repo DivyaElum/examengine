@@ -16,9 +16,12 @@ class Authenticate
     public function handle($request, Closure $next)
     {
         //$user = auth()->check();
-        if(auth()->check()){
+        if(auth()->check())
+        {
             return $next($request);
-        }else{
+        }
+        else
+        {
             return redirect('/admin/login');
         }
         
