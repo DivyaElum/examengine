@@ -12,8 +12,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/buttons.dataTables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/sweetalert/sweetalert.css') }}">
 	<style type="text/css">
-	.btn.btn-default.btn-circle.stsActiveClass {background-color: green;color: #fff;border-color: green;}
-	.btn.btn-default.btn-circle.stsInactiveClass {background-color: red;color: #fff;border-color: red;}
+		.stsActiveClass {background-color: green;color: #fff;border-color: green;}
+		.stsInactiveClass {background-color: red;color: #fff;border-color: red;}
 	</style>
 @stop
 

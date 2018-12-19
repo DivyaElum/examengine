@@ -20,11 +20,12 @@ Route::get('/exam', function () {
     return view('exam');
 });
 
-Route::resource('/sign-up', 'Auth\RegisterController'); //registration
+Route::resource('/signup', 'Auth\RegisterController'); //registration
 
-Route::post('/sign-up/login', 'Auth\RegisterController@checkLogin'); // login
+//Route::post('/login', 'Auth\RegisterController@checkLogin'); // login
 
 Route::resource('/login', 'Auth\LoginController');
+
 
 Route::get('/forgot','Auth\ForgotPasswordController@index'); //forgot password
 Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
@@ -32,11 +33,15 @@ Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
 Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index'); //reset password
 Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
 
+Route::get('/certification-list','Candidate\CertificationController@index');
+Route::get('/certification-detail/{id}','Candidate\CertificationDetail@index'); 
 
-Route::get('/certification-list','Candidate\CertificationController@index'); //
+Route::group(['middleware' => 'UserAuthenticate'],function()
+{
+	Route::get('/dashboard', 'Candidate\DashbordController@index');
 
-Route::get('/certification-detail/{id}','Candidate\CertificationDetail@index'); //
-
+	Route::get('/course-details/{id}', 'Candidate\CourseController@index');
+});
 
 // Admin section
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()

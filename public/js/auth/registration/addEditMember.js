@@ -74,7 +74,7 @@ $('#btn_register').click(function(){
 			   $.ajax({
 					type: "POST", 
 					dataType: "JSON",
-					url: "/sign-up",
+					url: "/signup",
 					data: formData,
 					processData: false,
 	  				contentType: false,

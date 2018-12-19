@@ -38,7 +38,7 @@ class RegisterController extends Controller
 
         $this->ModuleTitle = '';
         $this->ModuleView  = 'auth.';
-        $this->ModulePath  = 'sign-up';
+        $this->ModulePath  = 'signup';
 
     }
     public function index()

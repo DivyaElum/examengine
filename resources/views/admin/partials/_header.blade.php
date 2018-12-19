@@ -17,7 +17,7 @@
         <ul class="nav navbar-nav">
 
           <li class="dropdown user user-menu">
-              <a href="{{ url('/admin/logout') }}" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> Log out</a>
+              <a href="{{ url('/admin/logout') }}" class="btn btn-default btn-flat" title="Log out"><i class="fa fa-sign-out"></i></a>
           </li>
         </ul>
       </div>

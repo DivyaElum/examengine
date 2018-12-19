@@ -41,8 +41,8 @@ class LoginController extends Controller
     public function store(LoginRequest $request)
     {
         if(!empty($request->input())){
-            $strEmail     = $request->input('txtEmail');
-            $strPassword  = $request->input('txtPassword');
+            $strEmail     = $request->input('email');
+            $strPassword  = $request->input('password');
             $strHashPass  =  Hash::make($strPassword);
             
             //check user exists in db
@@ -64,7 +64,7 @@ class LoginController extends Controller
             if (auth()->attempt(['email' => $strEmail, 'password' => $strPassword], $remember_me))
             {
                 $this->JsonData['status'] = 'success';
-                $this->JsonData['url']    = '/admin/dashboard';
+                $this->JsonData['url']    = '/candidate/dashboard';
                 $this->JsonData['msg']    = 'login successfully.';
             }
             else

@@ -4,7 +4,7 @@ function checkLogin(element)
 {
 	var $this = $(element);            		
 	var formData = new FormData($this[0]);	
-	var action = '/sign-up/login';
+	var action = '/login';
 	//$('#submit_button').hide();
 	
 	$.ajax(
@@ -24,8 +24,14 @@ function checkLogin(element)
 	    		$this[0].reset();
 	    		$('.errorLoginMsgAlrt').hide();
 			    $('.dangerLoginMessage').html('');
-    			$('.successLoginMsgAlrt').show();
-			    $('.successLoginMessage').html(data.msg);
+    			//$('.successLoginMsgAlrt').show();
+			    //$('.successLoginMessage').html(data.msg);
+
+			    setTimeout(function ()
+		    	{
+		    		window.location.href = data.url;
+		    	}, 1000)
+
 	    	}
 	    	else
 	    	{

@@ -61,8 +61,8 @@
       <li> <a href="#">faq</a> </li>
       <li> <a href="#">Contact Us</a> </li>
     </div>
-      <li class="become-a-canditate-btn"> <a href="{{ route('sign-up.index') }}?type=candidate">Become A Candidate</a> </li>
-      <li class="become-a-service-provider-btn"> <a href="{{ route('sign-up.index') }}?type=customer">Become A Service Provider</a> </li>
+      <li class="become-a-canditate-btn"> <a href="{{ route('signup.index') }}?type=candidate">Become A Candidate</a> </li>
+      <li class="become-a-service-provider-btn"> <a href="{{ route('signup.index') }}?type=customer">Become A Service Provider</a> </li>
     </ul>
     <div class="toggle-menu"> <span></span> </div>
   </div>
@@ -70,11 +70,12 @@
 </div>
 <!--/  Header End  -->  
 
-<div class="login-banner">
+<!-- <div class="login-banner">
   <div class="container">
     <h1>
       @yield('page_title')
     </h1>
   </div>  
-</div>
+</div> -->
+
 <!--/ login banner end  --->
