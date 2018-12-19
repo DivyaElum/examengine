@@ -60,15 +60,14 @@ $(document).ready(function()
     } );
 });
 
-function deleteMember(element)
+function deleteQuestionFromRepository(element)
 {
     var $this = $(element);
     var id = $this.attr('data-qsnid');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/concil-member/'+id; 
-
-
+    var targetURL = adminPath+'/repository/'+id; 
+    
     if (id != '') 
     {
         swal({

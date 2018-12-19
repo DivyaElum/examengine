@@ -14,7 +14,7 @@
 
 	    <section class="content-header">
 	      <h1>
-	        {{ $moduleTitle }}
+	        {{ $moduleAction }}
 	      </h1>
 	      <ol class="breadcrumb">
 	        <li class=""><a href="{{ url('/admin/dashboard') }}">Dashboard</a></li>
@@ -26,7 +26,7 @@
 
 	      	<div class="box">
 	        	<div class="box-header with-border">
-		          	<h3 class="box-title">{{ $moduleAction }}</h3>
+		          	<h3 class="box-title"></h3>
 		          	<div class="box-tools pull-right">
 		            	<a title="Back to Repository" href="{{ route($modulePath.'.index')  }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>

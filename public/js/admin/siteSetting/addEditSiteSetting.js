@@ -31,7 +31,7 @@ function saveSiteSetting(element)
     			{
     				window.location.href = data.url;
 
-    			}, 3000);
+    			}, 2000);
 	    	}
 	    	else
 	    	{

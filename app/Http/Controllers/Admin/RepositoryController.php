@@ -299,7 +299,7 @@ class RepositoryController extends Controller
                 {
                     foreach ($object as $key => $row) 
                     {
-                        $data[$key]['id']             = ($key+$start+1).'.';
+                        $data[$key]['id']             = ($key+$start+1);
 
                         $data[$key]['question_text']  = '<span title="'.$row->question_text.'">'.ucfirst(str_limit($row->question_text, '55', '...')).'</span>';
                         

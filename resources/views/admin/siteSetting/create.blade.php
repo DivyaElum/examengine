@@ -14,7 +14,7 @@
 
 	    <section class="content-header">
 	      <h1>
-	        {{ $moduleTitle }}
+	        {{ $moduleAction }}
 	      </h1>
 	      <ol class="breadcrumb">
 	        <li class=""><a href="{{ url('/admin/dashboard') }}">Dashboard</a></li>
@@ -26,7 +26,7 @@
 
 	      	<div class="box">
 	        	<div class="box-header with-border">
-		          	<h3 class="box-title">{{ $moduleAction }}</h3>
+		          	<h3 class="box-title"></h3>
 		          	<div class="box-tools pull-right">
 		            	<a title="Back to Repository" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
@@ -36,22 +36,42 @@
 	              		<div class="row">
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="txtTitle">Title </label>
-				                  	<input type="text" name="txtTitle" id="txtTitle" class="form-control" required="">
+				                  	<label for="site_title">Site Title  <span style="color: red">*</span></label>
+				                  	<input type="text" name="site_title" id="site_title" class="form-control" >
 				                  	<span class="help-block err_txtTitle"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="txtValue">Value </label>
-				                  	<input type="text" name="txtValue" id="txtValue" class="form-control" required="">
+				                  	<label for="Address">Address <span style="color: red">*</span></label>
+				                  	<input type="text" name="address" id="address" class="form-control" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="">Status </label>&nbsp;&nbsp;
+				                  	<label for="Address">Contact Number <span style="color: red">*</span></label>
+				                  	<input type="text" name="contact_no" id="contact_no" class="form-control" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="email_id">Email Id <span style="color: red">*</span></label>
+				                  	<input type="email" name="email_id" id="email_id" class="form-control" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="meta_keywords">Meta Keywords </label>
+				                  	<input type="text" name="meta_keywords" id="meta_keywords" class="form-control" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="meta_desc">Meta Descriptions </label>
+				                  	<input type="text" name="meta_desc" id="meta_desc" class="form-control" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="status">Status </label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
-								      <input type="radio" name="txtStatus" checked value="1">Active
+								      <input type="radio" name="status" checked value="1">Active
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" name="txtStatus" value="0">Inactive
+								      <input type="radio" name="status" value="0">Inactive
 								    </label>
 				                </div>
 	              			</div>	

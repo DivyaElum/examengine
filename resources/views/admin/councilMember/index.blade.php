@@ -11,6 +11,10 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/responsive.bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/buttons.dataTables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/sweetalert/sweetalert.css') }}">
+	<style type="text/css">
+	.btn.btn-default.btn-circle.stsActiveClass {background-color: green;color: #fff;border-color: green;}
+	.btn.btn-default.btn-circle.stsInactiveClass {background-color: red;color: #fff;border-color: red;}
+	</style>
 @stop
 
 @section('content')
@@ -18,7 +22,7 @@
 
 	    <section class="content-header">
 	      <h1>
-	        {{ $moduleTitle }}
+	        {{ $moduleAction }}
 	      </h1>
 	      <ol class="breadcrumb">
 	        <li class=""><a href="{{ url('/admin/dashboard') }}">Dashboard</a></li>
@@ -29,10 +33,9 @@
 	    <section class="content">
 	      	<div class="box">
 	        	<div class="box-header with-border">
-		          	<h3 class="box-title">{{ $moduleAction }}
-		          	</h3>
+		          	<h3 class="box-title"></h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New '.$moduleTitle}}</a>
+		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>
 		          	</div>
 	        	</div>
 
@@ -40,7 +43,7 @@
           			<div class="dataTables_wrapper form-inline dt-bootstrap">
           				<table id="listingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
-          						<th>Sr. No</th>
+          						<th>Sr. No.</th>
           						<th>Name</th>
           						<th>Email</th>
           						<th>Designation</th>

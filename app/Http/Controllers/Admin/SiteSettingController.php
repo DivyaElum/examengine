@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SiteSettingRequest;
+use App\Http\Requests\Admin\SiteSettingRequest;
 use Illuminate\Support\Facades\Hash;
 
 use App\User;
@@ -15,8 +15,6 @@ use App\SiteSetting;
 class SiteSettingController extends Controller
 {
     private $SiteSetting;
-
-    // use MultiModelTrait;
 
     public function __construct(
 
@@ -55,13 +53,18 @@ class SiteSettingController extends Controller
        return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    public function store(Request $request)
+    public function store(SiteSettingRequest $request)
     {
+        //dd($request->all());
         $SiteSetting = new $this->SiteSetting;
 
-        $SiteSetting->title   = $request->txtTitle;
-        $SiteSetting->value   = $request->txtValue;
-        $SiteSetting->status  = $request->txtStatus;
+        $SiteSetting->site_title    = $request->site_title;
+        $SiteSetting->address       = $request->address;
+        $SiteSetting->contact_no    = $request->contact_no;
+        $SiteSetting->email_id      = $request->email_id;
+        $SiteSetting->meta_keywords = $request->meta_keywords;
+        $SiteSetting->meta_desc     = $request->meta_desc;
+        $SiteSetting->status        = $request->status;
         
         if ($SiteSetting->save()) 
         {
@@ -148,9 +151,9 @@ class SiteSettingController extends Controller
                 {
                     foreach ($object as $key => $row) 
                     {
-                        $data[$key]['id']           = ($key+$start+1).'.';
-                        $data[$key]['title']        = '<span title="'.$row->title.'">'.str_limit($row->title, '55', '...').'</span>';
-                        $data[$key]['value']        = $row->value;
+                        $data[$key]['id']           = ($key+$start+1);
+                        $data[$key]['site_title']   = '<span title="'.$row->site_title.'">'.str_limit($row->site_title, '55', '...').'</span>';
+                        $data[$key]['email_id']     = $row->email_id;
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
@@ -195,16 +198,20 @@ class SiteSettingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SiteSettingRequest $request, $id)
     {
         $SiteSetting = new $this->SiteSetting;
 
         $intId = base64_decode(base64_decode($id));
         $SiteSetting = $this->SiteSetting->find($intId);
 
-        $SiteSetting->title   = $request->txtTitle;
-        $SiteSetting->value   = $request->txtValue;
-        $SiteSetting->status  = $request->txtStatus;
+        $SiteSetting->site_title    = $request->site_title;
+        $SiteSetting->address       = $request->address;
+        $SiteSetting->contact_no    = $request->contact_no;
+        $SiteSetting->email_id      = $request->email_id;
+        $SiteSetting->meta_keywords = $request->meta_keywords;
+        $SiteSetting->meta_desc     = $request->meta_desc;
+        $SiteSetting->status        = $request->status;
         
         if ($SiteSetting->save()) 
         {

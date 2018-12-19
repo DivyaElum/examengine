@@ -16,19 +16,12 @@ class SessionDataCheckMiddleware {
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        
-        $bag = Session::all();
-        
-        $max = config('session.lifetime') * 60; // min to hours conversion
-        
-        if (($bag && $max < (time() - $bag->getLastUsed()))) {
-            
-            $request->session()->flush(); // remove all the session data
-            
-            Auth::logout(); // logout user
-            
-        }
- 
+        // $bag = Session::all();
+        // $max = config('session.lifetime') * 60; // min to hours conversion
+        // if (($bag && $max < (time() - $bag->getLastUsed()))) {
+        //     $request->session()->flush(); // remove all the session data
+        //     Auth::logout(); // logout user
+        // }
         return $next($request);
     }
  

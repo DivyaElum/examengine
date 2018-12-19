@@ -11,46 +11,10 @@ $(document).ready(function()
         ajax: targetURL,
         columns: [
             { "data": "id",         "ordereble": "true"},
-            { "data": "title",      "ordereble": "true"},
-            { "data": "value",      "ordereble": "true"},
+            { "data": "site_title", "ordereble": "true"},
+            { "data": "email_id",   "ordereble": "true"},
             { "data": "created_at", "ordereble": "true"},
             { "data": "actions"}
-        ],
-
-        dom: 'Blfrtip',
-        buttons: [
-            {
-                extend: 'copyHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'excelHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            
-            {
-                extend: 'csvHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend:  'pdfHtml5',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            {
-                extend: 'print',
-                exportOptions: {
-                    columns: ':visible'
-                }
-            },
-            'colvis'
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
         aaSorting: [[0, 'DESC']]

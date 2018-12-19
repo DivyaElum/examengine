@@ -312,7 +312,7 @@ class QuestionTypeController extends Controller
                 {
                     foreach ($object as $key => $row) 
                     {
-                        $data[$key]['id']             = ($key+$start+1).'.';
+                        $data[$key]['id']             = ($key+$start+1);
 
                         $data[$key]['title']  = '<span title="'.$row->title.'">'.str_limit($row->title, '55', '...').'</span>';
                         
