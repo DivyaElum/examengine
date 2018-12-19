@@ -71,7 +71,19 @@ class PaymentController extends Controller
 	{
 		$this->JsonData = self::_execute($request);
 
-		return response()->json($this->JsonData);
+		if ($this->JsonData['status'] == '404' ) 
+		{
+			abort(404);
+		}
+		else
+		{
+			return view($this->JsonData['view']);
+		}
+	}
+
+	public function cancel(Request $request)
+	{
+		return redirect('/certification-list');
 	}
 
 	/*------------------------------
@@ -181,13 +193,12 @@ class PaymentController extends Controller
 		$course_payment = \Session::get('course_payment');
 		$course = \Session::get('course');
 
-		dd(json_encode((array)$course_payment));
-
 		$paymentId 	= $request->paymentId;
 		$PayerID 	= $request->PayerID;
 
-		if ($paymentId == $course_payment->id) 
-		{		
+		
+		if (!empty($course_payment->id) && $paymentId == $course_payment->id) 
+		{
 				
 			$payment 	= Payment::get($paymentId, $this->ApiContext);
 
@@ -219,28 +230,38 @@ class PaymentController extends Controller
 				$object->description    = $result->transactions[0]->description;
 
 				$object->payment_response = json_encode((array)$result);
-
 				if ($object->save()) 
 				{
+					// \Session::forget('course_payment');
+					// \Session::forget('course');
+
+					\Session::flush();
+
 					DB::commit();
-					return view('payment.success');
+					$this->JsonData['status'] = 'success';
+					$this->JsonData['view'] = 'payment.success';
 				}
 				else
 				{
 					DB::rollback();
-					return view('payment.failed');
+					$this->JsonData['status'] = 'error';
+					$this->JsonData['view'] = 'payment.failed';
 				}
 			}
 			else
 			{
 				DB::rollback();
-				return view('payment.failed');
+				$this->JsonData['status'] = 'error';
+				$this->JsonData['view'] = 'payment.failed';
 			}
 		}
 		else
 		{
 			DB::rollback();
-			return view('payment.failed');
+			$this->JsonData['status'] = '404';
+			$this->JsonData['view'] = 'payment.failed';
 		}
+
+		return $this->JsonData;
 	}
 }
