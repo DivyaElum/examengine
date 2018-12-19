@@ -19,6 +19,13 @@ Route::get('/', function () {
 Route::get('/exam', function () {
     return view('exam');
 });
+ 
+Route::group(['prefix' => 'purchase'],function()
+{
+	Route::post('/', 	   'PaymentController@purchase')->name('purchase');
+	Route::get('/response','PaymentController@response')->name('purchase.response');
+	Route::get('/cancel',  'PaymentController@cancel')->name('purchase.cancel');
+});
 
 Route::resource('/signup', 'Auth\RegisterController'); //registration
 

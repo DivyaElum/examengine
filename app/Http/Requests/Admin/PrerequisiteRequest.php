@@ -14,14 +14,13 @@ class PrerequisiteRequest extends FormRequest
     public function rules()
     {
         $id = base64_decode(base64_decode($this->route('prerequisite'))) ?? null;
+
         if (empty($id)) 
         {
             return [
                 'title'        => 'required|unique:prerequisite,title,'.$id,
                 'status'       => 'required',
-                'video_file'   => 'required_without_all:video_url,youtube_url | mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
-                'video_url'    => 'required_without_all:video_file,youtube_url',
-                'youtube_url'  => 'required_without_all:video_file,video_url,old_video_file',
+                'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
             ];
         }
         else
@@ -38,7 +37,7 @@ class PrerequisiteRequest extends FormRequest
                 return [
                     'title'        => 'required|unique:prerequisite,title,'.$id,
                     'status'       => 'required',
-                    'video_file'   => 'required_without_all:video_url,youtube_url | mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
+                    'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                     'video_url'    => 'required_without_all:video_file,youtube_url',
                     'youtube_url'  => 'required_without_all:video_file,video_url',
                 ];

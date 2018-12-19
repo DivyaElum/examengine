@@ -60,6 +60,16 @@ class PrerequisiteController extends Controller
 
     public function store(PrerequisiteRequest $request)
     {
+        // validation 
+        if (empty($request->video_file) && empty($request->video_url) && empty($request->youtube_url)) 
+        {
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = 'Please select atleast one video file or url';
+
+            return response()->json($this->JsonData);
+            exit;
+        }
+
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
 
