@@ -6,11 +6,14 @@
 
 
 @section('styles')
-<link href="{{ asset('/css/certification_list_style.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ asset('/css/certification_list_style.css') }}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 @stop
+
 @section('page_title')
 	{{ $page_title }}
 @stop
+
 @section('content')
 <div class="bodyContent clearfix">
 	<div class="container">
@@ -46,7 +49,11 @@
 												<span>left at this price!</span>
 											</div>
 											<br>
-											<a href="#" class="large-btn">Buy Now</a>
+											<form action="{{ route('purchase') }}" onsubmit="return makePayment(this)">
+												<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(1)) }}">
+												<input type="hidden" name="crd" value="{{ base64_encode(base64_encode(1)) }}">
+												<button type="submit" class="large-btn">Buy Now</button>
+											</form>
 											<a href="/certification-list" class="link clearfix">Back to Courses</a>
 										</div>										
 									</div>
@@ -59,6 +66,7 @@
 		</div>
 	</div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -71,5 +79,9 @@
 </div>
 @stop
 @section('scripts')
-
+	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/candidate/certification/details.js') }}"></script>
 @stop
