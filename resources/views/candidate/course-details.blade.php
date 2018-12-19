@@ -50,25 +50,23 @@
 						<div class="row">
 							@php 
 							foreach($arrPrerequisites as $row) { @endphp
-							<div class="col-md-4 col-sm-6 col-xs-6 col-12">
+							<div class="col-md-6 col-sm-6 col-xs-6 col-12">
 								<div class="thumbImg">
 									<img src="images/dashboard/thumb-img.jpg" alt="" class="img-responsive">
 								</div>
 								<div class="thumbCont">
 									<div class="title">
-										{{$row->title }}
+										<p><b>Title </b>: {{$row->title }}</p>
 										<?php 
 										if($row->video_file_original_name != '') {?>
-											<span>Video Name : {{$row->video_file_original_name }}</span>
+											<p><b>Video Name </b>: <a href="{{$row->video_file_original_name }}" target="_blank"> {{$row->video_file_original_name }}</a></p>
 										<?php }elseif($row->video_url != ''){ ?>
-											<span>Video Name : {{$row->video_file_original_name }}</span>
-											<span>Video URL : {{$row->video_url }}</span>
+											<p><b>Video Name </b>: {{$row->video_file_original_name }}</p>
+											<p><b>Video URL </b>:<a href="{{$row->video_url }}" target="_blank"> {{$row->video_url }}</a></p>
 										<?php }else{ ?>
-											<span>Video Name : {{$row->video_file_original_name }}</span>
-											<span>Youtube Video URL : {{$row->youtube_url }}</span>
+											<p><b>Video Name </b>: {{$row->video_file_original_name }}</p>
+											<p><b>Youtube Video URL </b>: <a href="{{$row->youtube_url }}" target="_blank"> {{$row->youtube_url }}</a></p>
 										<?php } ?>
-
-										<i class="fa fa-check-square completed" aria-hidden="true"></i>
 									</div>
 								</div>
 							</div>
