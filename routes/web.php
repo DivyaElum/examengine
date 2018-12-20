@@ -29,10 +29,12 @@ Route::group(['prefix' => 'purchase'],function()
 
 Route::resource('/signup', 'Auth\RegisterController'); //registration
 
+Route::get('/logout', 'Auth\LoginController@logout'); //logout
+Route::post('/logout', 'Auth\LoginController@logout');
+
 //Route::post('/login', 'Auth\RegisterController@checkLogin'); // login
 
 Route::resource('/login', 'Auth\LoginController');
-
 
 Route::get('/forgot','Auth\ForgotPasswordController@index'); //forgot password
 Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');

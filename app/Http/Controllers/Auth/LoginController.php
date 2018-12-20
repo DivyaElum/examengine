@@ -80,4 +80,11 @@ class LoginController extends Controller
         }
         return response()->json($this->JsonData);
     }
+
+    //Function for logout
+    public function logout()
+    {
+        auth()->logout();
+        return redirect('/signup');
+    }
 }
