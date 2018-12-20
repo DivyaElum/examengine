@@ -6,6 +6,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="base-path" content="{{ url('/') }}">
+
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <title>@yield('title') | <?php echo $siteSetting->site_title ?? config('app.name'); ?></title>
 <!-- <title>MSC | Managed Services Council</title> -->

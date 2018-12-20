@@ -39,7 +39,7 @@
 									<div class="title">
 										<p><b>Title </b>: {{$row->title }}</p>
 
-										<span><a href="">Take Exam</a></span>
+										<span><a onclick="return startExam(this)" data-token="{{$row->id}}" class="btn btn-info">Take Exam</a></span><br>
 										
 										<?php 
 										if($row->video_file_original_name != '') 
@@ -105,4 +105,6 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
+<script type="text/javascript" src="{{ asset('/js/front/course/details.js') }}"></script>
+
 @stop
