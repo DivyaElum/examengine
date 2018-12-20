@@ -5,6 +5,7 @@
 | FRONT END ROUTES
 |--------------------------------------------------------------------------
 */
+
 	// test
 	Route::get('/', function () {
 	    return view('welcome');
@@ -54,6 +55,7 @@
 	{
 		Route::get('/details/{id}', 'Candidate\CourseController@index');
 		Route::get('/{token}/varify', 'Candidate\CourseController@varify');
+		Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
 	});
 
 /*

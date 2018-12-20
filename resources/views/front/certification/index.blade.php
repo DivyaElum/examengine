@@ -26,7 +26,7 @@
 							</div>
 						</div>
 						<div class="cardContent">
-							<h2 class="price"><span>${{ $row->discount}}</span> ${{ $row->amount}}</h2>
+							<h2 class="price"><span>${{ $row->discount}}</span> ${{ $row->calculated_amount}}</h2>
 							<p><?php echo str_limit($row->description, '100', '...'); ?></p>
 							<a href="{{ url('/certification/detail/'.base64_encode(base64_encode($row->id))) }}" class="btnArrow"><span></span></a>
 						</div>

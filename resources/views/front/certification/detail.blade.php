@@ -33,6 +33,7 @@
 									<p>{{ $arrCerficationDetils->description}}</p>
 								</div>
 								<div class="col-md-4">
+									
 									<div class="sidebar">
 										<div class="certificatePreview">
 											<img src="{{ asset('images/certification_detail/certificate.jpeg') }}" class="img-responsive" alt="">
@@ -42,7 +43,7 @@
 										<div class="courseBuyDetails">
 											<h4>Learn More <span>with a premium membership</span></h4>
 											<p>Sign up for a Premium Membership to learn courses for Internet-free viewing.</p>
-											<h2 class="price"><span>${{ $arrCerficationDetils->discount}}</span> ${{ $arrCerficationDetils->amount}}</h2>
+											<h2 class="price"><span>${{ $arrCerficationDetils->discount}}</span> ${{ $arrCerficationDetils->calculated_amount}}</h2>
 											<div class="timeLeft">
 												<i class="fa fa-history" aria-hidden="true"></i>
 												52 minutes 
@@ -53,7 +54,7 @@
 												<a href="{{ url('/signup') }}" class="large-btn">Buy Now</a>
 											@else
 											<form action="{{ route('purchase') }}" onsubmit="return makePayment(this)">
-												<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(1)) }}">
+												<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
 												<input type="hidden" name="pcd" value="{{ base64_encode(base64_encode($arrCerficationDetils->id)) }}">
 												<button type="submit" class="large-btn">Buy Now</button>
 											</form>
@@ -70,6 +71,7 @@
 		</div>
 	</div>
 </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
