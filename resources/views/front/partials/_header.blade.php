@@ -54,28 +54,30 @@
     <ul class="navigation">
       <li class="active"> <a href="/sign-up">Home</a> </li>
       <!-- <li> <a href="#">Certifications</a> </li> -->
-      <li> <a href="/certification-list">Certifications listing</a> </li>
+      <li> <a href="/certification">Certifications listing</a> </li>
       <li> <a href="#">Membership</a> </li>
     <div class="show-mobile">
       <li> <a href="#">About Us</a> </li>
       <li> <a href="#">faq</a> </li>
       <li> <a href="#">Contact Us</a> </li>
     </div>
+    @if(auth()->check() == '')
       <li class="become-a-canditate-btn"> <a href="{{ route('signup.index') }}?type=candidate">Become A Candidate</a> </li>
       <li class="become-a-service-provider-btn"> <a href="{{ route('signup.index') }}?type=customer">Become A Service Provider</a> </li>
+    @endif
     </ul>
     <div class="toggle-menu"> <span></span> </div>
   </div>
   </div>
 </div>
 <!--/  Header End  -->  
-
-<!-- <div class="login-banner">
+@if(!auth()->check())
+<div class="login-banner">
   <div class="container">
     <h1>
       @yield('page_title')
     </h1>
   </div>  
-</div> -->
-
+</div>
+@endif
 <!--/ login banner end  --->

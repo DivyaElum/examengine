@@ -40,15 +40,23 @@ Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
 Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index'); //reset password
 Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
 
-Route::get('/certification-list','Candidate\CertificationController@index');
-Route::get('/certification-detail/{id}','Candidate\CertificationDetail@index'); 
 
 Route::group(['middleware' => 'UserAuthenticate'],function()
 {
 	Route::get('/dashboard', 'Candidate\DashbordController@index');
-
-	Route::get('/course-details/{id}', 'Candidate\CourseController@index');
+	
 });
+Route::group(['prefix' => 'certification'],function()
+{
+	Route::get('/','Candidate\CertificationController@index');
+	Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+});
+
+Route::group(['prefix' => 'course'],function()
+{
+	Route::get('/details/{id}', 'Candidate\CourseController@index');
+});
+
 
 // Admin section
 Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()

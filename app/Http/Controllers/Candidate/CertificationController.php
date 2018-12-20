@@ -22,17 +22,27 @@ class CertificationController extends Controller
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Certification Listing';
-        $this->ModuleView  = 'candidate.';
+        $this->ModuleView  = 'front.certification.';
         $this->ModulePath  = 'CourseModel';
     }
     public function index()
     {
-        $this->ViewData['page_title']   = 'Listings of Certifications';
-    	$this->ViewData['moduleTitle']  = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = str_plural($this->ModuleTitle);
-        $this->ViewData['modulePath']   = $this->ModulePath;
-        $this->ViewData['arrCerficationList'] = $this->CourseModel->get();
+        $this->ViewData['page_title']           = 'Listings for Certifications';
+    	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
+        $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
+        $this->ViewData['modulePath']           = $this->ModulePath;
+        $this->ViewData['arrCerficationList']   = $this->CourseModel->get();
 
-        return view($this->ModuleView.'certification_list', $this->ViewData);
+        return view($this->ModuleView.'index', $this->ViewData);
+    }
+    public function detail($indId)
+    {
+        $this->ViewData['page_title']           = 'Detail page for Certification';
+        $this->ViewData['moduleTitle']          = $this->ModuleTitle;
+        $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
+        $this->ViewData['modulePath']           = $this->ModulePath;
+        $this->ViewData['arrCerficationDetils'] = $this->CourseModel->find(base64_decode(base64_decode($indId)));
+        
+        return view($this->ModuleView.'detail', $this->ViewData);
     }
 }

@@ -1,4 +1,4 @@
-@extends('master')
+@extends('front.master')
 
 @section('title')
 	{{ $moduleAction }}

@@ -1,4 +1,4 @@
-@extends('master')
+@extends('front.master')
 
 @section('title')
 	{{ $moduleAction }}
@@ -28,7 +28,7 @@
 						<div class="cardContent">
 							<h2 class="price"><span>${{ $row->discount}}</span> ${{ $row->amount}}</h2>
 							<p><?php echo str_limit($row->description, '100', '...'); ?></p>
-							<a href="{{ url('/certification-detail/'.base64_encode(base64_encode($row->id))) }}" class="btnArrow"><span></span></a>
+							<a href="{{ url('/certification/detail/'.base64_encode(base64_encode($row->id))) }}" class="btnArrow"><span></span></a>
 						</div>
 					</div>
 				</div>
