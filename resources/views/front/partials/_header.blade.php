@@ -45,6 +45,9 @@
           <li><a href="#">About Us</a></li>
           <li><a href="#">FAQ</a></li>
           <li><a href="#">Contact Us</a></li>
+           @if(auth()->check())
+            <li><a href="{{ url('/logout') }}">Logout</a></li>
+          @endif
         </ul>
       </div>
     </div>
