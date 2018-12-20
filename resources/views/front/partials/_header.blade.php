@@ -10,7 +10,6 @@
 
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 <title>@yield('title') | <?php echo $siteSetting->site_title ?? config('app.name'); ?></title>
-
 <!-- <title>MSC | Managed Services Council</title> -->
 
 <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
@@ -39,8 +38,8 @@
     <div class="container">
       <div class="top-left">
         <ul>
-          <li><i class="fa fa-phone" aria-hidden="true"></i>Customer Services: <a href="tel:<?php echo $siteSetting->contact_no ?? '' ?>" data-title="<?php echo $siteSetting->contact_no ?? '' ?>"><span><?php echo $siteSetting->contact_no ?? '' ?></span></a></li>
-          <li><i class="fa fa-envelope" aria-hidden="true"></i>Email: <a href="mailto:<?php echo $siteSetting->email_id ?? '' ?>"><span><?php echo $siteSetting->email_id ?? '' ?></span></a></li>
+          <li><i class="fa fa-phone" aria-hidden="true"></i>Customer Services: <a href="tel:18006729205" data-title="18006729205"><span>1-800-672-9205</span></a></li>
+          <li><i class="fa fa-envelope" aria-hidden="true"></i>Email: <a href="mailto:info@msc.com"><span>info@msc.com</span></a></li>
         </ul>
       </div>
       <div class="top-right">
@@ -48,6 +47,9 @@
           <li><a href="#">About Us</a></li>
           <li><a href="#">FAQ</a></li>
           <li><a href="#">Contact Us</a></li>
+           @if(auth()->check())
+            <li><a href="{{ url('/logout') }}">Logout</a></li>
+          @endif
         </ul>
       </div>
     </div>
