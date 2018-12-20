@@ -66,10 +66,10 @@
 											<p><b>Youtube Video URL </b>: <a href="{{$row->youtube_url }}" target="_blank"> {{$row->youtube_url }}</a></p>
 											
 											<script type="text/javascript">
-												var youtubeUrl 		= "{{$row->youtube_url }}";
-												var user_id 		= "{{auth()->user()->id}}";
-												var course_id 		= "{{$arrCourse->id }}";
-												var prerequisite_id = "{{ $arrCourse->prerequisite_id }}";
+												var youtubeUrl 		= "{{ $row->youtube_url }}";
+												var user_id 		= "{{ base64_encode(base64_encode(auth()->user()->id)) }}";
+												var course_id 		= "{{ base64_encode(base64_encode($arrCourse->id)) }}";
+												var prerequisite_id = "{{ json_decode(base64_encode($arrCourse->prerequisite_id)) }}";
 											</script>
 											<script type="text/javascript" src="{{ asset('js/front/course/video.js') }}"></script>
 											<script type="text/javascript" src="{{ asset('js/front/course/savePreStatus.js') }}"></script>
@@ -82,14 +82,6 @@
 							@php 
 								}
 							@endphp
-							<!-- <form name="frmPrerequisitesStatus" id="frmPrerequisitesStatus">
-								@csrf
-								<input type="text" name="user_id" value="{{auth()->user()->id}}">
-								<input type="text" name="course_id" value="{{$arrCourse->id }}">
-								<input type="text" name="prerequisites_id" value="{{ $arrCourse->prerequisite_id }}">
-								<input type="text" name="watch_time" id="watch_time">
-								<input type="text" name="duration_time" id="duration_time">
-							</form> -->
 							<div id="video-placeholder"></div>
 						</div>
 					</div>

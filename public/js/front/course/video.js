@@ -1,6 +1,3 @@
-
-
-
 var player,
 time_update_interval = 0;
 
@@ -64,6 +61,9 @@ function updateTimerDisplay(){
  
     $.ajax(
     {
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         type: 'POST',
         url: '/course/updateWatchStatus',
         data: formData,
@@ -71,11 +71,11 @@ function updateTimerDisplay(){
         contentType: false,
         success: function(data)
         {
-         alert('success');   
+            console.log(data);
         },
         error: function (data)
         {
-            alert('ERROR');
+            console.log(data);   
         }
     });
 }
