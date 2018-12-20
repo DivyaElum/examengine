@@ -36,7 +36,7 @@
 									<div class="title">
 										<p><b>Title </b>: {{$row->title }}</p>
 
-										<span><a href="">Take Exam</a></span>
+										<span><a onclick="return startExam(this)" data-token="{{$row->id}}" class="btn btn-info">Take Exam</a></span><br>
 										
 										<?php 
 										if($row->video_file_original_name != '') 
@@ -80,5 +80,6 @@
 @stop
 @section('scripts')
 <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
-<link href="{{ asset('/js/owl.js') }}" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="{{ asset('/js/owl.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/front/course/details.js') }}"></script>
 @stop

@@ -1,121 +1,128 @@
 <?php
- 
+
+
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| FRONT END ROUTES
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+*/
+	
+	// test
+	Route::get('/', function () {
+	    return view('welcome');
+	});
+
+	// test exam
+	Route::get('/exam', function () {
+	    return view('exam');
+	});
+	 
+	// purchase course
+	Route::group(['prefix' => 'purchase'],function()
+	{
+		Route::post('/', 	   'PaymentController@purchase')->name('purchase');
+		Route::get('/response','PaymentController@response')->name('purchase.response');
+		Route::get('/cancel',  'PaymentController@cancel')->name('purchase.cancel');
+	});
+
+	// sign up
+	Route::resource('/signup', 'Auth\RegisterController');
+	
+	// login
+	Route::resource('/login', 'Auth\LoginController');
+
+	// forget password
+	Route::get('/forgot','Auth\ForgotPasswordController@index');
+	Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
+
+	// reset password
+	Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index');
+	Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
+
+	// after authantication routes
+	Route::group(['middleware' => 'UserAuthenticate'],function()
+	{
+		// dash board rotues
+		Route::get('/dashboard', 'Candidate\DashbordController@index');
+	});
+
+	// certification rotues
+	Route::group(['prefix' => 'certification'],function()
+	{
+		Route::get('/','Candidate\CertificationController@index');
+		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+	});
+
+	// course routes
+	Route::group(['prefix' => 'course'],function()
+	{
+		Route::get('/details/{id}', 'Candidate\CourseController@index');
+		Route::get('/details/{token}/varify', 'Candidate\CourseController@varify');
+	});
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
 */
 
-// Front section
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/exam', function () {
-    return view('exam');
-});
- 
-Route::group(['prefix' => 'purchase'],function()
+Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated', 'namespace'=>'Admin'],function()
 {
-	Route::post('/', 	   'PaymentController@purchase')->name('purchase');
-	Route::get('/response','PaymentController@response')->name('purchase.response');
-	Route::get('/cancel',  'PaymentController@cancel')->name('purchase.cancel');
+	Route::get('/login', 'Auth\LoginController@index');//login
+	Route::post('/login', 'Auth\LoginController@checkLogin');
+
+	Route::get('/forgot','Auth\LoginController@forgotpassword');//forgot password
+	Route::post('/forgot','Auth\LoginController@forgot');
+
+	Route::get('/resetpassword/{token}','Auth\LoginController@resetpassword');//reset password
+	Route::post('/resetpassword','Auth\LoginController@resetpass');
 });
 
-Route::resource('/signup', 'Auth\RegisterController'); //registration
-
-//Route::post('/login', 'Auth\RegisterController@checkLogin'); // login
-
-Route::resource('/login', 'Auth\LoginController');
-
-
-Route::get('/forgot','Auth\ForgotPasswordController@index'); //forgot password
-Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
-
-Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index'); //reset password
-Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
-
-
-Route::group(['middleware' => 'UserAuthenticate'],function()
-{
-	Route::get('/dashboard', 'Candidate\DashbordController@index');
-	
-});
-Route::group(['prefix' => 'certification'],function()
-{
-	Route::get('/','Candidate\CertificationController@index');
-	Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
-});
-
-Route::group(['prefix' => 'course'],function()
-{
-	Route::get('/details/{id}', 'Candidate\CourseController@index');
-});
-
-
-// Admin section
-Route::group(['prefix' => 'admin','middleware' => 'AdminRedirectIfAuthenticated'],function()
-{
-	Route::get('/login', 'Admin\Auth\LoginController@index');//login
-	Route::post('/login', 'Admin\Auth\LoginController@checkLogin');
-
-	Route::get('/forgot','Admin\Auth\LoginController@forgotpassword');//forgot password
-	Route::post('/forgot','Admin\Auth\LoginController@forgot');
-
-	Route::get('/resetpassword/{token}','Admin\Auth\LoginController@resetpassword');//reset password
-	Route::post('/resetpassword','Admin\Auth\LoginController@resetpass');
-});
-
-Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate'],function()
+Route::group(['prefix' => 'admin','middleware' => 'AdminAuthenticate', 'namespace'=>'Admin'],function()
 {
 	Route::redirect('/', 'admin/dashboard');						//dashboard
-	Route::get('/logout', 'Admin\Auth\LoginController@logout');			//logout
-	Route::post('/logout', 'Admin\Auth\LoginController@logout');
-	Route::get('/dashboard', 'Admin\DashboardController@index');
+	Route::get('/logout', 'Auth\LoginController@logout');			//logout
+	Route::post('/logout', 'Auth\LoginController@logout');
+	Route::get('/dashboard', 'DashboardController@index');
 
 	// Question type routes
-	Route::get('question-type/getQuestionTypes', 'Admin\QuestionTypeController@getTypes');	
-	Route::post('question-type/changeStatus', 'Admin\QuestionTypeController@changeStatus');	
-	Route::resource('question-type', 'Admin\QuestionTypeController');
+	Route::get('question-type/getQuestionTypes', 'QuestionTypeController@getTypes');	
+	Route::post('question-type/changeStatus', 'QuestionTypeController@changeStatus');	
+	Route::resource('question-type', 'QuestionTypeController');
 
 	// Repository routes
-	Route::get('repository/getRepositoryQuestions', 'Admin\RepositoryController@getQuestions');	
-	Route::get('repository/getHtmlStructure/{id}', 'Admin\RepositoryController@getStructure');	
-	Route::get('repository/getOptionsAnswer/{id}', 'Admin\RepositoryController@getOptionsAnswer');	
-	Route::resource('repository', 'Admin\RepositoryController');	
+	Route::get('repository/getRepositoryQuestions', 'RepositoryController@getQuestions');	
+	Route::get('repository/getHtmlStructure/{id}', 'RepositoryController@getStructure');	
+	Route::get('repository/getOptionsAnswer/{id}', 'RepositoryController@getOptionsAnswer');	
+	Route::resource('repository', 'RepositoryController');	
 
 	// Prerequisite routes
-	Route::get('prerequisite/getPrerequisite', 'Admin\PrerequisiteController@getPrerequisite');	
-	Route::post('prerequisite/changeStatus', 'Admin\PrerequisiteController@changeStatus');	
-	Route::resource('prerequisite', 'Admin\PrerequisiteController');
+	Route::get('prerequisite/getPrerequisite', 'PrerequisiteController@getPrerequisite');	
+	Route::post('prerequisite/changeStatus', 'PrerequisiteController@changeStatus');	
+	Route::resource('prerequisite', 'PrerequisiteController');
 
 	// Exam routes
-	Route::post('exam/getDynamicQuesions', 'Admin\ExamController@getDynamicQuesions');	
-	Route::get('exam/getRecords', 'Admin\ExamController@getRecords');	
-	Route::post('exam/changeStatus', 'Admin\ExamController@changeStatus');	
-	Route::resource('exam', 'Admin\ExamController');
+	Route::post('exam/getDynamicQuesions', 'ExamController@getDynamicQuesions');	
+	Route::get('exam/getRecords', 'ExamController@getRecords');	
+	Route::post('exam/changeStatus', 'ExamController@changeStatus');	
+	Route::resource('exam', 'ExamController');
 
 	// Coure routes
-	Route::get('course/getRecords', 'Admin\CourseController@getRecords');	
-	Route::post('course/changeStatus', 'Admin\CourseController@changeStatus');	
-	Route::resource('course', 'Admin\CourseController');
+	Route::get('course/getRecords', 'CourseController@getRecords');	
+	Route::post('course/changeStatus', 'CourseController@changeStatus');	
+	Route::resource('course', 'CourseController');
 
 	// site setting routes
-	Route::get('site-setting/getSettings', 'Admin\SiteSettingController@getSettings');
-	Route::resource('site-setting', 'Admin\SiteSettingController');	
+	Route::get('site-setting/getSettings', 'SiteSettingController@getSettings');
+	Route::resource('site-setting', 'SiteSettingController');	
 
 	// council member routes
-	Route::get('council-member/getMembers', 'Admin\CouncilMemberController@getMembers');
-	Route::post('council-member/changeStatus', 'Admin\CouncilMemberController@changeStatus');
-	Route::resource('council-member', 'Admin\CouncilMemberController');
+	Route::get('council-member/getMembers', 'CouncilMemberController@getMembers');
+	Route::post('council-member/changeStatus', 'CouncilMemberController@changeStatus');
+	Route::resource('council-member', 'CouncilMemberController');
 
 	// question category routes
-	Route::get('question-category/getQuestionCategory', 'Admin\QuestionCategoryController@getQuestionCategory');
-	Route::post('question-category/changeStatus', 'Admin\QuestionCategoryController@changeStatus');
-	Route::resource('question-category', 'Admin\QuestionCategoryController');	
+	Route::get('question-category/getQuestionCategory', 'QuestionCategoryController@getQuestionCategory');
+	Route::post('question-category/changeStatus', 'QuestionCategoryController@changeStatus');
+	Route::resource('question-category', 'QuestionCategoryController');	
 });
