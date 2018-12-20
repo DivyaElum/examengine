@@ -48,7 +48,7 @@ class DashbordController extends Controller
   		  {
   			   $query->where('user_id', $user_id);
   		  })
-		->get();
+		  ->get();
 		
    		$this->ViewData['modulePath']   	 = $this->ModulePath;
       $this->ViewData['moduleTitle']  	 = $this->ModuleTitle;

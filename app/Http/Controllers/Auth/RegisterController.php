@@ -70,7 +70,7 @@ class RegisterController extends Controller
         $strImgName = '';
         if ($User->save()) 
         {
-            //$User->assignRole($request->user_role);
+            $User->assignRole($request->user_role);
            
             //Store orignal image
             if($request->user_role != 'candidate'){
