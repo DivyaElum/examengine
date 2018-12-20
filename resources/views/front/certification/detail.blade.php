@@ -25,7 +25,7 @@
 						<div class="certification_detail_container">
 							<span class="icon"></span>
 							<h2 class="title">
-								{{ $arrCerficationDetils->title}}
+								{{ $arrCerficationDetils->title }}
 							</h2>
 							<div class="row">
 								<div class="col-md-8">
@@ -49,16 +49,27 @@
 												<span>left at this price!</span>
 											</div>
 											<br>
+<<<<<<< HEAD:resources/views/front/certification/detail.blade.php
 											@if(auth()->check())
 												<a href="{{ url('/signup') }}" class="large-btn">Buy Now</a>
 											@else
+=======
+											{{-- @if(auth()->check())
+												<a href="{{ url('/signup') }}" class="large-btn">Buy Now</a>
+											@else --}}
+>>>>>>> 58d8a34b74a8a294e382a8c2ffc4eb52f4689e8e:resources/views/candidate/certification_details.blade.php
 											<form action="{{ route('purchase') }}" onsubmit="return makePayment(this)">
 												<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(1)) }}">
-												<input type="hidden" name="crd" value="{{ base64_encode(base64_encode(1)) }}">
+												<input type="hidden" name="pcd" value="{{ base64_encode(base64_encode($arrCerficationDetils->id)) }}">
 												<button type="submit" class="large-btn">Buy Now</button>
 											</form>
+<<<<<<< HEAD:resources/views/front/certification/detail.blade.php
 											@endif
 											<a href="/certification" class="link clearfix">Back to Courses</a>
+=======
+											<a href="/certification-list" class="link clearfix">Back to Courses</a>
+											{{-- @endif --}}
+>>>>>>> 58d8a34b74a8a294e382a8c2ffc4eb52f4689e8e:resources/views/candidate/certification_details.blade.php
 										</div>										
 									</div>
 								</div>							

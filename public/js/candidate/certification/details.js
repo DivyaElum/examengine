@@ -5,6 +5,8 @@ function makePayment(element)
 	var formData = new FormData($this[0]);	
 	var action = $this.attr('action');
 
+	$.LoadingOverlay('show');
+
 	$.ajax(
 	{
 	  	type: 'POST',
@@ -14,7 +16,7 @@ function makePayment(element)
 	  	contentType: false,
 	  	success: function(data)
 	  	{
-	  		$(element).closest('.box').LoadingOverlay("hide");
+	  		$.LoadingOverlay("hide");
 
 	    	if (data.status == 'success') 
 	    	{

@@ -56,7 +56,7 @@ class PaymentController extends Controller
 	{
 		// formdata
 		$user_id 	= base64_decode(base64_decode($request->pud));
-		$course_id 	= base64_decode(base64_decode($request->crd));
+		$course_id 	= base64_decode(base64_decode($request->pcd));
 
 		// manage data
 		$course = $this->CourseModel->find($course_id);
