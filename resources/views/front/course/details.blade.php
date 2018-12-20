@@ -35,16 +35,35 @@
 								<div class="thumbCont">
 									<div class="title">
 										<p><b>Title </b>: {{$row->title }}</p>
+
+										<span><a href="">Take Exam</a></span>
+										
 										<?php 
-										if($row->video_file_original_name != '') {?>
-											<p><b>Video Name </b>: <a href="{{$row->video_file_original_name }}" target="_blank"> {{$row->video_file_original_name }}</a></p>
-										<?php }elseif($row->video_url != ''){ ?>
+										if($row->video_file_original_name != '') 
+										{
+											?>
+											<video width="320" height="240" controls>
+											  	<source src="{{ url('storage/'.$row->video_file) }}" type="video/{{ $row->video_file_mime }}">
+												Your browser does not support the video tag.
+											</video>
+												<p><b>Video Name </b>: <a href="{{$row->video_file_original_name }}" target="_blank"> {{$row->video_file_original_name }}</a></p>
+											<?php 
+										}
+										elseif($row->video_url != '')
+										{ 
+											?>
 											<p><b>Video Name </b>: {{$row->video_file_original_name }}</p>
 											<p><b>Video URL </b>:<a href="{{$row->video_url }}" target="_blank"> {{$row->video_url }}</a></p>
-										<?php }else{ ?>
+											<?php 
+										}
+										else
+										{ 
+											?>
 											<p><b>Video Name </b>: {{$row->video_file_original_name }}</p>
 											<p><b>Youtube Video URL </b>: <a href="{{$row->youtube_url }}" target="_blank"> {{$row->youtube_url }}</a></p>
-										<?php } ?>
+											<?php 
+										} 
+										?>
 									</div>
 								</div>
 							</div>

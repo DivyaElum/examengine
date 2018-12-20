@@ -30,6 +30,7 @@ function makePayment(element)
 	  	error: function (data)
 	  	{
 	  		toastr.error('Something went wrong, Please try again later.');
+	  		$.LoadingOverlay("hide");
 	  	}
 	});
 

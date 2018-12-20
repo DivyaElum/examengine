@@ -48,13 +48,16 @@ class CourseController extends Controller
    		
    		$arrPrerequisites = $this->PrerequisiteModel->whereIn('id', json_decode($enc_prerequisites))->get();
 
+
    		$this->ViewData['modulePath']   		= $this->ModulePath;
-        $this->ViewData['moduleTitle']  		= $this->ModuleTitle;
-        $this->ViewData['moduleAction'] 		= $this->ModuleTitle;
-        $this->ViewData['page_title']   		= $this->ModuleTitle;
-        $this->ViewData['arrUserData']  	 = $arrUsers;
-        $this->ViewData['arrPrerequisites']  	= $arrPrerequisites;
+      $this->ViewData['moduleTitle']  		= $this->ModuleTitle;
+      $this->ViewData['moduleAction'] 		= $this->ModuleTitle;
+      $this->ViewData['page_title']   		= $this->ModuleTitle;
+      $this->ViewData['arrUserData']  	 = $arrUsers;
+      $this->ViewData['arrPrerequisites']  	= $arrPrerequisites;
         
         return view($this->ModuleView, $this->ViewData);
    	}
 }
+
+

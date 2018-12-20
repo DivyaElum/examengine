@@ -52,14 +52,14 @@
   <div class="nav-container">
   <div class="container">
     @if(!auth()->check())
-    <a href="{{route('/signup')}}" class="navbar-brand"><img src="{{asset('images/msc-logo.png')}}" alt="logo" /></a>
+    <a href="{{ route('signup.index') }}" class="navbar-brand"><img src="{{asset('images/msc-logo.png')}}" alt="logo" /></a>
     @else
     <a href="{{url('/dashboard')}}" class="navbar-brand"><img src="{{asset('images/msc-logo.png')}}" alt="logo" /></a>
     @endif
     <ul class="navigation">
       <li class="active">
         @if(!auth()->check())
-          <a href="{{route('/signup')}}">Home</a> 
+          <a href="{{ route('signup.index') }}">Home</a> 
         @else
           <a href="{{url('/dashboard')}}">Home</a>
         @endif
