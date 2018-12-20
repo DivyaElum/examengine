@@ -34,7 +34,7 @@ class CourseController extends Controller
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Course Details';
-        $this->ModuleView  = 'Candidate.course-details';
+        $this->ModuleView  = 'front.course.details';
         $this->ModulePath  = 'course-details';
     }
     public function index($indEncId)

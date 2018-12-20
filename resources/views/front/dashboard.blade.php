@@ -1,4 +1,4 @@
-@extends('master')
+@extends('front.master')
 
 @section('title')
 	{{ $moduleAction }}
@@ -20,28 +20,7 @@
 	<div class="dashboardWraper">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-3 mobile_db_drawer">
-					<div class="mobile_db_drawer_btn">
-						<i class="fa fa-arrow-right" aria-hidden="true"></i>
-					</div>
-					<div class="db_sidebar">
-						<div class="dashboardTitle">Dashboard view</div>
-						<div class="dashboardUser_bx">
-							<div class="userName">{{$arrUserData->information->first_name}}  {{$arrUserData->information->last_name}}</div>
-							<div class="userId">User id : #211090</div>
-						</div>
-						<div class="dbMenus">
-							<ul>
-								<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> View Profile</a></li>
-								<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Account</a></li>
-								<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Video Courses</a></li>
-								<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> PDF files</a></li>
-								<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Settings</a></li>
-								<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Payment</a></li>
-							</ul>				
-						</div>
-					</div>
-				</div>
+				@include('front.partials._sidebar')
 
 				<div class="col-md-9 col-sm-12 col-xs-12">
 					<div class="dashbaord_content">
@@ -67,7 +46,7 @@
 	              						
 										<div class="title" style="background-image: url({{ $featured }})">
 											<div class="titleWrap">
-												<h3><a href="{{url('course-details/'.base64_encode(base64_encode($row->id)))}}" target="_blank">{{ $row->title}}</a></h3>
+												<h3><a href="{{url('/course/details/'.base64_encode(base64_encode($row->id)))}}" target="_blank">{{ $row->title}}</a></h3>
 											</div>
 										</div>
 									</div>

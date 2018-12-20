@@ -22,15 +22,15 @@ class DashbordController extends Controller
         TransactionModel $TransactionModel
     )
     {
-    	$this->CourseModel  	= $CourseModel;
-    	$this->UserModel 		= $UserModel;
+    	$this->CourseModel  	  = $CourseModel;
+    	$this->UserModel 		    = $UserModel;
     	$this->TransactionModel = $TransactionModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Dashboard';
-        $this->ModuleView  = 'Candidate.dashboard';
+        $this->ModuleView  = 'front.dashboard';
         $this->ModulePath  = 'dashboard';
     }
 

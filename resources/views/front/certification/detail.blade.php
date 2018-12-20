@@ -1,4 +1,4 @@
-@extends('master')
+@extends('front.master')
 
 @section('title')
 	{{ $moduleAction }}
@@ -50,15 +50,15 @@
 											</div>
 											<br>
 											@if(auth()->check())
-												<a href="{{ url('/sign-up') }}" class="large-btn">Buy Now</a>
+												<a href="{{ url('/signup') }}" class="large-btn">Buy Now</a>
 											@else
 											<form action="{{ route('purchase') }}" onsubmit="return makePayment(this)">
 												<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(1)) }}">
 												<input type="hidden" name="crd" value="{{ base64_encode(base64_encode(1)) }}">
 												<button type="submit" class="large-btn">Buy Now</button>
 											</form>
-											<a href="/certification-list" class="link clearfix">Back to Courses</a>
 											@endif
+											<a href="/certification" class="link clearfix">Back to Courses</a>
 										</div>										
 									</div>
 								</div>							
