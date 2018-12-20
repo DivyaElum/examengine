@@ -11,10 +11,6 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/responsive.bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/buttons.dataTables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/sweetalert/sweetalert.css') }}">
-	<style type="text/css">
-		.stsActiveClass {background-color: green;color: #fff;border-color: green;}
-		.stsInactiveClass {background-color: red;color: #fff;border-color: red;}
-	</style>
 @stop
 
 @section('content')

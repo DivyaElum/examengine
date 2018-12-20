@@ -18,7 +18,7 @@
 
 	    <section class="content-header">
 	      <h1>
-	        {{ $moduleTitle }}
+	        {{ $moduleAction }}
 	      </h1>
 	      <ol class="breadcrumb">
 	        <li class=""><a href="{{ url('/admin/dashboard') }}">Dashboard</a></li>
@@ -29,7 +29,7 @@
 	    <section class="content">
 	      	<div class="box">
 	        	<div class="box-header with-border">
-		          	<h3 class="box-title">{{ $moduleAction }}
+		          	<h3 class="box-title">
 		          	</h3>
 		          	<div class="box-tools pull-right">
 		          		<a title="Add New Question" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>

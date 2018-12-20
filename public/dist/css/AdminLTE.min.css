@@ -31,3 +31,8 @@
   line-height: 1.33;
   border-radius: 35px;
 }
+.stsActiveClass {background-color: #509950;color: #fff;border-color: #509950;}
+.stsInactiveClass {background-color: #f84c4c;color: #fff;border-color: #f84c4c;}
+
+.stsActiveClass:hover{background-color: #3c743c;color: #fff;border-color: #3c743c;}
+.stsInactiveClass:hover{background-color: #d14545;color: #fff;border-color: #d14545;}

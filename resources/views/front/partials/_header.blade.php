@@ -7,7 +7,8 @@
 <meta name="author" content="">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-<title>@yield('title') | {{ config('app.name') }}</title>
+<title>@yield('title') | <?php echo $siteSetting->site_title ?? config('app.name'); ?></title>
+
 <!-- <title>MSC | Managed Services Council</title> -->
 
 <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
@@ -36,8 +37,8 @@
     <div class="container">
       <div class="top-left">
         <ul>
-          <li><i class="fa fa-phone" aria-hidden="true"></i>Customer Services: <a href="tel:18006729205" data-title="18006729205"><span>1-800-672-9205</span></a></li>
-          <li><i class="fa fa-envelope" aria-hidden="true"></i>Email: <a href="mailto:info@msc.com"><span>info@msc.com</span></a></li>
+          <li><i class="fa fa-phone" aria-hidden="true"></i>Customer Services: <a href="tel:<?php echo $siteSetting->contact_no ?? '' ?>" data-title="<?php echo $siteSetting->contact_no ?? '' ?>"><span><?php echo $siteSetting->contact_no ?? '' ?></span></a></li>
+          <li><i class="fa fa-envelope" aria-hidden="true"></i>Email: <a href="mailto:<?php echo $siteSetting->email_id ?? '' ?>"><span><?php echo $siteSetting->email_id ?? '' ?></span></a></li>
         </ul>
       </div>
       <div class="top-right">
@@ -50,10 +51,20 @@
     </div>
   </div>
   <div class="nav-container">
-  <div class="container"> <a href="index.php" class="navbar-brand"><img src="images/msc-logo.png" alt="logo" /></a>
+  <div class="container">
+    @if(!auth()->check())
+    <a href="{{route('/signup')}}" class="navbar-brand"><img src="{{asset('images/msc-logo.png')}}" alt="logo" /></a>
+    @else
+    <a href="{{url('/dashboard')}}" class="navbar-brand"><img src="{{asset('images/msc-logo.png')}}" alt="logo" /></a>
+    @endif
     <ul class="navigation">
-      <li class="active"> <a href="/sign-up">Home</a> </li>
-      <!-- <li> <a href="#">Certifications</a> </li> -->
+      <li class="active">
+        @if(!auth()->check())
+          <a href="{{route('/signup')}}">Home</a> 
+        @else
+          <a href="{{url('/dashboard')}}">Home</a>
+        @endif
+        </li>
       <li> <a href="/certification">Certifications listing</a> </li>
       <li> <a href="#">Membership</a> </li>
     <div class="show-mobile">

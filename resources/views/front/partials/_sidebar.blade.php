@@ -5,6 +5,9 @@
 	<div class="db_sidebar">
 		<div class="dashboardTitle">Dashboard view</div>
 		<div class="dashboardUser_bx">
+			@if(auth()->check())
+			<div class="userName">{{$arrUserData->information->first_name}}  {{$arrUserData->information->last_name}}</div>
+			@endif
 			<div class="userId">User id : #211090</div>
 		</div>
 		<div class="dbMenus">

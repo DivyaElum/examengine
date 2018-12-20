@@ -9,19 +9,23 @@ use App\User as UserModel;
 use App\Models\UserInfoModels;
 use App\Models\CourseModel;
 use App\Models\TransactionModel;
+use App\SiteSetting;
 
 class DashbordController extends Controller
 {
     private $CourseModel;
     private $UserModel;
     private $TransactionModel;
+    private $SiteSetting;
 
     public function __construct(
         UserModel $UserModel,
         CourseModel $CourseModel,
-        TransactionModel $TransactionModel
+        TransactionModel $TransactionModel,
+        SiteSetting $SiteSetting
     )
     {
+      $this->SiteSetting      = $SiteSetting;
     	$this->CourseModel  	  = $CourseModel;
     	$this->UserModel 		    = $UserModel;
     	$this->TransactionModel = $TransactionModel;
@@ -52,7 +56,8 @@ class DashbordController extends Controller
       $this->ViewData['page_title']   	 = $this->ModuleTitle;
       $this->ViewData['arrUserData']  	 = $arrUsers;
       $this->ViewData['arrUsersCourse']  = $courses;
-        
+      $this->ViewData['object']          = $this->SiteSetting->find('1');
+
         return view($this->ModuleView, $this->ViewData);
    	}
 }

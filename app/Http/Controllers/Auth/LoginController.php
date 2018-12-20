@@ -64,7 +64,7 @@ class LoginController extends Controller
             if (auth()->attempt(['email' => $strEmail, 'password' => $strPassword], $remember_me))
             {
                 $this->JsonData['status'] = 'success';
-                $this->JsonData['url']    = '/candidate/dashboard';
+                $this->JsonData['url']    = '/dashboard';
                 $this->JsonData['msg']    = 'login successfully.';
             }
             else

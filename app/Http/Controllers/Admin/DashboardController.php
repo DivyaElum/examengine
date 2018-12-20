@@ -39,7 +39,6 @@ class DashboardController extends Controller
    		$this->ViewData['modulePath'] = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = $this->ModuleTitle;
-        $this->ViewData['object']       = $this->SiteSetting->find('1');
         return view($this->ModuleView, $this->ViewData);
    	}
 }

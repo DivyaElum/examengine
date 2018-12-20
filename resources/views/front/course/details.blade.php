@@ -20,6 +20,7 @@
 	<div class="dashboardWraper">
 		<div class="container">
 			<div class="row">
+				@include('front.partials._sidebar')
 				<div class="col-md-9 col-sm-12 col-xs-12">
 					<div class="dashbaord_content">
 						<h3>Prerequisites Listing</h3>

@@ -1,8 +1,8 @@
 
 <header class="main-header">
     <a href="{{ url('/') }}" class="logo">
-      <span class="logo-mini"><b><?php echo $siteSetting->site_title ?? 'Managed Services Council'; ?></span>
-      <span class="logo-lg"><b><?php echo $siteSetting->site_title ?? 'Managed Services Council'; ?></b></span>
+      <span class="logo-mini"><b><?php echo $siteSetting->site_title ?? config('app.name'); ?></span>
+      <span class="logo-lg"><b><?php echo $siteSetting->site_title ?? config('app.name'); ?></b></span>
     </a>
     <nav class="navbar navbar-static-top">
 
