@@ -18,20 +18,21 @@
                 // document.addEventListener('contextmenu', event => event.preventDefault());
 
                 // Set the date we're counting down to
-                Date.prototype.addMinuts= function(m)
-                {
-                    this.setMinutes(this.getMinutes()+m);
-                    return this;
+               Date.prototype.addHours = function(h) 
+               {    
+                   this.setTime(this.getTime() + (h*60*60*1000)); 
+                   return this;   
                 }
             })
 
-            function startTimer()
+            function startTimer(element)
             {
+                var hours = $(element).attr('data-hours');
 
                 document.getElementById('startExam').style.display = 'none';
                 document.getElementById('exam').style.display = 'block';
 
-                var countDownDate = new Date().addMinuts(20)
+                var countDownDate = new Date().addHours(hours)
 
                 // Update the count down every 1 second
                 var x = setInterval(function() 
@@ -44,18 +45,23 @@
                     var distance = countDownDate - now;
                     
                     // Time calculations for days, hours, minutes and seconds
-                    // var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                     
                     // Output the result in an element with id="demo"
-                    document.getElementById("demo").innerHTML = minutes + " min : " + seconds + ' sec';
+
+                    console.log(hours);
+                    console.log(minutes);
+                    console.log(seconds);
+
+                    document.getElementById("demo").innerHTML = hours + " hours : " + minutes + " min : " + seconds + ' sec';
                     
                     // If the count down is over, write some text 
                     if (distance < 0) 
                     {
                         clearInterval(x);
-                        document.getElementById("demo").innerHTML = "00 min : 00 sec";
+                        document.getElementById("demo").innerHTML = "00 Hours : 00 min : 00 sec";
                         document.getElementById('startExam2').innerHTML = 'Completed Please wait for you result';
                     }
                 }, 1000);
@@ -124,7 +130,7 @@
         <div class="container" id="startExam">
             <div class="content">
                 <div class="title">
-                    <a href="javascript:void(0)" onclick="startTimer()" >Click to start test</a>
+                    <a href="javascript:void(0)" onclick="startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
                 </div>
             </div>
         </div>
@@ -157,8 +163,8 @@
 
                     <div class="col-sm-3 option_buttons_div" >
                         <div class="row timer">
-                            <label>Duration</label>
-                            <span id="demo"> 20 min : 00 sec </span>
+                            <label>Duration : </label>
+                            <span id="demo"></span>
                         </div>
                         <div class="row">
                             <div class="col-xs-3">

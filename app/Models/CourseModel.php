@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use App\Models\ExamQuestionsModel;
 use App\Models\TransactionModel;
+use App\Models\ExamModel;
 // use App\Models\ExamSlotModel;
 
 class CourseModel extends Model
@@ -27,6 +28,11 @@ class CourseModel extends Model
 	public function transaction()
 	{
 		return $this->belongsTo(TransactionModel::class, 'id', 'course_id');
+	}
+
+	public function exam()
+	{
+		return $this->belongsTo(ExamModel::class, 'exam_id', 'id');
 	}
 
     // public function getPrerequisiteIdAttribute($value)

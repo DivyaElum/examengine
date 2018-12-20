@@ -16,15 +16,35 @@ function  startExam(element)
 		{
 		  	type: 'GET',
 		  	url: action,
-		  	data:formData,
+		  	// data:formData,
 		  	processData: false,
 		  	contentType: false,
+		  	dataType:'json',
 		  	success: function(data)
 		  	{		
-		  		console.log(data);
+		  		if (data.status == 'success') 
+		  		{
+		  			var Params = ', directories=no';
+			    	  	Params += ', channelmode=no';
+			          	Params += ', fullscreen=yes';
+			          	Params += ', location=no';
+			          	Params += ', menubar=no';
+			          	Params += ', resizable=yes';
+			          	Params += ', scrollbars=no';
+			          	Params += ', status=no';
+			          	Params += ', titlebar=no';
+			          	Params += ', toolbar=no';
+
+	          		var ExamWindow = window.open(data.url,'_blank' , Params);
+		  		}
+		  		else
+		  		{
+		  			toastr.error('Something went wrong, Please try again later.');
+		  		}
 		  	},
 		  	error: function (data)
 		  	{
+		  		toastr.error('Something went wrong, Please try again later.');
 		  	}
 		});
 	}
