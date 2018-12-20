@@ -101,7 +101,7 @@ class CourseController extends Controller
 
     public function UpdatePreStatus(Request $request)
     {
-        dd($request);
+        dd($request->all());
     }
 }
 

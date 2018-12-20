@@ -63,18 +63,21 @@ function updateTimerDisplay(){
  
     $.ajax(
     {
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
         type: 'POST',
         url: basePath+'/course/updateWatchStatus',
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data)
+        error: function (data)
         {
-         
+            console.log(data);
         },
         error: function (data)
         {
-         
+            console.log(data);   
         }
     });
 }
