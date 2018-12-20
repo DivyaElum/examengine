@@ -1,5 +1,4 @@
-
-
+var basePath = $('meta[name="base-path"]').attr('content');
 
 var player,
 time_update_interval = 0;
@@ -65,17 +64,17 @@ function updateTimerDisplay(){
     $.ajax(
     {
         type: 'POST',
-        url: '/course/updateWatchStatus',
+        url: basePath+'/course/updateWatchStatus',
         data: formData,
         processData: false,
         contentType: false,
         success: function(data)
         {
-         alert('success');   
+         
         },
         error: function (data)
         {
-            alert('ERROR');
+         
         }
     });
 }
