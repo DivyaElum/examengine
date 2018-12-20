@@ -83,6 +83,7 @@ class PaymentController extends Controller
 
 	public function cancel(Request $request)
 	{
+		
 		return redirect('/certification-list');
 	}
 

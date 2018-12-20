@@ -1,1 +1,1 @@
-payment faild
+payment failed
