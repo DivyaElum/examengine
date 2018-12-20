@@ -4,17 +4,18 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Test</title>
+        <title>Exam Test</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
         <script type="text/javascript">
             
             window.addEventListener('load', function(e)
             {
-                document.addEventListener('keydown', event => event.preventDefault());
-                document.addEventListener('contextmenu', event => event.preventDefault());
+                // document.addEventListener('keydown', event => event.preventDefault());
+                // document.addEventListener('contextmenu', event => event.preventDefault());
 
                 // Set the date we're counting down to
                 Date.prototype.addMinuts= function(m)
@@ -26,8 +27,9 @@
 
             function startTimer()
             {
+
                 document.getElementById('startExam').style.display = 'none';
-                document.getElementById('startExam2').style.display = 'block';
+                document.getElementById('exam').style.display = 'block';
 
                 var countDownDate = new Date().addMinuts(20)
 
@@ -58,76 +60,152 @@
                     }
                 }, 1000);
             }
-
         </script>
 
         <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            a {
-                text-decoration: none
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
+        <style type="text/css">
+        
+            .question_buttons{
+                height: 50px;
+                background: #ccc;
+                margin: 4px -11px;
+                padding: 15px 10px 10px 10px;
                 position: relative;
+                cursor: pointer;
             }
 
-            .top-right {
+            .question_buttons h4{
                 position: absolute;
-                right: 10px;
-                top: 18px;
+                left: 5%;
+                top: 60%;
+                color: #0095d9;
+                font-size: 16px;
+                font-weight: bold;
             }
 
-            .content {
-                text-align: center;
+            .activate{
+                background-color: #0095d9;
             }
 
-            .title {
-                font-size: 36px;
+            .activate h4{
+                color: #fff;
             }
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
+            .question {
+                height: 615px;
+                background:  #ccc;
+                margin: -14px 0;
             }
 
-            .m-b-md {
-                margin-bottom: 30px;
+            .question h3{
+                padding: 10px;
+                color: #fff;
+            }
+
+            #my-carousel {
+                border: 1px solid #ccc;
+                height: 620px;
+            }
+
+            .option_buttons_div {
+                border-left: 1px solid #ccc;
+                height: 620px;
+            }
+
+            .timer { 
+
+                padding: 10px;
+                border-bottom: 1px solid #ccc;
             }
         </style>
+
     </head>
     <body>
-        <center><h1 id="demo"> 20 min : 00 sec</h1></center>
-        <div class="flex-center position-ref full-height">
+        <div class="container" id="startExam">
             <div class="content">
                 <div class="title">
-                    <a href="javascript:void(0)" onclick="startTimer()" id="startExam">Click to start test</a>
-                    <a href="javascript:void(0)" id="startExam2" style="display: none">Exam started please wait ...</a>
+                    <a href="javascript:void(0)" onclick="startTimer()" >Click to start test</a>
                 </div>
             </div>
         </div>
+        <div class="container" id="exam" style=" display: none; padding: 10px">
+            <div class="row">
+                <div id="my-carousel" class="carousel" data-ride="carousel" data-interval="false">
+                    
+                    <div class="col-sm-9">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active question">
+                              <h3>1</h3>
+                            </div>
+                            <div class="item question">
+                              <h3>2</h3>
+                            </div>
+                            <div class="item question">
+                              <h3>3</h3>
+                            </div>
+                            <div class="item question">
+                              <h3>4</h3>
+                            </div>
+                            <div class="item question">
+                              <h3>5</h3>
+                            </div>
+                            <div class="item question">
+                              <h3>6</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3 option_buttons_div" >
+                        <div class="row timer">
+                            <label>Duration</label>
+                            <span id="demo"> 20 min : 00 sec </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="question_buttons activate" data-target="#my-carousel" data-slide-to="0">
+                                    One
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="1">
+                                    Two
+                                </div>
+                            </div>
+                        
+                            <div class="col-xs-3">
+                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="2">
+                                    Three
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="3">
+                                    Four
+                                </div>
+                            </div>
+                        
+                            <div class="col-xs-3">
+                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="4">
+                                    Five
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="5">
+                                    Six
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $('#my-carousel .question_buttons').click(function(e)
+            {
+                $('.question_buttons').removeClass('activate');
+                $(this).addClass('activate');
+            });
+        </script>
     </body>
 </html>
