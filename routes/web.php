@@ -46,17 +46,17 @@ Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
 Route::group(['middleware' => 'UserAuthenticate'],function()
 {
 	Route::get('/dashboard', 'Candidate\DashbordController@index');
-	
-});
-Route::group(['prefix' => 'certification'],function()
-{
-	Route::get('/','Candidate\CertificationController@index');
-	Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
-});
+	Route::group(['prefix' => 'certification'],function()
+	{
+		Route::get('/','Candidate\CertificationController@index');
+		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+	});
 
-Route::group(['prefix' => 'course'],function()
-{
-	Route::get('/details/{id}', 'Candidate\CourseController@index');
+	Route::group(['prefix' => 'course'],function()
+	{
+		Route::get('/details/{id}', 'Candidate\CourseController@index');
+		Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
+	});
 });
 
 

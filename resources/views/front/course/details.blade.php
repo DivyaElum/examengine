@@ -7,6 +7,9 @@
 
 @section('styles')
 <link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/tomorrow.min.css">
 <style type="text/css">
 .titleWrap h3 a {color: #fff;text-decoration: none;}
 </style>
@@ -61,8 +64,17 @@
 											?>
 											<p><b>Video Name </b>: {{$row->video_file_original_name }}</p>
 											<p><b>Youtube Video URL </b>: <a href="{{$row->youtube_url }}" target="_blank"> {{$row->youtube_url }}</a></p>
+											
+											<script type="text/javascript">
+												var youtubeUrl 		= "{{$row->youtube_url }}";
+												var user_id 		= "{{auth()->user()->id}}";
+												var course_id 		= "{{$arrCourse->id }}";
+												var prerequisite_id = "{{ $arrCourse->prerequisite_id }}";
+											</script>
+											<script type="text/javascript" src="{{ asset('js/front/course/video.js') }}"></script>
+											<script type="text/javascript" src="{{ asset('js/front/course/savePreStatus.js') }}"></script>
 											<?php 
-										} 
+										}
 										?>
 									</div>
 								</div>
@@ -70,6 +82,15 @@
 							@php 
 								}
 							@endphp
+							<!-- <form name="frmPrerequisitesStatus" id="frmPrerequisitesStatus">
+								@csrf
+								<input type="text" name="user_id" value="{{auth()->user()->id}}">
+								<input type="text" name="course_id" value="{{$arrCourse->id }}">
+								<input type="text" name="prerequisites_id" value="{{ $arrCourse->prerequisite_id }}">
+								<input type="text" name="watch_time" id="watch_time">
+								<input type="text" name="duration_time" id="duration_time">
+							</form> -->
+							<div id="video-placeholder"></div>
 						</div>
 					</div>
 				</div>
@@ -81,4 +102,7 @@
 @section('scripts')
 <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
 <link href="{{ asset('/js/owl.js') }}" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 @stop

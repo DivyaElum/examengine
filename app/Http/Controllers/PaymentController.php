@@ -240,27 +240,26 @@ class PaymentController extends Controller
 
 					DB::commit();
 					$this->JsonData['status'] = 'success';
-					$this->JsonData['view'] = 'payment.success';
+					$this->JsonData['view'] = 'front.payment.success';
 				}
 				else
 				{
 					DB::rollback();
 					$this->JsonData['status'] = 'error';
-					$this->JsonData['view'] = 'payment.failed';
+					$this->JsonData['view'] = 'front.payment.failed';
 				}
 			}
 			else
 			{
 				DB::rollback();
 				$this->JsonData['status'] = 'error';
-				$this->JsonData['view'] = 'payment.failed';
+				$this->JsonData['view'] = 'front.payment.failed';
 			}
 		}
 		else
 		{
 			DB::rollback();
 			$this->JsonData['status'] = '404';
-			$this->JsonData['view'] = 'payment.failed';
 		}
 
 		return $this->JsonData;

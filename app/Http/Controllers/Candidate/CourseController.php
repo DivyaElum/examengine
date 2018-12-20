@@ -10,6 +10,7 @@ use App\Models\UserInfoModels;
 use App\Models\CourseModel;
 use App\Models\TransactionModel;
 use App\Models\PrerequisiteModel;
+use App\Models\CoursePreStatus;
 
 class CourseController extends Controller
 {
@@ -17,18 +18,21 @@ class CourseController extends Controller
     private $UserModel;
     private $TransactionModel;
     private $PrerequisiteModel;
+    private $CoursePreStatus;
 
     public function __construct(
-        UserModel $UserModel,
-        CourseModel $CourseModel,
-        TransactionModel $TransactionModel,
-        PrerequisiteModel $PrerequisiteModel
+        UserModel         $UserModel,
+        CourseModel       $CourseModel,
+        TransactionModel  $TransactionModel,
+        PrerequisiteModel $PrerequisiteModel,
+        CoursePreStatus   $CoursePreStatus
     )
     {
-    	$this->CourseModel  	 = $CourseModel;
-    	$this->UserModel 		 = $UserModel;
+    	$this->CourseModel  	   = $CourseModel;
+    	$this->UserModel 		     = $UserModel;
     	$this->TransactionModel  = $TransactionModel;
-    	$this->PrerequisiteModel = $PrerequisiteModel;
+      $this->PrerequisiteModel = $PrerequisiteModel;
+    	$this->CoursePreStatus   = $CoursePreStatus;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -44,20 +48,28 @@ class CourseController extends Controller
    		$user_id = auth()->user()->id;
    		$arrUsers = $this->UserModel->with(['information'])->find($user_id);	//get login user data
 
+      $arrCourse = $this->CourseModel->where('id', $intId)->first();
+
    		$enc_prerequisites = $this->CourseModel->where('id', $intId)->pluck('prerequisite_id')->first();
    		
    		$arrPrerequisites = $this->PrerequisiteModel->whereIn('id', json_decode($enc_prerequisites))->get();
 
 
-   		$this->ViewData['modulePath']   		= $this->ModulePath;
-      $this->ViewData['moduleTitle']  		= $this->ModuleTitle;
-      $this->ViewData['moduleAction'] 		= $this->ModuleTitle;
-      $this->ViewData['page_title']   		= $this->ModuleTitle;
-      $this->ViewData['arrUserData']  	 = $arrUsers;
+   		$this->ViewData['modulePath']   		  = $this->ModulePath;
+      $this->ViewData['moduleTitle']  		  = $this->ModuleTitle;
+      $this->ViewData['moduleAction'] 		  = $this->ModuleTitle;
+      $this->ViewData['page_title']   		  = $this->ModuleTitle;
+      $this->ViewData['arrUserData']        = $arrUsers;
+      $this->ViewData['arrCourse']          = $arrCourse;
+      
       $this->ViewData['arrPrerequisites']  	= $arrPrerequisites;
         
         return view($this->ModuleView, $this->ViewData);
    	}
+
+    public function UpdatePreStatus(Request $request){
+      dd($request);
+    }
 }
 
 
