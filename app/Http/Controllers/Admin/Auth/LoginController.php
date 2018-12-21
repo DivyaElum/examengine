@@ -91,12 +91,14 @@ class LoginController extends Controller
     }
 
     public function forgotpassword(){
+    	// dd(Hash::make('admin123'));
     	return view('admin.auth.forgotPassword');
     }
 
     //Function for forgot password
     public function forgot(ForgotPasswordRequest $request)
     {
+
     	if($request->input()){
 	 		$strEmail = $request->input('txtEmail');
 			//check user exists in db

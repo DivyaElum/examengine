@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 // models
 use App\Models\PrerequisiteModel;
+use App\Models\CourseModel;
 
 // request
 use App\Http\Requests\Admin\PrerequisiteRequest;
@@ -29,11 +30,13 @@ class PrerequisiteController extends Controller
 
     public function __construct(
 
-    	PrerequisiteModel $PrerequisiteModel
+        PrerequisiteModel $PrerequisiteModel,
+    	CourseModel $CourseModel
 
     )
     {
         $this->BaseModel = $PrerequisiteModel;
+        $this->CourseModel = $CourseModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -259,6 +262,15 @@ class PrerequisiteController extends Controller
     {
         $id = base64_decode(base64_decode($enc_id));
 
+        $flag = $this->_checkDependency($id);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t change status, This Prerequisite has been used in Course.';
+            return response()->json($this->JsonData);
+            exit;
+        }
+
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
@@ -281,6 +293,16 @@ class PrerequisiteController extends Controller
         if ($request->has('id') && $request->has('status') ) 
         {
             $id = base64_decode(base64_decode($request->id));
+
+            $flag = $this->_checkDependency($id);
+            if ($flag) 
+            {
+                $this->JsonData['status'] = 'error';
+                $this->JsonData['msg']    = 'Can\'t change status, This Prerequisite has been used in Course.';
+                return response()->json($this->JsonData);
+                exit;
+            }
+
             $status = $request->status;
 
             if($this->BaseModel->where('id', $id)->update(['status' => $status]))
@@ -400,4 +422,20 @@ class PrerequisiteController extends Controller
     |  Supportive Functions
     */
 
+    /*-----------------------------------------------------
+    |  sub function Calls
+    */
+
+        public function _checkDependency($id)
+        {
+            $count  = $this->CourseModel->where('prerequisite_id','LIKE', '%"'.$id.'"%')->count();
+            if ($count > 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 }

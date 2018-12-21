@@ -43,7 +43,7 @@ CREATE TABLE `council_members` (
 
 LOCK TABLES `council_members` WRITE;
 /*!40000 ALTER TABLE `council_members` DISABLE KEYS */;
-INSERT INTO `council_members` VALUES (1,'sadf','abc@gmail.com','sadfsadf','afd','15447828416LLWzzg.jpg','1','2018-12-14 10:20:51','2018-12-14 04:50:41','2018-12-14 04:50:51');
+INSERT INTO `council_members` VALUES (1,'sheshkumar prajapati','shesh@gmail.com','lorem ipsub dolor wer geenefc sadfn  saf \', sdf sdfnedn.','doloer',NULL,'1','2018-12-21 11:17:53','2018-12-21 05:46:54','2018-12-21 05:47:53');
 /*!40000 ALTER TABLE `council_members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,7 +72,7 @@ CREATE TABLE `course` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,6 @@ CREATE TABLE `course` (
 
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
-INSERT INTO `course` VALUES (1,'test one','fdsafsd','[\"1\"]',2,500.00,10.00,'Price',490.00,NULL,NULL,NULL,1,NULL,'2018-12-17 07:24:45','2018-12-17 07:24:45');
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +101,7 @@ CREATE TABLE `exam` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +110,6 @@ CREATE TABLE `exam` (
 
 LOCK TABLES `exam` WRITE;
 /*!40000 ALTER TABLE `exam` DISABLE KEYS */;
-INSERT INTO `exam` VALUES (1,'one',1,2,1,NULL,'2018-12-14 04:18:44','2018-12-14 04:18:44'),(2,'javascript and  php',2,2,1,NULL,'2018-12-14 04:59:00','2018-12-14 05:12:06'),(6,'test three',2,2,1,NULL,'2018-12-14 05:27:15','2018-12-14 05:27:15'),(8,'21321323',2,1,1,NULL,'2018-12-17 04:58:44','2018-12-17 04:58:44');
 /*!40000 ALTER TABLE `exam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +129,7 @@ CREATE TABLE `exam_questions` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +138,6 @@ CREATE TABLE `exam_questions` (
 
 LOCK TABLES `exam_questions` WRITE;
 /*!40000 ALTER TABLE `exam_questions` DISABLE KEYS */;
-INSERT INTO `exam_questions` VALUES (1,1,1,1,'2018-12-14 04:19:10','2018-12-14 04:18:44','2018-12-14 04:19:10'),(2,1,2,2,'2018-12-14 04:19:10','2018-12-14 04:18:44','2018-12-14 04:19:10'),(3,1,1,1,NULL,'2018-12-14 04:19:11','2018-12-14 04:19:11'),(4,1,2,2,NULL,'2018-12-14 04:19:11','2018-12-14 04:19:11'),(5,2,1,1,'2018-12-14 05:11:28','2018-12-14 04:59:00','2018-12-14 05:11:28'),(6,2,2,2,'2018-12-14 05:11:28','2018-12-14 04:59:00','2018-12-14 05:11:28'),(7,2,1,1,'2018-12-14 05:11:41','2018-12-14 05:11:28','2018-12-14 05:11:41'),(8,2,2,2,'2018-12-14 05:11:41','2018-12-14 05:11:28','2018-12-14 05:11:41'),(9,2,1,1,'2018-12-14 05:12:06','2018-12-14 05:11:41','2018-12-14 05:12:06'),(10,2,2,2,'2018-12-14 05:12:06','2018-12-14 05:11:41','2018-12-14 05:12:06'),(11,2,1,1,'2018-12-14 05:13:31','2018-12-14 05:12:06','2018-12-14 05:13:31'),(12,2,2,2,'2018-12-14 05:13:31','2018-12-14 05:12:06','2018-12-14 05:13:31'),(13,2,1,1,'2018-12-14 05:13:50','2018-12-14 05:13:31','2018-12-14 05:13:50'),(14,2,2,2,'2018-12-14 05:13:50','2018-12-14 05:13:31','2018-12-14 05:13:50'),(15,2,1,1,'2018-12-14 05:15:24','2018-12-14 05:13:50','2018-12-14 05:15:24'),(16,2,2,2,'2018-12-14 05:15:24','2018-12-14 05:13:50','2018-12-14 05:15:24'),(17,2,1,1,'2018-12-14 05:22:11','2018-12-14 05:15:24','2018-12-14 05:22:11'),(18,2,2,2,'2018-12-14 05:22:11','2018-12-14 05:15:24','2018-12-14 05:22:11'),(19,2,1,1,'2018-12-14 05:24:59','2018-12-14 05:22:11','2018-12-14 05:24:59'),(20,2,2,2,'2018-12-14 05:24:59','2018-12-14 05:22:11','2018-12-14 05:24:59'),(21,2,1,1,NULL,'2018-12-14 05:24:59','2018-12-14 05:24:59'),(22,2,2,2,NULL,'2018-12-14 05:24:59','2018-12-14 05:24:59'),(23,6,1,1,NULL,'2018-12-14 05:27:15','2018-12-14 05:27:15'),(24,6,2,2,NULL,'2018-12-14 05:27:15','2018-12-14 05:27:15'),(25,8,1,1,'2018-12-17 05:00:12','2018-12-17 04:58:44','2018-12-17 05:00:12'),(26,8,1,1,NULL,'2018-12-17 05:00:12','2018-12-17 05:00:12');
 /*!40000 ALTER TABLE `exam_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,7 +157,7 @@ CREATE TABLE `exam_slots` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -169,7 +166,6 @@ CREATE TABLE `exam_slots` (
 
 LOCK TABLES `exam_slots` WRITE;
 /*!40000 ALTER TABLE `exam_slots` DISABLE KEYS */;
-INSERT INTO `exam_slots` VALUES (2,1,'monday','[{\"start_time\":\"15:18\",\"end_time\":\"16:18\"}]',NULL,'2018-12-14 04:19:11','2018-12-14 04:19:11'),(28,2,'monday','[{\"start_time\":\"15:58\",\"end_time\":\"17:58\"},{\"start_time\":\"12:04\",\"end_time\":\"14:04\"},{\"start_time\":\"05:55\",\"end_time\":\"07:55\"}]',NULL,'2018-12-14 05:24:59','2018-12-14 05:24:59'),(33,6,'sunday','[{\"start_time\":\"16:26\",\"end_time\":\"18:26\"}]',NULL,'2018-12-14 05:27:15','2018-12-14 05:27:15'),(34,6,'wednesday','[{\"start_time\":\"16:20\",\"end_time\":\"18:20\"}]',NULL,'2018-12-14 05:27:15','2018-12-14 05:27:15'),(35,6,'friday','[{\"start_time\":\"15:20\",\"end_time\":\"17:20\"}]',NULL,'2018-12-14 05:27:15','2018-12-14 05:27:15'),(39,8,'sunday','[{\"start_time\":\"10:00\",\"end_time\":\"12:00\"},{\"start_time\":\"11:00\",\"end_time\":\"13:00\"},{\"start_time\":\"15:55\",\"end_time\":\"17:55\"}]',NULL,'2018-12-17 05:00:12','2018-12-17 05:00:12'),(40,8,'wednesday','[{\"start_time\":\"15:58\",\"end_time\":\"17:58\"}]',NULL,'2018-12-17 05:00:12','2018-12-17 05:00:12');
 /*!40000 ALTER TABLE `exam_slots` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,7 +243,7 @@ CREATE TABLE `model_has_roles` (
 
 LOCK TABLES `model_has_roles` WRITE;
 /*!40000 ALTER TABLE `model_has_roles` DISABLE KEYS */;
-INSERT INTO `model_has_roles` VALUES (3,'App\\User',1),(1,'App\\User',2),(3,'App\\User',2),(3,'App\\User',3),(3,'App\\User',5);
+INSERT INTO `model_has_roles` VALUES (1,'App\\User',1);
 /*!40000 ALTER TABLE `model_has_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +270,7 @@ CREATE TABLE `option_structure` (
 
 LOCK TABLES `option_structure` WRITE;
 /*!40000 ALTER TABLE `option_structure` DISABLE KEYS */;
-INSERT INTO `option_structure` VALUES (1,'radio','<div class=\"multiple_choice\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_choice\" onclick=\"return AddMultipleChoiceOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"number\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-04 09:17:58','2018-12-07 09:04:32'),(2,'checkbox','\n<div class=\"multiple_response\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_response\" onclick=\"return AddMultipleResponseOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"number\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-04 09:17:58','2018-12-07 09:04:35'),(3,'true-false','<div class=\"true_false\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"col-md-11\">\n		Correct\n		<div class=\"input-group\">\n        <span class=\"input-group-addon\">\n          <input type=\"radio\" name=\"correct\" value=\"a\" >\n        </span>\n    	<input type=\"text\" readonly name=\"option1\" value=\"True\" class=\"form-control\">\n  	</div><br>\n	</div>\n	<div class=\"col-md-11\">\n  	<div class=\"input-group\">\n        <span class=\"input-group-addon\">\n          <input type=\"radio\" name=\"correct\" value=\"b\" >\n        </span>\n    	<input type=\"text\" readonly name=\"option2\" value=\"False\" class=\"form-control\">\n  	</div><br>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"number\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-04 09:17:58','2018-12-07 09:04:44');
+INSERT INTO `option_structure` VALUES (1,'radio','<div class=\"multiple_choice\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_choice\" onclick=\"return AddMultipleChoiceOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"text\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-04 09:17:58','2018-12-21 10:33:56'),(2,'checkbox','\n<div class=\"multiple_response\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_response\" onclick=\"return AddMultipleResponseOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"text\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-04 09:17:58','2018-12-21 10:34:24'),(3,'true-false','<div class=\"true_false\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"col-md-11\">\n		Correct\n		<div class=\"input-group\">\n        <span class=\"input-group-addon\">\n          <input type=\"radio\" name=\"correct\" value=\"a\" >\n        </span>\n    	<input type=\"text\" readonly name=\"option1\" value=\"True\" class=\"form-control\">\n  	</div><br>\n	</div>\n	<div class=\"col-md-11\">\n  	<div class=\"input-group\">\n        <span class=\"input-group-addon\">\n          <input type=\"radio\" name=\"correct\" value=\"b\" >\n        </span>\n    	<input type=\"text\" readonly name=\"option2\" value=\"False\" class=\"form-control\">\n  	</div><br>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"text\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-04 09:17:58','2018-12-21 10:34:08');
 /*!40000 ALTER TABLE `option_structure` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,6 +338,8 @@ CREATE TABLE `prerequisite` (
   `video_file_mime` varchar(255) DEFAULT NULL,
   `video_file_original_name` varchar(255) DEFAULT NULL,
   `video_file` varchar(255) DEFAULT NULL,
+  `pdf_file_original_name` varchar(255) DEFAULT NULL,
+  `pdf_file` varchar(255) DEFAULT NULL,
   `video_url` varchar(255) DEFAULT NULL,
   `youtube_url` varchar(255) DEFAULT NULL,
   `status` tinyint(4) NOT NULL,
@@ -349,7 +347,7 @@ CREATE TABLE `prerequisite` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '1 - active, 0- Not active',
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +356,6 @@ CREATE TABLE `prerequisite` (
 
 LOCK TABLES `prerequisite` WRITE;
 /*!40000 ALTER TABLE `prerequisite` DISABLE KEYS */;
-INSERT INTO `prerequisite` VALUES (1,'javascript prerequisite','flv','samplevideo_1280x720_1mb.flv','prerequisite/9Brb7koJEWIu9II1s43BUiHn4YNNyrR6vCApF51l.flv',NULL,NULL,1,NULL,'2018-12-14 04:17:34','2018-12-17 01:58:37'),(2,'sadf','flv','samplevideo_1280x720_1mb.flv','prerequisite/3OlKKRaXHbp2DqD2fwPw1gm9rq8NDlXmqpdquK1f.flv',NULL,NULL,1,NULL,'2018-12-17 03:06:25','2018-12-17 03:09:16');
 /*!40000 ALTER TABLE `prerequisite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +374,7 @@ CREATE TABLE `question_category` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +383,7 @@ CREATE TABLE `question_category` (
 
 LOCK TABLES `question_category` WRITE;
 /*!40000 ALTER TABLE `question_category` DISABLE KEYS */;
-INSERT INTO `question_category` VALUES (1,'php',1,'2018-12-14 04:12:24','2018-12-14 04:12:24',NULL),(2,'javascript',1,'2018-12-14 04:12:33','2018-12-14 04:12:33',NULL);
+INSERT INTO `question_category` VALUES (1,'Education',1,'2018-12-21 05:41:48','2018-12-21 05:41:48',NULL),(2,'Sports',1,'2018-12-21 06:11:41','2018-12-21 06:11:41',NULL),(3,'Economics',1,'2018-12-21 06:11:50','2018-12-21 06:11:50',NULL),(4,'Science and Technology',1,'2018-12-21 06:12:03','2018-12-21 06:12:03',NULL);
 /*!40000 ALTER TABLE `question_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +404,7 @@ CREATE TABLE `question_types` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,8 +413,56 @@ CREATE TABLE `question_types` (
 
 LOCK TABLES `question_types` WRITE;
 /*!40000 ALTER TABLE `question_types` DISABLE KEYS */;
-INSERT INTO `question_types` VALUES (1,'multiple choice','multiple-choice','radio',1,NULL,'2018-12-14 04:12:57','2018-12-14 04:12:57'),(2,'Multiple Response','multiple-response','checkbox',1,NULL,'2018-12-14 04:13:13','2018-12-14 04:13:13'),(3,'test one','test-one','radio',1,'2018-12-14 05:48:10','2018-12-14 05:48:03','2018-12-14 05:48:10');
+INSERT INTO `question_types` VALUES (1,'multiple choice','multiple-choice','radio',1,NULL,'2018-12-21 06:11:11','2018-12-21 06:11:11'),(2,'Multiple Response','multiple-response','checkbox',1,NULL,'2018-12-21 06:11:26','2018-12-21 06:11:26');
 /*!40000 ALTER TABLE `question_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `questions`
+--
+
+DROP TABLE IF EXISTS `questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `questions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) NOT NULL,
+  `question_text` text NOT NULL,
+  `question_type` varchar(255) NOT NULL,
+  `option_type` varchar(255) NOT NULL,
+  `option1` text,
+  `option2` text,
+  `option3` text,
+  `option4` text,
+  `option5` text,
+  `option6` text,
+  `option7` text,
+  `option8` text,
+  `option9` text,
+  `option10` text,
+  `option11` text,
+  `option12` text,
+  `option13` text,
+  `option14` text,
+  `option15` text,
+  `option16` text,
+  `correct_answer` varchar(255) NOT NULL,
+  `right_marks` varchar(255) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `questions`
+--
+
+LOCK TABLES `questions` WRITE;
+/*!40000 ALTER TABLE `questions` DISABLE KEYS */;
+INSERT INTO `questions` VALUES (1,4,'Inventer of C Language','multiple-choice','radio','James Gosling','Danish Ritchi','Rasmus Lardorf','Linus torvalds',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'b','1',NULL,'2018-12-21 06:19:25','2018-12-21 06:19:25'),(2,4,'Inventer of  C++ language','multiple-choice','radio','Rasmus lardorf','Linus torvalds','Nikola tesla','Bjarn Starstrup',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'d','1',NULL,'2018-12-21 06:20:38','2018-12-21 06:20:38'),(3,4,'Inventer of java','multiple-choice','radio','James gosling','Bjarn Stratrup','denish ritchi','rasmus lardorf',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'a','1',NULL,'2018-12-21 06:21:41','2018-12-21 06:21:41');
+/*!40000 ALTER TABLE `questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -462,7 +507,7 @@ CREATE TABLE `questions_types_structure` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -471,55 +516,8 @@ CREATE TABLE `questions_types_structure` (
 
 LOCK TABLES `questions_types_structure` WRITE;
 /*!40000 ALTER TABLE `questions_types_structure` DISABLE KEYS */;
-INSERT INTO `questions_types_structure` VALUES (1,1,'<div class=\"multiple_choice\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_choice\" onclick=\"return AddMultipleChoiceOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"number\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-14 04:12:57','2018-12-14 04:12:57'),(2,2,'\n<div class=\"multiple_response\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_response\" onclick=\"return AddMultipleResponseOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"number\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-14 04:13:13','2018-12-14 04:13:13'),(3,3,'<div class=\"multiple_choice\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_choice\" onclick=\"return AddMultipleChoiceOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"number\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-14 05:48:03','2018-12-14 05:48:03');
+INSERT INTO `questions_types_structure` VALUES (1,1,'<div class=\"multiple_choice\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"radio\" name=\"correct\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_choice\" onclick=\"return AddMultipleChoiceOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"text\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-21 06:11:11','2018-12-21 06:11:11'),(2,2,'\n<div class=\"multiple_response\">\n\n	<div class=\"col-md-12\">\n		<label>Type your question</label>\n		<textarea type=\"text\" class=\"form-control\" name=\"question_text\" rows=\"5\"></textarea><br>\n	</div>\n\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n			Correct\n			<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n					<label>A</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"a\">\n            </span>\n        	<textarea type=\"text\" name=\"option1\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>B</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"b\">\n            </span>\n        	<textarea type=\"text\" name=\"option2\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>C</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"c\">\n            </span>\n        	<textarea type=\"text\" name=\"option3\" class=\"form-control\"></textarea>\n      	</div><br>\n  	</div>\n	</div>\n	\n	<div class=\"options\">\n		<div class=\"col-md-11\">\n      	<div class=\"input-group\">\n            <span class=\"input-group-addon\">\n            	<label>D</label><br>\n              <input type=\"checkbox\" name=\"correct[]\" value=\"d\">\n            </span>\n        	<textarea type=\"text\" name=\"option4\" class=\"form-control\"></textarea>\n			</div><br>\n		</div>\n	</div>\n\n	<div class=\"col-md-11\" >\n		<a class=\"btn btn-info add_new_response\" onclick=\"return AddMultipleResponseOption(this)\" style=\"float: right;\" >Add new</a>\n	</div>\n\n	<div class=\"col-md-2\">\n		<div class=\"form-group\">\n			<label for=\"\">Right Marks</label>\n			<input type=\"text\" class=\"form-control\" placeholder=\"0\" value=\"\" name=\"right_marks\">\n		</div>\n	</div>\n</div>','2018-12-21 06:11:26','2018-12-21 06:11:26');
 /*!40000 ALTER TABLE `questions_types_structure` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `repository`
---
-
-DROP TABLE IF EXISTS `repository`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `repository` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question_text` text NOT NULL,
-  `question_type` varchar(255) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `option1` text,
-  `option2` text,
-  `option3` text,
-  `option4` text,
-  `option5` text,
-  `option6` text,
-  `option7` text,
-  `option8` text,
-  `option9` text,
-  `option10` text,
-  `option11` text,
-  `option12` text,
-  `option13` text,
-  `option14` text,
-  `option15` text,
-  `option16` text,
-  `correct_answer` varchar(255) NOT NULL,
-  `right_marks` varchar(255) NOT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `repository`
---
-
-LOCK TABLES `repository` WRITE;
-/*!40000 ALTER TABLE `repository` DISABLE KEYS */;
-INSERT INTO `repository` VALUES (1,'inventer of php','multiple-choice',1,'rasmus lardorf','dennis ritshi','james gosling','sheshkumar prajapati',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'a','1',NULL,'2018-12-14 04:14:09','2018-12-14 04:14:09'),(2,'framworks of javascrpts','multiple-response',2,'angular','node','react','django',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'a,b,c','1',NULL,'2018-12-14 04:15:04','2018-12-14 04:15:04'),(3,'213','multiple-response',1,'1231','23','213','213',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'d','1',NULL,'2018-12-17 05:05:15','2018-12-17 05:05:15');
-/*!40000 ALTER TABLE `repository` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -584,14 +582,18 @@ DROP TABLE IF EXISTS `site_setting`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `site_setting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `value` text NOT NULL,
+  `site_title` varchar(255) NOT NULL,
+  `address` text NOT NULL,
+  `contact_no` bigint(20) NOT NULL,
+  `email_id` varchar(255) NOT NULL,
+  `meta_keywords` varchar(255) DEFAULT NULL,
+  `meta_desc` varchar(255) DEFAULT NULL,
   `status` enum('0','1') NOT NULL DEFAULT '0',
   `deleted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -600,8 +602,46 @@ CREATE TABLE `site_setting` (
 
 LOCK TABLES `site_setting` WRITE;
 /*!40000 ALTER TABLE `site_setting` DISABLE KEYS */;
-INSERT INTO `site_setting` VALUES (1,'Site title','Exam engine','1','2018-12-14 10:26:47','2018-12-14 04:56:47','2018-12-14 04:52:17');
+INSERT INTO `site_setting` VALUES (5,'Managed Services Council','Managed Services Council',123456789,'admin@gmail.com','Managed Services Council','Managed Services Council','1','2018-12-18 13:46:24','0000-00-00 00:00:00','0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `site_setting` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transaction`
+--
+
+DROP TABLE IF EXISTS `transaction`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `transaction` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transaction_id` varchar(255) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `state` varchar(255) NOT NULL,
+  `intent` varchar(255) NOT NULL,
+  `cart` varchar(255) NOT NULL,
+  `payer_id` varchar(255) NOT NULL,
+  `payer_status` varchar(255) NOT NULL,
+  `payment_method` varchar(255) NOT NULL,
+  `invoice` varchar(255) NOT NULL,
+  `currency` varchar(255) NOT NULL,
+  `total_amount` decimal(16,2) NOT NULL,
+  `description` text NOT NULL,
+  `payment_response` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transaction`
+--
+
+LOCK TABLES `transaction` WRITE;
+/*!40000 ALTER TABLE `transaction` DISABLE KEYS */;
+/*!40000 ALTER TABLE `transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -622,7 +662,7 @@ CREATE TABLE `user_info` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -631,7 +671,7 @@ CREATE TABLE `user_info` (
 
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
-INSERT INTO `user_info` VALUES (1,1,'tester','tester',123658974,'test','1544702992IMG_04102018_140725_0.png','2018-12-13 06:39:52','2018-12-13 06:39:52'),(2,2,'tester','tester',123658974,'test','1544703157IMG_08102018_142830_0.png','2018-12-13 06:42:37','2018-12-13 06:42:37'),(3,3,'tester','tester',123658974,'test','1544703197IMG_03102018_164719_0.png','2018-12-13 06:43:17','2018-12-13 06:43:17'),(4,7,'tester','tester',123658974,NULL,'','2018-12-13 06:45:44','2018-12-13 06:45:44'),(5,8,'tester','tester',123658974,NULL,'','2018-12-13 06:47:01','2018-12-13 06:47:01'),(6,9,'tester','tester',123658974,'test','1544703461IMG_11072018_182202_0.png','2018-12-13 06:47:41','2018-12-13 06:47:41'),(7,10,'tester','tester',123658974,'test','1544703528IMG_08062018_185159_0.png','2018-12-13 06:48:48','2018-12-13 06:48:48'),(8,11,'tester','tester',123658974,'test','1544703681IMG_01032018_172055_0.png','2018-12-13 06:51:21','2018-12-13 06:51:21'),(9,12,'tester','tester',123658974,'test','1544703722IMG_08062018_185159_0.png','2018-12-13 06:52:02','2018-12-13 06:52:02'),(10,13,'tester','tester',123658974,'test','1544704879250X250.png','2018-12-13 07:11:19','2018-12-13 07:11:19'),(11,14,'tester','tester',123658974,'test','1544704920250X250_7.png','2018-12-13 07:12:00','2018-12-13 07:12:00'),(12,15,'admin','admin',123658974,NULL,'','2018-12-13 07:19:09','2018-12-13 07:19:09');
+INSERT INTO `user_info` VALUES (1,1,'admin','gmail',7770097073,NULL,'','2018-12-20 03:18:17','2018-12-20 03:18:17');
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -651,7 +691,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -660,7 +700,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (15,'admin_admin','admin@gmail.com','$2y$10$RWm0qdMHQhpkFSDNSXNYLuIn1xohSxZMyBq1UHE/ckzi3bITn4Q7m','P4NfHb4P4GXxSDjKLz6YXolNLTc8G5KFqcqb5w9yeXYsMhVHQQnK3X5Kpcfr','2018-12-13 07:19:09','2018-12-14 01:50:58');
+INSERT INTO `users` VALUES (1,'admin_gmail','admin@gmail.com','$2y$10$Ik1xuPAoSHQzicpBWRyGIOjdMKl3mL2iZ3anFClgN0J.IgXZplenq','BSuGmHJzwY0jk0wMJkQGVPcEgbVCqbJt2qut9UyS8mJbsAjn1oWwGCXOIKYn','2018-12-20 03:18:17','2018-12-20 03:18:17');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -673,4 +713,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-17 19:05:10
+-- Dump completed on 2018-12-21 17:27:08

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\QestionCategoryRequest;
 use App\Http\Controllers\Controller;
 
 use App\Models\QuestionCategoryModel;
+use App\Models\QuestionsModel;
 use Validator;
 
 class QuestionCategoryController extends Controller
@@ -17,10 +18,12 @@ class QuestionCategoryController extends Controller
 
     public function __construct(
 
-        QuestionCategoryModel $QuestionCategoryModel
+        QuestionCategoryModel $QuestionCategoryModel,
+        QuestionsModel $QuestionsModel
     )
     {
         $this->QuestionCategoryModel  = $QuestionCategoryModel;
+        $this->QuestionsModel  = $QuestionsModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -93,8 +96,17 @@ class QuestionCategoryController extends Controller
         if ($request->has('id') && $request->has('status') ) 
         {
             $id = base64_decode(base64_decode($request->id));
-            $status = $request->status;
 
+            $flag = $this->_checkDependency($id);
+            if ($flag) 
+            {
+                $this->JsonData['status'] = 'error';
+                $this->JsonData['msg']    = 'Can\'t change status, This Question category has been used in questions.';
+                return response()->json($this->JsonData);
+                exit;
+            }
+
+            $status = $request->status;
             if($this->QuestionCategoryModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
@@ -266,7 +278,18 @@ class QuestionCategoryController extends Controller
      */
     public function destroy($id)
     {
-         $intId = base64_decode(base64_decode($id));
+        $intId = base64_decode(base64_decode($id));
+
+
+        $flag = $this->_checkDependency($intId);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t change status, This Question category has been used in questions.';
+            return response()->json($this->JsonData);
+            exit;
+        }
+
 
         if($this->QuestionCategoryModel->where('id', $intId)->delete())
         {
@@ -281,4 +304,23 @@ class QuestionCategoryController extends Controller
         
         return response()->json($this->JsonData);
     }
+
+
+    /*-----------------------------------------------------
+    |  sub function Calls
+    */
+
+        public function _checkDependency($id)
+        {
+            $count  = $this->QuestionsModel->where('category_id', $id)->count();
+                   
+            if ($count > 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 }

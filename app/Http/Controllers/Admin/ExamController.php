@@ -11,6 +11,7 @@ use App\Models\ExamQuestionsModel;
 use App\Models\QuestionCategoryModel;
 use App\Models\QuestionsModel;
 use App\Models\ExamSlotModel;
+use App\Models\CourseModel;
 
 // request
 use App\Http\Requests\Admin\ExamRequest;
@@ -37,7 +38,8 @@ class ExamController extends Controller
     	ExamQuestionsModel $ExamQuestionsModel,
         QuestionCategoryModel $QuestionCategoryModel,
         QuestionsModel $QuestionsModel,
-        ExamSlotModel $ExamSlotModel
+        ExamSlotModel $ExamSlotModel,
+        CourseModel $CourseModel
 
     )
     {
@@ -46,6 +48,7 @@ class ExamController extends Controller
         $this->ExamSlotModel         = $ExamSlotModel;
         $this->QuestionCategoryModel = $QuestionCategoryModel;
         $this->QuestionsModel        = $QuestionsModel;
+        $this->CourseModel           = $CourseModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -444,6 +447,15 @@ class ExamController extends Controller
     {
         $id = base64_decode(base64_decode($enc_id));
 
+        $flag = $this->_checkDependency($id);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t change status, This Exam has been used in Course.';
+            return response()->json($this->JsonData);
+            exit;
+        }
+
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
@@ -466,6 +478,16 @@ class ExamController extends Controller
         if ($request->has('id') && $request->has('status') ) 
         {
             $id = base64_decode(base64_decode($request->id));
+
+            $flag = $this->_checkDependency($id);
+            if ($flag) 
+            {
+                $this->JsonData['status'] = 'error';
+                $this->JsonData['msg']    = 'Can\'t change status, This Exam has been used in Course.';
+                return response()->json($this->JsonData);
+                exit;
+            }
+
             $status = $request->status;
 
             if($this->BaseModel->where('id', $id)->update(['status' => $status]))
@@ -618,5 +640,23 @@ class ExamController extends Controller
                                  ];
 
             return $days;
+        }
+
+    /*-----------------------------------------------------
+    |  sub function Calls
+    */
+
+        public function _checkDependency($id)
+        {
+            $count  = $this->CourseModel->where('exam_id', $id)->count();
+                   
+            if ($count > 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 }       

@@ -20,31 +20,41 @@
           </a>
         </li>
 
-        <li class="{{ active(['admin/question-type','admin/question-type/*']) }}">
-          <a href="{{ route('question-type.index') }}">
-            <i class="fa fa-book" aria-hidden="true"></i> <span>Question Types</span>
+        <li class="treeview {{ active(['admin/question-type','admin/question-type/*','admin/question-category','admin/question-category/*','admin/question','admin/question/*']) }} ">
+          <a href="javascript:void(0)">
+            <i class="fa fa-database" aria-hidden="true"></i> <span>Question</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
           </a>
+          <ul class="treeview-menu" style="">
+              <li class="{{ active(['admin/question-type','admin/question-type/*']) }}">
+                <a href="{{ route('question-type.index') }}">
+                  <i class="fa fa-circle-o"></i> <span>Question Types</span>
+                </a>
+              </li>
+              <li class="{{ active(['admin/question-category','admin/question-category/*']) }}">
+                <a href="{{ url('/admin/question-category') }}">
+                   <i class="fa fa-circle-o"></i> <span>Question Category</span>
+                </a>
+              </li>
+              <li class="{{ active(['admin/question','admin/question/*']) }}">
+                <a href="{{ route('question.index') }}">
+                   <i class="fa fa-circle-o"></i> <span>Question</span>
+                </a>
+              </li>
+          </ul>
         </li>
-        <li class="{{ active(['admin/question-category','admin/question-category/*']) }}">
-          <a href="{{ url('/admin/question-category') }}">
-             <i class="fa fa-bars"></i> <span>Question Category</span>
-          </a>
-        </li>
-        <li class="{{ active(['admin/question','admin/question/*']) }}">
-          <a href="{{ route('question.index') }}">
-             <i class="fa fa-database" aria-hidden="true"></i> <span>Question</span>
+
+        <li class="{{ active(['admin/exam','admin/exam/*']) }}">
+          <a href="{{ route('exam.index') }}">
+            <i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Exam</span>
           </a>
         </li>
 
         <li class="{{ active(['admin/prerequisite','admin/prerequisite/*']) }}">
           <a href="{{ route('prerequisite.index') }}">
             <i class="fa fa-file-video-o" aria-hidden="true"></i> <span>Prerequisite</span>
-          </a>
-        </li>
-
-        <li class="{{ active(['admin/exam','admin/exam/*']) }}">
-          <a href="{{ route('exam.index') }}">
-            <i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Exam</span>
           </a>
         </li>
 

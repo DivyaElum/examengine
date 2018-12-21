@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\QuestionTypesModel;
 use App\Models\QuestionTypeStructureModel;
 use App\Models\OptionStructureModel;
+use App\Models\QuestionsModel;
 
 // requests
 use App\Http\Requests\Admin\QuestionTypeRequest;
@@ -33,12 +34,14 @@ class QuestionTypeController extends Controller
 
         QuestionTypesModel $QuestionTypesModel,
         QuestionTypeStructureModel $QuestionTypeStructureModel,
-        OptionStructureModel $OptionStructureModel
+        OptionStructureModel $OptionStructureModel,
+        QuestionsModel $QuestionsModel
     )
     {
         $this->BaseModel                    = $QuestionTypesModel;
         $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
         $this->OptionStructureModel         = $OptionStructureModel;
+        $this->QuestionsModel               = $QuestionsModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -207,6 +210,15 @@ class QuestionTypeController extends Controller
     {
         $id = base64_decode(base64_decode($enc_id));
 
+        $flag = $this->_checkDependency($id);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t change status, This Question type has been used in questions.';
+            return response()->json($this->JsonData);
+            exit;
+        }
+
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
@@ -229,8 +241,19 @@ class QuestionTypeController extends Controller
         if ($request->has('id') && $request->has('status') ) 
         {
             $id = base64_decode(base64_decode($request->id));
-            $status = $request->status;
+            
+            // change status dependent on exam moulde 
+            $flag = $this->_checkDependency($id);
+            if ($flag) 
+            {
+                $this->JsonData['status'] = 'error';
+                $this->JsonData['msg']    = 'Can\'t change status, This Question type has been used in questions.';
+                return response()->json($this->JsonData);
+                exit;
+            }
 
+            // update status
+            $status = $request->status;
             if($this->BaseModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
@@ -342,5 +365,24 @@ class QuestionTypeController extends Controller
                 $this->JsonData['data']             = $data;
 
             return response()->json($this->JsonData);
+        }
+
+    /*-----------------------------------------------------
+    |  sub function Calls
+    */
+
+        public function _checkDependency($id)
+        {
+            $object = $this->BaseModel->find($id);
+            $count  = $this->QuestionsModel->where('question_type', $object->slug)->count();
+                   
+            if ($count > 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 }
