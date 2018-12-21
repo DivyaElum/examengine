@@ -1,10 +1,12 @@
+var basePath = $('meta[name="base-path"]').attr('content');
+
 var player,
 time_update_interval = 0;
 
 var youtubeId = youtubeUrl.split('v=').reverse()[0];
 
 
-function onYouTubeIframeAPIReady() {
+function onYouTubeIframeAPIReady_() {
     player = new YT.Player('video-placeholder', {
         width: 600,
         height: 400,
@@ -21,9 +23,9 @@ function onYouTubeIframeAPIReady() {
 function initialize(){
 
     // Update the controls on load
-    setInterval(function(){ 
-        updateTimerDisplay();
-    }, 5000);
+    // setInterval(function(){ 
+    //     updateTimerDisplay();
+    // }, 5000);
 
     // Clear any old interval.
     clearInterval(time_update_interval);
@@ -65,11 +67,11 @@ function updateTimerDisplay(){
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         type: 'POST',
-        url: '/course/updateWatchStatus',
+        url: basePath+'/course/updateWatchStatus',
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data)
+        error: function (data)
         {
             console.log(data);
         },

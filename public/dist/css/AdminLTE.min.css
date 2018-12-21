@@ -36,3 +36,7 @@
 
 .stsActiveClass:hover{background-color: #3c743c;color: #fff;border-color: #3c743c;}
 .stsInactiveClass:hover{background-color: #d14545;color: #fff;border-color: #d14545;}
+
+.forgotLink {margin-left: 16px;}
+.login-logo, .register-logo {font-size: 24px !important;}
+.btnBck {position: relative;right: 20px;}

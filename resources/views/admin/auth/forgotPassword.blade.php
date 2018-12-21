@@ -65,7 +65,9 @@ $.ajaxSetup({
 	      <div class="row">
 	        <div class="col-xs-4">
 	          <button type="submit" class="btn btn-primary btn-block btn-flat ">Send</button>
-	          <a href="/admin/login" class="btn btn-danger btn-block btn-flat ">Back</a>
+	        </div>
+	        <div class="col-xs-4">
+	          <a href="/admin/login" class="btn btn-danger btn-block btn-flat btnBck">Back</a>
 	        </div>
 	      </div>
 	    </form>
