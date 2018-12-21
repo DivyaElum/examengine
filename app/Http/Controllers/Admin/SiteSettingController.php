@@ -103,10 +103,10 @@ class SiteSettingController extends Controller
                 // filter columns
                 $filter = array(
                     0 => 'id',
-                    1 => 'title',
-                    2 => 'value',
-                    4 => 'created_at',
-                    5 => 'id'
+                    1 => 'site_title',
+                    2 => 'email_id',
+                    3 => 'created_at',
+                    4 => 'id'
                 );
 
             /*--------------------------------------
@@ -127,8 +127,8 @@ class SiteSettingController extends Controller
                     $modelQuery = $modelQuery->where(function ($query) use($search)
                             {
                                 $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('title', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('value', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('site_title', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('email_id', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
                             });
                 }

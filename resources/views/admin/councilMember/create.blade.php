@@ -36,23 +36,23 @@
 	              		<div class="row">
 	              			<div class="col-md-12">
 				                <div class="form-group">
-				                  	<label for="txtName">Name </label>
-				                  	<input type="text" name="txtName" id="txtName" class="form-control">
+				                  	<label for="txtName">Name <span style="color: red">*</span></label>
+				                  	<input type="text" placeholder="Enter Name" name="txtName" id="txtName" class="form-control">
 				                  	<span class="help-block err_txtName"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="txtEmail">Email </label>
-				                  	<input type="Email" name="txtEmail" id="txtEmail" class="form-control">
+				                  	<label for="txtEmail">Email <span style="color: red">*</span></label>
+				                  	<input type="Email" placeholder="Enter Email" name="txtEmail" id="txtEmail" class="form-control">
 				                  	<span class="help-block err_txtEmail"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="txtDescription">Description </label>
-				                  	<textarea class="form-control" name="txtDescription" id="txtDescription"></textarea>
+				                  	<label for="txtDescription">Description <span style="color: red">*</span></label>
+				                  	<textarea class="form-control" placeholder="Enter Description" name="txtDescription" id="txtDescription"></textarea>
 				                  	<span class="help-block err_txtDescription"></span>
 				                </div>
 				                 <div class="form-group">
-				                  	<label for="txtDesignation">Designation </label>
-				                  	<input type="text" name="txtDesignation" id="txtDesignation" class="form-control"  />
+				                  	<label for="txtDesignation">Designation <span style="color: red">*</span></label>
+				                  	<input type="text" name="txtDesignation" placeholder="Enter Designation" id="txtDesignation" class="form-control"  />
 				                  	<span class="help-block err_txtDescription"></span>
 				                </div>
 				                <div class="form-group">
@@ -61,7 +61,7 @@
 				                  	<span class="help-block err_txtImage"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="">Status </label>&nbsp;&nbsp;
+				                  	<label for="">Status <span style="color: red">*</span></label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
 								      <input type="radio" name="txtStatus" checked value="1">Active
 								    </label>

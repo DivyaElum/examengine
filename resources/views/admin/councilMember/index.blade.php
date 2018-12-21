@@ -43,8 +43,8 @@
           						<th>Name</th>
           						<th>Email</th>
           						<th>Designation</th>
-          						<th>Status</th>
           						<th>Created Date</th>
+          						<th>Status</th>
           						<th>Action</th>
           					</thead>
           					<tbody>

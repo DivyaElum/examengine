@@ -23,6 +23,9 @@ class PrerequisiteRequest extends FormRequest
                 'status'       => 'required',
                 'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                 'pdf_file'     => 'mimes:pdf',
+                'youtube_url'  => 'nullable|url',
+                'video_url'    => 'nullable|url',
+
             ];
         }
         else
@@ -42,6 +45,8 @@ class PrerequisiteRequest extends FormRequest
                     'status'       => 'required',
                     'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                     'pdf_file'     => 'mimes:pdf',
+                    'youtube_url'  => 'nullable|url',
+                    'video_url'    => 'nullable|url',
                 ];
             }
         }

@@ -14,13 +14,6 @@
 	// test exam
 	Route::get('/exam/{token}/perform','Front\ExamController@index')->name('exam');
 	 
-	// purchase course
-	Route::group(['prefix' => 'purchase'],function()
-	{
-		Route::post('/', 	   'PaymentController@purchase')->name('purchase');
-		Route::get('/response','PaymentController@response')->name('purchase.response');
-		Route::get('/cancel',  'PaymentController@cancel')->name('purchase.cancel');
-	});
 
 	// sign up
 	Route::resource('/signup', 'Auth\RegisterController');
@@ -41,6 +34,22 @@
 	{
 		// dash board rotues
 		Route::get('/dashboard', 'Candidate\DashbordController@index');
+
+		// purchase course
+		Route::group(['prefix' => 'purchase'],function()
+		{
+			Route::post('/', 	   'PaymentController@purchase')->name('purchase');
+			Route::get('/response','PaymentController@response')->name('purchase.response');
+			Route::get('/cancel',  'PaymentController@cancel')->name('purchase.cancel');
+		});
+
+		// course routes
+		Route::group(['prefix' => 'course'],function()
+		{
+			Route::get('/details/{id}', 'Candidate\CourseController@index');
+			Route::get('/{token}/varify', 'Candidate\CourseController@varify');
+			Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
+		});
 	});
 
 	// certification rotues
@@ -48,14 +57,6 @@
 	{
 		Route::get('/','Candidate\CertificationController@index');
 		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
-	});
-
-	// course routes
-	Route::group(['prefix' => 'course'],function()
-	{
-		Route::get('/details/{id}', 'Candidate\CourseController@index');
-		Route::get('/{token}/varify', 'Candidate\CourseController@varify');
-		Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
 	});
 
 /*

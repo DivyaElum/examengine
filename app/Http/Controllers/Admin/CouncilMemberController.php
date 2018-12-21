@@ -156,10 +156,10 @@ class CouncilMemberController extends Controller
                     0 => 'id',
                     1 => 'Name',
                     2 => 'Email',
-                    2 => 'designation',
-                    2 => 'status',
+                    3 => 'designation',
                     4 => 'created_at',
-                    5 => 'id'
+                    5 => 'status',
+                    6 => 'id'
                 );
 
             /*--------------------------------------
@@ -180,9 +180,11 @@ class CouncilMemberController extends Controller
                     $modelQuery = $modelQuery->where(function ($query) use($search)
                         {
                             $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('Name', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('Email', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('name', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('email', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('description', 'LIKE', '%'.$search.'%');   
                             $query->orwhere('designation', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('status', 'LIKE', '%'.$search.'%');   
                             $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
                         });
                 }

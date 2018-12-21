@@ -17,8 +17,8 @@ $(document).ready(function()
             { "data": "Name",           "ordereble": "true"},
             { "data": "Email",          "ordereble": "true"},
             { "data": "Designation",    "ordereble": "true"},
-            { "data": "status",         "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
+            { "data": "status",         "ordereble": "true"},
             { "data": "actions"}
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
