@@ -7,8 +7,6 @@
         <title>Exam Test</title>
 
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
         <script type="text/javascript">
             
@@ -130,7 +128,7 @@
         <div class="container" id="startExam">
             <div class="content">
                 <div class="title">
-                    <a href="javascript:void(0)" onclick="startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
+                    <a href="javascript:void(0)" onclick="startTimer(this)"  data-hours="{{ $object->exam->duration }}" >Click to start test</a>
                 </div>
             </div>
         </div>
@@ -140,24 +138,30 @@
                     
                     <div class="col-sm-9">
                         <div class="carousel-inner" role="listbox">
-                            <div class="item active question">
-                              <h3>1</h3>
-                            </div>
-                            <div class="item question">
-                              <h3>2</h3>
-                            </div>
-                            <div class="item question">
-                              <h3>3</h3>
-                            </div>
-                            <div class="item question">
-                              <h3>4</h3>
-                            </div>
-                            <div class="item question">
-                              <h3>5</h3>
-                            </div>
-                            <div class="item question">
-                              <h3>6</h3>
-                            </div>
+
+                            @if(!empty($object->exam->questions) && sizeof($object->exam->questions) > 0)
+                                @foreach($object->exam->questions as $key => $question)
+                                    {{dump($question)}}
+                                    <?php $active = $key == 0 ? 'active' : ''; ?>
+
+                                    <div class="item question {{ $active }}">
+                                        <h3>
+                                            <div class="row ">
+
+                                                <div class="col-sm-12 quesiton_title_div">
+                                                    <p>{{ $key+1 }} ) {{ ucfirst($question->repository->question_text) }}</p>
+                                                </div>
+
+                                                <div class="col-sm-12 answers_div">
+                                                    
+                                                </div>
+                                            </div>
+                                        </h3>
+                                    </div>
+                                
+                                @endforeach    
+                            @endif    
+
                         </div>
                     </div>
 
@@ -167,51 +171,40 @@
                             <span id="demo"></span>
                         </div>
                         <div class="row">
-                            <div class="col-xs-3">
-                                <div class="question_buttons activate" data-target="#my-carousel" data-slide-to="0">
-                                    One
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="1">
-                                    Two
-                                </div>
-                            </div>
-                        
-                            <div class="col-xs-3">
-                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="2">
-                                    Three
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="3">
-                                    Four
-                                </div>
-                            </div>
-                        
-                            <div class="col-xs-3">
-                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="4">
-                                    Five
-                                </div>
-                            </div>
-                            <div class="col-xs-3">
-                                <div class="question_buttons" data-target="#my-carousel" data-slide-to="5">
-                                    Six
-                                </div>
-                            </div>
+                            @if(!empty($object->exam->questions) && sizeof($object->exam->questions) > 0)
+                                @foreach($object->exam->questions as $key => $question)
+
+                                    <?php $active = $key == 0 ? 'activate' : ''; ?>
+
+                                    <div class="col-xs-3">
+                                        <div class="question_buttons {{ $active }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
+                                            {{ $key+1 }}
+                                        </div>
+                                    </div>
+                                
+                                @endforeach    
+                            @endif    
+
                         </div>
                     </div>
                   
                 </div>
             </div>
         </div>
-
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script type="text/javascript">
-            $('#my-carousel .question_buttons').click(function(e)
+
+            $(document).ready(function()
             {
-                $('.question_buttons').removeClass('activate');
-                $(this).addClass('activate');
-            });
+                $('#my-carousel').carousel();
+
+                $('#my-carousel .question_buttons').click(function(e)
+                {
+                    $('.question_buttons').removeClass('activate');
+                    $(this).addClass('activate');
+                });
+            })
         </script>
     </body>
 </html>

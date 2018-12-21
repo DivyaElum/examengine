@@ -15,8 +15,8 @@ $(document).ready(function()
         columns: [
             { "data": "id",             "ordereble": "true"},
             { "data": "category",       "ordereble": "true"},
-            { "data": "status",         "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
+            { "data": "status",         "ordereble": "true"},
             { "data": "actions"}
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
@@ -39,8 +39,10 @@ function deleteQuestionCategory(element)
         swal({
           title: "Are you sure !!",
           text: "You want to delete ?",
-          type: "info",
+          type: "warning",
           showCancelButton: true,
+          confirmButtonText: "Delete",
+          confirmButtonClass: "btn-danger",
           closeOnConfirm: false,
           showLoaderOnConfirm: true
         }, 
