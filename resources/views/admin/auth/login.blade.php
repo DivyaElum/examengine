@@ -42,14 +42,14 @@ $.ajaxSetup({
   <div class="">
     <div class="form-content">
   	<div class="login-logo">
-    	<p><b>Admin Login</b></p>
+    	<p><b><?php echo $siteSetting->site_title ?? 'Managed Services Council'; ?></b></p>
   	</div>
 	   @if (session('login_error'))
 		 <div class="alert alert-danger">
 				 {{ session('login_error') }}
 		 </div>
 	   @endif
-	   <?php 	   
+	   @php 	   
 	   	if(isset($_COOKIE['setEmail'])){
 	   		$strEmail 	 = $_COOKIE['setEmail'];
 	   		$strPassword = base64_decode(base64_decode($_COOKIE['setPassword']));
@@ -58,8 +58,7 @@ $.ajaxSetup({
 	   		$strEmail = $strPassword = '';
 	   		$chkRememberMe = '0';
 	   }
-	   ?>
-
+	   @endphp
 	  	<form onsubmit="return checkLogin(this)" action="{{asset('admin/login')}}" method="post">
 	  		@csrf
 	      <div class="form-group has-feedback">
@@ -83,7 +82,7 @@ $.ajaxSetup({
 	            </label>
 	          </div>
 	        </div>
-	        <a href="{{ URL('/admin/forgot')}}">I forgot my password</a><br>
+	        <a href="{{ URL('/admin/forgot')}}" class="forgotLink">forgot my password</a><br>
 	      </div>
 	    </form>
     </div>

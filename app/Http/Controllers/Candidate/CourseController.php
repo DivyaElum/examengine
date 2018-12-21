@@ -11,10 +11,11 @@ use App\Models\CourseModel;
 use App\Models\TransactionModel;
 use App\Models\PrerequisiteModel;
 use App\Models\CoursePreStatus;
-
 use Illuminate\Support\Facades\Hash;
+
 use URL;
 use Session;
+use DB;
 
 class CourseController extends Controller
 {
@@ -66,7 +67,8 @@ class CourseController extends Controller
       $this->ViewData['page_title']   		  = $this->ModuleTitle;
       $this->ViewData['arrUserData']        = $arrUsers;
       $this->ViewData['arrCourse']          = $arrCourse;      
-      $this->ViewData['arrPrerequisites']  	= $arrPrerequisites;
+      $this->ViewData['arrPrerequisites']   = $arrPrerequisites;
+      $this->ViewData['enc_prerequisites']  = $enc_prerequisites;
         
         return view($this->ModuleView, $this->ViewData);
    	}
@@ -101,7 +103,26 @@ class CourseController extends Controller
 
     public function UpdatePreStatus(Request $request)
     {
-        dd($request->all());
+      $strUserId          = base64_decode(base64_decode($request->user_id)));
+      $strCourseId        = base64_decode(base64_decode($request->course_id));
+      $strPrerequisiteId  = base64_decode($request->prerequisite_id);
+
+      $CoursePreStatus   = $this->CoursePreStatus->firstOrNew(array('user_id' => $strUserId,'course_id' => $strCourseId,'prerequisite_id' => $strPrerequisiteId)));
+
+      //dd($request->all());
+      DB::beginTransaction();
+      $CoursePreStatus->user_id         = base64_decode(base64_decode($request->user_id));
+      $CoursePreStatus->course_id       = base64_decode(base64_decode($request->course_id));
+      $CoursePreStatus->prerequisite_id = base64_decode($request->prerequisite_id);
+      $CoursePreStatus->watch_time      = $request->watch_time;
+      $CoursePreStatus->duration        = $request->duration;
+
+        if ($CoursePreStatus->save()) 
+        {
+            DB::commit();
+          $this->JsonData['status']   = 'success';
+          $this->JsonData['msg']      = 'Added successfully';
+        }
     }
 }
 

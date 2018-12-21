@@ -6,7 +6,7 @@ time_update_interval = 0;
 var youtubeId = youtubeUrl.split('v=').reverse()[0];
 
 
-function onYouTubeIframeAPIReady() {
+function onYouTubeIframeAPIReady_() {
     player = new YT.Player('video-placeholder', {
         width: 600,
         height: 400,
@@ -23,9 +23,9 @@ function onYouTubeIframeAPIReady() {
 function initialize(){
 
     // Update the controls on load
-    setInterval(function(){ 
-        updateTimerDisplay();
-    }, 5000);
+    // setInterval(function(){ 
+    //     updateTimerDisplay();
+    // }, 5000);
 
     // Clear any old interval.
     clearInterval(time_update_interval);
