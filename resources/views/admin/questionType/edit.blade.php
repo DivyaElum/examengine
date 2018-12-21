@@ -29,7 +29,7 @@
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title"></h3>
 		          	<div class="box-tools pull-right">
-		            	<a title="Back to Manage" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
+		            	<a title="Back" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
 	        	</div>
 

@@ -90,6 +90,8 @@ class RepositoryController extends Controller
         $repository->correct_answer     = $correct_answer;
             
         $repository->question_type      = $questionTypeObject->slug;
+
+        $repository->option_type        = $questionTypeObject->option;
         
         $repository->category_id        = $request->category;
 
@@ -162,6 +164,8 @@ class RepositoryController extends Controller
         $repository->correct_answer     = $correct_answer;
             
         $repository->question_type      = $questionTypeObject->slug;
+
+        $repository->option_type        = $questionTypeObject->option;
 
         $repository->category_id        = $request->category;
         
@@ -244,10 +248,10 @@ class RepositoryController extends Controller
                     0 => 'id',
                     1 => 'question_text',
                     2 => 'question_type',
-                    2 => 'category_id',
-                    3 => 'right_marks',
-                    4 => 'created_at',
-                    5 => 'id'
+                    3 => 'category_id',
+                    4 => 'right_marks',
+                    5 => 'created_at',
+                    6 => 'id'
                 );
 
             /*--------------------------------------
@@ -305,7 +309,7 @@ class RepositoryController extends Controller
                         
                         $data[$key]['question_type']  = ucfirst(str_replace('-', " ", $row->question_type));
 
-                        $data[$key]['category']       = ucfirst($row->category->category_name);
+                        $data[$key]['category']       = $row->category->category_name ?? '--';
                         
                         $data[$key]['right_marks']    = $row->right_marks;
                         

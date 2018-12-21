@@ -28,7 +28,7 @@
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title"></h3>
 		          	<div class="box-tools pull-right">
-		            	<a title="Back to Repository" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
+		            	<a title="Back" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
 	        	</div>
         	 	<form onsubmit="return saveQuestionCategory(this)" action="{{route($modulePath.'.index')}}" method="post">
@@ -37,7 +37,7 @@
 	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="txtCategory">Question Category </label>
-				                  	<input type="text" name="category" id="category" class="form-control">
+				                  	<input type="text" name="category" id="category" placeholder="Enter Question Category" class="form-control">
 				                  	<span class="help-block err_txtCategory"></span>
 				                </div>
 				                <div class="form-group">

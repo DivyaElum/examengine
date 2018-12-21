@@ -4,22 +4,21 @@
 	{{ $moduleAction }}
 @stop
 
-
 @section('styles')
-<link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
-
+	<link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/tomorrow.min.css">
-<style type="text/css">
-.titleWrap h3 a {color: #fff;text-decoration: none;}
-</style>
+	<style type="text/css">
+		.titleWrap h3 a {color: #fff;text-decoration: none;}
+	</style>
 @stop
+
 @section('page_title')
 	{{ $page_title }}
 @stop
-@section('content')
 
-<div class="bodyContent dashboard clearfix">
+@section('content')
+	<div class="bodyContent dashboard clearfix">
 	<div class="dashboardWraper">
 		<div class="container">
 			<div class="row">
@@ -89,14 +88,13 @@
 			</div>
 		</div>
 	</div>
-</div>
+	</div>
 @stop
+
 @section('scripts')
-
-<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
-<script type="text/javascript" src="{{ asset('/js/front/course/details.js') }}"></script>
-
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+	<script src="https://www.youtube.com/iframe_api"></script>
+	<script type="text/javascript" src="{{ asset('/js/front/course/details.js') }}"></script>
 @stop
