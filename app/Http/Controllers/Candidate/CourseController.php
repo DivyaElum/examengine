@@ -103,11 +103,11 @@ class CourseController extends Controller
 
     public function UpdatePreStatus(Request $request)
     {
-      $strUserId          = base64_decode(base64_decode($request->user_id)));
+      $strUserId          = base64_decode(base64_decode($request->user_id));
       $strCourseId        = base64_decode(base64_decode($request->course_id));
       $strPrerequisiteId  = base64_decode($request->prerequisite_id);
 
-      $CoursePreStatus   = $this->CoursePreStatus->firstOrNew(array('user_id' => $strUserId,'course_id' => $strCourseId,'prerequisite_id' => $strPrerequisiteId)));
+      $CoursePreStatus   = $this->CoursePreStatus->firstOrNew(array('user_id' => $strUserId,'course_id' => $strCourseId,'prerequisite_id' => $strPrerequisiteId));
 
       //dd($request->all());
       DB::beginTransaction();
