@@ -50,13 +50,16 @@
 	              				<label>Video Type <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
-								      <input type="radio" @if(!empty($object->video_file)) checked @endif onclick="setVideoType(true)" name="video_type" checked value="file">Video File
+								      <input type="radio" @if(!empty($object->video_file)) checked @endif onclick="setVideoType(true)" name="type" value="file">Video File
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" @if(!empty($object->video_url)) checked @endif onclick="setVideoType(true)" name="video_type" value="url">Video URL
+								      <input type="radio" @if(!empty($object->pdf_file)) checked @endif onclick="setVideoType(true)" name="type" value="pdf">Pdf File
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" @if(!empty($object->youtube_url)) checked @endif onclick="setVideoType(true)" name="video_type" value="youtube">Youtube URL
+								      <input type="radio" @if(!empty($object->video_url)) checked @endif onclick="setVideoType(true)" name="type" value="url">Video URL
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" @if(!empty($object->youtube_url)) checked @endif onclick="setVideoType(true)" name="type" value="youtube">Youtube URL
 								    </label>
 				                </div>
 	              			</div>	
@@ -67,12 +70,30 @@
 					                  	<input type="file" value="{{ $object->video_file_original_name }}" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >				                  		
 				                  	</select>
 				                </div>
+				                @if(!empty($object->video_file_original_name))
 				                <div class="old_video_file_class">
 					                <div class="form-group col-md-12">
 				                		<label>Old Video File</label>&nbsp;<a title="delete" onclick="return hideOldVideoFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
 					                  	<input type="text" value="{{ $object->video_file_original_name }}" name="old_video_file" id="old_video_file" class="form-control" readonly>
 					                </div>
 				                </div>
+				                @endif
+	              			</div>
+
+	              			<div class="options pdf" style="display: none;">
+				                <div class=" col-md-12 form-group pdf_file_class " style="display: none">
+				                  	<label for="">Pdf File</label>
+					                  	<input type="file" value="{{ $object->pdf_file_original_name }}" name="pdf_file" accept=".pdf" id="pdf_file" class="form-control option_input" >				                  		
+				                  	</select>
+				                </div>
+				                @if(!empty($object->pdf_file_original_name))
+				                <div class="old_pdf_file_class">
+					                <div class="form-group col-md-12">
+				                		<label>Old pdf File</label>&nbsp;<a title="delete" onclick="return hideOldPdfFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
+					                  	<input type="text" value="{{ $object->pdf_file_original_name }}" name="old_pdf_file" id="old_pdf_file" class="form-control" readonly>
+					                </div>
+				                </div>
+				                @endif
 	              			</div>
 
 	              			<div class="col-md-12 options url" style="display: none;">

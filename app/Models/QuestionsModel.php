@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\QuestionTypesModel;
 use App\models\QuestionCategoryModel;
 
-class RepositoryModel extends Model
+class QuestionsModel extends Model
 {
 	use SoftDeletes;
 
-	protected $table = 'repository'; 
+	protected $table = 'questions'; 
     
     protected $dates = ['deleted_at'];
 

@@ -1,5 +1,10 @@
 var adminPath = $('meta[name="admin-path"]').attr('content');
 
+$(document).ready(function()
+{
+	$('#contact_no').mask('9999999999999999');
+})
+
 function saveSiteSetting(element)
 {
 	$(element).closest('.box').LoadingOverlay("show", {

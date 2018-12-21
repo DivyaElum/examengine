@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ExamModel;
 use App\Models\ExamQuestionsModel;
 use App\Models\QuestionCategoryModel;
-use App\Models\RepositoryModel;
+use App\Models\QuestionsModel;
 use App\Models\ExamSlotModel;
 
 // request
@@ -36,16 +36,16 @@ class ExamController extends Controller
         ExamModel $ExamModel,
     	ExamQuestionsModel $ExamQuestionsModel,
         QuestionCategoryModel $QuestionCategoryModel,
-        RepositoryModel $RepositoryModel,
+        QuestionsModel $QuestionsModel,
         ExamSlotModel $ExamSlotModel
 
     )
     {
-        $this->BaseModel = $ExamModel;
-        $this->ExamQuestionsModel = $ExamQuestionsModel;
-        $this->ExamSlotModel = $ExamSlotModel;
+        $this->BaseModel             = $ExamModel;
+        $this->ExamQuestionsModel    = $ExamQuestionsModel;
+        $this->ExamSlotModel         = $ExamSlotModel;
         $this->QuestionCategoryModel = $QuestionCategoryModel;
-        $this->RepositoryModel      = $RepositoryModel;
+        $this->QuestionsModel        = $QuestionsModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -106,17 +106,17 @@ class ExamController extends Controller
             if (!empty($request->exam_days) && count($request->exam_days) > 0) 
             {
                 $slots = [];
-                $error_bag = [];
+                $error_bag_days = [];
                 foreach ($request->exam_days as $key => $exam_day) 
                 {
                     // exam day validation 
-                    if (empty($error_bag)) 
+                    if (empty($error_bag_days)) 
                     {
-                        $error_bag[] = $exam_day;
+                        $error_bag_days[] = $exam_day;
                     }
                     else
                     {
-                        if (in_array($exam_day, $error_bag)) 
+                        if (in_array($exam_day, $error_bag_days)) 
                         {
                             DB::rollBack();
                             $this->JsonData['status']   = 'error';
@@ -126,7 +126,7 @@ class ExamController extends Controller
                         }
                         else
                         {
-                            $error_bag[] = $exam_day;
+                            $error_bag_days[] = $exam_day;
                         }
                     }
 
@@ -137,16 +137,17 @@ class ExamController extends Controller
 
                     // getting start and end time
                     $out = [];
+                    $error_bag_time = [];
                     foreach($exam_day['start_time'] as $key_time => $start_time)
                     {
                         // start time validation
-                        if (empty($error_bag)) 
+                        if (empty($error_bag_time)) 
                         {
-                            $error_bag[] = $start_time;
+                            $error_bag_time[] = $start_time;
                         }
                         else
                         {
-                            if (in_array($start_time, $error_bag)) 
+                            if (in_array($start_time, $error_bag_time)) 
                             {
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
@@ -156,10 +157,9 @@ class ExamController extends Controller
                             }
                             else
                             {
-                                $error_bag[] = $start_time;
+                                $error_bag_time[] = $start_time;
                             }
                         }
-
 
                         $tmp = [];
                         $minuts                 = $request->duration*60;
@@ -189,7 +189,7 @@ class ExamController extends Controller
                 $questions = [];
                 foreach ($request->exam_questions as $key => $question) 
                 {
-                    $category_id = $this->RepositoryModel->where('id', $question)->pluck('category_id')->first();
+                    $category_id = $this->QuestionsModel->where('id', $question)->pluck('category_id')->first();
                     $exam_question                  = new $this->ExamQuestionsModel;
                     $exam_question->exam_id         = $exam_id;
                     $exam_question->category_id     = $category_id;
@@ -263,7 +263,7 @@ class ExamController extends Controller
             $this->ViewData['all_categories_questions'] = '';
             if (!empty($this->ViewData['object_quesitons_categories'])) 
             {
-                $this->ViewData['all_categories_questions'] = $this->RepositoryModel->whereIn('category_id', $this->ViewData['object_quesitons_categories'])->get();
+                $this->ViewData['all_categories_questions'] = $this->QuestionsModel->whereIn('category_id', $this->ViewData['object_quesitons_categories'])->get();
             }
 
         /*---------------------------------------------------
@@ -318,21 +318,20 @@ class ExamController extends Controller
             $this->ExamSlotModel->where('exam_id', $exam_id)->delete();
             $this->ExamQuestionsModel->where('exam_id', $exam_id)->delete();
 
-            // exam slots
             if (!empty($request->exam_days) && count($request->exam_days) > 0) 
             {
                 $slots = [];
-                $error_bag = [];
+                $error_bag_days = [];
                 foreach ($request->exam_days as $key => $exam_day) 
                 {
                     // exam day validation 
-                    if (empty($error_bag)) 
+                    if (empty($error_bag_days)) 
                     {
-                        $error_bag[] = $exam_day;
+                        $error_bag_days[] = $exam_day;
                     }
                     else
                     {
-                        if (in_array($exam_day, $error_bag)) 
+                        if (in_array($exam_day, $error_bag_days)) 
                         {
                             DB::rollBack();
                             $this->JsonData['status']   = 'error';
@@ -342,7 +341,7 @@ class ExamController extends Controller
                         }
                         else
                         {
-                            $error_bag[] = $exam_day;
+                            $error_bag_days[] = $exam_day;
                         }
                     }
 
@@ -353,16 +352,17 @@ class ExamController extends Controller
 
                     // getting start and end time
                     $out = [];
+                    $error_bag_time = [];
                     foreach($exam_day['start_time'] as $key_time => $start_time)
                     {
                         // start time validation
-                        if (empty($error_bag)) 
+                        if (empty($error_bag_time)) 
                         {
-                            $error_bag[] = $start_time;
+                            $error_bag_time[] = $start_time;
                         }
                         else
                         {
-                            if (in_array($start_time, $error_bag)) 
+                            if (in_array($start_time, $error_bag_time)) 
                             {
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
@@ -372,10 +372,9 @@ class ExamController extends Controller
                             }
                             else
                             {
-                                $error_bag[] = $start_time;
+                                $error_bag_time[] = $start_time;
                             }
                         }
-
 
                         $tmp = [];
                         $minuts                 = $request->duration*60;
@@ -396,7 +395,7 @@ class ExamController extends Controller
                     {
                         $slots[] = 0;
                     }
-                }   
+                }
             }
 
             // exam questions
@@ -405,7 +404,7 @@ class ExamController extends Controller
                 $questions = [];
                 foreach ($request->exam_questions as $key => $question) 
                 {
-                    $category_id = $this->RepositoryModel->where('id', $question)->pluck('category_id')->first();
+                    $category_id = $this->QuestionsModel->where('id', $question)->pluck('category_id')->first();
                     $exam_question                  = new $this->ExamQuestionsModel;
                     $exam_question->exam_id         = $exam_id;
                     $exam_question->category_id     = $category_id;
@@ -595,7 +594,7 @@ class ExamController extends Controller
             if (!empty($request->categories)) 
             {
                 $categories = explode(',', $request->categories);
-                $this->JsonData['questions'] = $this->RepositoryModel
+                $this->JsonData['questions'] = $this->QuestionsModel
                                                     ->whereIn('category_id', $categories)
                                                     ->get(['id', 'question_text']);
             }

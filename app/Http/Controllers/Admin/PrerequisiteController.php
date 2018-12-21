@@ -61,10 +61,10 @@ class PrerequisiteController extends Controller
     public function store(PrerequisiteRequest $request)
     {
         // validation 
-        if (empty($request->video_file) && empty($request->video_url) && empty($request->youtube_url)) 
+        if (empty($request->pdf_file) && empty($request->video_file) && empty($request->video_url) && empty($request->youtube_url)) 
         {
             $this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Please select atleast one video file or url';
+            $this->JsonData['msg']      = 'Please select atleast one file or url';
 
             return response()->json($this->JsonData);
             exit;
@@ -80,7 +80,7 @@ class PrerequisiteController extends Controller
             // getting origin file content
             $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
             $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
-            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
+            $video_file     = Storage::disk('local')->put('prerequisite_video', Input::file('video_file'), 'public');
 
             $object->video_file_original_name   = $originalName;
             $object->video_file_mime            = $extension;
@@ -88,6 +88,26 @@ class PrerequisiteController extends Controller
 
             $object->youtube_url    = NULL;
             $object->video_url      = NULL;
+            
+            $object->pdf_file       = NULL;
+            $object->pdf_file_original_name = NULL;
+        }
+
+        if (Input::hasFile('pdf_file')) 
+        {            
+            // getting origin file content
+            $pdf_originalName   = strtolower(Input::file('pdf_file')->getClientOriginalName());
+            $pdf_file     = Storage::disk('local')->put('prerequisite_pdf', Input::file('pdf_file'), 'public');
+
+            $object->pdf_file_original_name   = $pdf_originalName;
+            $object->pdf_file                 = $pdf_file;
+
+            $object->youtube_url    = NULL;
+            $object->video_url      = NULL;
+            
+            $object->video_file     = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
         }
 
         if (!empty($request->video_url)) 
@@ -97,6 +117,10 @@ class PrerequisiteController extends Controller
             $object->video_file     = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
+            
+            $object->pdf_file       = NULL;
+            $object->pdf_file_original_name = NULL;
+
         }
 
         if (!empty($request->youtube_url)) 
@@ -106,6 +130,10 @@ class PrerequisiteController extends Controller
             $object->video_url      = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
+
+            $object->pdf_file       = NULL;
+            $object->pdf_file_original_name = NULL;
+
         }   
         
         $object->title   = $request->title;
@@ -137,20 +165,28 @@ class PrerequisiteController extends Controller
 
     public function update(PrerequisiteRequest $request, $enc_id)
     {
+        if (empty($request->old_video_file) && empty($request->old_pdf_file) && empty($request->pdf_file) && empty($request->video_file) && empty($request->video_url) && empty($request->youtube_url)) 
+        {
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = 'Please select atleast one file or url';
+
+            return response()->json($this->JsonData);
+            exit;
+        }
+
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
 
         $id = base64_decode(base64_decode($enc_id));
         $object = $this->BaseModel->find($id);
 
-
-
+        
         if (Input::hasFile('video_file')) 
         {            
             // getting origin file content
             $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
             $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
-            $video_file     = Storage::disk('local')->put('prerequisite', Input::file('video_file'), 'public');
+            $video_file     = Storage::disk('local')->put('prerequisite_video', Input::file('video_file'), 'public');
 
             $object->video_file_original_name   = $originalName;
             $object->video_file_mime            = $extension;
@@ -158,8 +194,26 @@ class PrerequisiteController extends Controller
 
             $object->youtube_url    = NULL;
             $object->video_url      = NULL;
+            
+            $object->pdf_file       = NULL;
+            $object->pdf_file_original_name = NULL;
         }
 
+        if (Input::hasFile('pdf_file')) 
+        {            
+            $pdf_originalName   = strtolower(Input::file('pdf_file')->getClientOriginalName());
+            $pdf_file     = Storage::disk('local')->put('prerequisite_pdf', Input::file('pdf_file'), 'public');
+
+            $object->pdf_file_original_name   = $pdf_originalName;
+            $object->pdf_file                 = $pdf_file;
+
+            $object->youtube_url    = NULL;
+            $object->video_url      = NULL;
+            
+            $object->video_file     = NULL;
+            $object->video_file_mime          = NULL;
+            $object->video_file_original_name = NULL;
+        }
 
         if (!empty($request->video_url)) 
         {            
@@ -168,6 +222,10 @@ class PrerequisiteController extends Controller
             $object->video_file     = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
+            
+            $object->pdf_file       = NULL;
+            $object->pdf_file_original_name = NULL;
+
         }
 
         if (!empty($request->youtube_url)) 
@@ -177,7 +235,12 @@ class PrerequisiteController extends Controller
             $object->video_url      = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
-        }    
+
+            $object->pdf_file       = NULL;
+            $object->pdf_file_original_name = NULL;
+
+        } 
+
 
         $object->title   = $request->title;
         $object->status  = $request->status;

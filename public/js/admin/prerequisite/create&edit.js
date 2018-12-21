@@ -7,7 +7,6 @@ $(document).ready(function ()
 	setVideoType(false);	
 })
 
-
 function saveFormData(element)
 {
 	$(element).closest('.box').LoadingOverlay("show", 
@@ -82,10 +81,9 @@ function saveFormData(element)
 	return false
 }
 
-
 function setVideoType(flag)
 {
-	var checkedType = $('input[name="video_type"]:checked').val();
+	var checkedType = $('input[name="type"]:checked').val();
 	
 	if(flag)
 	{
@@ -100,4 +98,10 @@ function hideOldVideoFile(element)
 {
 	$('.old_video_file_class').hide().find('input').val('');
 	$('.video_file_class').show();
+}
+
+function hideOldPdfFile(element)
+{
+	$('.old_pdf_file_class').hide().find('input').val('');
+	$('.pdf_file_class').show();
 }

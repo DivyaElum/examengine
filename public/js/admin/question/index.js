@@ -1,7 +1,7 @@
 $(document).ready(function() 
 {
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/repository/getRepositoryQuestions'; 
+    var targetURL = adminPath+'/question/getRecords'; 
 
     $('#listingTable').DataTable( 
     {
@@ -24,13 +24,13 @@ $(document).ready(function()
     } );
 });
 
-function deleteQuestionFromRepository(element)
+function deleteQuestion(element)
 {
     var $this = $(element);
     var id = $this.attr('data-qsnid');
     
     var adminPath = $('meta[name="admin-path"]').attr('content');
-    var targetURL = adminPath+'/repository/'+id; 
+    var targetURL = adminPath+'/question/'+id; 
     
     if (id != '') 
     {

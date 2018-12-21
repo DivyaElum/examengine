@@ -31,7 +31,7 @@
 		            	<a title="Back" href="{{ route($modulePath.'.index') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-arrow-left"></i>{{'Back'}}</a>
 		          	</div>
 	        	</div>
-        	 	<form onsubmit="return saveQuestion(this)" action="{{route('repository.update', [ base64_encode(base64_encode($object->id)) ])}}" >
+        	 	<form onsubmit="return saveQuestion(this)" action="{{route($modulePath.'.update', [ base64_encode(base64_encode($object->id)) ])}}" >
         	 		<input name="_method" type="hidden" value="PUT">
 	              	<div class="box-body">
 	              		<div class="row">
@@ -347,8 +347,9 @@
 @stop
 
 @section('scripts')
+	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/repository/create&edit.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/question/create&edit.js') }}"></script>
 @stop

@@ -89,10 +89,10 @@
 		Route::resource('question-type', 'QuestionTypeController');
 
 		// Repository routes
-		Route::get('repository/getRepositoryQuestions', 'RepositoryController@getQuestions');	
-		Route::get('repository/getHtmlStructure/{id}', 'RepositoryController@getStructure');	
-		Route::get('repository/getOptionsAnswer/{id}', 'RepositoryController@getOptionsAnswer');	
-		Route::resource('repository', 'RepositoryController');	
+		Route::get('question/getRecords', 'QuestionsController@getRecords');	
+		Route::get('question/getHtmlStructure/{id}', 'QuestionsController@getStructure');	
+		Route::get('question/getOptionsAnswer/{id}', 'QuestionsController@getOptionsAnswer');	
+		Route::resource('question', 'QuestionsController');	
 
 		// Prerequisite routes
 		Route::get('prerequisite/getPrerequisite', 'PrerequisiteController@getPrerequisite');	

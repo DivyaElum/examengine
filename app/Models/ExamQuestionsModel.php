@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\RepositoryModel;
+use App\Models\QuestionsModel;
 
 class ExamQuestionsModel extends Model
 {
@@ -14,7 +14,7 @@ class ExamQuestionsModel extends Model
 
 	public function repository()
 	{
-		return $this->belongsTo(RepositoryModel::class, 'question_id', 'id');
+		return $this->belongsTo(QuestionsModel::class, 'question_id', 'id');
 	}
 }
 

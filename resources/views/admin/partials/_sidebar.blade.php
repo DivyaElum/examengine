@@ -30,9 +30,9 @@
              <i class="fa fa-bars"></i> <span>Question Category</span>
           </a>
         </li>
-        <li class="{{ active(['admin/repository','admin/repository/*']) }}">
-          <a href="{{ route('repository.index') }}">
-             <i class="fa fa-database" aria-hidden="true"></i> <span>Repository</span>
+        <li class="{{ active(['admin/question','admin/question/*']) }}">
+          <a href="{{ route('question.index') }}">
+             <i class="fa fa-database" aria-hidden="true"></i> <span>Question</span>
           </a>
         </li>
 

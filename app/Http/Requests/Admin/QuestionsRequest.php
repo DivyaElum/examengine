@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RepositoryRequest extends FormRequest
+class QuestionsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class RepositoryRequest extends FormRequest
      */
     public function rules()
     {
-        $id = base64_decode(base64_decode($this->route('repository'))) ?? null;
+        $id = base64_decode(base64_decode($this->route('question'))) ?? null;
 
         if(sizeof($this->all()) == 2)
         {
@@ -38,7 +38,7 @@ class RepositoryRequest extends FormRequest
             return [
                 'type'          => 'required',
                 'category'      => 'required',
-                'question_text' => 'required|unique:repository,question_text,'.$id,
+                'question_text' => 'required|unique:questions,question_text,'.$id,
                 'option1'       => 'required',
                 'option2'       => 'required',
                 'correct'       => 'required',
@@ -55,8 +55,8 @@ class RepositoryRequest extends FormRequest
             'question_text.required' => 'Question text field is required.',
             'correct.required'       => 'Please select atleast one correct answer.',
             'right_marks.required'   => 'Right marks field is required.',
-            'option1'                => 'Option one field is required.',
-            'option2'                => 'Option two field is required.'
+            'option1'                => 'Correct Option A field is required.',
+            'option2'                => 'Correct Option B field is required.'
         ];
     }
 }

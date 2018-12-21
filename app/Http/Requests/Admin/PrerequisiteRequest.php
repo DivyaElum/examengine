@@ -18,9 +18,11 @@ class PrerequisiteRequest extends FormRequest
         if (empty($id)) 
         {
             return [
+                
                 'title'        => 'required|unique:prerequisite,title,'.$id,
                 'status'       => 'required',
                 'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
+                'pdf_file'     => 'mimes:pdf',
             ];
         }
         else
@@ -35,11 +37,11 @@ class PrerequisiteRequest extends FormRequest
             else
             {
                 return [
+                
                     'title'        => 'required|unique:prerequisite,title,'.$id,
                     'status'       => 'required',
                     'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
-                    'video_url'    => 'required_without_all:video_file,youtube_url',
-                    'youtube_url'  => 'required_without_all:video_file,video_url',
+                    'pdf_file'     => 'mimes:pdf',
                 ];
             }
         }

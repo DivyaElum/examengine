@@ -8,13 +8,13 @@ use App\Http\Controllers\Controller;
 
 // models
 use App\Models\QuestionTypesModel;
-use App\Models\RepositoryModel;
+use App\Models\QuestionsModel;
 use App\Models\QuestionTypeStructureModel;
 use App\Models\QuestionOptionsAnswer;
 use App\Models\QuestionCategoryModel;
 
 // requests
-use App\Http\Requests\Admin\RepositoryRequest;
+use App\Http\Requests\Admin\QuestionsRequest;
 
 // others
 use Validator;
@@ -22,7 +22,7 @@ use DB;
 
 // use App\Trait\MultiModelTrait;
 
-class RepositoryController extends Controller
+class QuestionsController extends Controller
 {
     private $BaseModel;
     private $ViewData;
@@ -37,12 +37,12 @@ class RepositoryController extends Controller
 
         QuestionTypesModel $QuestionTypesModel,
         QuestionOptionsAnswer $QuestionOptionsAnswer,
-        RepositoryModel $RepositoryModel,
+        QuestionsModel $QuestionsModel,
         QuestionTypeStructureModel $QuestionTypeStructureModel,
         QuestionCategoryModel $QuestionCategoryModel
     )
     {
-        $this->BaseModel                    = $RepositoryModel;
+        $this->BaseModel                    = $QuestionsModel;
         $this->QuestionOptionsAnswer        = $QuestionOptionsAnswer;
         $this->QuestionTypesModel           = $QuestionTypesModel;
         $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
@@ -51,9 +51,9 @@ class RepositoryController extends Controller
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Repository';
-        $this->ModuleView = 'admin.repository.';
-        $this->ModulePath = 'repository';
+        $this->ModuleTitle = 'Question';
+        $this->ModuleView = 'admin.question.';
+        $this->ModulePath = 'question';
     }
     
     public function index()
@@ -76,7 +76,7 @@ class RepositoryController extends Controller
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    public function store(RepositoryRequest $request)
+    public function store(QuestionsRequest $request)
     {
         // get type 
         $id = base64_decode(base64_decode($request->type));
@@ -149,7 +149,7 @@ class RepositoryController extends Controller
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    public function update(RepositoryRequest $request, $enc_id)
+    public function update(QuestionsRequest $request, $enc_id)
     {
         // get type 
         $typeId = base64_decode(base64_decode($request->type));
@@ -226,7 +226,7 @@ class RepositoryController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getQuestions(Request $request)
+        public function getRecords(Request $request)
         {
             /*--------------------------------------
             |  Variables
@@ -316,8 +316,8 @@ class RepositoryController extends Controller
                         $data[$key]['created_at']     = Date('d-m-Y', strtotime($row->created_at));
                         
                         $view   = '';
-                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('repository.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
-                        $delete = '<a title="Delete" onclick="return deleteQuestionFromRepository(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+                        $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('question.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
+                        $delete = '<a title="Delete" onclick="return deleteQuestion(this)" data-qsnid="'.base64_encode(base64_encode($row->id)).'" class="btn btn-default btn-circle" href="javascript:void(0)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
 
                         $data[$key]['actions'] = $view.$edit.$delete;
                     }

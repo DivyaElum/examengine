@@ -32,7 +32,7 @@
 		          	</div>
 	        	</div>
 
-        	 	<form onsubmit="return saveQuestion(this)" action="{{route('repository.store')}}" >
+        	 	<form onsubmit="return saveQuestion(this)" action="{{route($modulePath.'.store')}}" >
 	              	<div class="box-body">
 	              		<div class="row">
 	              			<div class="col-md-12">
@@ -75,8 +75,9 @@
 @stop
 
 @section('scripts')
+	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/repository/create&edit.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/question/create&edit.js') }}"></script>
 @stop

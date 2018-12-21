@@ -47,14 +47,17 @@
 	              			<div class="col-md-12">
 	              				<label>Video Type <span style="color: red">*</span></label>
 				                <div class="form-group">
-				                  	<label class="radio-inline">
-								      <input type="radio" onclick="setVideoType(true)" name="video_type" checked value="file">Video File
+								    <label class="radio-inline">
+								      <input type="radio" onclick="setVideoType(true)" name="type" checked value="file">Video File
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" onclick="setVideoType(true)" name="video_type" value="url">Video URL
+								      <input type="radio" onclick="setVideoType(true)" name="type" value="pdf">Pdf File
 								    </label>
 								    <label class="radio-inline">
-								      <input type="radio" onclick="setVideoType(true)" name="video_type" value="youtube">Youtube URL
+								      <input type="radio" onclick="setVideoType(true)" name="type" value="url">Video URL
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" onclick="setVideoType(true)" name="type" value="youtube">Youtube URL
 								    </label>
 				                </div>
 	              			</div>	
@@ -63,6 +66,14 @@
 				                <div class="form-group">
 				                  	<label for="">Video File</label>
 					                  	<input type="file"  name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >
+				                  	</select>
+				                </div>
+	              			</div>
+
+	              			<div class="col-md-12 options pdf" style="display: none;">
+				                <div class="form-group">
+				                  	<label for="">Pdf File</label>
+					                  	<input type="file"  name="pdf_file" accept=".pdf" id="pdf_file" class="form-control option_input" >
 				                  	</select>
 				                </div>
 	              			</div>

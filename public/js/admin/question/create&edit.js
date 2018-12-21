@@ -1,5 +1,8 @@
 $(document).ready(function()
-{
+{	
+	$('input[name="right_marks"]').mask('99');
+	
+
 	var multiple_choice = $('.multiple_choice').find('.options').length;
 	if (multiple_choice == 8) 
 	{
@@ -18,7 +21,6 @@ $(document).ready(function()
 var adminPath = $('meta[name="admin-path"]').attr('content');
 
 // common
-
 function saveQuestion(element)
 {
 	$(element).closest('.box').LoadingOverlay("show", {
@@ -93,13 +95,14 @@ function getStructure(element)
 	var $this = $(element);
 	var type = $this.val();
 
-	targetPath = adminPath+'/repository/getHtmlStructure/'+type;
+	targetPath = adminPath+'/question/getHtmlStructure/'+type;
 
 	$.get(targetPath, function(data)
 	{
 		if (data != 'Not Found') 
 		{
 			$('.html_data').html(data);
+			$('input[name="right_marks"]').mask('99');
 		}
 		else
 		{
@@ -111,7 +114,9 @@ function getStructure(element)
 			$('.html_data').html(`<span style='text-align:center'>${ notfoundhtml }</span>`);
 		}
 	
-	}, 'json');  		
+	}, 'json');  
+
+
 }
 
 function getIndexByCount(index)
@@ -120,7 +125,7 @@ function getIndexByCount(index)
 	reponseData.radioValue = '';
 	reponseData.radioName = '';
 
-	var targetPath = adminPath+'/repository/getOptionsAnswer/'+index;
+	var targetPath = adminPath+'/question/getOptionsAnswer/'+index;
 
 	$.ajax({
         'async': false,

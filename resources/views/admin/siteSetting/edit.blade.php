@@ -38,32 +38,32 @@
 	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="site_title">Site Title  <span style="color: red">*</span></label>
-				                  	<input type="text" name="site_title" id="site_title" class="form-control" value="{{$object->site_title}}" >
+				                  	<input type="text" placeholder="Enter Site Title" name="site_title" id="site_title" class="form-control" value="{{$object->site_title}}" >
 				                  	<span class="help-block err_txtTitle"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="Address">Address <span style="color: red">*</span></label>
-				                  	<input type="text" name="address" id="address" class="form-control"  value="{{$object->site_title}}" >
+				                  	<input type="text" placeholder="Enter Address" name="address" id="address" class="form-control"  value="{{$object->site_title}}" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="Address">Contact Number <span style="color: red">*</span></label>
-				                  	<input type="text" name="contact_no" id="contact_no" class="form-control"  value="{{$object->contact_no}}" >
+				                  	<input type="text" placeholder="Enter Contact Number" name="contact_no" id="contact_no" class="form-control"  value="{{$object->contact_no}}" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="email_id">Email Id <span style="color: red">*</span></label>
-				                  	<input type="email" name="email_id" id="email_id" class="form-control"  value="{{$object->email_id}}" >
+				                  	<input type="email" placeholder="Enter Email Id" name="email_id" id="email_id" class="form-control"  value="{{$object->email_id}}" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="meta_keywords">Meta Keywords</label>
-				                  	<input type="text" name="meta_keywords" id="meta_keywords" class="form-control"  value="{{$object->meta_keywords}}" >
+				                  	<input type="text" placeholder="Enter Meta Keywords" name="meta_keywords" id="meta_keywords" class="form-control"  value="{{$object->meta_keywords}}" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
 				                  	<label for="meta_desc">Meta Descriptions </label>
-				                  	<textarea name="meta_desc" id="meta_desc" class="form-control">{{$object->meta_desc}}</textarea>
+				                  	<textarea name="meta_desc" placeholder="Enter Meta Descriptions" id="meta_desc" class="form-control">{{$object->meta_desc}}</textarea>
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
@@ -89,6 +89,7 @@
 @stop
 
 @section('scripts')
+	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
