@@ -12,6 +12,7 @@ use App\Models\QuestionsModel;
 use App\Models\QuestionTypeStructureModel;
 use App\Models\QuestionOptionsAnswer;
 use App\Models\QuestionCategoryModel;
+use App\Models\ExamQuestionsModel;
 
 // requests
 use App\Http\Requests\Admin\QuestionsRequest;
@@ -39,7 +40,8 @@ class QuestionsController extends Controller
         QuestionOptionsAnswer $QuestionOptionsAnswer,
         QuestionsModel $QuestionsModel,
         QuestionTypeStructureModel $QuestionTypeStructureModel,
-        QuestionCategoryModel $QuestionCategoryModel
+        QuestionCategoryModel $QuestionCategoryModel,
+        ExamQuestionsModel $ExamQuestionsModel
     )
     {
         $this->BaseModel                    = $QuestionsModel;
@@ -47,6 +49,7 @@ class QuestionsController extends Controller
         $this->QuestionTypesModel           = $QuestionTypesModel;
         $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
         $this->QuestionCategoryModel        = $QuestionCategoryModel;
+        $this->ExamQuestionsModel           = $ExamQuestionsModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -208,6 +211,15 @@ class QuestionsController extends Controller
     public function destroy($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
+
+        $flag = $this->_checkDependency($id);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t delete, This Question has been used in Exam.';
+            return response()->json($this->JsonData);
+            exit;
+        }
 
         if($this->BaseModel->where('id', $id)->delete())
         {
@@ -388,5 +400,23 @@ class QuestionsController extends Controller
             }
 
             return $correct_answer;
+        }
+
+    /*-----------------------------------------------------
+    |  sub function Calls
+    */
+
+        public function _checkDependency($id)
+        {
+            $count  = $this->ExamQuestionsModel->where('question_id', $id)->count();
+                   
+            if ($count > 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 }
