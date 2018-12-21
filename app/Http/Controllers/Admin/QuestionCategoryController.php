@@ -128,10 +128,10 @@ class QuestionCategoryController extends Controller
                 // filter columns
                 $filter = array(
                     0 => 'id',
-                    1 => 'category',
-                    2 => 'status',
-                    4 => 'created_at',
-                    5 => 'id'
+                    1 => 'category_name',
+                    2 => 'created_at',
+                    3 => 'status',
+                    4 => 'id'
                 );
 
             /*--------------------------------------
@@ -152,7 +152,7 @@ class QuestionCategoryController extends Controller
                     $modelQuery = $modelQuery->where(function ($query) use($search)
                         {
                             $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                            $query->orwhere('category', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('category_name', 'LIKE', '%'.$search.'%');   
                             $query->orwhere('status', 'LIKE', '%'.$search.'%');   
                             $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
                         });

@@ -42,8 +42,8 @@
           					<thead>
           						<th>Sr. No.</th>
           						<th>Category</th>
-          						<th>Status</th>
           						<th>Created Date</th>
+          						<th>Status</th>
           						<th>Action</th>
           					</thead>
           					<tbody>

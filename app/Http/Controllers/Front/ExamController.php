@@ -22,10 +22,8 @@ class ExamController extends Controller
 		
 		if ($exam['respd'] == $token) 
 		{
-			$this->ViewData['exam'] = $exam['object'];
+			$this->ViewData['object'] = $exam['object'];
 			
-			dd($exam['object']);
-
 			return view('exam', $this->ViewData);			
 		}
 		else
