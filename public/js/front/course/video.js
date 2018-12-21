@@ -6,7 +6,7 @@ time_update_interval = 0;
 var youtubeId = youtubeUrl.split('v=').reverse()[0];
 
 
-function onYouTubeIframeAPIReady_() {
+function onYouTubeIframeAPIReady() {
     player = new YT.Player('video-placeholder', {
         width: 600,
         height: 400,

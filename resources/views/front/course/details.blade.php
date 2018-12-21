@@ -70,6 +70,7 @@
 												var user_id 		= "{{ base64_encode(base64_encode(auth()->user()->id)) }}";
 												var course_id 		= "{{ base64_encode(base64_encode($arrCourse->id)) }}";
 												var prerequisite_id = "{{ base64_encode($enc_prerequisites) }}";
+
 											</script>
 											<script type="text/javascript" src="{{ asset('js/front/course/video.js') }}"></script>
 											<script type="text/javascript" src="{{ asset('js/front/course/savePreStatus.js') }}"></script>
