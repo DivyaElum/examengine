@@ -12,7 +12,7 @@
 	});
 
 	// test exam
-	Route::get('/exam/{token}/perform','Front\ExamController@index')->name('exam');
+	Route::get('/exam','Front\ExamController@index')->name('exam');
 	 
 
 	// sign up

@@ -35,6 +35,7 @@ class CertificationController extends Controller
 
         return view($this->ModuleView.'index', $this->ViewData);
     }
+    
     public function detail($indId)
     {
         $this->ViewData['page_title']           = 'Detail page for Certification';

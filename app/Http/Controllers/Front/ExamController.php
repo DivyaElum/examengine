@@ -4,26 +4,43 @@ namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\ExamModel;
+use App\Models\ExamQuestionsModel;
 
 use Session;
+use DB;
 
 class ExamController extends Controller
 {
  		
- 	public function __construct()
+ 	public function __construct(
+ 		ExamModel $ExamModel,
+ 		ExamQuestionsModel $ExamQuestionsModel
+ 	)
  	{
+ 		$this->BaseModel = $ExamModel;
+ 		$this->ExamQuestionsModel = $ExamQuestionsModel;
+
  		$this->ViewData = [];
         $this->JsonData = [];
  	}
 
-	public function index(Request $request, $token)
+	public function index(Request $request)
 	{
-		$exam = Session::get('exam');
+		$token = $request->get('token');
+		$exam  = Session::get('exam');
 		
-		if ($exam['respd'] == $token) 
+		if ($exam['token'] == $token) 
 		{
-			$this->ViewData['object'] = $exam['object'];
-			
+			$course = $exam['object'];
+
+			$this->ViewData['exam'] =  $this->BaseModel->find($course->exam_id);
+			$this->ViewData['exam_questions'] = $this->ExamQuestionsModel
+													 ->with('repository')
+													 ->where('exam_id',$course->exam_id)
+													 ->orderBy(DB::raw('RAND()'))
+													 ->limit($this->ViewData['exam']->total_question)
+													 ->get();
 			return view('exam', $this->ViewData);			
 		}
 		else

@@ -3,70 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Exam Test</title>
-
+        <title>{{ $exam->title }}</title>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-        <script type="text/javascript">
-            
-            window.addEventListener('load', function(e)
-            {
-                // document.addEventListener('keydown', event => event.preventDefault());
-                // document.addEventListener('contextmenu', event => event.preventDefault());
-
-                // Set the date we're counting down to
-               Date.prototype.addHours = function(h) 
-               {    
-                   this.setTime(this.getTime() + (h*60*60*1000)); 
-                   return this;   
-                }
-            })
-
-            function startTimer(element)
-            {
-                var hours = $(element).attr('data-hours');
-
-                document.getElementById('startExam').style.display = 'none';
-                document.getElementById('exam').style.display = 'block';
-
-                var countDownDate = new Date().addHours(hours)
-
-                // Update the count down every 1 second
-                var x = setInterval(function() 
-                {
-
-                    // Get todays date and time
-                    var now = new Date().getTime();
-                    
-                    // Find the distance between now and the count down date
-                    var distance = countDownDate - now;
-                    
-                    // Time calculations for days, hours, minutes and seconds
-                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
-                    // Output the result in an element with id="demo"
-
-                    console.log(hours);
-                    console.log(minutes);
-                    console.log(seconds);
-
-                    document.getElementById("demo").innerHTML = hours + " hours : " + minutes + " min : " + seconds + ' sec';
-                    
-                    // If the count down is over, write some text 
-                    if (distance < 0) 
-                    {
-                        clearInterval(x);
-                        document.getElementById("demo").innerHTML = "00 Hours : 00 min : 00 sec";
-                        document.getElementById('startExam2').innerHTML = 'Completed Please wait for you result';
-                    }
-                }, 1000);
-            }
-        </script>
-
-        <!-- Styles -->
         <style type="text/css">
         
             .question_buttons{
@@ -128,7 +66,7 @@
         <div class="container" id="startExam">
             <div class="content">
                 <div class="title">
-                    <a href="javascript:void(0)" onclick="startTimer(this)"  data-hours="{{ $object->exam->duration }}" >Click to start test</a>
+                    <a href="javascript:void(0)" onclick="startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
                 </div>
             </div>
         </div>
@@ -139,21 +77,189 @@
                     <div class="col-sm-9">
                         <div class="carousel-inner" role="listbox">
 
-                            @if(!empty($object->exam->questions) && sizeof($object->exam->questions) > 0)
-                                @foreach($object->exam->questions as $key => $question)
-                                    {{dump($question)}}
-                                    <?php $active = $key == 0 ? 'active' : ''; ?>
+                            @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
+                                @foreach($exam_questions as $key => $question)
+
+                                    <?php 
+                                        $active = $key == 0 ? 'active' : ''; 
+                                        $srno = $key+1;
+                                    ?>
 
                                     <div class="item question {{ $active }}">
                                         <h3>
                                             <div class="row ">
 
-                                                <div class="col-sm-12 quesiton_title_div">
-                                                    <p>{{ $key+1 }} ) {{ ucfirst($question->repository->question_text) }}</p>
+                                                <div class="col-sm-12 quesiton_title_div" style="height: 150px">
+                                                    <p>Q.{{ $srno }}) {{ ucfirst($question->repository->question_text) }}</p>
                                                 </div>
 
-                                                <div class="col-sm-12 answers_div">
-                                                    
+                                                <div class="col-sm-12 answers_div" style="height: 150px">
+                                                    <div class="row">
+                                                        <!-- options for radio buttons -->
+                                                        @if($question->repository->option_type == 'radio')
+                                                            
+                                                            @if($question->repository->option1 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
+                                                                        <label for="option1_{{ $srno }}" > {{$question->repository->option1}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option2 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
+                                                                        <label for="option2_{{ $srno }}" > {{$question->repository->option2}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option3 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
+                                                                        <label for="option3_{{ $srno }}" > {{$question->repository->option3}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option4 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}"> 
+                                                                        <label for="option4_{{ $srno }}" > {{$question->repository->option4}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option5 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
+                                                                        <label for="option5_{{ $srno }}" > {{$question->repository->option5}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option6 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}"> 
+                                                                        <label for="option6_{{ $srno }}" > {{$question->repository->option6}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+
+                                                            @if($question->repository->option7 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}"> 
+                                                                        <label for="option7_{{ $srno }}" > {{$question->repository->option7}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option8 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="radio" name="correct" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}"> 
+                                                                        <label for="option8_{{ $srno }}" > {{$question->repository->option8}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+                                                        @endif 
+
+                                                        <!-- options for checkbox buttons -->
+                                                        @if($question->repository->option_type == 'checkbox')
+                                                            
+                                                            @if($question->repository->option1 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="radio_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
+                                                                        <label for="option1_{{ $srno }}"> {{$question->repository->option1}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option2 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="checkbox_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
+                                                                        <label for="option2_{{ $srno }}"> {{$question->repository->option2}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option3 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="checkbox_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
+                                                                        <label for="option3_{{ $srno }}"> {{$question->repository->option3}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option4 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="checkbox_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}"> 
+                                                                        <label for="option4_{{ $srno }}" > {{$question->repository->option4}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option5 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="checkbox_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
+                                                                        <label for="option5_{{ $srno }}"> {{$question->repository->option5}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option6 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="checkbox_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}"> 
+                                                                        <label for="option6_{{ $srno }}" > {{$question->repository->option6}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+
+                                                            @if($question->repository->option7 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="checkbox_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}"> 
+                                                                        <label for="option7_{{ $srno }}"> {{$question->repository->option7}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                            @if($question->repository->option8 != NULL)
+                                                                <div class="col-sm-6">
+                                                                    <div class="checkbox_box_wrapper">
+                                                                        <input type="checkbox" name="correct[]" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}"> 
+                                                                        <label for="option8_{{ $srno }}"> {{$question->repository->option8}} </label>
+                                                                    </div>
+                                                                </div>
+                                                            @endif 
+
+                                                        @endif 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-12 status_buttons">
+                                                    <div class="buttons" style="float: right;">
+                                                        @if($srno > 1)
+                                                            <a href="javascript:void(0)" class="btn btn-info" onclick="return goPrevious(this)" data-qn="{{$srno}}">Prev Question</a>
+                                                        @endif
+
+                                                        @if($srno < count($exam_questions))
+                                                            <a href="javascript:void(0)" class="btn btn-info" onclick="return goNext(this)" data-qn="{{$srno}}">Next Question</a>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
                                         </h3>
@@ -171,13 +277,16 @@
                             <span id="demo"></span>
                         </div>
                         <div class="row">
-                            @if(!empty($object->exam->questions) && sizeof($object->exam->questions) > 0)
-                                @foreach($object->exam->questions as $key => $question)
+                            @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
+                                @foreach($exam_questions as $key => $question)
 
-                                    <?php $active = $key == 0 ? 'activate' : ''; ?>
+                                    <?php 
+                                        $buttonActive = $key == 0 ? 'activate' : ''; 
+                                        $buttonSrno = $key+1;
+                                    ?>
 
                                     <div class="col-xs-3">
-                                        <div class="question_buttons {{ $active }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
+                                        <div class="question_buttons srno_{{$buttonSrno}} {{ $buttonActive }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
                                             {{ $key+1 }}
                                         </div>
                                     </div>
@@ -194,6 +303,72 @@
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script type="text/javascript">
+            window.addEventListener('load', function(e)
+            {
+                // document.addEventListener('keydown', event => event.preventDefault());
+                // document.addEventListener('contextmenu', event => event.preventDefault());
+
+                // Set the date we're counting down to
+               Date.prototype.addHours = function(h) 
+               {    
+                   this.setTime(this.getTime() + (h*60*60*1000)); 
+                   return this;   
+                }
+            })
+
+            function startTimer(element)
+            {
+                var hours = $(element).attr('data-hours');
+
+                document.getElementById('startExam').style.display = 'none';
+                document.getElementById('exam').style.display = 'block';
+
+                var countDownDate = new Date().addHours(hours)
+
+                // Update the count down every 1 second
+                var x = setInterval(function() 
+                {
+
+                    // Get todays date and time
+                    var now = new Date().getTime();
+                    
+                    // Find the distance between now and the count down date
+                    var distance = countDownDate - now;
+                    
+                    // Time calculations for days, hours, minutes and seconds
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
+                    // Output the result in an element with id="demo"
+
+                    console.log(hours);
+                    console.log(minutes);
+                    console.log(seconds);
+
+                    document.getElementById("demo").innerHTML = hours + " hours : " + minutes + " min : " + seconds + ' sec';
+                    
+                    // If the count down is over, write some text 
+                    if (distance < 0) 
+                    {
+                        clearInterval(x);
+                        document.getElementById("demo").innerHTML = "00 Hours : 00 min : 00 sec";
+                        document.getElementById('startExam2').innerHTML = 'Completed Please wait for you result';
+                    }
+                }, 1000);
+            }
+
+            function goPrevious(element)
+            {
+                var examSrno = parseInt($(element).attr('data-qn')) - 1;
+                $('.srno_'+examSrno).trigger('click');
+            }
+
+            function goNext(element)
+            {
+                var examSrno = parseInt($(element).attr('data-qn')) + 1;
+                $('.srno_'+examSrno).trigger('click');
+            }
 
             $(document).ready(function()
             {

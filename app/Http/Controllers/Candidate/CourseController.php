@@ -75,27 +75,24 @@ class CourseController extends Controller
 
     public function varify(Request $request, $token)
     {
-        $object = $this->CourseModel->with(['exam' => function ($exam) 
-                                    {
-                                        $exam->with(['questions' => function ($questions) 
-                                              {
-                                                  $questions->with('repository');
-                                              }]);
-                                    }])
-                                    ->find($token);
+        $object = $this->CourseModel->find($token);
 
         if ($object) 
-        {          
+        { 
+          $examToken = Hash::make(uniqid($token));
+
           $this->JsonData['status'] = 'success';
-          $this->JsonData['object'] = $object;
-          $this->JsonData['respd']  = rand(9999999999, time()).base64_encode(base64_encode($object->id)).rand(9999999999, time());
-          $this->JsonData['url']   = URL::to('/exam/'.$this->JsonData['respd'].'/perform');
-          \Session::put('exam', $this->JsonData);
+          $this->JsonData['url']   = URL::to('/exam?token='.$examToken);
+
+          $data = [];
+          $data['token']  = $examToken;
+          $data['object'] = $object;
+          \Session::put('exam', $data);
         }
         else
         {
           $this->JsonData['status'] = 'error';
-          $this->JsonData['object'] = 'Something went wrong, Please try again later';
+          $this->JsonData['object'] = 'User verification failed';
         }
 
         return response()->json($this->JsonData);
