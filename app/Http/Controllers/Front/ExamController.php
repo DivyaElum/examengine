@@ -23,7 +23,11 @@ class ExamController extends Controller
 
  		$this->ViewData = [];
         $this->JsonData = [];
- 	}
+
+        $this->ModuleTitle = 'Certification Listing';
+        $this->ModuleView  = 'front.exam.';
+        $this->ModulePath  = 'CourseModel';
+    }	
 
 	public function index(Request $request)
 	{
@@ -47,6 +51,16 @@ class ExamController extends Controller
 		{
 			abort(404);
 		}
+	}
+
+	public function examBook()
+	{
+		$this->ViewData['page_title']           = $this->ModuleTitle;
+    	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
+        $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
+        $this->ViewData['modulePath']           = $this->ModulePath;
+       
+        return view($this->ModuleView.'index', $this->ViewData);
 	}
 
 }

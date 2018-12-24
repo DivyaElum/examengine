@@ -22,6 +22,7 @@
 			<div class="row">
 				@include('front.partials._sidebar')
 				<div class="col-md-9 col-sm-12 col-xs-12">
+					<a href="{{ url('/exam/book') }}" class="btn btn-primary">Book Exam</a>
 					<div class="dashbaord_content">
 						<h3>Course Listing</h3>
 						<hr />

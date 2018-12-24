@@ -116,10 +116,11 @@ class CourseController extends Controller
 
         if ($CoursePreStatus->save()) 
         {
-            DB::commit();
+          DB::commit();
           $this->JsonData['status']   = 'success';
           $this->JsonData['msg']      = 'Added successfully';
         }
+        return response()->json($this->JsonData);
     }
 }
 

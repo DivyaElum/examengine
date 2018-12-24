@@ -34,7 +34,7 @@ function initialize(){
     // the elapsed part of the progress bar every second.
     setInterval(function(){ 
             updateTimerDisplay();
-    }, 5000);
+    }, 10000);
     
 
 

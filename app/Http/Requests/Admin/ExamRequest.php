@@ -27,11 +27,11 @@ class ExamRequest extends FormRequest
         $id = base64_decode(base64_decode($this->route('exam'))) ?? null;
 
         return [
-            'title'             => 'required|unique:exam,title,'.$id,
+            'title'             => 'required|min:4|unique:exam,title,'.$id,
             'category'          => 'required',
             'exam_questions'    => 'required',
-            'duration'          => 'required|numeric',
-            'total_question'   => 'required|numeric',
+            'duration'          => 'required|numeric|gt:0',
+            'total_question'   => 'required|numeric|gt:0',
             'status'            => 'required',
             'exam_days.*.day'   => 'required',
             'exam_days.*.start_time.*' => 'required',

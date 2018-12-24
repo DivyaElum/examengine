@@ -50,8 +50,15 @@
 			Route::get('/{token}/varify', 'Candidate\CourseController@varify');
 			Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
 		});
-	});
 
+		
+	});
+		// course routes
+		Route::group(['prefix' => 'exam'],function()
+		{
+			Route::get('/book', 'Front\ExamController@examBook');
+		});
+		
 	// certification rotues
 	Route::group(['prefix' => 'certification'],function()
 	{

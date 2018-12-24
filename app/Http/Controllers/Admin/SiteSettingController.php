@@ -105,7 +105,7 @@ class SiteSettingController extends Controller
                     0 => 'id',
                     1 => 'site_title',
                     2 => 'email_id',
-                    3 => 'created_at',
+                    3 => 'updated_at',
                     4 => 'id'
                 );
 
@@ -129,7 +129,7 @@ class SiteSettingController extends Controller
                                 $query->orwhere('id', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('site_title', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('email_id', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
+                                $query->orwhere('updated_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
                             });
                 }
 
@@ -154,7 +154,7 @@ class SiteSettingController extends Controller
                         $data[$key]['id']           = ($key+$start+1);
                         $data[$key]['site_title']   = '<span title="'.$row->site_title.'">'.str_limit($row->site_title, '55', '...').'</span>';
                         $data[$key]['email_id']     = $row->email_id;
-                        $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
+                        $data[$key]['updated_at']   = Date('d-m-Y', strtotime($row->updated_at));
                         
                         $view   = '';
                         $edit   = '<a title="Edit" class="btn btn-default btn-circle" href="'.route('site-setting.edit', [ base64_encode(base64_encode($row->id))]).'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>&nbsp;';
@@ -212,7 +212,7 @@ class SiteSettingController extends Controller
         $SiteSetting->meta_keywords = $request->meta_keywords;
         $SiteSetting->meta_desc     = $request->meta_desc;
         $SiteSetting->status        = $request->status;
-        
+
         if ($SiteSetting->save()) 
         {
             $this->JsonData['status']   = 'success';

@@ -13,7 +13,7 @@ $(document).ready(function()
             { "data": "id",         "ordereble": "true"},
             { "data": "site_title", "ordereble": "true"},
             { "data": "email_id",   "ordereble": "true"},
-            { "data": "created_at", "ordereble": "true"},
+            { "data": "updated_at", "ordereble": "true"},
             { "data": "actions"}
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],

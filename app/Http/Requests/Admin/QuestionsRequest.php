@@ -38,11 +38,11 @@ class QuestionsRequest extends FormRequest
             return [
                 'type'          => 'required',
                 'category'      => 'required',
-                'question_text' => 'required|unique:questions,question_text,'.$id,
+                'question_text' => 'required|min:4|unique:questions,question_text,'.$id,
                 'option1'       => 'required',
                 'option2'       => 'required',
                 'correct'       => 'required',
-                'right_marks'   => 'required|numeric'
+                'right_marks'   => 'required|numeric|gt:0'
             ];
         }
     }

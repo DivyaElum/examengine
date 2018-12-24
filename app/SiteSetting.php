@@ -8,5 +8,5 @@ class SiteSetting extends Model
 {
     protected $table = 'site_setting';
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['updated_at'];
 }
