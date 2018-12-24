@@ -6,8 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+// use Illuminate\Http\Request;
 
-class passwordResetMail extends Mailable
+
+class ForgotPasswordMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,9 +18,12 @@ class passwordResetMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+    private $data;
+
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +33,6 @@ class passwordResetMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.sendUrl');
+        return $this->view('admin.mail.forgotPassword', $this->data);
     }
 }

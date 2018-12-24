@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Admin\ForgotPasswordRequest;
 use App\Http\Requests\Admin\resetPasswordRequest;
-use App\Mail\passwordResetMail;
+use App\Mail\ForgotPasswordMail; 
 
 use App\User;
 use App\PasswordReset;
@@ -98,36 +98,39 @@ class LoginController extends Controller
     //Function for forgot password
     public function forgot(ForgotPasswordRequest $request)
     {
+    	if (!empty($request->txtEmail)) 
+    	{
+    		$strEmail = $request->txtEmail;
+	  		$arrUserData = User::where('email',$strEmail)->first();
 
-    	if($request->input()){
-	 		$strEmail = $request->input('txtEmail');
-			//check user exists in db
-		  	$arrUserData = User::where('email',$strEmail)->first();
-		  	//dd($arrUserData);
-		  	if (count($arrUserData)<=0) {
-		  		//wrong email entered
+		  	if (empty($arrUserData) && sizeof($arrUserData) == 0) 
+		  	{
 			    $this->JsonData['status'] ='error';
             	$this->JsonData['msg'] 	  ='Please enter valid Email Id';
-		  	}else{
+		  	}
+		  	else
+		  	{
+
 		  		$intId = $arrUserData->id;
 		  		$strEmail = $arrUserData->email;
-		  		
-		  		//Mail::to($strEmail)->send(new passwordResetMail);
-				echo $url = url('admin/resetpassword/'.base64_encode(base64_encode($intId)));
+		  						
+				$data = [];
+				$data['url'] = url('admin/resetpassword/'.base64_encode(base64_encode($intId)));
+		  		$mail 	= Mail::to($strEmail)->send(new ForgotPasswordMail($data));
 
-				//save token 
 				$post = PasswordReset::create([
 					'email' => $strEmail,
 					'token' => base64_encode(base64_encode($intId))
 				]);
+				
 				$this->JsonData['status'] = 'success';
-	            //$this->JsonData['url'] 	  = '/admin/login';
-            	$this->JsonData['msg'] 	  =  $url;
-            	//$this->JsonData['msg'] 	  = 'Password has been updated successfully.';
-            	die;
+            	$this->JsonData['msg'] 	  = 'Password reset link has sent to your mail address.';
 		  	}
+		  	
 		  	return response()->json($this->JsonData);
+    		die;
     	}
+
     	return view('admin.auth.forgotPassword');
     }
      //Function for reset password
