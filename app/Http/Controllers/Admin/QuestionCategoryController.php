@@ -285,7 +285,7 @@ class QuestionCategoryController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t change status, This Question category has been used in questions.';
+            $this->JsonData['msg']    = 'Can\'t delete, This Question category has been used in questions.';
             return response()->json($this->JsonData);
             exit;
         }

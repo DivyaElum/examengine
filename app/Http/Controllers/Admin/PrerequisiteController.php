@@ -266,7 +266,7 @@ class PrerequisiteController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t change status, This Prerequisite has been used in Course.';
+            $this->JsonData['msg']    = 'Can\'t delete, This Prerequisite has been used in Course.';
             return response()->json($this->JsonData);
             exit;
         }
