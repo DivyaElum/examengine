@@ -20,6 +20,7 @@ class Authenticate
         if(auth()->check())
         {
             $arrSiteSetting = SiteSetting::find('1');
+            
             view()->share('siteSetting', $arrSiteSetting);
             return $next($request);
         }

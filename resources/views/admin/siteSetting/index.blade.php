@@ -43,7 +43,7 @@
           						<th>Sr. No.</th>
           						<th>Site Title</th>
           						<th>Email Id</th>
-          						<th>Created Date</th>
+          						<th>Updated Date</th>
           						<th>Action</th>
           					</thead>
           					<tbody>
