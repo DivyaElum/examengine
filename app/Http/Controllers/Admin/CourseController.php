@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CourseModel;
 use App\Models\PrerequisiteModel;
 use App\Models\ExamModel;
+use App\Models\TransactionModel;
 
 // request
 use App\Http\Requests\Admin\CourseRequest;
@@ -34,12 +35,14 @@ class CourseController extends Controller
 
     	CourseModel $CourseModel,
         PrerequisiteModel $PrerequisiteModel,
-        ExamModel $ExamModel
+        ExamModel $ExamModel,
+        TransactionModel $TransactionModel
     )
     {
         $this->BaseModel = $CourseModel;
         $this->PrerequisiteModel = $PrerequisiteModel;
         $this->ExamModel = $ExamModel;
+        $this->TransactionModel = $TransactionModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -186,6 +189,15 @@ class CourseController extends Controller
     public function destroy($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
+
+        $flag = $this->_checkDependency($id);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t delete, This course has been purchased.';
+            return response()->json($this->JsonData);
+            exit;
+        }
 
         if($this->BaseModel->where('id', $id)->delete())
         {
@@ -341,4 +353,17 @@ class CourseController extends Controller
     |  Supportive Functions
     */
 
+        public function _checkDependency($id)
+        {
+            $count  = $this->TransactionModel->where('course_id', $id)->count();
+                   
+            if ($count > 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 }
