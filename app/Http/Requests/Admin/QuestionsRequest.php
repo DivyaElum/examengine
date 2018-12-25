@@ -26,6 +26,8 @@ class QuestionsRequest extends FormRequest
     {
         $id = base64_decode(base64_decode($this->route('question'))) ?? null;
 
+
+
         if(sizeof($this->all()) == 2)
         {
             return [
@@ -55,8 +57,8 @@ class QuestionsRequest extends FormRequest
             'question_text.required' => 'Type your question field is required.',
             'correct.required'       => 'Please select atleast one correct answer.',
             'right_marks.required'   => 'Right marks field is required.',
-            'option1'                => 'Correct option A field is required.',
-            'option2'                => 'Correct option B field is required.'
+            'option1.required'       => 'Correct option A field is required.',
+            'option2.required'       => 'Correct option B field is required.'
         ];
     }
 }

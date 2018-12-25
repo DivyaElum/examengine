@@ -81,6 +81,14 @@ class QuestionsController extends Controller
 
     public function store(QuestionsRequest $request)
     {
+        // validations
+        $validation = $this->_validateQuestionAnswers($request);
+        if (!empty($validation['status']) && $validation['status'] == 'error') 
+        {
+            return response()->json($validation);
+            exit;
+        }
+
         // get type 
         $id = base64_decode(base64_decode($request->type));
         $questionTypeObject = $this->QuestionTypesModel->where('id', $id)->first();
@@ -154,6 +162,14 @@ class QuestionsController extends Controller
 
     public function update(QuestionsRequest $request, $enc_id)
     {
+
+        $validation = $this->_validateQuestionAnswers($request);
+        if (!empty($validation['status']) && $validation['status'] == 'error') 
+        {
+            return response()->json($validation);
+            exit;
+        }
+
         // get type 
         $typeId = base64_decode(base64_decode($request->type));
         $questionTypeObject = $this->QuestionTypesModel->where('id', $typeId)->first();
@@ -418,5 +434,73 @@ class QuestionsController extends Controller
             {
                 return false;
             }
+        }
+
+        public function _validateQuestionAnswers($request)
+        {
+            $formdata = $request->all();
+            // dd($formdata);
+            $answers = $this->QuestionOptionsAnswer->get();
+
+            // find correct value dont have blank answers
+            foreach ($answers as $key => $answer) 
+            {
+                if (is_array($formdata['correct'])) 
+                {
+                    if (in_array($answer->answer, $formdata['correct'])) 
+                    {
+                        $checkbox_option = $answer->option;
+                        
+                        if ($formdata[$checkbox_option] == NULL) 
+                        {
+                            $this->JsonData['status'] = 'error';
+                            $this->JsonData['msg'] = 'Right answer input filed should not be empty.';                     
+                        }
+                        else
+                        {
+                            // check revers order from option 
+                            for ($i=($answer->id-1); $i > 0 ; $i--) 
+                            { 
+                                $reverse_options = $answers[$i]['option'];
+                                if ($formdata[$reverse_options] == NULL) 
+                                {
+                                    $this->JsonData['status'] = 'error';
+                                    $this->JsonData['msg'] = 'Right answer previous input fileds should not be empty.';                     
+                                }
+                            }                   
+                        }
+                    }
+                }
+                else
+                {
+                    if ($answer->answer == $formdata['correct']) 
+                    {
+                        $radio_option = $answer->option;
+                        
+                        if ($formdata[$radio_option] == NULL) 
+                        {
+                            $this->JsonData['status'] = 'error';
+                            $this->JsonData['msg'] = 'Right answer input filed should not be empty.';                     
+                        }
+                        else
+                        {
+                            // check revers order from option 
+                            for ($i=($answer->id-1); $i > 0 ; $i--) 
+                            { 
+                                $reverse_options = $answers[$i]['option'];
+                                if ($formdata[$reverse_options] == NULL) 
+                                {
+                                    $this->JsonData['status'] = 'error';
+                                    $this->JsonData['msg'] = 'Right answer previous input fileds should not be empty.';                     
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+            
+
+            return $this->JsonData;   
         }
 }

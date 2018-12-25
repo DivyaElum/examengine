@@ -32,6 +32,7 @@ function saveFormData(element)
 	  	contentType: false,
 	  	success: function(data)
 	  	{
+	  		toastr.clear()
 	  		$(element).closest('.box').LoadingOverlay("hide");
 
 	    	if (data.status == 'success') 

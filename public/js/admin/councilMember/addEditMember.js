@@ -21,6 +21,7 @@ function saveMember(element)
 	  	contentType: false,
 	  	success: function(data)
 	  	{
+	  		toastr.clear()
 	    	if (data.status == 'success') 
 	    	{
 	    		$this[0].reset();
