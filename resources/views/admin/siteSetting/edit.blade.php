@@ -72,21 +72,27 @@
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
+				                  	@php
+              							if(!empty($object->site_logo_image))
+              							{
+              								$urlPath = url('/storage/site-setting/'.$object->site_logo_image);
+              							}
+              							else
+              							{
+              								$urlPath = url('/images/no-image.png');
+
+              							}
+              						@endphp 
+              						<img id="preview"  src="{{ $urlPath }}" alt="Featured Image" style="width: 10%;height: 200px;border: 1px solid #ccc;margin-left: 5px" />
+              					</div>
+              					<div class="form-group">
 				                  	<label for="site_logo">Site logo</label>
+              						<input type="hidden" name="old_image" value="{{ $object->site_logo_image }}" id="old_image">
 				                  	<input type="file" name="site_logo" id="site_logo" value="" class="form-control">
 				                  	<?php if(isset($object->footer_text)){ ?>
 				                  		<img src="">
 				                  	<?php } ?>
 				                </div>
-				                <!-- <div class="form-group">
-				                  	<label for="status">Status </label>&nbsp;&nbsp;
-				                  	<label class="radio-inline">
-								      <input type="radio" name="status" <?php if($object->status == '1'){ echo 'checked';} ?>  value="1">Active
-								    </label>
-								    <label class="radio-inline">
-								      <input type="radio" name="status" value="0" <?php if($object->status == '0'){ echo 'checked';} ?>  >Inactive
-								    </label>
-				                </div> -->
 	              			</div>
 	              		</div>
 	              	</div>

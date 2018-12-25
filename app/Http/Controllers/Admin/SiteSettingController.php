@@ -80,7 +80,7 @@ class SiteSettingController extends Controller
             $thumb_img = Image::make(Input::file('site_logo')->getRealPath())->resize(125, 125);
             $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
 
-            $object->site_logo                     = $site_logo;
+            $object->site_logo                     = $featured_thumbnail_image;
             $object->site_logo_image_original_name = $original_name;
 
         }
