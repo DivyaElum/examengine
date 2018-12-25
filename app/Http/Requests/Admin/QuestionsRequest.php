@@ -52,11 +52,11 @@ class QuestionsRequest extends FormRequest
         return [
             'type.required'          => 'Question type field is required.',
             'category.required'      => 'Question category field is required.',
-            'question_text.required' => 'Question text field is required.',
+            'question_text.required' => 'Type your question field is required.',
             'correct.required'       => 'Please select atleast one correct answer.',
             'right_marks.required'   => 'Right marks field is required.',
-            'option1'                => 'Correct Option A field is required.',
-            'option2'                => 'Correct Option B field is required.'
+            'option1'                => 'Correct option A field is required.',
+            'option2'                => 'Correct option B field is required.'
         ];
     }
 }
