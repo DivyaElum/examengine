@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CourseModel;
 use App\Models\PrerequisiteModel;
 use App\Models\ExamModel;
+use App\Models\TransactionModel;
 
 // request
 use App\Http\Requests\Admin\CourseRequest;
@@ -34,12 +35,14 @@ class CourseController extends Controller
 
     	CourseModel $CourseModel,
         PrerequisiteModel $PrerequisiteModel,
-        ExamModel $ExamModel
+        ExamModel $ExamModel,
+        TransactionModel $TransactionModel
     )
     {
         $this->BaseModel = $CourseModel;
         $this->PrerequisiteModel = $PrerequisiteModel;
         $this->ExamModel = $ExamModel;
+        $this->TransactionModel = $TransactionModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -187,6 +190,15 @@ class CourseController extends Controller
     {
         $id = base64_decode(base64_decode($enc_id));
 
+        $flag = $this->_checkDependency($id);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t delete, This course has been purchased.';
+            return response()->json($this->JsonData);
+            exit;
+        }
+
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
@@ -303,11 +315,11 @@ class CourseController extends Controller
 
                         $data[$key]['title']        = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
                         
-                        $data[$key]['amount']       = $row->amount;
+                        $data[$key]['amount']       = number_format($row->amount);
 
                         $data[$key]['discount']     = $row->discount.' '. $row->discount_by != 'Price' ? $row->discount_by : '';
 
-                        $data[$key]['total']        = $row->calculated_amount;
+                        $data[$key]['total']        = number_format($row->calculated_amount);
                         
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
@@ -341,4 +353,17 @@ class CourseController extends Controller
     |  Supportive Functions
     */
 
+        public function _checkDependency($id)
+        {
+            $count  = $this->TransactionModel->where('course_id', $id)->count();
+                   
+            if ($count > 0) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 }
