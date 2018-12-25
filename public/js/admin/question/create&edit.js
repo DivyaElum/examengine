@@ -68,20 +68,27 @@ function saveQuestion(element)
 	  		$(element).closest('.box').LoadingOverlay("hide");
 	    	$('#submit_button').show();
 
+	  		toastr.clear()
   		 	if( data.status === 422 ) 
   		 	{
 	  			var errorBag = $.parseJSON(data.responseText);
 		  		if (errorBag) 
 		    	{
+		    		var x = 0;
 			    	$.each(errorBag.errors, function(row, fields)
 			    	{
-			    		toastr.error(fields);
+			    		if (x == 0) 
+			    		{
+			    			toastr.error(fields);
+			    		}
+
+			    		x++;
 		      		});
 		    	}
 		    }
 		    else
 		    {
-	  			toastr.error('Something went wrong, Please try again later.');
+	  			toastr.error('Something went wrong on server, Please try again later.');
 		    	
 		    }
 	  	}

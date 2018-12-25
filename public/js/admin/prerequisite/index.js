@@ -21,7 +21,10 @@ $(document).ready(function()
             { "data": "actions"}
         ],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
-        aaSorting: [[0, 'DESC']]
+        aaSorting: [[0, 'DESC']],
+        language: {
+          processing: "Loading ..."
+        }
     } );
 });
 

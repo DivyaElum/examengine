@@ -142,14 +142,14 @@
 
 	              							}
 	              						@endphp 
-	              						<img id="preview"  src="{{ $featured }}" alt="Featured Image" width="125px" height="125px" />
+	              						<img id="preview" class="image-responsive"  src="{{ $featured }}" alt="Featured Image" width="100%" height="125px" />
 	              						<input type="hidden" name="old_image" value="{{ $object->featured_image_thumbnail }}" id="old_image">
 	              					</div>
 	              				</div>
 
 	              				<div class="row" id="delete_button" @if(empty($show))style="display: none"@endif>
 				                	<div class="col-md-2" > 
-				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" style="margin-left: 5px">Delete</a>
+				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" >Delete</a>
 				                	</div>
 	              				</div>
 
@@ -188,7 +188,7 @@
 
 @section('scripts')
 	<script type="text/javascript">
-		var defaultImaage = "{{ url('/storage/prerequisite/no-image.png') }}";
+		var defaultImaage = "{{ url('/images/no-image.png') }}";
 	</script>
 	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>
