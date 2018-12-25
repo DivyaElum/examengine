@@ -19,12 +19,7 @@ class PrerequisiteRequest extends FormRequest
         {
             return [
                 
-<<<<<<< HEAD
-                'title'        => 'required|unique:prerequisite,title,'.$id,
-=======
-                'title'        => 'required|min:4|unique:prerequisite,title,'.$id,
-                'status'       => 'required',
->>>>>>> c608ecb5209278567fad5905ea46e83366120c80
+                'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
                 'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                 'pdf_file'     => 'mimes:pdf',
                 'youtube_url'  => 'nullable|url',
@@ -37,14 +32,14 @@ class PrerequisiteRequest extends FormRequest
             if (!empty($this->old_video_file)) 
             {
                 return [
-                    'title'        => 'required|unique:prerequisite,title,'.$id,
+                    'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
                 ];
             }
             else
             {
                 return [
                 
-                    'title'        => 'required|unique:prerequisite,title,'.$id,
+                    'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
                     'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                     'pdf_file'     => 'mimes:pdf',
                     'youtube_url'  => 'nullable|url',

@@ -94,9 +94,9 @@
 
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Course Fee <span style="color: red">*</span></label>
-				                  	<input type="text" oninput="return calculateAmount(this)" value="{{ $object->amount }}" placeholder="Course Fee" name="amount" id="amount" class="form-control">
-				                	<span class="err_calculated_amount " style="color: red"></span>
+				                  	<label for="">Course Fee (AED)<span style="color: red">*</span></label>
+				                  	<input type="text" oninput="return calculateAmount(this)" value="{{ $object->amount }}" placeholder="Course Fee (AED)" name="amount" id="amount" class="form-control">
+				                	<span class="err_amount" style="color: red"></span>
 				                </div>
 	              			</div>	
 
@@ -104,7 +104,7 @@
 				                <div class="form-group">
 				                  	<label for="">Discount</label>
 				                  	<input type="text"  oninput="return calculateAmount(this)" value="{{ $object->discount }}" placeholder="Course Discount" name="discount" id="discount" class="form-control">
-				                	<span class="err_calculated_amount " style="color: red"></span>
+				                	<span class="err_discount " style="color: red"></span>
 				                </div>
 	              			</div>	
 
@@ -115,21 +115,21 @@
 				                  		<option value="Flat" @if($object->discount_by == 'Flat') selected @endif >Flat</option>
 				                  		<option value="%" @if($object->discount_by == '%') selected @endif >%</option>
 				                  	</select>
-				                	<span class="err_calculated_amount " style="color: red"></span>
+				                	{{-- <span class="err_calculated_amount " style="color: red"></span> --}}
 				                </div>
 	              			</div>
 
 	              			<div class="col-md-2">
 				                <div class="form-group">
 				                  	<label for="">Calculated Course Fee <span style="color: red">*</span></label>
-				                  	<input type="number" readonly placeholder="Calculated Course Fee" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
+				                  	<input type="number" readonly placeholder="Calculated Course Fee (AED)" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
 				                	<span class="err_calculated_amount" style="color: red"></span>
 				                </div>
 	              			</div>
 
-	              			<div class="col-md-6">
+	              			<div class="col-md-12">
 	              				<div class="row">
-	              					<div class="col-md-4">
+	              					<div class="col-md-2">
 	              						@php 
 	              							if(file_exists(storage_path('app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail)) && !empty($object->featured_image_thumbnail))
 	              							{
@@ -146,16 +146,19 @@
 	              						<input type="hidden" name="old_image" value="{{ $object->featured_image_thumbnail }}" id="old_image">
 	              					</div>
 	              				</div>
+
 	              				<div class="row" id="delete_button" @if(empty($show))style="display: none"@endif>
-				                	<div class="col-md-4" > 
+				                	<div class="col-md-2" > 
 				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" style="margin-left: 5px">Delete</a>
 				                	</div>
 	              				</div>
-				                <br>
-				                <div class="form-group">
-				                  	<label for="">Featured Image </label>
-				                  	<input type="file" name="featured_image" accept="image/x-png,image/gif,image/jpeg" id="featured_image" onchange="readURL(this)" class="form-control">
-				                	<span class="err_featured_image" style="color: red"></span>
+
+				                <div class="row">
+					                <div class="form-group col-md-6">
+					                  	<label for="">Featured Image </label>
+					                  	<input type="file" name="featured_image" accept="image/x-png,image/gif,image/jpeg" id="featured_image" onchange="readURL(this)" class="form-control">
+					                	<span class="err_featured_image" style="color: red"></span>
+				                	</div>
 				                </div>
 	              			</div>
 

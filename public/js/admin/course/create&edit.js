@@ -9,32 +9,37 @@ $(document).ready(function()
 	$('#prerequisites').multiselect({ enableFiltering: true, buttonWidth: '100%' });
 })
 
-function calculateAmount()
+function calculateAmount(element)
 {
+	$this = $(element);
 	$('.err_calculated_amount').html('');
+	$('.err_amount').html('');
+
 	var amount = $('#amount').val();
 	var discount = $('#discount').val();
 	var discount_by = $('#discount_by').val();
 
 	var totalAmount = 0;
 
-	if (amount == '' || isNaN(amount)) 
+	// amount validation 
+
+	if (amount == '' || isNaN(amount) ) 
 	{
+		$('.err_amount').html('Please enter valid amount.');
 		$('#calculated_amount').val('');
 		return false;
 	}
-	else
-	{
-		totalAmount = amount;
-	}
+
+	totalAmount = amount;
 
 	if(discount != '' && !isNaN(discount))
 	{
 		discount_by = discount_by.toLowerCase();
 		switch(discount_by)
 		{
-			case 'price':
+			case 'flat':
 				totalAmount = amount-discount;
+				console.log(totalAmount);
 			break;
 
 			case '%':
@@ -44,16 +49,14 @@ function calculateAmount()
 		} 
 	}
 
-	console.log(totalAmount);
-
-
-	if (totalAmount > 0) 
+	if (totalAmount > 0 && !isNaN(totalAmount)) 
 	{	
 		$('#calculated_amount').val(totalAmount);
 	}
 	else if(totalAmount != '') 
 	{
-		$('.err_calculated_amount').html('Fee should be greater than 0.');
+		$('.err_calculated_amount').html('Invalid calculated amount.');
+		$('#calculated_amount').val(totalAmount);
 	}
 }
 
