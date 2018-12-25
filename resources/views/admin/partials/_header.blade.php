@@ -1,8 +1,20 @@
 
 <header class="main-header">
     <a href="{{ url('/') }}" class="logo">
-      <span class="logo-mini"><b><?php echo $siteSetting->site_title ?? config('app.name'); ?></span>
-      <span class="logo-lg"><b><?php echo $siteSetting->site_title ?? config('app.name'); ?></b></span>
+      <!-- <span class="logo-mini"><b><?php echo $siteSetting->site_title ?? config('app.name'); ?></span> -->
+        @php
+        if(!empty($object->site_logo))
+        {
+          $urlPath = url('/storage/'.$object->site_logo);
+        }
+        else
+        {
+          $urlPath = url('/images/no-image.png');
+
+        }
+      @endphp 
+        <img id="preview"  src="{{ $urlPath }}" alt="Featured Image" class="img-responsive" style="margin: 5px 0px" />
+      <span class="logo-lg"></span>
     </a>
     <nav class="navbar navbar-static-top">
 

@@ -73,9 +73,9 @@
 				                </div>
 				                <div class="form-group">
 				                  	@php
-              							if(!empty($object->site_logo_image))
+              							if(!empty($object->site_logo))
               							{
-              								$urlPath = url('/storage/site-setting/'.$object->site_logo_image);
+              								$urlPath = url('/storage/'.$object->site_logo);
               							}
               							else
               							{
@@ -83,7 +83,7 @@
 
               							}
               						@endphp 
-              						<img id="preview"  src="{{ $urlPath }}" alt="Featured Image" style="width: 10%;height: 200px;border: 1px solid #ccc;margin-left: 5px" />
+              						<img id="preview"  src="{{ $urlPath }}" alt="Featured Image" />
               					</div>
               					<div class="form-group">
 				                  	<label for="site_logo">Site logo</label>

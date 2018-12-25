@@ -142,7 +142,7 @@
 
 	              							}
 	              						@endphp 
-	              						<img id="preview"  src="{{ $featured }}" alt="Featured Image" style="width: 100%;height: 200px;border: 1px solid #ccc;margin-left: 5px" />
+	              						<img id="preview"  src="{{ $featured }}" alt="Featured Image" width="125px" height="125px" />
 	              						<input type="hidden" name="old_image" value="{{ $object->featured_image_thumbnail }}" id="old_image">
 	              					</div>
 	              				</div>
