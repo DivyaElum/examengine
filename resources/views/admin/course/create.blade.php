@@ -53,7 +53,9 @@
 				            </div>
 
 				            <div class="col-md-12">
-				            		<p><b><label class="label label-danger">Note : </label></b> &nbsp;Please select either both prerequisites and exam or at least one of them.	</p>
+			            		<p class="alert" style="background-color: #0aa60036">
+		            				<b>Note : </b> &nbsp;Please select either both prerequisites and exam or at least one of them.	
+		            			</p>
 				            </div>
 
 			                <div class="col-md-6">
@@ -84,6 +86,14 @@
 				                  	</select>
 				                </div>
 	              			</div>	
+
+	              			<div class="col-md-12">
+			            		<p class="alert" style="background-color: #0aa60036">
+		            				<b>Course fee calculated as : </b><br>
+		            				1. If there is a commercial percentage then <b>Fee = ((Course Fee*Discount)/100). </b><br>	
+		            				2. If there is a commercial flat then <b>Fee = Commercial Flat Rate. </b>
+		            			</p>
+				            </div>
 
 	              			<div class="col-md-6">
 				                <div class="form-group">
@@ -119,6 +129,12 @@
 				                	<span class="err_calculated_amount " style="color: red"></span>
 				                </div>
 	              			</div>
+
+	              			<div class="col-md-12">
+			            		<p class="alert" style="background-color: #0aa60036">
+		            				<b>Note : </b> Only png, gif, jpeg image formats are allowed.
+		            			</p>
+				            </div>
 
 	              			<div class="col-md-12">
 	              				<div class="row">
