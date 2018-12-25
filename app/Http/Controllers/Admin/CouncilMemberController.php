@@ -92,7 +92,7 @@ class CouncilMemberController extends Controller
         $CouncilMemberModel->email        = $request->txtEmail;
         $CouncilMemberModel->description  = $request->txtDescription;
         $CouncilMemberModel->designation  = $request->txtDesignation;
-        $CouncilMemberModel->status       = $request->txtStatus;
+        $CouncilMemberModel->status       = '1';
         
         if ($CouncilMemberModel->save()) 
         {
@@ -292,7 +292,6 @@ class CouncilMemberController extends Controller
         $CouncilMemberModel->email        = $request->txtEmail;
         $CouncilMemberModel->description  = $request->txtDescription;
         $CouncilMemberModel->designation  = $request->txtDesignation;
-        $CouncilMemberModel->status       = $request->txtStatus;
         
         if ($CouncilMemberModel->save()) 
         {

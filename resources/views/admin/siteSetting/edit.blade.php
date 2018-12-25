@@ -31,7 +31,7 @@
 		          	</div>
 	        	</div>
 
-        	 	<form onsubmit="return saveSiteSetting(this)" action="{{route($modulePath.'.update', [ base64_encode(base64_encode($object->id)) ])}}"  method="post">
+        	 	<form onsubmit="return saveSiteSetting(this)" action="{{route($modulePath.'.update', [ base64_encode(base64_encode($object->id)) ])}}"  method="post" enctype="multipart/form-data">
         	 		<input name="_method" type="hidden" value="PUT">
 	              	<div class="box-body">
 	              		<div class="row">
@@ -42,12 +42,12 @@
 				                  	<span class="help-block err_txtTitle"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="Address">Address <span style="color: red">*</span></label>
+				                  	<label for="address">Address <span style="color: red">*</span></label>
 				                  	<input type="text" placeholder="Enter Address" name="address" id="address" class="form-control"  value="{{$object->site_title}}" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
-				                  	<label for="Address">Contact Number <span style="color: red">*</span></label>
+				                  	<label for="contact_no">Contact Number <span style="color: red">*</span></label>
 				                  	<input type="text" placeholder="Enter Contact Number" name="contact_no" id="contact_no" class="form-control"  value="{{$object->contact_no}}" >
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
@@ -67,6 +67,18 @@
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">
+				                  	<label for="footer_text">Footer Text</label>
+				                  	<input type="text" placeholder="Enter Footer Text" name="footer_text" id="footer_text" class="form-control"  value="{{$object->footer_text}}" >
+				                  	<span class="help-block err_txtValue"></span>
+				                </div>
+				                <div class="form-group">
+				                  	<label for="site_logo">Site logo</label>
+				                  	<input type="file" name="site_logo" id="site_logo" value="" class="form-control">
+				                  	<?php if(isset($object->footer_text)){ ?>
+				                  		<img src="">
+				                  	<?php } ?>
+				                </div>
+				                <!-- <div class="form-group">
 				                  	<label for="status">Status </label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
 								      <input type="radio" name="status" <?php if($object->status == '1'){ echo 'checked';} ?>  value="1">Active
@@ -74,7 +86,7 @@
 								    <label class="radio-inline">
 								      <input type="radio" name="status" value="0" <?php if($object->status == '0'){ echo 'checked';} ?>  >Inactive
 								    </label>
-				                </div>
+				                </div> -->
 	              			</div>
 	              		</div>
 	              	</div>

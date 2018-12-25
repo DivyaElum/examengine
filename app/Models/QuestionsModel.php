@@ -10,7 +10,7 @@ use App\models\QuestionCategoryModel;
 
 class QuestionsModel extends Model
 {
-	use SoftDeletes;
+	// use SoftDeletes;
 
 	protected $table = 'questions'; 
     

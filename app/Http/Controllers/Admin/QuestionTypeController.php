@@ -99,7 +99,7 @@ class QuestionTypeController extends Controller
         $question_type->title   = $request->title;
         $question_type->option  = $request->option;
         $question_type->slug    = str_slug($request->title,'-');
-        $question_type->status  = $request->status;
+        $question_type->status  = '1';
 
         if ($question_type->save()) 
         {
@@ -175,8 +175,7 @@ class QuestionTypeController extends Controller
         $question_type->title   = $request->title;
         $question_type->option  = $request->option;
         $question_type->slug    = str_slug($request->title,'-');
-        $question_type->status  = $request->status;
-
+        
         if ($question_type->save()) 
         {
             $question_type_structure = $this->QuestionTypeStructureModel->where('question_type_id', $question_type->id)->first();

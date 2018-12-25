@@ -35,7 +35,6 @@ class CourseRequest extends FormRequest
             'discount'          => 'numeric',
             'calculated_amount' => 'required|numeric|gt:0',
             'featured_image'    => 'mimes:jpeg,jpg,png,gif',
-            'status'            => 'required',
         ];
     }
 

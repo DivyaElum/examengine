@@ -60,7 +60,7 @@
 				                  	<input type="file" name="txtImage" id="txtImage" class="form-control"  />
 				                  	<span class="help-block err_txtImage"></span>
 				                </div>
-				                <div class="form-group">
+				                <!-- <div class="form-group">
 				                  	<label for="">Status <span style="color: red">*</span></label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
 								      <input type="radio" name="txtStatus" checked value="1">Active
@@ -68,7 +68,7 @@
 								    <label class="radio-inline">
 								      <input type="radio" name="txtStatus" value="0">Inactive
 								    </label>
-				                </div>
+				                </div> -->
 	              			</div>	
 	              		</div>
 	              	</div>

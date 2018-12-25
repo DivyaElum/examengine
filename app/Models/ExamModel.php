@@ -9,7 +9,7 @@ use App\Models\ExamSlotModel;
 
 class ExamModel extends Model
 {
-	use SoftDeletes;
+	// use SoftDeletes;
 	
 	protected $table = 'exam';
 

@@ -34,7 +34,6 @@ class QestionCategoryRequest extends FormRequest
     {
         return [
             'category.required' => 'Category field is required.',
-            'status.required'   => 'Status field is required.',
         ];
     }
 }

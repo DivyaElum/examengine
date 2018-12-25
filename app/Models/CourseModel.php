@@ -11,7 +11,7 @@ use App\Models\ExamModel;
 
 class CourseModel extends Model
 {
-	use SoftDeletes;
+	// use SoftDeletes;
 	
 	protected $table = 'course';
 

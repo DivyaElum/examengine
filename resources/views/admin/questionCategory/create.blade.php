@@ -40,7 +40,7 @@
 				                  	<input type="text" name="category" id="category" placeholder="Enter Question Category" class="form-control">
 				                  	<span class="help-block err_txtCategory"></span>
 				                </div>
-				                <div class="form-group">
+				                <!-- <div class="form-group">
 				                  	<label for="">Status <span style="color: red">*</span></label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
 								      <input type="radio" name="status" checked value="1">Active
@@ -49,7 +49,7 @@
 								      <input type="radio" name="status" value="0">Inactive
 								    </label>
 								    <span class="help-block err_txtStatus"></span>
-				                </div>
+				                </div> -->
 	              			</div>	
 	              		</div>
 	              	</div>

@@ -99,7 +99,7 @@ class ExamController extends Controller
         $object->title          = $request->title;
         $object->duration       = $request->duration;
         $object->total_question = $request->total_question;
-        $object->status         = $request->status;
+        $object->status         = '1';
 
         if ($object->save()) 
         {
@@ -311,8 +311,7 @@ class ExamController extends Controller
         $object->title          = $request->title;
         $object->duration       = $request->duration;
         $object->total_question = $request->total_question;
-        $object->status         = $request->status;
-
+        
         if ($object->save()) 
         {
             $exam_id = $object->id;

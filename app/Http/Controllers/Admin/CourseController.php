@@ -97,7 +97,7 @@ class CourseController extends Controller
         $object->discount           = $request->discount;
         $object->discount_by        = $request->discount_by;
         $object->calculated_amount  = $request->calculated_amount;
-        $object->status             = $request->status;
+        $object->status             = '1';
 
         if ($object->save()) 
         {
@@ -173,8 +173,7 @@ class CourseController extends Controller
         $object->discount           = $request->discount;
         $object->discount_by        = $request->discount_by;
         $object->calculated_amount  = $request->calculated_amount;
-        $object->status             = $request->status;
-
+        
         if ($object->save()) 
         {
             $this->JsonData['status']   = 'success';

@@ -128,7 +128,7 @@
 								</div>
               				</div>
 	              			
-	              			<div class="col-md-12">
+	              			<!-- <div class="col-md-12">
 			                  	<label for="">Status <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
@@ -138,7 +138,7 @@
 								      <input type="radio" name="status" value="0">Inactive
 								    </label>
 				                </div>
-	              			</div>	
+	              			</div> -->	
 
 	              		</div>
 	              	</div>

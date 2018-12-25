@@ -20,7 +20,6 @@ class PrerequisiteRequest extends FormRequest
             return [
                 
                 'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
-                'status'       => 'required',
                 'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                 'pdf_file'     => 'mimes:pdf',
                 'youtube_url'  => 'nullable|url',
@@ -33,16 +32,14 @@ class PrerequisiteRequest extends FormRequest
             if (!empty($this->old_video_file)) 
             {
                 return [
-                    'title'        => 'required|unique:prerequisite,title,'.$id,
-                    'status'       => 'required',
+                    'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
                 ];
             }
             else
             {
                 return [
                 
-                    'title'        => 'required|unique:prerequisite,title,'.$id,
-                    'status'       => 'required',
+                    'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
                     'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                     'pdf_file'     => 'mimes:pdf',
                     'youtube_url'  => 'nullable|url',
@@ -56,7 +53,6 @@ class PrerequisiteRequest extends FormRequest
     {
         return [
             'title.required'  => 'Title field is required.',
-            'status.required' => 'Status field is required.',
         ];
     }
 }

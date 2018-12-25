@@ -140,7 +140,7 @@ class PrerequisiteController extends Controller
         }   
         
         $object->title   = $request->title;
-        $object->status  = $request->status;
+        $object->status  = '1';
 
         if ($object->save()) 
         {
@@ -243,12 +243,8 @@ class PrerequisiteController extends Controller
             $object->pdf_file_original_name = NULL;
 
         } 
-
-
         $object->title   = $request->title;
-        $object->status  = $request->status;
-
-
+        
         if ($object->save()) 
         {
             $this->JsonData['status']   = 'success';
