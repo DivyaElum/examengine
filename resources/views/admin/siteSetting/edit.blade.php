@@ -79,7 +79,7 @@
               							}
               							else
               							{
-              								$urlPath = url('/images/no-image.png');
+              								$urlPath = url('/images/msc-logo.png');
 
               							}
               						@endphp 

@@ -55,8 +55,8 @@
 				            </div>
 
 				            <div class="col-md-12">
-				            	<p style="font-weight:normal;padding:5px;background-color: #dff0d8;border-color: #d6e9c6;">
-				            		<b>Note : </b> Please select either both prerequisites and exam or at least one of them.
+				            	<p>
+				            		<b><label class="label label-danger">Note : </label></b> &nbsp;Please select either both prerequisites and exam or at least one of them.
 				            	</p>	
 				            </div>
 
@@ -122,7 +122,7 @@
 	              			<div class="col-md-2">
 				                <div class="form-group">
 				                  	<label for="">Calculated Course Fee <span style="color: red">*</span></label>
-				                  	<input type="number" readonly placeholder="Calculated Course Fee (AED)" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
+				                  	<input type="text" readonly placeholder="Calculated Course Fee (AED)" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
 				                	<span class="err_calculated_amount" style="color: red"></span>
 				                </div>
 	              			</div>
