@@ -19,8 +19,8 @@ class SiteSettingRequest extends FormRequest
     public function rules()
     {
         return [
-            'site_title'    => 'required|min:4',
-            'address'       => 'required|min:4',
+            'site_title'    => 'required|min:1',
+            'address'       => 'required|min:1',
             'contact_no'    => 'required|numeric|min:6',
             'email_id'      => 'required'
         ];

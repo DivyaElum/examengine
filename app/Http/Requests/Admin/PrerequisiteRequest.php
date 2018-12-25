@@ -19,7 +19,7 @@ class PrerequisiteRequest extends FormRequest
         {
             return [
                 
-                'title'        => 'required|min:4|unique:prerequisite,title,'.$id,
+                'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
                 'status'       => 'required',
                 'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                 'pdf_file'     => 'mimes:pdf',
