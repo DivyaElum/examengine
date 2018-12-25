@@ -5,6 +5,7 @@
 @stop
 
 @section('styles')
+	
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/jquery.dataTables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/dataTables.bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/fixedHeader.bootstrap.min.css') }}">
