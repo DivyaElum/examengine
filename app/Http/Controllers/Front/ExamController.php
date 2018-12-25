@@ -59,7 +59,6 @@ class ExamController extends Controller
 
 	public function examBook()
 	{
-<<<<<<< HEAD
 		$events = [];
         $data = ExamSlotModel::with(['exam'])->get();
         // dd($data);
@@ -128,7 +127,6 @@ class ExamController extends Controller
 
 	    return $days;
 	}
-=======
 		$this->ViewData['page_title']           = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
         $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
@@ -157,6 +155,5 @@ class ExamController extends Controller
 				
 			}	
 		}
-	}~
->>>>>>> c608ecb5209278567fad5905ea46e83366120c80
+	}
 }
