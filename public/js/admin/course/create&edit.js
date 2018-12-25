@@ -35,6 +35,7 @@ function calculateAmount(element)
 	if(discount != '' && !isNaN(discount))
 	{
 		discount_by = discount_by.toLowerCase();
+
 		switch(discount_by)
 		{
 			case 'flat':
@@ -53,7 +54,7 @@ function calculateAmount(element)
 	{	
 		$('#calculated_amount').val(totalAmount);
 	}
-	else if(totalAmount != '') 
+	else if(totalAmount != '' || totalAmount == 0) 
 	{
 		$('.err_calculated_amount').html('Invalid calculated amount.');
 		$('#calculated_amount').val(totalAmount);

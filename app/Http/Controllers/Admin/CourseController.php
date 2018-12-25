@@ -303,11 +303,11 @@ class CourseController extends Controller
 
                         $data[$key]['title']        = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
                         
-                        $data[$key]['amount']       = $row->amount;
+                        $data[$key]['amount']       = number_format($row->amount);
 
                         $data[$key]['discount']     = $row->discount.' '. $row->discount_by != 'Price' ? $row->discount_by : '';
 
-                        $data[$key]['total']        = $row->calculated_amount;
+                        $data[$key]['total']        = number_format($row->calculated_amount);
                         
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
