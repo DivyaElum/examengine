@@ -10,6 +10,11 @@ $(function () {
 
 $(document).ready(function()
 {	
+	$('#title').focus();
+	
+	$('#duration').mask('99');
+	$('#total_question').mask('999');
+
 	var count = $('.exam_days_div').length;
 	if (count >= 3) 
 	{

@@ -1,5 +1,11 @@
 var adminPath = $('meta[name="admin-path"]').attr('content');
 
+$(document).ready(function ()
+{
+	$('#category').focus();
+})
+
+
 function saveQuestionCategory(element)
 {
 	$(element).closest('.box').LoadingOverlay("show", {

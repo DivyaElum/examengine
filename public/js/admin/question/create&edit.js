@@ -1,5 +1,7 @@
 $(document).ready(function()
 {	
+	$('select[name="type"]').focus();
+
 	$('input[name="right_marks"]').mask('99');
 	
 

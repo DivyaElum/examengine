@@ -1,5 +1,10 @@
 var adminPath = $('meta[name="admin-path"]').attr('content');
 
+$(document).ready(function()
+{
+	$('#txtName').focus();
+})
+
 function saveMember(element)
 {
 	$(element).closest('.box').LoadingOverlay("show", {

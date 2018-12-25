@@ -245,7 +245,7 @@
   				var title = "{{ $day }}";
   				daysOptions = daysOptions + '<option value="'+value+'">'+title+'</option>';
   			@endforeach
-  		@endif	    
+  		@endif
 	</script>
 
 	<script type="text/javascript" src="{{ asset('plugins/datepicker/moment.js') }}"></script>
@@ -254,5 +254,7 @@
 	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>
+	
 	<script type="text/javascript" src="{{ asset('js/admin/exam/create&edit.js') }}"></script>
 @stop

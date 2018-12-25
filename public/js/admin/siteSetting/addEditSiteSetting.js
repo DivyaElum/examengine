@@ -2,6 +2,8 @@ var adminPath = $('meta[name="admin-path"]').attr('content');
 
 $(document).ready(function()
 {
+	$('#site_title').focus();
+	
 	$('#contact_no').mask('9999999999999999');
 })
 

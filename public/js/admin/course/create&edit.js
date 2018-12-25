@@ -3,6 +3,8 @@ var $Module = '/course';
 
 $(document).ready(function()
 {
+	$('#title').focus();
+	
 	$('#discount').mask('9999999');
 	$('#amount').mask('9999999');
 

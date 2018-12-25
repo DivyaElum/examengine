@@ -4,6 +4,8 @@ var $Module = '/prerequisite';
 
 $(document).ready(function ()
 {
+	$('#title').focus();
+	
 	setVideoType(false);	
 	hideOldVideoFile();	
 	hideOldPdfFile();	
