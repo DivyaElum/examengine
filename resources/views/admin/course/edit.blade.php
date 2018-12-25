@@ -55,8 +55,8 @@
 				            </div>
 
 				            <div class="col-md-12">
-				            	<p style="font-weight:normal;padding:5px;background-color: #dff0d8;border-color: #d6e9c6;">
-				            		<b>Note : </b> Please select either both prerequisites and exam or at least one of them.
+				            	<p>
+				            		<b><label class="label label-danger">Note : </label></b> &nbsp;Please select either both prerequisites and exam or at least one of them.
 				            	</p>	
 				            </div>
 
@@ -122,7 +122,7 @@
 	              			<div class="col-md-2">
 				                <div class="form-group">
 				                  	<label for="">Calculated Course Fee <span style="color: red">*</span></label>
-				                  	<input type="number" readonly placeholder="Calculated Course Fee (AED)" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
+				                  	<input type="text" readonly placeholder="Calculated Course Fee (AED)" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
 				                	<span class="err_calculated_amount" style="color: red"></span>
 				                </div>
 	              			</div>
@@ -142,7 +142,7 @@
 
 	              							}
 	              						@endphp 
-	              						<img id="preview"  src="{{ $featured }}" alt="Featured Image" style="width: 100%;height: 200px;border: 1px solid #ccc;margin-left: 5px" />
+	              						<img id="preview"  src="{{ $featured }}" alt="Featured Image" width="125px" height="125px" />
 	              						<input type="hidden" name="old_image" value="{{ $object->featured_image_thumbnail }}" id="old_image">
 	              					</div>
 	              				</div>
