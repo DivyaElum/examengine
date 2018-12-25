@@ -30,14 +30,8 @@ class ExamRequest extends FormRequest
             'title'             => 'required|min:1|unique:exam,title,'.$id,
             'category'          => 'required',
             'exam_questions'    => 'required',
-<<<<<<< HEAD
             'duration'          => 'required|numeric',
             'total_question'   => 'required|numeric',
-=======
-            'duration'          => 'required|numeric|gt:0',
-            'total_question'   => 'required|numeric|gt:0',
-            'status'            => 'required',
->>>>>>> c608ecb5209278567fad5905ea46e83366120c80
             'exam_days.*.day'   => 'required',
             'exam_days.*.start_time.*' => 'required',
         ];

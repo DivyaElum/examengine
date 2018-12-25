@@ -1,5 +1,7 @@
 toastr.options = {
     "closeButton": true,
+    "maxOpened":1,
+    "autoDismiss":true,
     "debug": false,
     "newestOnTop": false,
     "progressBar": false,
