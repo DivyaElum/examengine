@@ -61,11 +61,12 @@ class ExamController extends Controller
 	{
 		$events = [];
         $data = ExamSlotModel::with(['exam'])->get();
-        // dd($data);
+        
         $intI = '0';
 
         foreach ($data as $key => $value) 
         {
+
         	$strData = json_decode($value->time);
         	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
 
@@ -74,10 +75,13 @@ class ExamController extends Controller
         		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
         		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
 				
+
 				if (Date('Y-m-d') < $day->format('Y-m-d')) 
 				{
+					//$strExamTitle = $value->exam->title;
+					$strExamTitle = 'Examp';
 					$events[] = Calendar::event(
-		                $value->exam->title,
+		                $strExamTitle,
 		                true,
 		                new \DateTime($start_time),
 		                new \DateTime($end_time),
@@ -127,13 +131,6 @@ class ExamController extends Controller
 
 	    return $days;
 	}
-		$this->ViewData['page_title']           = $this->ModuleTitle;
-    	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
-        $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
-        $this->ViewData['modulePath']           = $this->ModulePath;
-       
-        return view($this->ModuleView.'index', $this->ViewData);
-	}
 
 	public function submit(Request $request, $user_id, $course_id, $exam_id)
 	{
@@ -155,5 +152,37 @@ class ExamController extends Controller
 				
 			}	
 		}
+	}
+
+	public function events(Request $request){
+		$events = [];
+        $data = ExamSlotModel::with(['exam'])->get();
+        
+	      foreach ($data as $key => $value) 
+	      {
+
+	      	$strData = json_decode($value->time);
+	      	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
+
+			foreach ($days as $day) 
+			{
+	      		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
+	      		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
+				
+
+				if (Date('Y-m-d') < $day->format('Y-m-d')) 
+				{
+					$eventsTemp['title'] = $value->exam->title;
+					$eventsTemp['start'] = $start_time;
+					$eventsTemp['end'] = $end_time;
+
+					$events[] = $eventsTemp;
+				}
+
+			}
+		}
+	
+		return \Response::json($events);
+		// return response()->json($events);
 	}
 }
