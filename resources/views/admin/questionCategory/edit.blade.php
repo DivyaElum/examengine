@@ -43,7 +43,7 @@
 				                  	<input type="text" name="category" id="category" class="form-control" placeholder="Enter Question Category" value="{{ $object->category_name }}">
 				                  	<span class="help-block err_txtCategory"></span>
 				                </div>
-				                <div class="form-group">
+				                <!-- <div class="form-group">
 				                  	<label for="">Status <span style="color: red">*</span></label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
 								      <input type="radio" name="status" value="1" <?php if($object->status == '1'){echo 'checked';} ?>>Active
@@ -52,7 +52,7 @@
 								      <input type="radio" name="status" value="0" <?php if($object->status == '0'){echo 'checked';} ?>>Inactive
 								    </label>
 								    <span class="help-block err_txtStatus"></span>
-				                </div>
+				                </div> -->
 	              			</div>	
 	              		</div>
 	              	</div>

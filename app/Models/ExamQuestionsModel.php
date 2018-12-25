@@ -8,7 +8,7 @@ use App\Models\QuestionsModel;
 
 class ExamQuestionsModel extends Model
 {
-	use SoftDeletes;
+	// use SoftDeletes;
 	
 	protected $table = 'exam_questions';
 

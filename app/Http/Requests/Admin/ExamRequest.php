@@ -32,7 +32,6 @@ class ExamRequest extends FormRequest
             'exam_questions'    => 'required',
             'duration'          => 'required|numeric',
             'total_question'   => 'required|numeric',
-            'status'            => 'required',
             'exam_days.*.day'   => 'required',
             'exam_days.*.start_time.*' => 'required',
         ];
@@ -46,7 +45,6 @@ class ExamRequest extends FormRequest
             'exam_questions.required'           => 'Exam question field is required.',
             'duration.required'                 => 'Duration field is required.',
             'total_question.required'           => 'Total question field is required.',
-            'status.required'                   => 'Status field is required.',
             'exam_days.*.day.required'          => 'Exam days field is required.',
             'exam_days.*.start_time.*.required' => 'Exam days start time field is required.',
         ];

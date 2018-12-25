@@ -4,9 +4,6 @@
 	<title></title>
 </head>
 <body>
-	mail working 
-
-	<a href="{{ $url }}">Click To Reset</a>
-
+	<a href="{{ $url }}">Click here to Reset your password</a>
 </body>
 </html>

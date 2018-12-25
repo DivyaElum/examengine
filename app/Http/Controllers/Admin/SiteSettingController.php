@@ -11,6 +11,9 @@ use App\User;
 use Validator;
 use Session;
 use App\SiteSetting;
+use Illuminate\Support\Facades\Input;
+use Storage;
+use Image;
 
 class SiteSettingController extends Controller
 {
@@ -64,8 +67,24 @@ class SiteSettingController extends Controller
         $SiteSetting->email_id      = $request->email_id;
         $SiteSetting->meta_keywords = $request->meta_keywords;
         $SiteSetting->meta_desc     = $request->meta_desc;
-        $SiteSetting->status        = $request->status;
+        $SiteSetting->footer_text   = $request->footer_text;
+        $SiteSetting->status        = '1';
         
+        if (Input::hasFile('site_logo')) 
+        {            
+            $original_name   = strtolower(Input::file('site_logo')->getClientOriginalName());
+            $site_logo       = Storage::disk('local')->put('site-setting/', Input::file('site_logo'), 'public');
+            
+            $featured_thumbnail_image = time().$original_name;
+            $str_thumb_designation_path = storage_path().'/app/public/site-setting/thumbnails' ;
+            $thumb_img = Image::make(Input::file('site_logo')->getRealPath())->resize(125, 125);
+            $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+
+            $object->site_logo                     = $site_logo;
+            $object->site_logo_image_original_name = $original_name;
+
+        }
+
         if ($SiteSetting->save()) 
         {
             $this->JsonData['status']   = 'success';
@@ -211,7 +230,22 @@ class SiteSettingController extends Controller
         $SiteSetting->email_id      = $request->email_id;
         $SiteSetting->meta_keywords = $request->meta_keywords;
         $SiteSetting->meta_desc     = $request->meta_desc;
-        $SiteSetting->status        = $request->status;
+        $SiteSetting->footer_text   = $request->footer_text;
+        
+        if (Input::hasFile('site_logo')) 
+        {            
+            $original_name   = strtolower(Input::file('site_logo')->getClientOriginalName());
+            $site_logo       = Storage::disk('local')->put('site-setting/', Input::file('site_logo'), 'public');
+            
+            $featured_thumbnail_image = time().$original_name;
+            $str_thumb_designation_path = storage_path().'/app/public/site-setting/thumbnails' ;
+            $thumb_img = Image::make(Input::file('site_logo')->getRealPath())->resize(125, 125);
+            $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+
+            $SiteSetting->site_logo_image               = $site_logo;
+            $SiteSetting->site_logo_image_original_name = $original_name;
+
+        }
 
         if ($SiteSetting->save()) 
         {

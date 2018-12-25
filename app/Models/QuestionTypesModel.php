@@ -9,7 +9,7 @@ use App\Models\QuestionTypeStructureModel;
 
 class QuestionTypesModel extends Model
 {
-	use SoftDeletes;
+	// use SoftDeletes;
 
 	protected $table = 'question_types'; 
 

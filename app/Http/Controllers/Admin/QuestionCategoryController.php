@@ -71,7 +71,7 @@ class QuestionCategoryController extends Controller
         $QuestionCategoryModel = new $this->QuestionCategoryModel;
 
         $QuestionCategoryModel->category_name = $request->category;
-        $QuestionCategoryModel->status        = $request->status;
+        $QuestionCategoryModel->status        = '1';
         
         if ($QuestionCategoryModel->save()) 
         {
@@ -254,7 +254,6 @@ class QuestionCategoryController extends Controller
         $QuestionCategoryModel = $this->QuestionCategoryModel->find($intId);
 
         $QuestionCategoryModel->category_name = $request->category;
-        $QuestionCategoryModel->status        = $request->status;
         
         if ($QuestionCategoryModel->save()) 
         {

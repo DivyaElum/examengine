@@ -65,7 +65,7 @@
 				                  	@endif
 				                  	<span class="help-block err_txtImage"></span>
 				                </div>
-				                <div class="form-group">
+				                <!-- <div class="form-group">
 				                  	<label for="">Status <span style="color: red">*</span></label>&nbsp;&nbsp;
 				                  	<label class="radio-inline">
 								      <input type="radio" name="txtStatus"  value="1" <?php if($object->status == '1'){echo 'checked';} ?>>Active
@@ -73,7 +73,7 @@
 								    <label class="radio-inline">
 								      <input type="radio" name="txtStatus" value="0" <?php if($object->status == '0'){echo 'checked';} ?>>Inactive
 								    </label>
-				                </div>
+				                </div> -->
 	              			</div>	
 	              		</div>
 	              	</div>

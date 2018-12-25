@@ -26,7 +26,6 @@ class QestionCategoryRequest extends FormRequest
         $id = base64_decode(base64_decode($this->route('question_category'))) ?? null;
         return [
             'category'  => 'required|unique:question_category,category_name,'.$id,
-            'status'    => 'required',
         ];
     }
 
@@ -34,7 +33,6 @@ class QestionCategoryRequest extends FormRequest
     {
         return [
             'category.required' => 'Category field is required.',
-            'status.required'   => 'Status field is required.',
         ];
     }
 }

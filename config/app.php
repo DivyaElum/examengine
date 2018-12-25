@@ -167,6 +167,7 @@ return [
          */
             Watson\Active\ActiveServiceProvider::class,
             Spatie\Permission\PermissionServiceProvider::class,
+            MaddHatter\LaravelFullcalendar\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -227,6 +228,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Active' => Watson\Active\Facades\Active::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
 
     ],
 

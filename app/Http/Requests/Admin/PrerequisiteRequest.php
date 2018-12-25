@@ -20,7 +20,6 @@ class PrerequisiteRequest extends FormRequest
             return [
                 
                 'title'        => 'required|unique:prerequisite,title,'.$id,
-                'status'       => 'required',
                 'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                 'pdf_file'     => 'mimes:pdf',
                 'youtube_url'  => 'nullable|url',
@@ -34,7 +33,6 @@ class PrerequisiteRequest extends FormRequest
             {
                 return [
                     'title'        => 'required|unique:prerequisite,title,'.$id,
-                    'status'       => 'required',
                 ];
             }
             else
@@ -42,7 +40,6 @@ class PrerequisiteRequest extends FormRequest
                 return [
                 
                     'title'        => 'required|unique:prerequisite,title,'.$id,
-                    'status'       => 'required',
                     'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
                     'pdf_file'     => 'mimes:pdf',
                     'youtube_url'  => 'nullable|url',
@@ -56,7 +53,6 @@ class PrerequisiteRequest extends FormRequest
     {
         return [
             'title.required'  => 'Title field is required.',
-            'status.required' => 'Status field is required.',
         ];
     }
 }
