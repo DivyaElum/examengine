@@ -13,8 +13,7 @@
 
         }
       @endphp 
-        <img id="preview"  src="{{ $urlPath }}" alt="Featured Image" class="img-responsive" style="margin: 5px 0px" />
-      <span class="logo-lg"></span>
+        <span class="logo-lg"><img id="preview"  src="{{ $urlPath }}" alt="Featured Image" class="img-responsive" style="margin: 5px 0px;width: 200px;height: 45px;" /></span>
     </a>
     <nav class="navbar navbar-static-top">
 
