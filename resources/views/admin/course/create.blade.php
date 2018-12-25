@@ -123,12 +123,12 @@
 	              			<div class="col-md-12">
 	              				<div class="row">
 	              					<div class="col-md-2">
-	              						<img id="preview"  src="{{ url('/images/no-image.png')  }}" alt="Featured Image" style="width: 100%;height: 200px;border: 1px solid #ccc;margin-left: 5px" />
+	              						<img id="preview" class="image-responsive" src="{{ url('/images/no-image.png')  }}" alt="Featured Image" width="100%" height="125px" />
 	              					</div>
 	              				</div>
 	              				<div class="row" id="delete_button" style="display: none">
 				                	<div class="col-md-2" > 
-				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" style="margin-left: 5px">Delete</a>
+				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" >Delete</a>
 				                	</div>
 	              				</div>
 				                <div class="row">
@@ -166,7 +166,7 @@
 
 @section('scripts')
 	<script type="text/javascript">
-		var defaultImaage = "{{ url('/storage/prerequisite/no-image.png') }}";
+		var defaultImaage = "{{ url('/images/no-image.png') }}";
 	</script>
 	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>

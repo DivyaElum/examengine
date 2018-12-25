@@ -83,7 +83,7 @@ function readURL(input)
     	reader.onload = function(e) 
     	{
       		$('#preview').attr('src', e.target.result);
-      		 $('#delete_button').show();
+      		$('#delete_button').show();
     	}
     	
     	reader.readAsDataURL(input.files[0]);
