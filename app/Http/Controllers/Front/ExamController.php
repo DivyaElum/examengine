@@ -37,8 +37,8 @@ class ExamController extends Controller
 		if ($exam['token'] == $token) 
 		{
 			$course = $exam['object'];
-
-			$this->ViewData['exam'] =  $this->BaseModel->find($course->exam_id);
+			$this->ViewData['course'] = $course;
+			$this->ViewData['exam']   =  $this->BaseModel->find($course->exam_id);
 			$this->ViewData['exam_questions'] = $this->ExamQuestionsModel
 													 ->with('repository')
 													 ->where('exam_id',$course->exam_id)
@@ -63,4 +63,25 @@ class ExamController extends Controller
         return view($this->ModuleView.'index', $this->ViewData);
 	}
 
+	public function submit(Request $request, $user_id, $course_id, $exam_id)
+	{
+		if (!empty($user_id) && !empty($course_id) && !empty($exam_id)) 
+		{
+			if (!empty($request->correct) && sizeof($request->correct) > 0) 
+			{
+				// check answers for radio buttons
+				if (!empty($request->correct['radio']) && sizeof($request->correct['radio']) > 0) 
+				{
+					foreach ($request->correct['radio'] as $key => $radio) 
+					{
+						$exam_question = $this->ExamQuestionsModel
+								 			  ->with('repository')
+								 			  ->find($key);
+						dd($radio, $key, $exam_question);
+					}
+				}
+				
+			}	
+		}
+	}~
 }

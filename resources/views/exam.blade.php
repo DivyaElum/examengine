@@ -72,12 +72,15 @@
         </div>
         <div class="container" id="exam" style=" display: none; padding: 10px">
             <div class="row">
-                <div id="my-carousel" class="carousel" data-ride="carousel" data-interval="false">
-                    
-                    <div class="col-sm-9">
-                        <div class="carousel-inner" role="listbox">
+                <form method="POST" action="{{ route('exam.submit', [auth()->user()->id, $course->id, $exam->id]) }}">
+                    @csrf
 
-                            @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
+                    <div id="my-carousel" class="carousel" data-ride="carousel" data-interval="false">
+                    
+                        <div class="col-sm-9">
+                            <div class="carousel-inner" role="listbox">
+
+                                @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
                                 @foreach($exam_questions as $key => $question)
 
                                     <?php 
@@ -182,7 +185,7 @@
                                                             @if($question->repository->option1 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="radio_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
                                                                         <label for="option1_{{ $srno }}"> {{$question->repository->option1}} </label>
                                                                     </div>
                                                                 </div>
@@ -191,7 +194,7 @@
                                                             @if($question->repository->option2 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
                                                                         <label for="option2_{{ $srno }}"> {{$question->repository->option2}} </label>
                                                                     </div>
                                                                 </div>
@@ -200,7 +203,7 @@
                                                             @if($question->repository->option3 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
                                                                         <label for="option3_{{ $srno }}"> {{$question->repository->option3}} </label>
                                                                     </div>
                                                                 </div>
@@ -209,7 +212,7 @@
                                                             @if($question->repository->option4 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}"> 
                                                                         <label for="option4_{{ $srno }}" > {{$question->repository->option4}} </label>
                                                                     </div>
                                                                 </div>
@@ -218,7 +221,7 @@
                                                             @if($question->repository->option5 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
                                                                         <label for="option5_{{ $srno }}"> {{$question->repository->option5}} </label>
                                                                     </div>
                                                                 </div>
@@ -227,7 +230,7 @@
                                                             @if($question->repository->option6 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}"> 
                                                                         <label for="option6_{{ $srno }}" > {{$question->repository->option6}} </label>
                                                                     </div>
                                                                 </div>
@@ -236,7 +239,7 @@
                                                             @if($question->repository->option7 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}"> 
                                                                         <label for="option7_{{ $srno }}"> {{$question->repository->option7}} </label>
                                                                     </div>
                                                                 </div>
@@ -245,7 +248,7 @@
                                                             @if($question->repository->option8 != NULL)
                                                                 <div class="col-sm-6">
                                                                     <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[radio][{{$question->id}}][]" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}"> 
+                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}"> 
                                                                         <label for="option8_{{ $srno }}"> {{$question->repository->option8}} </label>
                                                                     </div>
                                                                 </div>
@@ -257,6 +260,7 @@
 
                                                 <div class="col-sm-12 status_buttons" style="margin-top: 100px">
                                                     <div class="buttons" style="float: right;">
+                                                        
                                                         @if($srno > 1)
                                                             <a href="javascript:void(0)" class="btn btn-info" onclick="return goPrevious(this)" data-qn="{{$srno}}">Prev Question</a>
                                                         @endif
@@ -269,7 +273,7 @@
                                                 </div>
                                                 <div class="col-sm-12 submit_button" style="margin-top: 5px">
                                                     <div class="button" style="float: right;">
-                                                        <a class="btn btn-success"  href="{{ '' }}">Submit Exam</a>
+                                                        <button class="btn btn-success" >Submit Exam</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -277,38 +281,38 @@
                                     </div>
                                 
                                 @endforeach    
-                            @endif    
+                                @endif  
 
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="col-sm-3 option_buttons_div" >
-                        <div class="row timer">
-                            <label>Duration : </label>
-                            <span id="demo"></span>
-                        </div>
-                        <div class="row">
-                            @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
-                                @foreach($exam_questions as $key => $question)
+                        <div class="col-sm-3 option_buttons_div" >
+                            <div class="row timer">
+                                <label>Duration : </label>
+                                <span id="demo"></span>
+                            </div>
+                            <div class="row">
+                                @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
+                                    @foreach($exam_questions as $key => $question)
 
-                                    <?php 
-                                        $buttonActive = $key == 0 ? 'activate' : ''; 
-                                        $buttonSrno = $key+1;
-                                    ?>
+                                        <?php 
+                                            $buttonActive = $key == 0 ? 'activate' : ''; 
+                                            $buttonSrno = $key+1;
+                                        ?>
 
-                                    <div class="col-xs-3">
-                                        <div class="question_buttons srno_{{$buttonSrno}} {{ $buttonActive }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
-                                            {{ $key+1 }}
+                                        <div class="col-xs-3">
+                                            <div class="question_buttons srno_{{$buttonSrno}} {{ $buttonActive }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
+                                                {{ $key+1 }}
+                                            </div>
                                         </div>
-                                    </div>
-                                
-                                @endforeach    
-                            @endif    
+                                    
+                                    @endforeach    
+                                @endif    
 
+                            </div>
                         </div>
                     </div>
-                  
-                </div>
+                </form>
             </div>
         </div>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
