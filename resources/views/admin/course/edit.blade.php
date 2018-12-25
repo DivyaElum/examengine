@@ -53,6 +53,13 @@
 				                  	</select>
 				                </div>
 				            </div>
+
+				            <div class="col-md-12">
+				            	<p style="font-weight:normal;padding:5px;background-color: #dff0d8;border-color: #d6e9c6;">
+				            		<b>Note : </b> Please select either both prerequisites and exam or at least one of them.
+				            	</p>	
+				            </div>
+
 			                <div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Prerequisites</label>
@@ -74,7 +81,7 @@
 				                <div class="form-group">
 				                  	<label for="">Exams</label>
 					                  	<select name="exam" id="exam" class="form-control">
-					                  		<option value="">Please select exam</option>
+					                  		<option value="">Please Select Exam</option>
 				                  			@if(!empty($exams) && sizeof($exams) > 0)
 				                  				@foreach($exams as $pkey => $exam)
 				                  					<option value="{{$exam->id}}" @if($object->exam_id == $exam->id ) selected @endif >{{ ucfirst($exam->title) }}</option>
@@ -89,6 +96,7 @@
 				                <div class="form-group">
 				                  	<label for="">Course Fee <span style="color: red">*</span></label>
 				                  	<input type="text" oninput="return calculateAmount(this)" value="{{ $object->amount }}" placeholder="Course Fee" name="amount" id="amount" class="form-control">
+				                	<span class="err_calculated_amount " style="color: red"></span>
 				                </div>
 	              			</div>	
 
@@ -96,6 +104,7 @@
 				                <div class="form-group">
 				                  	<label for="">Discount</label>
 				                  	<input type="text"  oninput="return calculateAmount(this)" value="{{ $object->discount }}" placeholder="Course Discount" name="discount" id="discount" class="form-control">
+				                	<span class="err_calculated_amount " style="color: red"></span>
 				                </div>
 	              			</div>	
 
@@ -103,9 +112,10 @@
 				                <div class="form-group">
 				                  	<label for="">Discount By</label>
 				                  	<select name="discount_by" onchange="return calculateAmount(this)" id="discount_by" class="form-control">
-				                  		<option value="Price" @if($object->discount_by == 'Price') selected @endif >Price</option>
+				                  		<option value="Flat" @if($object->discount_by == 'Flat') selected @endif >Flat</option>
 				                  		<option value="%" @if($object->discount_by == '%') selected @endif >%</option>
 				                  	</select>
+				                	<span class="err_calculated_amount " style="color: red"></span>
 				                </div>
 	              			</div>
 
@@ -128,7 +138,7 @@
 	              							}
 	              							else
 	              							{
-	              								$featured = url('/storage/prerequisite/no-image.png');
+	              								$featured = url('/images/no-image.png');
 
 	              							}
 	              						@endphp 

@@ -9,11 +9,7 @@
 	// test
 	Route::get('/', function () {
 	    return view('welcome');
-	});
-
-	// test exam
-	Route::get('/exam/{token}/perform','Front\ExamController@index')->name('exam');
-	 
+	});	 
 
 	// sign up
 	Route::resource('/signup', 'Auth\RegisterController');
@@ -50,14 +46,15 @@
 			Route::get('/{token}/varify', 'Candidate\CourseController@varify');
 			Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
 		});
-
-		
 	});
-		// course routes
-		Route::group(['prefix' => 'exam'],function()
-		{
-			Route::get('/book', 'Front\ExamController@examBook');
-		});
+	
+	// course routes
+	Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
+	{
+		Route::get('/',		'ExamController@index')->name('exam');
+		Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
+		Route::get('/book', 'ExamController@examBook')->name('exam.book');
+	});
 		
 	// certification rotues
 	Route::group(['prefix' => 'certification'],function()

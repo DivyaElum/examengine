@@ -27,13 +27,13 @@ class CourseRequest extends FormRequest
         $id = base64_decode(base64_decode($this->route('exam'))) ?? null;
 
         return [
-            'title'             => 'required|unique:exam,title,'.$id,
+            'title'             => 'required|min:4|unique:exam,title,'.$id,
             'prerequisites'     => 'required_without_all:exam',
             'exam'              => 'required_without_all:prerequisites',
-            'amount'            => 'required|numeric',
+            'amount'            => 'required|numeric|gt:0',
             'description'       => 'required',
             'discount'          => 'numeric',
-            'calculated_amount' => 'required|numeric',
+            'calculated_amount' => 'required|numeric|gt:0',
             'featured_image'    => 'mimes:jpeg,jpg,png,gif',
         ];
     }

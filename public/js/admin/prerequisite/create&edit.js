@@ -5,6 +5,8 @@ var $Module = '/prerequisite';
 $(document).ready(function ()
 {
 	setVideoType(false);	
+	hideOldVideoFile();	
+	hideOldPdfFile();	
 })
 
 function saveFormData(element)
@@ -94,13 +96,13 @@ function setVideoType(flag)
 	$('.'+checkedType).show();
 }
 
-function hideOldVideoFile(element)
+function hideOldVideoFile()
 {
 	$('.old_video_file_class').hide().find('input').val('');
 	$('.video_file_class').show();
 }
 
-function hideOldPdfFile(element)
+function hideOldPdfFile()
 {
 	$('.old_pdf_file_class').hide().find('input').val('');
 	$('.pdf_file_class').show();

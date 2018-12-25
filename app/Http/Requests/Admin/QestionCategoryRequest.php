@@ -25,7 +25,8 @@ class QestionCategoryRequest extends FormRequest
     {
         $id = base64_decode(base64_decode($this->route('question_category'))) ?? null;
         return [
-            'category'  => 'required|unique:question_category,category_name,'.$id,
+            'category'  => 'required|min:4|unique:question_category,category_name,'.$id,
+            'status'    => 'required',
         ];
     }
 

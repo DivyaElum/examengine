@@ -16,7 +16,6 @@
                 document.addEventListener('keydown', event => event.preventDefault());
                 document.addEventListener('contextmenu', event => event.preventDefault());
 
-                // Set the date we're counting down to
                 Date.prototype.addMinuts= function(m)
                 {
                     this.setMinutes(this.getMinutes()+m);
