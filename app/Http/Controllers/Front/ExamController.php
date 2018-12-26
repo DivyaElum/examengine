@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\ExamModel;
 use App\Models\ExamQuestionsModel;
+use App\Models\QuestionOptionsAnswer;
 
 use Session;
 use App\Models\CourseModel;
@@ -19,11 +20,13 @@ class ExamController extends Controller
  		
  	public function __construct(
  		ExamModel $ExamModel,
- 		ExamQuestionsModel $ExamQuestionsModel
+ 		ExamQuestionsModel $ExamQuestionsModel,
+ 		QuestionOptionsAnswer $QuestionOptionsAnswer
  	)
  	{
  		$this->BaseModel = $ExamModel;
  		$this->ExamQuestionsModel = $ExamQuestionsModel;
+ 		$this->QuestionOptionsAnswer = $QuestionOptionsAnswer;
 
  		$this->ViewData = [];
         $this->JsonData = [];
@@ -134,22 +137,131 @@ class ExamController extends Controller
 
 	public function submit(Request $request, $user_id, $course_id, $exam_id)
 	{
+
+		$optionsAnswers = $this->QuestionOptionsAnswer->get();
+
 		if (!empty($user_id) && !empty($course_id) && !empty($exam_id)) 
 		{
 			if (!empty($request->correct) && sizeof($request->correct) > 0) 
 			{
-				// check answers for radio buttons
-				if (!empty($request->correct['radio']) && sizeof($request->correct['radio']) > 0) 
+				$statusBag = []; 
+
+				// check answers for radio
+				if (!empty($request->correct['radio']) && sizeof($request->correct['radio']) > 0)
 				{
-					foreach ($request->correct['radio'] as $key => $radio) 
+					foreach ($request->correct['radio'] as $radioKey => $radio) 
 					{
-						$exam_question = $this->ExamQuestionsModel
+						$examQuestionsRadio = $this->ExamQuestionsModel
 								 			  ->with('repository')
-								 			  ->find($key);
-						dd($radio, $key, $exam_question);
+								 			  ->find($radioKey);
+
+						if ($examQuestionsRadio) 
+						{
+							$examQuestionsRadio = $examQuestionsRadio->toArray();
+					
+							// find correct answers
+							$correctOptionRadio = '';
+							foreach ($optionsAnswers as $optionAnswerKey => $optionAnswer) 
+							{
+								if ($examQuestionsRadio['repository']['correct_answer'] == $optionAnswer->answer) 
+								{
+									$correctOptionRadio = $optionAnswer->option;
+								}
+							}
+
+							// varify is correct
+							if ($examQuestionsRadio['repository'][$correctOptionRadio] == $radio) 
+							{
+								$statusBag[] = array('exam_id' => $radioKey, 'status' => 1);
+							}
+							else
+							{
+								$statusBag[] = array('exam_id' => $radioKey, 'status' => 0);
+							
+							}
+						}
 					}
 				}
-				
+
+				// check answers for checkbox
+				if (!empty($request->correct['checkbox']) && sizeof($request->correct['checkbox']) > 0) 
+				{
+					foreach ($request->correct['checkbox'] as $checkBoxKey => $checkbox) 
+					{
+
+						$examQuestionsCheckbox = $this->ExamQuestionsModel
+								 			  ->with('repository')
+								 			  ->find($checkBoxKey);
+
+						if ($examQuestionsCheckbox) 
+						{
+							$examQuestionsCheckbox = $examQuestionsCheckbox->toArray();
+					
+							// find correct answers
+							$correctOptionsCheckbox = [];
+							foreach ($optionsAnswers as $optionAnswerKey => $optionAnswer) 
+							{
+								$questionOptionsCheckbox = explode(',', $examQuestionsCheckbox['repository']['correct_answer']);
+								if (in_array($optionAnswer->answer, $questionOptionsCheckbox)) 
+								{
+									$correctOptionsCheckbox[] = $optionAnswer->option;
+								}
+							}
+
+							// create correct answers array
+							$questionCorrectOptionsCheckbox = [];
+							foreach ($correctOptionsCheckbox as $correctOptionCheckboxKey => $correctOptionCheckbox) 
+							{
+								$questionCorrectOptionsCheckbox[] = $examQuestionsCheckbox['repository'][$correctOptionCheckbox];
+							}
+
+							//compare correct answers array
+							$result = array_diff($checkbox,  $questionCorrectOptionsCheckbox);
+							if (!empty($result) && sizeof($result) > 0) 
+							{
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 1);
+							}
+							else
+							{
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 0);
+							}
+						}
+					}	
+				}
+
+				$resultBag = [];
+				$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
+															     ->pluck('total_question')
+															     ->first();
+
+				$resultBag['total_attemped']  = count($statusBag);
+
+				$resultBag['total_wrong']  = count(
+													array_filter($statusBag, function($data)
+													{
+														if (empty($data['status'])) 
+														{
+															return true;
+														}
+													})
+												);
+
+				$resultBag['total_right']  = count(
+													array_filter($statusBag, function($data)
+													{
+														if (!empty($data['status'])) 
+														{
+															return true;
+														}
+													})
+												);
+
+				$resultBag['percentage'] = (((int)$resultBag['total_right'])/((int)$resultBag['total_questions']))*100;
+
+				$resultBag['result_status'] =  $resultBag['percentage'] >= 75 ? 'pass' : 'fail';
+
+				return view('front.exam.result', ['resultBag' => $resultBag]);
+ 
 			}	
 		}
 	}

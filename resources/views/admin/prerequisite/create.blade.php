@@ -45,6 +45,14 @@
 	              			</div>	
 
 	              			<div class="col-md-12">
+			            		<p class="alert" style="background-color: #0aa60036">
+		            				<b>Note : </b><br>
+		            				1. Max video file size limit 2 MB</b><br>	
+		            				2. Max pdf file size limit 2 MB</b><br>	
+		            			</p>
+				            </div>
+
+	              			<div class="col-md-12">
 	              				<label>Video Type <span style="color: red">*</span></label>
 				                <div class="form-group">
 								    <label class="radio-inline">
@@ -61,6 +69,8 @@
 								    </label>
 				                </div>
 	              			</div>	
+
+
 
 	              			<div class="col-md-12 options file" style="display: none;">
 				                <div class="form-group">

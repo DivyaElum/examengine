@@ -105,85 +105,85 @@ class ExamController extends Controller
         {
             $exam_id = $object->id;
             
-            // exam slots
             if (!empty($request->exam_days) && count($request->exam_days) > 0) 
             {
-                $slots = [];
-                $error_bag_days = [];
-                foreach ($request->exam_days as $key => $exam_day) 
-                {
-                    // exam day validation 
-                    if (empty($error_bag_days)) 
+                /*-----------------------------
+                |   Exam days validation
+                ----------------------------------------------*/
+                    $isDuplicateDays = [];
+                    foreach ($request->exam_days as $exam_key => $exam_day) 
                     {
-                        $error_bag_days[] = $exam_day;
-                    }
-                    else
-                    {
-                        if (in_array($exam_day, $error_bag_days)) 
-                        {
-                            DB::rollBack();
-                            $this->JsonData['status']   = 'error';
-                            $this->JsonData['msg']      = 'Exam days must not be same.';
-                            return response()->json($this->JsonData);
-                            exit;
-                        }
-                        else
-                        {
-                            $error_bag_days[] = $exam_day;
-                        }
+                       $isDuplicateDays[] = $exam_day['day'];
                     }
 
-                    // saving exam days
-                    $exam_slots = new $this->ExamSlotModel;
-                    $exam_slots->exam_id = $exam_id;
-                    $exam_slots->day     = $exam_day['day'];
+                    $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
 
-                    // getting start and end time
-                    $out = [];
-                    $error_bag_time = [];
-                    foreach($exam_day['start_time'] as $key_time => $start_time)
+                    if (!empty($validateDate) && sizeof($validateDate) > 0) 
                     {
-                        // start time validation
-                        if (empty($error_bag_time)) 
-                        {
-                            $error_bag_time[] = $start_time;
-                        }
-                        else
-                        {
-                            if (in_array($start_time, $error_bag_time)) 
+                        DB::rollBack();
+                        $this->JsonData['status']   = 'error';
+                        $this->JsonData['msg']      = 'Exam days must not be same.';
+                        return response()->json($this->JsonData);
+                        exit;
+                    }
+
+                /*-----------------------------
+                |  Adding Exam days 
+                ----------------------------------------------*/
+                    $slots = [];
+                    foreach ($request->exam_days as $exam_key => $exam_day) 
+                    {
+                        
+                        $exam_slots = new $this->ExamSlotModel;
+                        $exam_slots->exam_id = $exam_id;
+                        $exam_slots->day     = $exam_day['day'];
+
+                        /*-----------------------------
+                        |   Exam days start time validation
+                        ----------------------------------------------*/
+                            $out = [];
+                            $isDuplicateTime = [];
+                            foreach ($exam_day['start_time'] as $key_time => $start_time) 
+                            {
+                               $isDuplicateTime[] = $start_time;
+                            }
+
+                            $validateTime = array_diff_assoc($isDuplicateTime, array_unique($isDuplicateTime));
+
+                            if (!empty($validateTime) && sizeof($validateTime) > 0) 
                             {
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
-                                $this->JsonData['msg']      = 'Exam start time must not be same.';
+                                $this->JsonData['msg']      = 'Exam start times must not be same for respective day.';
                                 return response()->json($this->JsonData);
                                 exit;
                             }
-                            else
-                            {
-                                $error_bag_time[] = $start_time;
-                            }
+
+                        /*-----------------------------
+                        |   Adding Exam days start time 
+                        ----------------------------------------------*/
+                        foreach($exam_day['start_time'] as $key_time => $start_time)
+                        {
+                            $tmp = [];
+                            $minuts                 = $request->duration*60;
+                            $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
+                            $end_time               = date('H:i', $enc_end_time);
+                            $tmp['start_time']      = $start_time;
+                            $tmp['end_time']        = $end_time;
+                            $out[] = $tmp;
                         }
+                        
+                        $exam_slots->time    = json_encode($out);
 
-                        $tmp = [];
-                        $minuts                 = $request->duration*60;
-                        $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
-                        $end_time               = date('H:i', $enc_end_time);
-                        $tmp['start_time']      = $start_time;
-                        $tmp['end_time']        = $end_time;
-                        $out[] = $tmp;
+                        if($exam_slots->save())
+                        {
+                            $slots[] = 1;
+                        }
+                        else
+                        {
+                            $slots[] = 0;
+                        }
                     }
-                    
-                    $exam_slots->time    = json_encode($out);
-
-                    if($exam_slots->save())
-                    {
-                        $slots[] = 1;
-                    }
-                    else
-                    {
-                        $slots[] = 0;
-                    }
-                }
             }
 
             // exam questions
@@ -322,82 +322,83 @@ class ExamController extends Controller
 
             if (!empty($request->exam_days) && count($request->exam_days) > 0) 
             {
-                $slots = [];
-                $error_bag_days = [];
-                foreach ($request->exam_days as $key => $exam_day) 
-                {
-                    // exam day validation 
-                    if (empty($error_bag_days)) 
+                /*-----------------------------
+                |   Exam days validation
+                ----------------------------------------------*/
+                    $isDuplicateDays = [];
+                    foreach ($request->exam_days as $exam_key => $exam_day) 
                     {
-                        $error_bag_days[] = $exam_day;
-                    }
-                    else
-                    {
-                        if (in_array($exam_day, $error_bag_days)) 
-                        {
-                            DB::rollBack();
-                            $this->JsonData['status']   = 'error';
-                            $this->JsonData['msg']      = 'Exam days must not be same.';
-                            return response()->json($this->JsonData);
-                            exit;
-                        }
-                        else
-                        {
-                            $error_bag_days[] = $exam_day;
-                        }
+                       $isDuplicateDays[] = $exam_day['day'];
                     }
 
-                    // saving exam days
-                    $exam_slots = new $this->ExamSlotModel;
-                    $exam_slots->exam_id = $exam_id;
-                    $exam_slots->day     = $exam_day['day'];
+                    $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
 
-                    // getting start and end time
-                    $out = [];
-                    $error_bag_time = [];
-                    foreach($exam_day['start_time'] as $key_time => $start_time)
+                    if (!empty($validateDate) && sizeof($validateDate) > 0) 
                     {
-                        // start time validation
-                        if (empty($error_bag_time)) 
-                        {
-                            $error_bag_time[] = $start_time;
-                        }
-                        else
-                        {
-                            if (in_array($start_time, $error_bag_time)) 
+                        DB::rollBack();
+                        $this->JsonData['status']   = 'error';
+                        $this->JsonData['msg']      = 'Exam days must not be same.';
+                        return response()->json($this->JsonData);
+                        exit;
+                    }
+
+                /*-----------------------------
+                |  Adding Exam days 
+                ----------------------------------------------*/
+                    $slots = [];
+                    foreach ($request->exam_days as $exam_key => $exam_day) 
+                    {
+                        
+                        $exam_slots = new $this->ExamSlotModel;
+                        $exam_slots->exam_id = $exam_id;
+                        $exam_slots->day     = $exam_day['day'];
+
+                        /*-----------------------------
+                        |   Exam days start time validation
+                        ----------------------------------------------*/
+                            $out = [];
+                            $isDuplicateTime = [];
+                            foreach ($exam_day['start_time'] as $key_time => $start_time) 
+                            {
+                               $isDuplicateTime[] = $start_time;
+                            }
+
+                            $validateTime = array_diff_assoc($isDuplicateTime, array_unique($isDuplicateTime));
+
+                            if (!empty($validateTime) && sizeof($validateTime) > 0) 
                             {
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
-                                $this->JsonData['msg']      = 'Exam start time must not be same.';
+                                $this->JsonData['msg']      = 'Exam start times must not be same for respective day.';
                                 return response()->json($this->JsonData);
                                 exit;
                             }
-                            else
-                            {
-                                $error_bag_time[] = $start_time;
-                            }
+
+                        /*-----------------------------
+                        |   Adding Exam days start time 
+                        ----------------------------------------------*/
+                        foreach($exam_day['start_time'] as $key_time => $start_time)
+                        {
+                            $tmp = [];
+                            $minuts                 = $request->duration*60;
+                            $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
+                            $end_time               = date('H:i', $enc_end_time);
+                            $tmp['start_time']      = $start_time;
+                            $tmp['end_time']        = $end_time;
+                            $out[] = $tmp;
                         }
+                        
+                        $exam_slots->time    = json_encode($out);
 
-                        $tmp = [];
-                        $minuts                 = $request->duration*60;
-                        $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
-                        $end_time               = date('H:i', $enc_end_time);
-                        $tmp['start_time']      = $start_time;
-                        $tmp['end_time']        = $end_time;
-                        $out[] = $tmp;
+                        if($exam_slots->save())
+                        {
+                            $slots[] = 1;
+                        }
+                        else
+                        {
+                            $slots[] = 0;
+                        }
                     }
-                    
-                    $exam_slots->time    = json_encode($out);
-
-                    if($exam_slots->save())
-                    {
-                        $slots[] = 1;
-                    }
-                    else
-                    {
-                        $slots[] = 0;
-                    }
-                }
             }
 
             // exam questions

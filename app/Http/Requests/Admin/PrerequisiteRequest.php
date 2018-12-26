@@ -20,8 +20,8 @@ class PrerequisiteRequest extends FormRequest
             return [
                 
                 'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
-                'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
-                'pdf_file'     => 'mimes:pdf',
+                'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4|max:2048',
+                'pdf_file'     => 'mimes:pdf|max:2048',
                 'youtube_url'  => 'nullable|url',
                 'video_url'    => 'nullable|url',
 
@@ -40,8 +40,8 @@ class PrerequisiteRequest extends FormRequest
                 return [
                 
                     'title'        => 'required|min:1|unique:prerequisite,title,'.$id,
-                    'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4',
-                    'pdf_file'     => 'mimes:pdf',
+                    'video_file'   => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4|max:2048',
+                    'pdf_file'     => 'mimes:pdf|max:2048',
                     'youtube_url'  => 'nullable|url',
                     'video_url'    => 'nullable|url',
                 ];
@@ -53,6 +53,7 @@ class PrerequisiteRequest extends FormRequest
     {
         return [
             'title.required'  => 'Title field is required.',
+            'video_file.size' => 'Video file size must be less than 2 MB'
         ];
     }
 }

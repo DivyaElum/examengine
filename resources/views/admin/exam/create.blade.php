@@ -8,9 +8,15 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datepicker/bootstrap-datetimepicker.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/multiselect/bootstrap-multiselect.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+	<style>
+		.clear{clear: both;}
+		.exam_days_div { border: 1px solid #ccc; padding: 15px 0; background: #f3f3f3; margin: 15px 0;}
+	</style>
 @stop
 
 @section('content')
+
+
 
 	<div class="content-wrapper">
 
@@ -34,9 +40,9 @@
 		          	</div>
 	        	</div>
 
-        	 	<form onsubmit="return saveFormData(this)" action="{{route($modulePath.'.store')}}" >
+        	 	<form onsubmit="return saveFormData(this)" action="{{route($modulePath.'.store')}}" enctype="multipart/form-data" >
 	              	<div class="box-body">
-	              		<div class="row">
+	              		<div class="">
 
 	              			<div class="col-md-12">
 				                <div class="form-group">
@@ -72,7 +78,7 @@
 	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Duration (Hrs) <span style="color: red">*</span></label>
-					                  	<input type="text" maxlength="2" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" >
+					                  	<input type="text" oninput="return checkTimeSlots()" maxlength="2" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" >
 				                  	</select>
 				                </div>
 	              			</div>
@@ -84,67 +90,67 @@
 				                </div>
 	              			</div>
 
-
-              				<div class="exam_days_wrapper">
-
-		              			<div class="exam_days_div">
-			              			<div class="col-md-9">
-						                <div class="form-group">
-						                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
-							                  	<select name="exam_days[0][day]" class="form-control exam_days">
-							                  		@if(!empty($weekdays))
-							                  			@foreach($weekdays as $key => $day)
-							                  				<option value="{{ strtolower($day) }}">{{ $day }}</option>
-							                  			@endforeach
-							                  		@endif
-							                  	</select>
-						                  	</select>
-						                </div>
+              				<div class="clear"></div>
+              				<div class="col-md-12">
+	              				<div class="exam_days_wrapper clearfix">
+			              			<div class="exam_days_div clearfix">
+				              			<div class="col-md-12">
+							                <div class="form-group">
+							                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
+							                  	<div class="row">
+							                  		<div class="col-md-11">
+									                  	<select name="exam_days[0][day]" class="form-control exam_days">
+									                  		@if(!empty($weekdays))
+									                  			@foreach($weekdays as $key => $day)
+									                  				<option value="{{ strtolower($day) }}">{{ $day }}</option>
+									                  			@endforeach
+									                  		@endif
+									                  	</select>
+							                  		</div>
+							                  		<div class="col-md-1">
+														<a class="btn btn-info add_new_day" title="Add new exam day" onclick="return addNewDay(this)"><i class="fa fa-plus"></i></a>
+							                  		</div>
+							                  	</div>
+							                </div>
+				              			</div>
+				              			<div class="time_wrapper">
+					              			<div class="col-md-4 start_time_wrapper">
+				                  				<label for="">Start Time <span style="color: red">*</span></label><br>
+					                  			<div class='input-group form-group datetimepicker' >
+								                    <input type='text' onblur="return getEndTime(this)" name="exam_days[0][start_time][]" class="form-control start_time" />
+								                    <span class="input-group-addon" >
+								                        <span class="glyphicon glyphicon-time"></span>
+								                    </span>
+								                </div>
+					              			</div>
+					              			<div class="col-md-5 end_time_wrapper">
+					              				<label for="">End Time <span style="color: red">*</span></label><br>
+					              				<div class="row">
+					              					<div class="col-md-9">
+					                  					<div class='input-group form-group' >
+										                    <input type='text' readonly name="exam_days[0][end_time][]" class="form-control end_time" />
+										                    <span class="input-group-addon" >
+										                        <span class="glyphicon glyphicon-time"></span>
+										                    </span>
+										                </div>
+								                	</div>
+					              					<div class="col-md-3">
+														<a class="btn btn-info add_new_slot" title="Add new time slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+					              					</div>
+					              				</div>
+					              			</div>
+				              			</div>
 			              			</div>
-			              			<div class="col-md-2">
-						                <div class="form-group">
-						                  	<label for="">Start Time <span style="color: red">*</span></label><br>
-						                  	<div class="row">
-						                  		<div class="col-md-9">
-						                  			<div class='input-group datetimepicker' >
-									                    <input type='text' name="exam_days[0][start_time][]" class="form-control start_time" />
-									                    <span class="input-group-addon" >
-									                        <span class="glyphicon glyphicon-time"></span>
-									                    </span>
-									                </div>
-						                  		</div>
-						                  		<div class="col-md-2">
-													<a class="btn btn-info add_new_slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
-						                  		</div>
-						                  	</div>
-						                </div>
-			              			</div>
-			              			<div class="col-md-1">
-			              			</div>
-		              			</div>
-
-	              				<div class="col-md-12">
-									<a class="btn btn-info add_new_day" onclick="return addNewDay(this)" style="float: right;">Add more exam days</a>
-								</div>
-              				</div>
-	              			
-	              			<!-- <div class="col-md-12">
-			                  	<label for="">Status <span style="color: red">*</span></label>
-				                <div class="form-group">
-				                  	<label class="radio-inline">
-								      <input type="radio" name="status" checked value="1">Active
-								    </label>
-								    <label class="radio-inline">
-								      <input type="radio" name="status" value="0">Inactive
-								    </label>
-				                </div>
-	              			</div> -->	
+	              				</div>
+              				</div>	
 
 	              		</div>
 	              	</div>
 
 	              	<div class="box-footer">
-		                <button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
+              			<div class="col-md-12">
+		                	<button type="submit" id="submit_button" class="btn btn-primary">Submit</button>
+		            	</div>
             	  	</div>
 	            </form>
 	      </div>

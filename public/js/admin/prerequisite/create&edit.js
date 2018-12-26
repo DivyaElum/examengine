@@ -7,8 +7,6 @@ $(document).ready(function ()
 	$('#title').focus();
 	
 	setVideoType(false);	
-	hideOldVideoFile();	
-	hideOldPdfFile();	
 })
 
 function saveFormData(element)
@@ -93,25 +91,27 @@ function saveFormData(element)
 
 function setVideoType(flag)
 {
+	
 	var checkedType = $('input[name="type"]:checked').val();
 	
 	if(flag)
 	{
 		$('.options').find('.option_input').val('');
 	}
-
+		
 	$('.options').hide();
+
 	$('.'+checkedType).show();
 }
 
-function hideOldVideoFile()
-{
-	$('.old_video_file_class').hide().find('input').val('');
-	$('.video_file_class').show();
-}
+// function hideOldVideoFile()
+// {
+// 	$('.old_video_file_class').hide().find('input').val('');
+// 	$('.video_file_class').show();
+// }
 
-function hideOldPdfFile()
-{
-	$('.old_pdf_file_class').hide().find('input').val('');
-	$('.pdf_file_class').show();
-}
+// function hideOldPdfFile()
+// {
+// 	$('.old_pdf_file_class').hide().find('input').val('');
+// 	$('.pdf_file_class').show();
+// }
