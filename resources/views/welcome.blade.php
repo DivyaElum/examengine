@@ -3,18 +3,13 @@
 @section('title')
     {{ $moduleAction }}
 @stop
-
-
 @section('styles')
 
 @stop
-@section('page_title')
-    {{ $page_title }}
-@stop
+
 @section('content')
 
 <section class="mainBanner clearfix">
-
     <div class="social">
         <div class="wrapper">
             <ul class="list-unstyled">
