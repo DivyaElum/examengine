@@ -57,7 +57,7 @@
 				                </div>
 				                <div class="form-group">
 				                  	<label for="txtDesignation">Image </label>
-				                  	<input type="file" name="txtImage" id="txtImage" class="form-control"  />
+				                  	<input type="file" name="txtImage" id="txtImage" class="form-control" accept="image/*"  />
 				                  	<span class="help-block err_txtImage"></span>
 				                </div>
 				                <!-- <div class="form-group">
