@@ -58,12 +58,12 @@ $.ajaxSetup({
 	        <span class="help-block errortxtEmail"></span>
 	      </div>
 	      <div class="form-group has-feedback">
-	        <input type="password" id="txtNewPassword" name="txtNewPassword" class="form-control" placeholder="New password">
+	        <input type="password" id="txtNewPassword" name="txtNewPassword" class="form-control" placeholder="New Password">
 	        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 	        <span class="help-block errorNewPassword"></span>
 	      </div>
 	      <div class="form-group has-feedback">
-	        <input type="password" id="txtComPassword" name="txtComPassword" class="form-control" placeholder="confirm password">
+	        <input type="password" id="txtComPassword" name="txtComPassword" class="form-control" placeholder="Confirm Password">
 	        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
 	        <span class="help-block errorComPassword"></span>
 	      </div>

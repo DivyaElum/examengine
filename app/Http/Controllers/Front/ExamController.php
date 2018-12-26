@@ -2,31 +2,34 @@
 
 namespace App\Http\Controllers\Front;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\ExamModel;
-use App\Models\ExamQuestionsModel;
-
-use Session;
-use App\Models\CourseModel;
 use App\Models\Event;
-use App\Models\ExamSlotModel;
-use Calendar;
-use DB;
-use Carbon\Carbon;
+use App\Models\ExamModel;
 use App\User as UserModel;
+use App\Models\CourseModel;
+use Illuminate\Http\Request;
+use App\Models\ExamSlotModel;
+use App\Models\BookExamSlotModel;
+use App\Models\ExamQuestionsModel;
+use App\Http\Controllers\Controller;
+
+use DB;
+use Session;
+use Calendar;
+use Carbon\Carbon;
 
 class ExamController extends Controller
 {
  	public function __construct(
- 		ExamModel $ExamModel,
- 		UserModel $UserModel,
+ 		ExamModel 			$ExamModel,
+ 		UserModel 			$UserModel,
+ 		BookExamSlotModel 	$BookExamSlotModel,
  		ExamQuestionsModel $ExamQuestionsModel
  	)
  	{
- 		$this->BaseModel = $ExamModel;
+ 		$this->BaseModel 		  = $ExamModel;
  		$this->ExamQuestionsModel = $ExamQuestionsModel;
- 		$this->UserModel = $UserModel;
+ 		$this->UserModel 		  = $UserModel;
+ 		$this->BookExamSlotModel  = $BookExamSlotModel;
 
  		$this->ViewData = [];
         $this->JsonData = [];
@@ -224,12 +227,32 @@ class ExamController extends Controller
 			$start_time =  $strData[$i]->start_time;
   			$end_time   =  $strData[$i]->end_time;
 
-  			$html .= '<input type="radio" name="slot" id="slot_'.$i.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
+  			$html .= '<input type="radio" name="slot" id="slot_'.$i.'" value="'.$start_time.'/'.$end_time.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
   		}
     	return response()->json($html);
 	}
 
 	public function bookExamSlot(Request $request){
-		dd($request->all());
+		DB::beginTransaction();
+
+        $object          	 = new $this->BookExamSlotModel;
+        $object->exam_id   	 = base64_decode(base64_decode(base64_decode(base64_decode($request->exam_id))));
+        $object->user_id   	 = base64_decode(base64_decode($request->user_id));
+        $object->course_id   = $request->course_id;
+        $object->slot_time   = $request->slot_time;
+        
+        if($object->save())
+        {
+        	DB::commit();
+        	$this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = 'Exam slot booked successfully';
+        }
+        else
+        {
+        	$this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = 'Failed to save exam slot, Something went wrong.';
+            DB::rollBack();
+        }
+        return response()->json($this->JsonData);
 	}
 }

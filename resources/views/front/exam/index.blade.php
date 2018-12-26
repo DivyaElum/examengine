@@ -87,7 +87,7 @@ $(document).ready(function() {
 		            type: 'POST',
 		            dataType: 'json',
 		            data: {
-	                	id: event.id,
+	                	id: event.id
 	            	},
 	            	success: function(response) {
 	            		$('#fullCalModal').modal("show");
@@ -123,11 +123,42 @@ $(document).ready(function() {
 	    },
 	});
 
-	('.btnBook').click{
-		alert('dfsa');
-	};
+	
 });
-
+$(".btnBook").click(function(){
+	var userId = "{{ base64_encode(base64_encode($arrUserData->id)) }}";
+	var examId = '{{ base64_encode(base64_encode($exam_id)) }}';
+	var slotTime = $('input[name=slot]:checked').val();
+	if(slotTime){
+		$.ajax({
+		    url: '/exam/bookExamSlot/',
+		    type: 'POST',
+		    dataType: 'json',
+		    data: {
+		        exam_id   : examId,
+		        user_id   : userId,
+		        course_id : '1',
+		        slot_time : slotTime
+		    },
+		    success: function(response) {
+		        if (response.status == 'success') 
+	    		{
+	    			alert(response.msg);
+	    			setTimeout(function ()
+		    		{
+		    			$('#submit_button').show();
+		    			window.location.href = document.referrer;
+		    		}, 3000)
+	    		}else{
+	    			alert(response.msg);
+	    		}
+		    }
+		});
+	}else{
+		alert('Please select any one slot');
+		return false;
+	}
+}); 
 </script>
 
 @stop
