@@ -46,6 +46,9 @@
 			Route::get('/{token}/varify', 'Candidate\CourseController@varify');
 			Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
 		});
+
+		Route::get('/logout', 'Auth\LoginController@logout');			//logout
+		Route::post('/logout', 'Auth\LoginController@logout');
 	});
 	
 	// course routes
@@ -55,6 +58,7 @@
 		Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
 		Route::get('/book', 'ExamController@examBook')->name('exam.book');
 		Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
+		Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
 	});
 		
 	// certification rotues

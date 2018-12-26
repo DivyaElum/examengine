@@ -48,8 +48,8 @@ class LoginController extends Controller
             //check user exists in db
             $arrUserData = User::where('email',$strEmail)->first();
             
-            $remember_me = $request->has('chkRememberMe') ? 'true' : 'false'; 
-            
+            $remember_me = $request->has('remember') ? 'true' : 'false'; 
+     
             if($remember_me == 'true'){
                 $strPasswordEncd = base64_encode(base64_encode($strPassword));
                 setcookie('setEmail',$strEmail,time() + (10 * 365 * 24 * 60 * 60));

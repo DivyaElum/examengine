@@ -13,22 +13,25 @@ use App\Models\Event;
 use App\Models\ExamSlotModel;
 use Calendar;
 use DB;
+use Carbon\Carbon;
+use App\User as UserModel;
 
 class ExamController extends Controller
 {
- 		
  	public function __construct(
  		ExamModel $ExamModel,
+ 		UserModel $UserModel,
  		ExamQuestionsModel $ExamQuestionsModel
  	)
  	{
  		$this->BaseModel = $ExamModel;
  		$this->ExamQuestionsModel = $ExamQuestionsModel;
+ 		$this->UserModel = $UserModel;
 
  		$this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Certification Listing';
+        $this->ModuleTitle = 'Examp slot booking';
         $this->ModuleView  = 'front.exam.';
         $this->ModulePath  = 'CourseModel';
     }	
@@ -59,6 +62,9 @@ class ExamController extends Controller
 
 	public function examBook()
 	{
+		$user_id = auth()->user()->id;
+      	$arrUsers = $this->UserModel->with(['information'])->find($user_id);  //get login user data
+
 		$events = [];
         $data = ExamSlotModel::with(['exam'])->get();
         
@@ -75,7 +81,6 @@ class ExamController extends Controller
         		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
         		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
 				
-
 				if (Date('Y-m-d') < $day->format('Y-m-d')) 
 				{
 					//$strExamTitle = $value->exam->title;
@@ -101,11 +106,11 @@ class ExamController extends Controller
         $this->ViewData['moduleAction']  = str_plural($this->ModuleTitle);
         $this->ViewData['modulePath']    = $this->ModulePath;
         $this->ViewData['calendar']      = $calendar;
+        $this->ViewData['arrUserData']   = $arrUsers;
         $this->ViewData['calendarData']  = $data;
 
         return view($this->ModuleView.'index', $this->ViewData);
 	}
-
 
 	public function getAllDaysInAMonth($year, $month, $day = 'Monday', $daysError = 3) 
 	{
@@ -154,7 +159,8 @@ class ExamController extends Controller
 		}
 	}
 
-	public function events(Request $request){
+	public function events(Request $request)
+	{
 		$events = [];
         $data = ExamSlotModel::with(['exam'])->get();
         
@@ -162,21 +168,40 @@ class ExamController extends Controller
 	      {
 
 	      	$strData = json_decode($value->time);
-	      	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
+	      	$days 	 = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
 
 			foreach ($days as $day) 
 			{
-	      		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
-	      		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
-				
+				for($i=0;$i <=count($strData);$i++){
+					$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
+	      			$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
 
+	      			$start_time =  $day->format('Y-m-d').' '.$strData['1']->start_time;
+	      			$end_time   =  $day->format('Y-m-d').' '.$strData['1']->end_time;
+				}
+	      		$cstart_time = Carbon::parse($start_time);
+	      		$cend_time   = Carbon::parse($end_time);
+				
 				if (Date('Y-m-d') < $day->format('Y-m-d')) 
 				{
+					$eventsTemp['id'] 	 = $value->id;
 					$eventsTemp['title'] = $value->exam->title;
 					$eventsTemp['start'] = $start_time;
-					$eventsTemp['end'] = $end_time;
+					$eventsTemp['end']   = $end_time;
+					$events[] 			 = $eventsTemp;
+					
+					for($i = 1; $i <= 24; $i++) {
+						$tempStart = Carbon::parse($start_time);
+						$tempEnd = Carbon::parse($end_time);
 
-					$events[] = $eventsTemp;
+						$eventsTemp['id'] 	 = $value->id;
+						$eventsTemp['title'] = $value->exam->title;
+						$eventsTemp['start'] = $tempStart->addWeek($i)->format('Y-m-d H:i:s');
+						$eventsTemp['end']   = $tempEnd->addWeek($i)->format('Y-m-d H:i:s');
+						$events[] = $eventsTemp;
+
+					}
+					
 				}
 
 			}
@@ -184,5 +209,17 @@ class ExamController extends Controller
 	
 		return \Response::json($events);
 		// return response()->json($events);
+	}
+
+	public function getExampSlot(Request $request)
+	{
+		$data = ExamSlotModel::with(['exam'])->first();
+		
+		foreach ($data as $key => $value) 
+        {
+        	dd($key);
+        	$strData = json_decode($value->time);
+        	dd($strData);
+        }
 	}
 }
