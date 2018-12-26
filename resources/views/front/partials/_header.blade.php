@@ -39,8 +39,8 @@
     <div class="container">
       <div class="top-left">
         <ul>
-          <li><i class="fa fa-phone" aria-hidden="true"></i>Customer Services: <a href="tel:18006729205" data-title="18006729205"><span>1-800-672-9205</span></a></li>
-          <li><i class="fa fa-envelope" aria-hidden="true"></i>Email: <a href="mailto:info@msc.com"><span>info@msc.com</span></a></li>
+          <li><i class="fa fa-phone" aria-hidden="true"></i>Customer Services: <a href="tel:<?php echo $siteSetting->contact_no ?? ''; ?>" data-title="18006729205"><span><?php echo $siteSetting->contact_no ?? ''; ?></span></a></li>
+          <li><i class="fa fa-envelope" aria-hidden="true"></i>Email: <a href="mailto:<?php echo $siteSetting->email_id ?? ''; ?>"><span><?php echo $siteSetting->email_id ?? ''; ?></span></a></li>
         </ul>
       </div>
       <div class="top-right">
