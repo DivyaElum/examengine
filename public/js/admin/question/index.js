@@ -19,6 +19,7 @@ $(document).ready(function()
             { "data": "created_at",     "ordereble": "true"},
             { "data": "actions"}
         ],
+        aoColumnDefs: [{ "bSortable": false, "aTargets": [ 0, 6 ] }],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
         aaSorting: [[0, 'DESC']],
         language: {

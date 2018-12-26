@@ -22,6 +22,7 @@ $(document).ready(function()
             { "data": "status",         "ordereble": "true"},
             { "data": "actions"}
         ],
+        aoColumnDefs: [{ "bSortable": false, "aTargets": [ 0, 7 ] }],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
         aaSorting: [[0, 'DESC']],
         language: {
