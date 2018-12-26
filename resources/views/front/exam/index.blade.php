@@ -7,13 +7,14 @@
 
 @section('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
-
+<style type="text/css">
+.fc-content {cursor: pointer;}
+</style>
 @stop
 @section('page_title')
 	{{ $page_title }}
 @stop
 @section('content')
-
 
 <div class="bodyContent dashboard clearfix">
 	<div class="dashboardWraper">
@@ -21,10 +22,10 @@
 			<div class="container">
 			    <div class="row">
 			    	@include('front.partials._sidebar')
-			        <div class="col-md-8 col-md-offset-2">
+			        <div class="col-md-8 col-md-offset-2" style="margin: 50px auto;">
+			        	<h2 class="text-center">Exam Slot Calender</h2><br />
 			            <div class="panel panel-default">
 			                <div class="panel-body">
-			                    <!-- {!! $calendar->calendar() !!} -->
 			                    <div id="calendar"></div>
 			                </div>
 			            </div>
@@ -40,12 +41,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
-                <h4 id="modalTitle" class="modal-title"></h4>
+                <h4 id="modalTitle" class="modal-title">Exam Slots</h4>
             </div>
-            <div id="modalBody" class="modal-body"></div>
+            <div id="modalBody" class="modal-body">
+            	<span id="htmlClass"></span>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary"><a id="eventUrl" target="_blank">Event Page</a></button>
+                <button class="btn btn-primary btnBook">Book</button>
             </div>
         </div>
     </div>
@@ -55,15 +58,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
 <script type="">
-	$(document).ready(function() {
-	
-		var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
+$(document).ready(function() {
+	var examId = '{{ $exam_id }}';
+	var date = new Date();
+	var d = date.getDate();
+	var m = date.getMonth();
+	var y = date.getFullYear();
 		
-
-		var calendar = $('#calendar').fullCalendar({
+	var calendar = $('#calendar').fullCalendar({
 			header: {
 				left: 'prev,next today',
 				center: 'title',
@@ -77,23 +79,7 @@
               delay: 300,
               trigger: 'hover'
           });
-
         },
-		select: function(start, end, allDay) {
-			var title = prompt('Event Title:');
-			if (title) {
-				calendar.fullCalendar('renderEvent',
-					{
-						title: title,
-						start: start,
-						end: end,
-						allDay: allDay
-					},
-					true // make the event "stick"
-				);
-			}
-			calendar.fullCalendar('unselect');
-		},
 		eventRender: function (event, element) {
 	        element.click(function() {
 				 $.ajax({
@@ -103,11 +89,14 @@
 		            data: {
 	                	id: event.id,
 	            	},
+	            	success: function(response) {
+	            		$('#fullCalModal').modal("show");
+	            		$('#htmlClass').html(response);
+	            	}
 		        });
-	            
 	        });
 	    },
-		editable: true,
+		editable: false,
 		events: function(start, end, timezone, callback) {
 	        $.ajax({
 	            url: '/exam/loadEvent/',
@@ -115,10 +104,10 @@
 	            dataType: 'json',
 	            data: {
 	                start: start.format(),
-	                end: end.format()
+	                end: end.format(),
+	                id: examId
 	            },
 	            success: function(doc) {
-	            	console.log(doc);
 	                var events = [];
 	                $.map( doc, function( r ) {
 	                	events.push({
@@ -133,6 +122,10 @@
 	        });
 	    },
 	});
+
+	('.btnBook').click{
+		alert('dfsa');
+	};
 });
 
 </script>

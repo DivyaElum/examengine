@@ -65,6 +65,7 @@ class CourseController extends Controller
         $this->ViewData['arrCourse']          = $arrCourse;      
         $this->ViewData['arrPrerequisites']   = $arrPrerequisites;
         $this->ViewData['enc_prerequisites']  = $enc_prerequisites;
+        $this->ViewData['exam_id']            = $arrCourse->exam_id;
           
         return view($this->ModuleView, $this->ViewData);
       }else{
