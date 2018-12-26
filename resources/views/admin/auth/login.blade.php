@@ -82,7 +82,7 @@ $.ajaxSetup({
 	            </label>
 	          </div>
 	        </div>
-	        <a href="{{ URL('/admin/forgot')}}" class="forgotLink">forgot my password</a><br>
+	        <a href="{{ URL('/admin/forgot')}}" class="forgotLink">Forgot Password</a><br>
 	      </div>
 	    </form>
     </div>

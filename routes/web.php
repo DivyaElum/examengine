@@ -52,7 +52,7 @@
 		{
 			Route::get('/',		'ExamController@index')->name('exam');
 			Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
-			Route::get('/book', 'ExamController@examBook')->name('exam.book');
+			Route::get('/exam-book/{id}', 'ExamController@examBook')->name('exam.book');
 			Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
 			Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
 		});

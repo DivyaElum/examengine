@@ -31,7 +31,7 @@ class ExamController extends Controller
  		$this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Examp slot booking';
+        $this->ModuleTitle = 'Examp Slot book';
         $this->ModuleView  = 'front.exam.';
         $this->ModulePath  = 'CourseModel';
     }	
@@ -62,50 +62,52 @@ class ExamController extends Controller
 		}
 	}
 
-	public function examBook()
+	public function examBook($endId)
 	{
-		$events = [];
-        $data = ExamSlotModel::with(['exam'])->get();
+		// $events = [];
+  //       $data = ExamSlotModel::with(['exam'])->get();
         
-        $intI = '0';
+  //       $intI = '0';
 
-        foreach ($data as $key => $value) 
-        {
+  //       foreach ($data as $key => $value) 
+  //       {
 
-        	$strData = json_decode($value->time);
-        	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
+  //       	$strData = json_decode($value->time);
+  //       	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
 
-			foreach ($days as $day) 
-			{
-        		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
-        		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
+		// 	foreach ($days as $day) 
+		// 	{
+  //       		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
+  //       		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
 				
-				if (Date('Y-m-d') < $day->format('Y-m-d')) 
-				{
-					//$strExamTitle = $value->exam->title;
-					$strExamTitle = 'Examp';
-					$events[] = Calendar::event(
-		                $strExamTitle,
-		                true,
-		                new \DateTime($start_time),
-		                new \DateTime($end_time),
-		                null,
-		                [
-		                    'color' => '#f05050',
-		                    'url' 	=> 'pass here url and any route',
-		                ]
-		            );
-				}
-			}
-        }
-        $calendar = Calendar::addEvents($events);
+		// 		if (Date('Y-m-d') < $day->format('Y-m-d')) 
+		// 		{
+		// 			//$strExamTitle = $value->exam->title;
+		// 			$strExamTitle = 'Examp';
+		// 			$events[] = Calendar::event(
+		//                 $strExamTitle,
+		//                 true,
+		//                 new \DateTime($start_time),
+		//                 new \DateTime($end_time),
+		//                 null,
+		//                 [
+		//                     'color' => '#f05050',
+		//                     'url' 	=> 'pass here url and any route',
+		//                 ]
+		//             );
+		// 		}
+		// 	}
+  //       }
+  //       $calendar = Calendar::addEvents($events);
        
 		$this->ViewData['page_title']    = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']   = $this->ModuleTitle;
         $this->ViewData['moduleAction']  = str_plural($this->ModuleTitle);
         $this->ViewData['modulePath']    = $this->ModulePath;
-        $this->ViewData['calendar']      = $calendar;
-        $this->ViewData['calendarData']  = $data;
+        $this->ViewData['exam_id']    	 = $endId;
+
+        // $this->ViewData['calendar']      = $calendar;
+        // $this->ViewData['calendarData']  = $data;
 
         return view($this->ModuleView.'index', $this->ViewData);
 	}
@@ -159,65 +161,75 @@ class ExamController extends Controller
 
 	public function events(Request $request)
 	{
+		$intId = base64_decode(base64_decode($request->id));
+		
 		$events = [];
-        $data = ExamSlotModel::with(['exam'])->get();
+        $data = ExamSlotModel::with(['exam'])->where('exam_id', $intId)->get();
         
-	      foreach ($data as $key => $value) 
+        foreach ($data as $key => $value) 
 	      {
-
 	      	$strData = json_decode($value->time);
 	      	$days 	 = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
 
 			foreach ($days as $day) 
 			{
-				for($i=0;$i <=count($strData);$i++){
-					$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
-	      			$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
-
-	      			$start_time =  $day->format('Y-m-d').' '.$strData['1']->start_time;
-	      			$end_time   =  $day->format('Y-m-d').' '.$strData['1']->end_time;
-				}
-	      		$cstart_time = Carbon::parse($start_time);
-	      		$cend_time   = Carbon::parse($end_time);
-				
-				if (Date('Y-m-d') < $day->format('Y-m-d')) 
+				for($i=0;$i<count($strData);$i++)
 				{
-					$eventsTemp['id'] 	 = $value->id;
-					$eventsTemp['title'] = $value->exam->title;
-					$eventsTemp['start'] = $start_time;
-					$eventsTemp['end']   = $end_time;
-					$events[] 			 = $eventsTemp;
-					
-					for($i = 1; $i <= 24; $i++) {
-						$tempStart = Carbon::parse($start_time);
-						$tempEnd = Carbon::parse($end_time);
+					$start_time =  $day->format('Y-m-d').' '.$strData[$i]->start_time;
+	      			$end_time   =  $day->format('Y-m-d').' '.$strData[$i]->end_time;
 
+	      			$cstart_time = Carbon::parse($start_time);
+		      		$cend_time   = Carbon::parse($end_time);
+					
+					if (Date('Y-m-d') < $day->format('Y-m-d')) 
+					{
 						$eventsTemp['id'] 	 = $value->id;
 						$eventsTemp['title'] = $value->exam->title;
-						$eventsTemp['start'] = $tempStart->addWeek($i)->format('Y-m-d H:i:s');
-						$eventsTemp['end']   = $tempEnd->addWeek($i)->format('Y-m-d H:i:s');
-						$events[] = $eventsTemp;
+						$eventsTemp['start'] = $start_time;
+						$eventsTemp['end']   = $end_time;
+						$events[] 			 = $eventsTemp;
+						
+						for($i = 1; $i <= 24; $i++) 
+						{
+							$tempStart = Carbon::parse($start_time);
+							$tempEnd = Carbon::parse($end_time);
 
+							$eventsTemp['id'] 	 = $value->id;
+							$eventsTemp['title'] = $value->exam->title;
+							$eventsTemp['start'] = $tempStart->addWeek($i)->format('Y-m-d H:i:s');
+							$eventsTemp['end']   = $tempEnd->addWeek($i)->format('Y-m-d H:i:s');
+							$events[] = $eventsTemp;
+
+						}
 					}
-					
 				}
-
 			}
 		}
-	
+
 		return \Response::json($events);
 		// return response()->json($events);
 	}
 
 	public function getExampSlot(Request $request)
 	{
-		$data = ExamSlotModel::with(['exam'])->first();
+		$intId = $request->id;
+		//$data = ExamSlotModel::with(['exam'])->first();
+
+		$data = ExamSlotModel::with(['exam'])->where('id', $intId)->first();
+    	$strData = json_decode($data->time);
 		
-		foreach ($data as $key => $value) 
-        {
-        	dd($key);
-        	$strData = json_decode($value->time);
-        	dd($strData);
-        }
+    	$html = '';
+		for($i=0;$i<count($strData);$i++)
+		{
+			$start_time =  $strData[$i]->start_time;
+  			$end_time   =  $strData[$i]->end_time;
+
+  			$html .= '<input type="radio" name="slot" id="slot_'.$i.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
+  		}
+    	return response()->json($html);
+	}
+
+	public function bookExamSlot(Request $request){
+		dd($request->all());
 	}
 }
