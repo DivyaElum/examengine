@@ -5,14 +5,14 @@
                                                                        $slides.css("height", $(window).height());
                                                                      });*/
 
-$(".owl-carousel").on("initialized.owl.carousel", function () {
+$("#mainBannerSlider").on("initialized.owl.carousel", function () {
   setTimeout(function () {
     $(".owl-item.active .owl-slide-animated").addClass("is-transitioned");
     $("section").show();
   }, 200);
 });
 
-var $owlCarousel = $(".owl-carousel").owlCarousel({
+var $owlCarousel = $("#mainBannerSlider").owlCarousel({
   items: 1,
   loop: true,
   nav: true,
@@ -53,7 +53,7 @@ function doDotsCalculations(el) {
   el.position(),top = _el$position.top,left = _el$position.left;
   var res = height + top + 20;
 
-  $(".owl-carousel .owl-dots").css({
+  $("#mainBannerSlider .owl-dots").css({
     top: res + "px",
     left: left + "px" });
 

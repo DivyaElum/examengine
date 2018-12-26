@@ -14,7 +14,16 @@
 
 <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+
+<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
+<!-- Bootstrap core CSS -->
+<link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet">
+<!-- Style CSS -->
+<link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css">
+
 <link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/css/index_style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/css/owl.css') }}" rel="stylesheet" type="text/css">
 <script type="text/javascript">
   $.ajaxSetup({
     headers: {
@@ -22,12 +31,6 @@
     }
   });
 </script>
-<!-- Bootstrap core CSS -->
-<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
-<!-- Bootstrap core CSS -->
-<link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet">
-<!-- Style CSS -->
-<link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css">
 @yield('styles')
 <style type="text/css">
 .login-banner h1 {font-size: 50px !important;}
@@ -88,12 +91,12 @@
 </div>
 <!--/  Header End  -->  
 @if(!auth()->check())
-<div class="login-banner">
+<!-- <div class="login-banner">
   <div class="container">
     <h1>
       @yield('page_title')
     </h1>
   </div>  
-</div>
+</div> -->
 @endif
 <!--/ login banner end  --->

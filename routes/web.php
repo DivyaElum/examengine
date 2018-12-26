@@ -5,11 +5,9 @@
 | FRONT END ROUTES
 |--------------------------------------------------------------------------
 */
-
+	
 	// test
-	Route::get('/', function () {
-	    return view('welcome');
-	});	 
+	Route::get('/', 'homeController@index');	 
 
 	// sign up
 	Route::resource('/signup', 'Auth\RegisterController');
@@ -55,12 +53,8 @@
 			Route::get('/exam-book/{id}', 'ExamController@examBook')->name('exam.book');
 			Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
 			Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
+			Route::post('/bookExamSlot', 'ExamController@bookExamSlot')->name('exam.book');
 		});
-
-
-
-
-
 		Route::get('/logout', 'Auth\LoginController@logout');			//logout
 		Route::post('/logout', 'Auth\LoginController@logout');
 	});

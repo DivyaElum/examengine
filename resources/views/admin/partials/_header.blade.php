@@ -13,7 +13,7 @@
 
         }
       @endphp 
-        <span class="logo-lg"><img id="logo"  src="{{ $urlPath }}" alt="Featured Image" class="img-responsive" style="margin: 5px 0px;width: 200px;height: 45px;" /></span>
+        <span class="logo-lg"><img id="logo" src="{{ $urlPath }}" alt="Featured Image" class="img-responsive" style="margin: 5px 0px;width: 200px;height: 45px;" /></span>
     </a>
     <nav class="navbar navbar-static-top">
 
