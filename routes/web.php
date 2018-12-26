@@ -5,7 +5,7 @@
 | FRONT END ROUTES
 |--------------------------------------------------------------------------
 */
-	
+
 	// test
 	Route::get('/', 'homeController@index');	 
 
@@ -22,6 +22,15 @@
 	// reset password
 	Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index');
 	Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
+
+	// certification rotues
+	Route::group(['prefix' => 'certification'],function()
+	{
+		Route::get('/','Candidate\CertificationController@index');
+		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+	});
+
+
 
 	// after authantication routes
 	Route::group(['middleware' => 'UserAuthenticate'],function()
@@ -57,15 +66,6 @@
 		});
 		Route::get('/logout', 'Auth\LoginController@logout');			//logout
 		Route::post('/logout', 'Auth\LoginController@logout');
-	});
-	
-	
-		
-	// certification rotues
-	Route::group(['prefix' => 'certification'],function()
-	{
-		Route::get('/','Candidate\CertificationController@index');
-		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
 	});
 
 /*
