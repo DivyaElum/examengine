@@ -76,6 +76,12 @@
           </a>
         </li>
 
+        <li>
+          <a href="{{ url('/admin/logout') }}">
+            <i class="fa fa-sign-out"></i><span>Logout</span>
+          </a>
+        </li>
+
       </ul>
     </section>
     <!-- /.sidebar -->

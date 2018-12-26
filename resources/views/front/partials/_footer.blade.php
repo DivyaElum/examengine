@@ -13,23 +13,30 @@
 		<div class="col-md-5 col-sm-5">
 			<h2>Quick Links</h2>
 			<ul class="quick-links">
-				<li><a href="index.php">Home</a></li>
-				<li><a href="about-us.php">About Us</a></li>
-				<li><a href="services.php">Services</a></li>
-				<li><a href="events.php">Events</a></li>
-				<li><a href="membership.php">Membership</a></li>
+				<li>
+					@if(!auth()->check())
+			          <a href="{{ route('signup.index') }}">Home</a> 
+			        @else
+			          <a href="{{url('/dashboard')}}">Home</a>
+			        @endif
+				</li>
+				<li><a href="#">About Us</a></li>
+				<li><a href="#">Services</a></li>
+				<li><a href="#">Events</a></li>
+				<li><a href="#">Membership</a></li>
 			</ul>
 			<ul class="quick-links">
-				<li><a href="Certification.php">Certification</a></li>
-				<li><a href="contact-us.php">Contact Us</a></li>
+				<li><a href="/certification">Certification</a></li>
+				<li><a href="#">Contact Us</a></li>
 			</ul>
 		</div>
 		<div class="col-md-3 col-sm-3 footer-last-box">
 			<h2>Contact Us</h2>
 			<p>
-				100 Europa Drive, Suite 403 Chapel Hill, NC 27517<br>
-				<a href="mailto:info@msc.com" class="footer-mail">info@msc.com</a>
-				<span class="footer-tell">tel: <a href="tel:18006729205" data-title="18006729205">1-800-672-9205</a></span>
+				<?php echo $siteSetting->address ?? ''; ?><br>
+				<a href="mailto:<?php echo $siteSetting->email_id ?? ''; ?>" class="footer-mail"><?php echo $siteSetting->email_id ?? ''; ?></a>
+
+				<span class="footer-tell">tel: <a href="tel:<?php echo $siteSetting->contact_no ?? ''; ?>" data-title="<?php echo $siteSetting->contact_no ?? ''; ?>"><?php echo $siteSetting->contact_no ?? ''; ?></a></span>
 			</p>
 		</div>
 	</div>	
@@ -37,9 +44,9 @@
 	<div class="footer-last">
 		<div class="container">
 			<div class="footer-last-left">
-				<span>© MSC. {{date('Y')}}}</span>
-				<a href="terms-and-condition.php">Terms & Conditions</a>
-				<a href="privacy-policy.php">Privacy Policy</a>
+				<span>© MSC. {{date('Y')}} <?php echo $siteSetting->footer_text ?? ''; ?></span>
+				<a href="#">Terms & Conditions</a>
+				<a href="#">Privacy Policy</a>
 			</div>
 			<div class="footer-last-right">
 				<a href="#0" class="cd-top back-to-top-box">Back to top</a>
@@ -49,7 +56,9 @@
 </footer>	
 <!--/  Jquery.min  --> 
 <script src="{{ asset('js/back-to-top.js') }}"></script> 
-<!-- <script src="{{ asset('js/custom.js') }}"></script>  -->
+<script src="{{asset('js/owl.carousel.min.js')}}"></script>
+<script src="{{asset('js/owl.js')}}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 @yield('scripts')
 </body>
 </html>

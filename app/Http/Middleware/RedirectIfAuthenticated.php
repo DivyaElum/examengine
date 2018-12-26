@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\SiteSetting;
 
 class RedirectIfAuthenticated
 {
@@ -18,6 +19,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
+            $arrSiteSetting = SiteSetting::find('1');
+
+            view()->share('siteSetting', $arrSiteSetting);
             return redirect('/home');
         }
 

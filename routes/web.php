@@ -7,9 +7,7 @@
 */
 
 	// test
-	Route::get('/', function () {
-	    return view('welcome');
-	});	 
+	Route::get('/', 'homeController@index');	 
 
 	// sign up
 	Route::resource('/signup', 'Auth\RegisterController');
@@ -24,6 +22,15 @@
 	// reset password
 	Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index');
 	Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
+
+	// certification rotues
+	Route::group(['prefix' => 'certification'],function()
+	{
+		Route::get('/','Candidate\CertificationController@index');
+		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+	});
+
+
 
 	// after authantication routes
 	Route::group(['middleware' => 'UserAuthenticate'],function()
@@ -46,22 +53,19 @@
 			Route::get('/{token}/varify', 'Candidate\CourseController@varify');
 			Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
 		});
-	});
-	
-	// course routes
-	Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
-	{
-		Route::get('/',		'ExamController@index')->name('exam');
-		Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
-		Route::get('/book', 'ExamController@examBook')->name('exam.book');
-		Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
-	});
-		
-	// certification rotues
-	Route::group(['prefix' => 'certification'],function()
-	{
-		Route::get('/','Candidate\CertificationController@index');
-		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+
+		// course routes
+		Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
+		{
+			Route::get('/',		'ExamController@index')->name('exam');
+			Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
+			Route::get('/exam-book/{id}', 'ExamController@examBook')->name('exam.book');
+			Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
+			Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
+			Route::post('/bookExamSlot', 'ExamController@bookExamSlot')->name('exam.book');
+		});
+		Route::get('/logout', 'Auth\LoginController@logout');			//logout
+		Route::post('/logout', 'Auth\LoginController@logout');
 	});
 
 /*

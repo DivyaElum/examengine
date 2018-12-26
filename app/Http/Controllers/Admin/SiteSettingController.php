@@ -205,7 +205,7 @@ class SiteSettingController extends Controller
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Edit '. $this->ModuleTitle;
         $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['object'] = $this->SiteSetting->find($intId);
+        $this->ViewData['objectData'] = $this->SiteSetting->find($intId);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }

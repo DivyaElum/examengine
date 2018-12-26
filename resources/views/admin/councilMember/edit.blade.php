@@ -59,7 +59,7 @@
 				                </div>
 				                <div class="form-group">
 				                  	<label for="txtDesignation">Image </label>
-				                  	<input type="file" name="txtImage" id="txtImage" class="form-control"  /><br />
+				                  	<input type="file" name="txtImage" id="txtImage" class="form-control" accept="image/*"  /><br />
 				                  	@if(isset($object->image))
 				                  		<img src="{{ asset('/upload/council-member/thumb_img/'.$object->image) }}" />
 				                  	@endif

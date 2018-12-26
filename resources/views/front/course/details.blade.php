@@ -5,7 +5,6 @@
 @stop
 
 @section('styles')
-	<link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/tomorrow.min.css">
 	<style type="text/css">
@@ -28,6 +27,7 @@
 						<h3>Prerequisites Listing</h3>
 						<hr />
 						<div class="row">
+							<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($exam_id))) }}" class="btn btn-primary">Book Exam</a>
 							@php 
 							foreach($arrPrerequisites as $row) { @endphp
 							<div class="col-md-6 col-sm-6 col-xs-6 col-12">

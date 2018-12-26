@@ -1,113 +1,238 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('front.master')
 
-        <title>Exam Test</title>
+@section('title')
+    {{ $moduleAction }}
+@stop
+@section('styles')
 
+@stop
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+@section('content')
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            a {
-            	text-decoration: none
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-
-            <div class="content">
-                <div class="title">
-                    <a href="javascript:void(0)" class="enterExam" >Enter Exam</a>
+<section class="mainBanner clearfix">
+    <div class="social">
+        <div class="wrapper">
+            <ul class="list-unstyled">
+                <li><a href="#" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="#" title="twitter" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#" title="pinterest" target="_blank"><i class="fa fa-pinterest"></i></a></li>
+                <li><a href="#" title="instagram" target="_blank"><i class="fa fa-instagram"></i></a></li>
+            </ul>
+            <span>Follow us on</span>
+        </div>
+    </div>
+    
+    <div id="mainBannerSlider" class="owl-carousel owl-theme">
+      <div class="owl-slide d-flex align-items-center cover" style="background-image: {{asset('images/homepage/banner-img1.jpg')}}">
+        <div class="container">
+          <div class="row justify-content-center justify-content-md-start">
+            <div class="col-10 col-md-6 static">
+              <div class="owl-slide-text">
+                <h2 class="owl-slide-animated owl-slide-title"><span>MSC Partner</span> Network</h2>
+                <div class="owl-slide-animated owl-slide-subtitle mb-3">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                 </div>
+                <a class="btn owl-slide-animated owl-slide-cta" href="#">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!--/owl-slide-->
+  
+      <div class="owl-slide d-flex align-items-center cover" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/owlcarousel1.jpg);">
+        <div class="container">
+          <div class="row justify-content-center justify-content-md-start">
+            <div class="col-10 col-md-6 static">
+              <div class="owl-slide-text">
+                <h2 class="owl-slide-animated owl-slide-title"><span>MSC Partner</span> Network</h2>
+                <div class="owl-slide-animated owl-slide-subtitle mb-3">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                </div>
+                <a class="btn owl-slide-animated owl-slide-cta" href="#">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!--/owl-slide-->
+
+      <div class="owl-slide d-flex align-items-center cover" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/owlcarousel2.jpg);">
+        <div class="container">
+          <div class="row justify-content-center justify-content-md-start">
+            <div class="col-10 col-md-6 static">
+              <div class="owl-slide-text">
+                <h2 class="owl-slide-animated owl-slide-title"><span>MSC Partner</span> Network</h2>
+                <div class="owl-slide-animated owl-slide-subtitle mb-3">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                </div>
+                <a class="btn owl-slide-animated owl-slide-cta" href="#">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!--/owl-slide-->
+
+      <div class="owl-slide d-flex align-items-center cover" style="background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/owlcarousel3.jpg);">
+        <div class="container">
+          <div class="row justify-content-center justify-content-md-start">
+            <div class="col-10 col-md-6 static">
+              <div class="owl-slide-text">
+                <h2 class="owl-slide-animated owl-slide-title"><span>MSC Partner</span> Network</h2>
+                <div class="owl-slide-animated owl-slide-subtitle mb-3">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                </div>
+                <a class="btn owl-slide-animated owl-slide-cta" href="#">Contact Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!--/owl-slide-->
+    </div>
+    <div class="container newsletterForm_wrap">
+        <div class="newsletterForm">
+            <form action="">
+                <h2><span>Sign up for our </span>newsletter!</h2>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="" placeholder="Email Address">
+                </div>
+                <div class="form-group">
+                    <img src="images/captcha-img.png" class="img-responsive" alt="">
+                </div>
+                <div class="checkbox">
+                    <label>
+                      <input type="checkbox"> Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default">Sign Up Now</button>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- END - Main Banner -->
+
+<section class="bodyContent clearfix">
+    <div class="container-fluid text-center">
+        <h1 class="heading1">Find services or certificational courses for you.</h1>
+        <div id="servicesCarousel" class="owl-carousel owl-theme">
+            <div>
+                <div class="card">
+                    <div class="title" style="background-image: {{asset('images/certification_lists/course_img1.jpg')}}">
+                        <div class="titleWrap">
+                            <h3>MSP & Cloud Insurance</h3>
+                            <span class="icon"></span>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <h2 class="price"><span>$85.00</span> $79.50</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur venenatis blandit. Praesent vehicula, libero non pretium vulputate, lacus arcu facilisis lectus, sed feugiat tellus nulla eu dolor. Nulla porta bibendum lectus quis euismod. Aliquam volutpat ultricies porttitor. Cras risus nisi, accumsan vel cursus ut, sollicitudin vitae dolor. Fusce scelerisque eleifend lectus in bibendum. Suspendisse lacinia egestas felis a volutpat.</p>
+                        <a href="#" class="btnArrow"><span></span></a>
+                    </div>
+                </div>              
+            </div>
+            <div>
+                <div class="card">
+                    <div class="title" style="background-image: {{asset('images/certification_lists/course_img1.jpg')}}">
+                        <div class="titleWrap">
+                            <h3>MSP & Cloud Insurance</h3>
+                            <span class="icon"></span>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <h2 class="price"><span>$85.00</span> $79.50</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur venenatis blandit. Praesent vehicula, libero non pretium vulputate, lacus arcu facilisis lectus, sed feugiat tellus nulla eu dolor. Nulla porta bibendum lectus quis euismod. Aliquam volutpat ultricies porttitor. Cras risus nisi, accumsan vel cursus ut, sollicitudin vitae dolor. Fusce scelerisque eleifend lectus in bibendum. Suspendisse lacinia egestas felis a volutpat.</p>
+                        <a href="#" class="btnArrow"><span></span></a>
+                    </div>
+                </div>              
+            </div>
+            <div>
+                <div class="card">
+                    <div class="title" style="background-image: {{asset('images/certification_lists/course_img1.jpg')}}">
+                        <div class="titleWrap">
+                            <h3>MSP & Cloud Insurance</h3>
+                            <span class="icon"></span>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <h2 class="price"><span>$85.00</span> $79.50</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur venenatis blandit. Praesent vehicula, libero non pretium vulputate, lacus arcu facilisis lectus, sed feugiat tellus nulla eu dolor. Nulla porta bibendum lectus quis euismod. Aliquam volutpat ultricies porttitor. Cras risus nisi, accumsan vel cursus ut, sollicitudin vitae dolor. Fusce scelerisque eleifend lectus in bibendum. Suspendisse lacinia egestas felis a volutpat.</p>
+                        <a href="#" class="btnArrow"><span></span></a>
+                    </div>
+                </div>              
+            </div>
+            <div>
+                <div class="card">
+                    <div class="title" style="background-image: {{asset('images/certification_lists/course_img1.jpg')}}">
+                        <div class="titleWrap">
+                            <h3>MSP & Cloud Insurance</h3>
+                            <span class="icon"></span>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <h2 class="price"><span>$85.00</span> $79.50</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur venenatis blandit. Praesent vehicula, libero non pretium vulputate, lacus arcu facilisis lectus, sed feugiat tellus nulla eu dolor. Nulla porta bibendum lectus quis euismod. Aliquam volutpat ultricies porttitor. Cras risus nisi, accumsan vel cursus ut, sollicitudin vitae dolor. Fusce scelerisque eleifend lectus in bibendum. Suspendisse lacinia egestas felis a volutpat.</p>
+                        <a href="#" class="btnArrow"><span></span></a>
+                    </div>
+                </div>              
+            </div>
+            <div>
+                <div class="card">
+                    <div class="title" style="background-image: {{asset('images/certification_lists/course_img1.jpg')}}">
+                        <div class="titleWrap">
+                            <h3>MSP & Cloud Insurance</h3>
+                            <span class="icon"></span>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <h2 class="price"><span>$85.00</span> $79.50</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur venenatis blandit. Praesent vehicula, libero non pretium vulputate, lacus arcu facilisis lectus, sed feugiat tellus nulla eu dolor. Nulla porta bibendum lectus quis euismod. Aliquam volutpat ultricies porttitor. Cras risus nisi, accumsan vel cursus ut, sollicitudin vitae dolor. Fusce scelerisque eleifend lectus in bibendum. Suspendisse lacinia egestas felis a volutpat.</p>
+                        <a href="#" class="btnArrow"><span></span></a>
+                    </div>
+                </div>              
+            </div>
+            <div>
+                <div class="card">
+                    <div class="title" style="background-image: {{asset('images/certification_lists/course_img1.jpg')}} url(images/certification_lists/course_img1.jpg)">
+                        <div class="titleWrap">
+                            <h3>MSP & Cloud Insurance</h3>
+                            <span class="icon"></span>
+                        </div>
+                    </div>
+                    <div class="cardContent">
+                        <h2 class="price"><span>$85.00</span> $79.50</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam consectetur venenatis blandit. Praesent vehicula, libero non pretium vulputate, lacus arcu facilisis lectus, sed feugiat tellus nulla eu dolor. Nulla porta bibendum lectus quis euismod. Aliquam volutpat ultricies porttitor. Cras risus nisi, accumsan vel cursus ut, sollicitudin vitae dolor. Fusce scelerisque eleifend lectus in bibendum. Suspendisse lacinia egestas felis a volutpat.</p>
+                        <a href="#" class="btnArrow"><span></span></a>
+                    </div>
+                </div>              
             </div>
         </div>
-    </body>
-</html>
+    </div>
+    <div class="container welcomeSection">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="wel_imgSec">
+                    <img src="{{asset('images/homepage/welcome_img.png')}}" class="img-responsive" alt="">
+                    <span class="yellow-ball bPat"></span>
+                    <span class="green-ball bPat"></span>
+                    <span class="blue-ball bPat"></span>
+                </div>
+            </div>
+            <div class="col-sm-1 d-sm-none"></div>
+            <div class="col-sm-5">
+                <h2 class="heading2">Welcome to MSC</h2>
+                <p class="highlightedTxt">MSPAlliance began in the year 2000 with the vision of becoming the unified voice for the Managed Services Industry. 
+                
+                <p>Our goal was to build a global organization for Manage Service (including cloud computing) Professionals where they could network, collaborate and share information. </p>
+                
+                <p>Today we're over 30,000 members strong and have become a globally recognized standards, certification and consulting body for the Manage Service and Cloud Computing industry. MSPAlliance has always been on the cutting edge of advancing the cause of Cloud Computing and Managed Services Professionals. </p>
+                
+                <p>Now...What can WE do, for YOU?</p>
+                <br>
+                <a href="#" class="btn small-btn">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
 
-<script type="text/javascript">
-	
-	window.addEventListener('load', function()
-	{
-		var EnterExam = document.querySelector('.enterExam');
-
-		EnterExam.addEventListener('click', function(e)
-		{
-			e.preventDefault();
-
-		 	var Params = ', directories=no';
-    	  	Params += ', channelmode=no';
-          	Params += ', fullscreen=yes';
-          	Params += ', location=no';
-          	Params += ', menubar=no';
-          	Params += ', resizable=yes';
-          	Params += ', scrollbars=no';
-          	Params += ', status=no';
-          	Params += ', titlebar=no';
-          	Params += ', toolbar=no';
-
-          	var ExamWindow = window.open('exam','_blank' , Params);
-
-          	EnterExam.addEventListener('load', function(e)
-          	{
-          		
-          	})
-		})
-	})
-
-</script>
+@stop
+@section('scripts')
+<link href="{{ asset('/js/owl.js') }}" rel="stylesheet" type="text/css">
+@stop

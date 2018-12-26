@@ -23,6 +23,17 @@
 @php 
 $strUser = app('request')->input('type');
 @endphp
+
+@php 	   
+	if(isset($_COOKIE['setEmail'])){
+		$strEmail 	 = $_COOKIE['setEmail'];
+		$strPassword = base64_decode(base64_decode($_COOKIE['setPassword']));
+		$chkRememberMe = '1';
+	}else{
+		$strEmail = $strPassword = '';
+		$chkRememberMe = '0';
+	}
+@endphp
 <div class="login-page-form">
 	<div class="container">
 		<div class="col-md-6 col-sm-6 col-xs-12">
@@ -37,20 +48,20 @@ $strUser = app('request')->input('type');
 				  <form class="form-horizontal" onsubmit="return checkLogin(this)" action="{{ route($modulePath.'.index') }}" method="post">
 					<div class="form-group error">
 					  <div class="col-sm-12">
-						<input type="email" class="form-control" id="email" placeholder="Email Address" name="email">
+						<input type="email" class="form-control" id="email" placeholder="Email Address" name="email" value="{{$strEmail}}">
 						<span class="errors_email help-block"></span>
 					  </div>
 					</div>
 					<div class="form-group error">
 					  <div class="col-sm-12">          
-						<input type="password" class="form-control" id="password" placeholder="Password" name="password">
+						<input type="password" class="form-control" id="password" placeholder="Password" name="password" value="{{$strPassword}}">
 						<span class="errors_password help-block"></span>
 					  </div>
 					</div>
 					<div class="form-group">        
 					  <div class="col-sm-12">
 						<div class="checkbox">
-						  <label><input type="checkbox" name="remember"> Remember me</label>
+						  <label><input type="checkbox" name="remember" <?php if($chkRememberMe == '1')echo 'checked'; ?>> Remember me</label>
 						<a href="{{url('/forgot')}}" class="forgot-password">Forget Password?</a>
 						</div>
 					  </div>

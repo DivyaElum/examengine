@@ -52,25 +52,26 @@ class CourseController extends Controller
    	{
    		$intId = base64_decode(base64_decode($indEncId));
 
-   		$user_id = auth()->user()->id;
-   		$arrUsers = $this->UserModel->with(['information'])->find($user_id);	//get login user data
-
       $arrCourse = $this->CourseModel->where('id', $intId)->first();
 
-   		$enc_prerequisites = $this->CourseModel->where('id', $intId)->pluck('prerequisite_id')->first();
-   		
-   		$arrPrerequisites = $this->PrerequisiteModel->whereIn('id', json_decode($enc_prerequisites))->get();
+      $enc_prerequisites = $this->CourseModel->where('id', $intId)->pluck('prerequisite_id')->first();
+      if(!empty($enc_prerequisites)){
+        $arrPrerequisites = $this->PrerequisiteModel->whereIn('id', json_decode($enc_prerequisites))->get();
 
-   		$this->ViewData['modulePath']   		  = $this->ModulePath;
-      $this->ViewData['moduleTitle']  		  = $this->ModuleTitle;
-      $this->ViewData['moduleAction'] 		  = $this->ModuleTitle;
-      $this->ViewData['page_title']   		  = $this->ModuleTitle;
-      $this->ViewData['arrUserData']        = $arrUsers;
-      $this->ViewData['arrCourse']          = $arrCourse;      
-      $this->ViewData['arrPrerequisites']   = $arrPrerequisites;
-      $this->ViewData['enc_prerequisites']  = $enc_prerequisites;
-        
+     		$this->ViewData['modulePath']   		  = $this->ModulePath;
+        $this->ViewData['moduleTitle']  		  = $this->ModuleTitle;
+        $this->ViewData['moduleAction'] 		  = $this->ModuleTitle;
+        $this->ViewData['page_title']   		  = $this->ModuleTitle;
+        $this->ViewData['arrCourse']          = $arrCourse;      
+        $this->ViewData['arrPrerequisites']   = $arrPrerequisites;
+        $this->ViewData['enc_prerequisites']  = $enc_prerequisites;
+        $this->ViewData['exam_id']            = $arrCourse->exam_id;
+          
         return view($this->ModuleView, $this->ViewData);
+      }else{
+        return redirect('/dashboard');
+      }
+
    	}
 
     public function varify(Request $request, $token)
