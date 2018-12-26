@@ -40,10 +40,7 @@ class DashbordController extends Controller
 
    	public function index()
    	{
-   		$user_id = auth()->user()->id;
-
-   		$arrUsers = $this->UserModel->with(['information'])->find($user_id);	//get login user data
-   		
+   		$user_id = auth()->user()->id;  		
       $courses = $this->CourseModel->whereHas('transaction',function($query) use($user_id)
   		  {
   			   $query->where('user_id', $user_id);
@@ -54,7 +51,6 @@ class DashbordController extends Controller
       $this->ViewData['moduleTitle']  	 = $this->ModuleTitle;
       $this->ViewData['moduleAction'] 	 = $this->ModuleTitle;
       $this->ViewData['page_title']   	 = $this->ModuleTitle;
-      $this->ViewData['arrUserData']  	 = $arrUsers;
       $this->ViewData['arrUsersCourse']  = $courses;
       $this->ViewData['object']          = $this->SiteSetting->find('1');
 

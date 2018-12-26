@@ -5,7 +5,6 @@
 @stop
 
 @section('styles')
-	<link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/tomorrow.min.css">
 	<style type="text/css">

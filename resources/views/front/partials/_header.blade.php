@@ -14,6 +14,7 @@
 
 <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
 <script type="text/javascript">
   $.ajaxSetup({
     headers: {

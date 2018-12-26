@@ -52,9 +52,6 @@ class CourseController extends Controller
    	{
    		$intId = base64_decode(base64_decode($indEncId));
 
-   		$user_id = auth()->user()->id;
-      $arrUsers = $this->UserModel->with(['information'])->find($user_id);  //get login user data
-
       $arrCourse = $this->CourseModel->where('id', $intId)->first();
 
       $enc_prerequisites = $this->CourseModel->where('id', $intId)->pluck('prerequisite_id')->first();
@@ -65,7 +62,6 @@ class CourseController extends Controller
         $this->ViewData['moduleTitle']  		  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] 		  = $this->ModuleTitle;
         $this->ViewData['page_title']   		  = $this->ModuleTitle;
-        $this->ViewData['arrUserData']        = $arrUsers;
         $this->ViewData['arrCourse']          = $arrCourse;      
         $this->ViewData['arrPrerequisites']   = $arrPrerequisites;
         $this->ViewData['enc_prerequisites']  = $enc_prerequisites;

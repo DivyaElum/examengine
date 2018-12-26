@@ -14,12 +14,13 @@
 @stop
 @section('content')
 
-<!-- @include('front.partials._sidebar') -->
+
 <div class="bodyContent dashboard clearfix">
 	<div class="dashboardWraper">
-		<div class="container"  style="margin:10% auto;">
+		<div class="container" >
 			<div class="container">
 			    <div class="row">
+			    	@include('front.partials._sidebar')
 			        <div class="col-md-8 col-md-offset-2">
 			            <div class="panel panel-default">
 			                <div class="panel-body">

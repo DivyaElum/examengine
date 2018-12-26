@@ -52,6 +52,8 @@ class ExamController extends Controller
 													 ->orderBy(DB::raw('RAND()'))
 													 ->limit($this->ViewData['exam']->total_question)
 													 ->get();
+
+			$this->ViewData['arrUserData']        = $arrUsers;
 			return view('exam', $this->ViewData);			
 		}
 		else
@@ -62,9 +64,6 @@ class ExamController extends Controller
 
 	public function examBook()
 	{
-		$user_id = auth()->user()->id;
-      	$arrUsers = $this->UserModel->with(['information'])->find($user_id);  //get login user data
-
 		$events = [];
         $data = ExamSlotModel::with(['exam'])->get();
         
@@ -106,7 +105,6 @@ class ExamController extends Controller
         $this->ViewData['moduleAction']  = str_plural($this->ModuleTitle);
         $this->ViewData['modulePath']    = $this->ModulePath;
         $this->ViewData['calendar']      = $calendar;
-        $this->ViewData['arrUserData']   = $arrUsers;
         $this->ViewData['calendarData']  = $data;
 
         return view($this->ModuleView.'index', $this->ViewData);

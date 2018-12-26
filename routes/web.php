@@ -47,19 +47,25 @@
 			Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
 		});
 
+		// course routes
+		Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
+		{
+			Route::get('/',		'ExamController@index')->name('exam');
+			Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
+			Route::get('/book', 'ExamController@examBook')->name('exam.book');
+			Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
+			Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
+		});
+
+
+
+
+
 		Route::get('/logout', 'Auth\LoginController@logout');			//logout
 		Route::post('/logout', 'Auth\LoginController@logout');
 	});
 	
-	// course routes
-	Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
-	{
-		Route::get('/',		'ExamController@index')->name('exam');
-		Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
-		Route::get('/book', 'ExamController@examBook')->name('exam.book');
-		Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
-		Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
-	});
+	
 		
 	// certification rotues
 	Route::group(['prefix' => 'certification'],function()
