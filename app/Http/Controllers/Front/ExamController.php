@@ -287,19 +287,8 @@ class ExamController extends Controller
 				$resultBag['exam_status'] 	= 'Fail';
 			}
 
-
-
 			$resultUpdate = $this->ExamResultModel->where('id', $result_id)->update($resultBag);
-				
 			return view('front.exam.result', ['resultBag' => $resultBag]);
-			
-			// if ($resultUpdate) 
-			// {
-			// }
-			// else
-			// {
-			// 	dd('Server failure. Please try again later');
-			// }
 		}
 	}
 
