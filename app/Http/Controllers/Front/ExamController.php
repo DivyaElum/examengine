@@ -162,7 +162,6 @@ class ExamController extends Controller
 														     ->pluck('total_question')
 														     ->first();
 
-	        // dd($resultBag['total_questions']);
 			if (!empty($request->correct) && sizeof($request->correct) > 0) 
 			{
 				$statusBag = []; 
@@ -251,7 +250,7 @@ class ExamController extends Controller
 				}
 
 
-				$resultBag['total_attemped']  = count($statusBag);
+				$resultBag['total_attempted']  = count($statusBag);
 
 				$resultBag['total_wrong']  = count(
 													array_filter($statusBag, function($data)
@@ -275,19 +274,31 @@ class ExamController extends Controller
 
 				$resultBag['percentage'] = (((int)$resultBag['total_right'])/((int)$resultBag['total_questions']))*100;
 
-				$resultBag['result_status'] =  $resultBag['percentage'] >= 75 ? 'Pass' : 'Fail';
+				$resultBag['exam_status'] =  $resultBag['percentage'] >= 75 ? 'Pass' : 'Fail';
 
 			}
 			else
 			{
-				$resultBag['total_attemped']  	= 0;
-				$resultBag['total_wrong']  		= 0;
+				$resultBag['total_attempted']  	= 0;
 				$resultBag['total_right']  		= 0;
+				$resultBag['total_wrong']  		= 0;
 				$resultBag['percentage'] 		= 0;
-				$resultBag['result_status'] 	= 'Fail';
+				$resultBag['exam_status'] 	= 'Fail';
 			}
-			
+
+
+
+			$resultUpdate = $this->ExamResultModel->where('id', $result_id)->update($resultBag);
+				
 			return view('front.exam.result', ['resultBag' => $resultBag]);
+			
+			// if ($resultUpdate) 
+			// {
+			// }
+			// else
+			// {
+			// 	dd('Server failure. Please try again later');
+			// }
 		}
 	}
 
