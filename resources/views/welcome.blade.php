@@ -89,19 +89,15 @@
     </div>
     <div class="container newsletterForm_wrap">
         <div class="newsletterForm">
-            <form action="">
+            <form name="frmNewslatter" onsubmit="return saveNewsletter(this)" method="post">
                 <h2><span>Sign up for our </span>newsletter!</h2>
                 <div class="form-group">
-                    <input type="email" class="form-control" id="" placeholder="Email Address">
+                    <input type="email" class="form-control" name="email_id" id="email_id" placeholder="Email Address" required="">
                 </div>
                 <div class="form-group">
-                    <img src="images/captcha-img.png" class="img-responsive" alt="">
+                    <img src="{{asset('images/captcha-img.png')}}" class="img-responsive" alt="">
                 </div>
-                <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </label>
-                </div>
+                
                 <button type="submit" class="btn btn-default">Sign Up Now</button>
             </form>
         </div>
@@ -234,5 +230,5 @@
 
 @stop
 @section('scripts')
-<link href="{{ asset('/js/owl.js') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/js/front/dashboard') }}" rel="stylesheet" type="text/css">
 @stop

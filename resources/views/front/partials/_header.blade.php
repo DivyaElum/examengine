@@ -23,6 +23,7 @@
 
 <link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('/css/index_style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/css/certification_list_style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('/css/owl.css') }}" rel="stylesheet" type="text/css">
 <script type="text/javascript">
   $.ajaxSetup({
@@ -95,15 +96,4 @@
 </div>
 <!--/  Header End  -->  
 
-@if(!auth()->check())
-  @if(!empty(\Request::segment(1)))
-  <div class="login-banner">
-    <div class="container">
-      <h1>
-        @yield('page_title')
-      </h1>
-    </div>  
-  </div>
-  @endif
-@endif
 <!--/ login banner end  --->
