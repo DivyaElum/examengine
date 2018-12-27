@@ -80,30 +80,28 @@
 						                  	<input type="text" value="{{ $object->video_file_original_name }}" name="old_video_file" id="old_video_file" class="form-control" readonly>
 						                </div>
 					                </div>
-					            @else
-						            <div class=" col-md-12 form-group video_file_class ">
-					                  	<label for="">Video File</label>
-						                  	<input type="file" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >				                  		
-					                  	</select>
-					                </div>
-				                @endif
+					            @endif
+					            <div class=" col-md-12 form-group video_file_class" style="display:none">
+				                  	<label for="">Video File</label>
+					                  	<input type="file" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >				                  		
+				                  	</select>
+				                </div>
 	              			</div>
 
 	              			<div class="options pdf" style="display: none;">
 				                @if(!empty($object->pdf_file_original_name))
-				                <div class="old_pdf_file_class">
-					                <div class="form-group col-md-12">
-				                		<label>Old pdf File</label>&nbsp;<a title="delete" onclick="return hideOldPdfFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
-					                  	<input type="text" value="{{ $object->pdf_file_original_name }}" name="old_pdf_file" id="old_pdf_file" class="form-control" readonly>
+					                <div class="old_pdf_file_class">
+						                <div class="form-group col-md-12">
+					                		<label>Old pdf File</label>&nbsp;<a title="delete" onclick="return hideOldPdfFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
+						                  	<input type="text" value="{{ $object->pdf_file_original_name }}" name="old_pdf_file" id="old_pdf_file" class="form-control" readonly>
+						                </div>
 					                </div>
-				                </div>
-				                @else
-					                <div class=" col-md-12 form-group pdf_file_class ">
-					                  	<label for="">Pdf File</label>
-						                  	<input type="file" name="pdf_file" accept=".pdf" id="pdf_file" class="form-control option_input" >				                  		
-					                  	</select>
-					                </div>	
 				                @endif
+				                <div class=" col-md-12 form-group pdf_file_class" style="display:none">
+				                  	<label for="">Pdf File</label>
+					                  	<input type="file" name="pdf_file" accept=".pdf" id="pdf_file" class="form-control option_input" >				                  		
+				                  	</select>
+				                </div>	
 	              			</div>
 
 	              			<div class="col-md-12 options url" style="display: none;">
