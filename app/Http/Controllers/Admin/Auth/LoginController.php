@@ -80,12 +80,12 @@ class LoginController extends Controller
 	        {
 	        	//wrong email entered
 			    $this->JsonData['status'] ='error';
-            	$this->JsonData['msg'] 	  ='Entered  credentials is incorrect...';
+            	$this->JsonData['msg'] 	  ='Entered  credentials is incorrect.';
 	        }
 		}
 		else{
 			$this->JsonData['status'] ='error';
-            $this->JsonData['msg'] ='Please enter a data';
+            $this->JsonData['msg'] 	  ='Please enter a data';
 		}
     	return response()->json($this->JsonData);
     }
