@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\ExamSlotModel;
 use App\Models\BookExamSlotModel;
 use App\Models\ExamQuestionsModel;
+use App\Models\ExamResultModel;
+use App\Models\ExamResultCategoryWiseModel;
 
 use App\Models\QuestionOptionsAnswer;
 use App\Http\Controllers\Controller;
@@ -22,23 +24,28 @@ use Carbon\Carbon;
 class ExamController extends Controller
 {
  	public function __construct(
- 		QuestionOptionsAnswer $QuestionOptionsAnswer
  		ExamModel 			$ExamModel,
  		UserModel 			$UserModel,
+ 		ExamResultModel 	$ExamResultModel,
  		BookExamSlotModel 	$BookExamSlotModel,
- 		ExamQuestionsModel $ExamQuestionsModel
+ 		ExamQuestionsModel 	$ExamQuestionsModel,
+ 		QuestionOptionsAnswer $QuestionOptionsAnswer,
+ 		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel
  	)
  	{
  		$this->BaseModel 		  = $ExamModel;
+ 		$this->UserModel 		  = $UserModel;
+ 		$this->ExamResultModel	  = $ExamResultModel;
+ 		$this->BookExamSlotModel  = $BookExamSlotModel;
  		$this->ExamQuestionsModel = $ExamQuestionsModel;
  		$this->QuestionOptionsAnswer = $QuestionOptionsAnswer;
- 		$this->UserModel 		  = $UserModel;
- 		$this->BookExamSlotModel  = $BookExamSlotModel;
+ 		$this->ExamResultCategoryWiseModel  = $ExamResultCategoryWiseModel;
+
 
  		$this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Examp Slot book';
+        $this->ModuleTitle = 'Exam Slot book';
         $this->ModuleView  = 'front.exam.';
         $this->ModulePath  = 'CourseModel';
     }	
@@ -59,8 +66,6 @@ class ExamController extends Controller
 													 ->orderBy(DB::raw('RAND()'))
 													 ->limit($this->ViewData['exam']->total_question)
 													 ->get();
-
-			$this->ViewData['arrUserData']        = $arrUsers;
 			return view('exam', $this->ViewData);			
 		}
 		else
@@ -71,41 +76,39 @@ class ExamController extends Controller
 
 	public function examBook($endId)
 	{
-			// $events = [];
-	  //       $data = ExamSlotModel::with(['exam'])->get();
-	        
-	  //       $intI = '0';
+		// $events = [];
+ 		//       $data = ExamSlotModel::with(['exam'])->get();
+  		//       $intI = '0';
+  		//       foreach ($data as $key => $value) 
+  		//       {
 
-	  //       foreach ($data as $key => $value) 
-	  //       {
+  		//       	$strData = json_decode($value->time);
+  		//       	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
 
-	  //       	$strData = json_decode($value->time);
-	  //       	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
-
-			// 	foreach ($days as $day) 
-			// 	{
-	  //       		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
-	  //       		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
-					
-			// 		if (Date('Y-m-d') < $day->format('Y-m-d')) 
-			// 		{
-			// 			//$strExamTitle = $value->exam->title;
-			// 			$strExamTitle = 'Examp';
-			// 			$events[] = Calendar::event(
-			//                 $strExamTitle,
-			//                 true,
-			//                 new \DateTime($start_time),
-			//                 new \DateTime($end_time),
-			//                 null,
-			//                 [
-			//                     'color' => '#f05050',
-			//                     'url' 	=> 'pass here url and any route',
-			//                 ]
-			//             );
-			// 		}
-			// 	}
-	  //       }
-	  //       $calendar = Calendar::addEvents($events);
+		// 	foreach ($days as $day) 
+		// 	{
+  		//       		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
+  		//       		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
+				
+		// 		if (Date('Y-m-d') < $day->format('Y-m-d')) 
+		// 		{
+		// 			//$strExamTitle = $value->exam->title;
+		// 			$strExamTitle = 'Examp';
+		// 			$events[] = Calendar::event(
+		//                 $strExamTitle,
+		//                 true,
+		//                 new \DateTime($start_time),
+		//                 new \DateTime($end_time),
+		//                 null,
+		//                 [
+		//                     'color' => '#f05050',
+		//                     'url' 	=> 'pass here url and any route',
+		//                 ]
+		//             );
+		// 		}
+		// 	}
+  		//       }
+  		//       $calendar = Calendar::addEvents($events);
        
 		$this->ViewData['page_title']    = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']   = $this->ModuleTitle;
@@ -144,13 +147,19 @@ class ExamController extends Controller
 	    return $days;
 	}
 
-	public function submit(Request $request, $user_id, $course_id, $exam_id)
+	public function submit(Request $request)
 	{
+		$result_id = $request->result_id;
 
 		$optionsAnswers = $this->QuestionOptionsAnswer->get();
 
 		if (!empty($user_id) && !empty($course_id) && !empty($exam_id)) 
 		{
+			$resultBag = [];
+			$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
+														     ->pluck('total_question')
+														     ->first();
+
 			if (!empty($request->correct) && sizeof($request->correct) > 0) 
 			{
 				$statusBag = []; 
@@ -238,10 +247,6 @@ class ExamController extends Controller
 					}	
 				}
 
-				$resultBag = [];
-				$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
-															     ->pluck('total_question')
-															     ->first();
 
 				$resultBag['total_attemped']  = count($statusBag);
 
@@ -267,11 +272,19 @@ class ExamController extends Controller
 
 				$resultBag['percentage'] = (((int)$resultBag['total_right'])/((int)$resultBag['total_questions']))*100;
 
-				$resultBag['result_status'] =  $resultBag['percentage'] >= 75 ? 'pass' : 'fail';
+				$resultBag['result_status'] =  $resultBag['percentage'] >= 75 ? 'Pass' : 'Fail';
 
-				return view('front.exam.result', ['resultBag' => $resultBag]);
- 
-			}	
+			}
+			else
+			{
+				$resultBag['total_attemped']  	= 0;
+				$resultBag['total_wrong']  		= 0;
+				$resultBag['total_right']  		= 0;
+				$resultBag['percentage'] 		= 0;
+				$resultBag['result_status'] 	= 'Fail';
+			}
+			
+			return view('front.exam.result', ['resultBag' => $resultBag]);
 		}
 	}
 
@@ -367,5 +380,40 @@ class ExamController extends Controller
             DB::rollBack();
         }
         return response()->json($this->JsonData);
+	}
+
+	public function updateExamResultStatus(Request $request)
+	{
+		if (!empty($request->user_id) && !empty($request->course_id) && !empty($request->exam_id)) 
+		{
+			$user_id 	= base64_decode(base64_decode($request->user_id));
+			$course_id 	= base64_decode(base64_decode($request->course_id));
+			$exam_id 	= base64_decode(base64_decode($request->exam_id));
+
+			$ExamResultModel = new $this->ExamResultModel;
+			
+			$ExamResultModel->user_id 		= $user_id;
+			$ExamResultModel->course_id 	= $course_id;
+			$ExamResultModel->exam_id 		= $exam_id;
+			$ExamResultModel->exam_status 	= 'Started';
+
+			if ($ExamResultModel->save()) 
+			{
+				$this->JsonData['status'] = 'success';
+				$this->JsonData['result'] = base64_encode(base64_encode($ExamResultModel->id));				
+			}
+			else
+			{
+				$this->JsonData['status'] = 'error';
+				$this->JsonData['status'] = 'Server failure, Please try again later.';
+			}
+		}
+		else
+		{
+			$this->JsonData['status'] = 'error';
+			$this->JsonData['status'] = 'Server failure, Please try again later.';
+		}
+
+		return response()->json($this->JsonData);
 	}
 }

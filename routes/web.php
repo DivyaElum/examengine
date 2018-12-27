@@ -58,7 +58,9 @@
 			Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
 			{
 				Route::get('/',		'ExamController@index')->name('exam');
-				Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
+				Route::post('/submitResult','ExamController@submit')->name('exam.submit');
+				Route::post('/updateExamResultStatus','ExamController@updateExamResultStatus')->name('exam.update.status');
+				
 				Route::get('/exam-book/{id}', 'ExamController@examBook')->name('exam.book');
 				Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
 				Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');

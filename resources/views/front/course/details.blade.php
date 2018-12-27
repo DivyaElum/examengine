@@ -28,6 +28,7 @@
 						<hr />
 						<div class="row">
 							<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($exam_id))) }}" class="btn btn-primary">Book Exam</a>
+							<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span><br>
 							@php 
 							foreach($arrPrerequisites as $row) { @endphp
 							<div class="col-md-6 col-sm-6 col-xs-6 col-12">
@@ -37,8 +38,6 @@
 								<div class="thumbCont">
 									<div class="title">
 										<p><b>Title </b>: {{$row->title }}</p>
-
-										<span><a onclick="return startExam(this)" data-token="{{$row->id}}" class="btn btn-info">Take Exam</a></span><br>
 										
 										<?php 
 										if($row->video_file_original_name != '') 
@@ -94,7 +93,6 @@
 
 @section('scripts')
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
 	<script src="https://www.youtube.com/iframe_api"></script>
 	<script type="text/javascript" src="{{ asset('/js/front/course/details.js') }}"></script>
