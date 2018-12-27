@@ -156,14 +156,13 @@ class ExamController extends Controller
 		if (!empty($result_id)) 
 		{	
 			$resultObject = $this->ExamResultModel->find($result_id);
-
 			$exam_id = $resultObject->exam_id;
-
 			$resultBag = [];	
 			$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
 														     ->pluck('total_question')
 														     ->first();
 
+	        // dd($resultBag['total_questions']);
 			if (!empty($request->correct) && sizeof($request->correct) > 0) 
 			{
 				$statusBag = []; 

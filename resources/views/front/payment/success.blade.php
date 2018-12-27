@@ -1,7 +1,7 @@
 @extends('front.master')
 
 @section('title')
-	{{ $moduleAction }}
+	{{ 'Payment success' }}
 @stop
 
 @section('styles')
@@ -9,7 +9,7 @@
 @stop
 
 @section('page_title')
-	{{ $page_title }}
+	{{ 'Payment success' }}
 @stop
 
 @section('content')
