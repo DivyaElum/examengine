@@ -6,12 +6,19 @@
 
 
 @section('styles')
-<link href="{{ asset('/css/certification_list_style.css') }}" rel="stylesheet" type="text/css">
+
 @stop
 @section('page_title')
 	{{ $page_title }}
 @stop
 @section('content')
+<div class="login-banner">
+    <div class="container">
+      <h1>
+        @yield('page_title')
+      </h1>
+    </div>  
+  </div>
 <div class="bodyContent clearfix">
 	<div class="container">
 		<div class="row">

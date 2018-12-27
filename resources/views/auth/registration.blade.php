@@ -34,6 +34,13 @@ $strUser = app('request')->input('type');
 		$chkRememberMe = '0';
 	}
 @endphp
+<div class="login-banner">
+    <div class="container">
+      <h1>
+        @yield('page_title')
+      </h1>
+    </div>  
+  </div>
 <div class="login-page-form">
 	<div class="container">
 		<div class="col-md-6 col-sm-6 col-xs-12">
