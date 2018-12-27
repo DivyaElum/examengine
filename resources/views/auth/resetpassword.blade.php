@@ -16,6 +16,13 @@
 @php 
 $remember_token = \Request::segment(2);
 @endphp
+<div class="login-banner">
+    <div class="container">
+      <h1>
+        Reset Password
+      </h1>
+    </div>  
+  </div>
 <div class="login-page-form">
 	<div class="container">
 		<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

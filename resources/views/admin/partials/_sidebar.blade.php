@@ -22,7 +22,7 @@
 
         <li class="treeview {{ active(['admin/question-type','admin/question-type/*','admin/question-category','admin/question-category/*','admin/question','admin/question/*']) }} ">
           <a href="javascript:void(0)">
-            <i class="fa fa-database" aria-hidden="true"></i> <span>Question</span>
+            <i class="fa fa-database" aria-hidden="true"></i> <span>Question Management</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
