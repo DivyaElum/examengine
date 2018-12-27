@@ -8,7 +8,7 @@ use App\Models\CourseModel;
 
 class TransactionModel extends Model
 {
-	protected $table = 'transaction';
+	protected $table = 'transactions';
 
 	public function course()
     {

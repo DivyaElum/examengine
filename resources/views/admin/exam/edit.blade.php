@@ -34,7 +34,7 @@
 		          	</div>
 	        	</div>
 
-        	 	<form onsubmit="return saveFormData(this)" action="{{route($modulePath.'.update',[base64_encode(base64_encode($object->id))])}}" >
+        	 	<form onsubmit="return saveFormData(this)" action="{{route($modulePath.'.update',[base64_encode(base64_encode($object->id))])}}" enctype="multipart/form-data" >
         	 		<input name="_method" type="hidden" value="PUT">
 	              	<div class="box-body">
 	              		<div class="row">
@@ -89,140 +89,153 @@
 				                </div>
 	              			</div>
 
-              				<div class="exam_days_wrapper">
-								@if(!empty($slots)) 
-									@foreach($slots as $slot_key => $slot)
-										<div class="exam_days_div">
-					              			<div class="col-md-9">
-								                <div class="form-group">
-								                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
-									                  	<select name="exam_days[{{ $slot_key }}][day]" class="form-control exam_days">
-									                  		@if(!empty($weekdays))
-									                  			@foreach($weekdays as $key => $day)
-									                  				<option value="{{ strtolower($day) }}" @if(strtolower($day) == $slot['day']) selected @endif >{{ $day }}</option>
-									                  			@endforeach
-									                  		@endif
-									                  	</select>
-								                  	</select>
-								                </div>
-					              			</div>
-					              			<div class="col-md-2">
-								                <div class="form-group">
-								                  	<label for="">Start Time <span style="color: red">*</span></label><br>
-								                  	<div class="row">
-								                  		<div class="col-md-9">
-								                  			<div class='input-group datetimepicker' >
-											                    <input type='text' name="exam_days[{{ $slot_key }}][start_time][]" value="<?php echo !empty($slot['time'][0]->start_time) ? $slot['time'][0]->start_time : '' ?>" class="form-control start_time" />
-											                    <span class="input-group-addon" >
-											                        <span class="glyphicon glyphicon-time"></span>
-											                    </span>
-											                </div>
-								                  		</div>
-								                  		@if($slot_key == 0)
-									                  		<div class="col-md-2">
-																<a class="btn btn-info add_new_slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+	              			<div class="clear"></div>
+              				<div class="col-md-12">
+	              				<div class="exam_days_wrapper clearfix">
+	              					@if(!empty($slots)) 
+										@foreach($slots as $slot_key => $slot)
+											<div class="exam_days_div clearfix">
+						              			<div class="col-md-12">
+									                <div class="form-group">
+									                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
+									                  	<div class="row">
+									                  		<div class="col-md-11">
+											                  	<select name="exam_days[{{ $slot_key }}][day]" class="form-control exam_days">
+											                  		@if(!empty($weekdays))
+											                  			@foreach($weekdays as $key => $day)
+											                  				<option value="{{ strtolower($day) }}" @if(strtolower($day) == $slot['day']) selected @endif >{{ $day }}</option>
+											                  			@endforeach
+											                  		@endif
+											                  	</select>
 									                  		</div>
-								                  		@else
-								                  			<div class="col-md-3" style="white-space:nowrap;">
-																<a class="btn btn-info add_new_slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
-									                  			&nbsp;&nbsp;&nbsp;
-								      							<a href="javascript:void(0)" class="remove_day" onclick="return removeDay(this)" ><i class="fa fa-trash" style="color: red;font-size: 20px;" title="Delete"></i></a>
+									                  		<div class="col-md-1">
+									                  			@if($slot_key == 0)
+																 	<a class="btn btn-info add_new_day" title="Add new exam day" onclick="return addNewDay(this)"><i class="fa fa-plus"></i></a>
+									                  			@else
+																	<a class="btn btn-danger remove_day" title="Remove exam day" onclick="return removeDay(this)"><i class="fa fa-trash"></i></a>
+									                  			@endif
 									                  		</div>
-								                  		@endif
-								                  	</div>
-								                </div>
-					              			</div>
-					              			<div class="col-md-1">
-					              			</div>
+									                  	</div>
+									                </div>
+						              			</div>
 
-					              			@if(!empty($slot['time']))
-					              				@foreach($slot['time'] as $time_key => $time)
-					              					@if($time_key >= 1)
-						              					<div class="start_time_div">
-															<div class="col-md-9">
-												            <div class="form-group">
-												            </div>
-															</div>
-															<div class="col-md-2">
-												            <div class="form-group">
-												              	<label for="">Start Time</label><br>
-												              	<div class="row">
-												              		<div class="col-md-9">
-												              			<div class='input-group datetimepicker' >
-														                    <input type='text' name="exam_days[{{ $slot_key }}][start_time][]" value="{{ $time->start_time }}" class="form-control start_time" />
+						              			@if(!empty($slot['time']))
+					              					@foreach($slot['time'] as $time_key => $time)
+					              						<div class="time_wrapper">
+									              			<div class="col-md-4 start_time_wrapper">
+								                  				<label for="">Start Time <span style="color: red">*</span></label><br>
+									                  			<div class='input-group form-group datetimepicker' >
+												                    <input type='text' onblur="return getEndTime(this)" value="{{ $time->start_time }}" name="exam_days[{{ $slot_key }}][start_time][]" class="form-control start_time" />
+												                    <span class="input-group-addon" >
+												                        <span class="glyphicon glyphicon-time"></span>
+												                    </span>
+												                </div>
+									              			</div>
+									              			<div class="col-md-5 end_time_wrapper">
+									              				<label for="">End Time <span style="color: red">*</span></label><br>
+									              				<div class="row">
+									              					<div class="col-md-9">
+									                  					<div class='input-group form-group' >
+														                    <input type='text' readonly name="exam_days[{{ $slot_key }}][end_time][]" value="{{ $time->end_time }}" class="form-control end_time" />
 														                    <span class="input-group-addon" >
 														                        <span class="glyphicon glyphicon-time"></span>
 														                    </span>
 														                </div>
-												              		</div>
-												              		<div class="col-md-2">
-																		<a class="btn btn-danger remove_new_slot" onclick="return removeNewSlot(this)"><i class="fa fa-trash"></i></a>
-												              		</div>
-												              	</div>
-												            </div>
-															</div>
-														</div>
-													@endif
-												@endforeach
-											@endif
-
-			              				</div>
-		              				@endforeach
-								@else
-		              				<div class="exam_days_div">
-				              			<div class="col-md-9">
+												                	</div>
+									              					<div class="col-md-3">
+									              						@if($time_key == 0)
+																			<a class="btn btn-info add_new_slot" title="Add new time slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+									              						@else
+																			<a class="btn btn-danger remove_new_slot" title="Remove time slot" onclick="return removeNewSlot(this)"><i class="fa fa-trash"></i></a>
+									              						@endif
+									              					</div>
+									              				</div>
+									              			</div>
+							              				</div>
+						              				@endforeach
+						              			@else
+						              				<div class="time_wrapper">
+								              			<div class="col-md-4 start_time_wrapper">
+							                  				<label for="">Start Time <span style="color: red">*</span></label><br>
+								                  			<div class='input-group form-group datetimepicker' >
+											                    <input type='text' onblur="return getEndTime(this)" name="exam_days[0][start_time][]" class="form-control start_time" />
+											                    <span class="input-group-addon" >
+											                        <span class="glyphicon glyphicon-time"></span>
+											                    </span>
+											                </div>
+								              			</div>
+								              			<div class="col-md-5 end_time_wrapper">
+								              				<label for="">End Time <span style="color: red">*</span></label><br>
+								              				<div class="row">
+								              					<div class="col-md-9">
+								                  					<div class='input-group form-group' >
+													                    <input type='text' readonly name="exam_days[0][end_time][]" class="form-control end_time" />
+													                    <span class="input-group-addon" >
+													                        <span class="glyphicon glyphicon-time"></span>
+													                    </span>
+													                </div>
+											                	</div>
+								              					<div class="col-md-3">
+																	<a class="btn btn-info add_new_slot" title="Add new time slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+								              					</div>
+								              				</div>
+								              			</div>
+						              				</div>
+						              			@endif
+				              				</div>
+										@endforeach
+									@else
+			              				<div class="exam_days_div clearfix">
+				              			<div class="col-md-12">
 							                <div class="form-group">
 							                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
-								                  	<select name="exam_days[0][day]" class="form-control exam_days">
-								                  		@if(!empty($weekdays))
-								                  			@foreach($weekdays as $key => $day)
-								                  				<option value="{{ strtolower($day) }}">{{ $day }}</option>
-								                  			@endforeach
-								                  		@endif
-								                  	</select>
-							                  	</select>
-							                </div>
-				              			</div>
-				              			<div class="col-md-2">
-							                <div class="form-group">
-							                  	<label for="">Start Time <span style="color: red">*</span></label><br>
 							                  	<div class="row">
-							                  		<div class="col-md-9">
-							                  			<div class='input-group datetimepicker' >
-										                    <input type='text' name="exam_days[0][start_time][]" class="form-control start_time" />
-										                    <span class="input-group-addon" >
-										                        <span class="glyphicon glyphicon-time"></span>
-										                    </span>
-										                </div>
+							                  		<div class="col-md-11">
+									                  	<select name="exam_days[0][day]" class="form-control exam_days">
+									                  		@if(!empty($weekdays))
+									                  			@foreach($weekdays as $key => $day)
+									                  				<option value="{{ strtolower($day) }}">{{ $day }}</option>
+									                  			@endforeach
+									                  		@endif
+									                  	</select>
 							                  		</div>
-							                  		<div class="col-md-2">
-														<a class="btn btn-info add_new_slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+							                  		<div class="col-md-1">
+														<a class="btn btn-info add_new_day" title="Add new exam day" onclick="return addNewDay(this)"><i class="fa fa-plus"></i></a>
 							                  		</div>
 							                  	</div>
 							                </div>
 				              			</div>
-				              			<div class="col-md-1">
+				              			<div class="time_wrapper">
+					              			<div class="col-md-4 start_time_wrapper">
+				                  				<label for="">Start Time <span style="color: red">*</span></label><br>
+					                  			<div class='input-group form-group datetimepicker' >
+								                    <input type='text' onblur="return getEndTime(this)" name="exam_days[0][start_time][]" class="form-control start_time" />
+								                    <span class="input-group-addon" >
+								                        <span class="glyphicon glyphicon-time"></span>
+								                    </span>
+								                </div>
+					              			</div>
+					              			<div class="col-md-5 end_time_wrapper">
+					              				<label for="">End Time <span style="color: red">*</span></label><br>
+					              				<div class="row">
+					              					<div class="col-md-9">
+					                  					<div class='input-group form-group' >
+										                    <input type='text' readonly name="exam_days[0][end_time][]" class="form-control end_time" />
+										                    <span class="input-group-addon" >
+										                        <span class="glyphicon glyphicon-time"></span>
+										                    </span>
+										                </div>
+								                	</div>
+					              					<div class="col-md-3">
+														<a class="btn btn-info add_new_slot" title="Add new time slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+					              					</div>
+					              				</div>
+					              			</div>
 				              			</div>
-		              				</div>
-		              			@endif
-
-	              				<div class="col-md-12">
-									<a class="btn btn-info add_new_day" onclick="return addNewDay(this)" style="float: right;">Add more exam days</a>
-								</div>
+			              				</div>
+			              			@endif
+	              				</div>
               				</div>
-	              			
-	              			<!-- <div class="col-md-12">
-			                  	<label for="">Status <span style="color: red">*</span></label>
-				                <div class="form-group">
-				                  	<label class="radio-inline">
-								      <input type="radio" name="status" @if($object->status == 1) checked @endif value="1">Active
-								    </label>
-								    <label class="radio-inline">
-								      <input type="radio" name="status" @if($object->status == 0) checked @endif value="0">Inactive
-								    </label>
-				                </div>
-	              			</div> -->	
-
 	              		</div>
 	              	</div>
 

@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\ExamSlotModel;
 use App\Models\BookExamSlotModel;
 use App\Models\ExamQuestionsModel;
+
+use App\Models\QuestionOptionsAnswer;
 use App\Http\Controllers\Controller;
 
 use DB;
@@ -20,6 +22,7 @@ use Carbon\Carbon;
 class ExamController extends Controller
 {
  	public function __construct(
+ 		QuestionOptionsAnswer $QuestionOptionsAnswer
  		ExamModel 			$ExamModel,
  		UserModel 			$UserModel,
  		BookExamSlotModel 	$BookExamSlotModel,
@@ -28,6 +31,7 @@ class ExamController extends Controller
  	{
  		$this->BaseModel 		  = $ExamModel;
  		$this->ExamQuestionsModel = $ExamQuestionsModel;
+ 		$this->QuestionOptionsAnswer = $QuestionOptionsAnswer;
  		$this->UserModel 		  = $UserModel;
  		$this->BookExamSlotModel  = $BookExamSlotModel;
 
@@ -67,41 +71,41 @@ class ExamController extends Controller
 
 	public function examBook($endId)
 	{
-		// $events = [];
-  //       $data = ExamSlotModel::with(['exam'])->get();
-        
-  //       $intI = '0';
+			// $events = [];
+	  //       $data = ExamSlotModel::with(['exam'])->get();
+	        
+	  //       $intI = '0';
 
-  //       foreach ($data as $key => $value) 
-  //       {
+	  //       foreach ($data as $key => $value) 
+	  //       {
 
-  //       	$strData = json_decode($value->time);
-  //       	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
+	  //       	$strData = json_decode($value->time);
+	  //       	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
 
-		// 	foreach ($days as $day) 
-		// 	{
-  //       		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
-  //       		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
-				
-		// 		if (Date('Y-m-d') < $day->format('Y-m-d')) 
-		// 		{
-		// 			//$strExamTitle = $value->exam->title;
-		// 			$strExamTitle = 'Examp';
-		// 			$events[] = Calendar::event(
-		//                 $strExamTitle,
-		//                 true,
-		//                 new \DateTime($start_time),
-		//                 new \DateTime($end_time),
-		//                 null,
-		//                 [
-		//                     'color' => '#f05050',
-		//                     'url' 	=> 'pass here url and any route',
-		//                 ]
-		//             );
-		// 		}
-		// 	}
-  //       }
-  //       $calendar = Calendar::addEvents($events);
+			// 	foreach ($days as $day) 
+			// 	{
+	  //       		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
+	  //       		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
+					
+			// 		if (Date('Y-m-d') < $day->format('Y-m-d')) 
+			// 		{
+			// 			//$strExamTitle = $value->exam->title;
+			// 			$strExamTitle = 'Examp';
+			// 			$events[] = Calendar::event(
+			//                 $strExamTitle,
+			//                 true,
+			//                 new \DateTime($start_time),
+			//                 new \DateTime($end_time),
+			//                 null,
+			//                 [
+			//                     'color' => '#f05050',
+			//                     'url' 	=> 'pass here url and any route',
+			//                 ]
+			//             );
+			// 		}
+			// 	}
+	  //       }
+	  //       $calendar = Calendar::addEvents($events);
        
 		$this->ViewData['page_title']    = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']   = $this->ModuleTitle;
@@ -142,22 +146,131 @@ class ExamController extends Controller
 
 	public function submit(Request $request, $user_id, $course_id, $exam_id)
 	{
+
+		$optionsAnswers = $this->QuestionOptionsAnswer->get();
+
 		if (!empty($user_id) && !empty($course_id) && !empty($exam_id)) 
 		{
 			if (!empty($request->correct) && sizeof($request->correct) > 0) 
 			{
-				// check answers for radio buttons
-				if (!empty($request->correct['radio']) && sizeof($request->correct['radio']) > 0) 
+				$statusBag = []; 
+
+				// check answers for radio
+				if (!empty($request->correct['radio']) && sizeof($request->correct['radio']) > 0)
 				{
-					foreach ($request->correct['radio'] as $key => $radio) 
+					foreach ($request->correct['radio'] as $radioKey => $radio) 
 					{
-						$exam_question = $this->ExamQuestionsModel
+						$examQuestionsRadio = $this->ExamQuestionsModel
 								 			  ->with('repository')
-								 			  ->find($key);
-						dd($radio, $key, $exam_question);
+								 			  ->find($radioKey);
+
+						if ($examQuestionsRadio) 
+						{
+							$examQuestionsRadio = $examQuestionsRadio->toArray();
+					
+							// find correct answers
+							$correctOptionRadio = '';
+							foreach ($optionsAnswers as $optionAnswerKey => $optionAnswer) 
+							{
+								if ($examQuestionsRadio['repository']['correct_answer'] == $optionAnswer->answer) 
+								{
+									$correctOptionRadio = $optionAnswer->option;
+								}
+							}
+
+							// varify is correct
+							if ($examQuestionsRadio['repository'][$correctOptionRadio] == $radio) 
+							{
+								$statusBag[] = array('exam_id' => $radioKey, 'status' => 1);
+							}
+							else
+							{
+								$statusBag[] = array('exam_id' => $radioKey, 'status' => 0);
+							
+							}
+						}
 					}
 				}
-				
+
+				// check answers for checkbox
+				if (!empty($request->correct['checkbox']) && sizeof($request->correct['checkbox']) > 0) 
+				{
+					foreach ($request->correct['checkbox'] as $checkBoxKey => $checkbox) 
+					{
+
+						$examQuestionsCheckbox = $this->ExamQuestionsModel
+								 			  ->with('repository')
+								 			  ->find($checkBoxKey);
+
+						if ($examQuestionsCheckbox) 
+						{
+							$examQuestionsCheckbox = $examQuestionsCheckbox->toArray();
+					
+							// find correct answers
+							$correctOptionsCheckbox = [];
+							foreach ($optionsAnswers as $optionAnswerKey => $optionAnswer) 
+							{
+								$questionOptionsCheckbox = explode(',', $examQuestionsCheckbox['repository']['correct_answer']);
+								if (in_array($optionAnswer->answer, $questionOptionsCheckbox)) 
+								{
+									$correctOptionsCheckbox[] = $optionAnswer->option;
+								}
+							}
+
+							// create correct answers array
+							$questionCorrectOptionsCheckbox = [];
+							foreach ($correctOptionsCheckbox as $correctOptionCheckboxKey => $correctOptionCheckbox) 
+							{
+								$questionCorrectOptionsCheckbox[] = $examQuestionsCheckbox['repository'][$correctOptionCheckbox];
+							}
+
+							//compare correct answers array
+							$result = array_diff($checkbox,  $questionCorrectOptionsCheckbox);
+							if (!empty($result) && sizeof($result) > 0) 
+							{
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 1);
+							}
+							else
+							{
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 0);
+							}
+						}
+					}	
+				}
+
+				$resultBag = [];
+				$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
+															     ->pluck('total_question')
+															     ->first();
+
+				$resultBag['total_attemped']  = count($statusBag);
+
+				$resultBag['total_wrong']  = count(
+													array_filter($statusBag, function($data)
+													{
+														if (empty($data['status'])) 
+														{
+															return true;
+														}
+													})
+												);
+
+				$resultBag['total_right']  = count(
+													array_filter($statusBag, function($data)
+													{
+														if (!empty($data['status'])) 
+														{
+															return true;
+														}
+													})
+												);
+
+				$resultBag['percentage'] = (((int)$resultBag['total_right'])/((int)$resultBag['total_questions']))*100;
+
+				$resultBag['result_status'] =  $resultBag['percentage'] >= 75 ? 'pass' : 'fail';
+
+				return view('front.exam.result', ['resultBag' => $resultBag]);
+ 
 			}	
 		}
 	}

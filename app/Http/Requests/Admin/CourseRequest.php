@@ -27,7 +27,7 @@ class CourseRequest extends FormRequest
         $id = base64_decode(base64_decode($this->route('exam'))) ?? null;
 
         return [
-            'title'             => 'required|min:1|unique:exam,title,'.$id,
+            'title'             => 'required|min:1|unique:course,title,'.$id,
             'prerequisites'     => 'required_without_all:exam',
             'exam'              => 'required_without_all:prerequisites',
             'amount'            => 'required|numeric|gt:0',

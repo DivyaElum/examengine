@@ -27,7 +27,7 @@ $strUser = app('request')->input('type');
 				  <div class="alert alert-danger alert-dismissible errorLoginMsgAlrt">
 				    <strong><span class="dangerLoginMessage"></span></strong>
 				  </div>
-				  <form class="form-horizontal" name="frmForgotPassword" onsubmit="return forgotPassword(this)" method="post">
+				  <form class="form-horizontal" name="frmForgotPassword" method="post">
 					<div class="form-group error">
 					  <div class="col-sm-12">
 						<input type="email" class="form-control" id="email" placeholder="Email Address" name="email" />

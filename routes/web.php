@@ -7,65 +7,67 @@
 */
 
 	// test
-	Route::get('/', 'homeController@index');	 
-
-	// sign up
-	Route::resource('/signup', 'Auth\RegisterController');
-	
-	// login
-	Route::resource('/login', 'Auth\LoginController');
-
-	// forget password
-	Route::get('/forgot','Auth\ForgotPasswordController@index');
-	Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
-
-	// reset password
-	Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index');
-	Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
-
-	// certification rotues
-	Route::group(['prefix' => 'certification'],function()
-	{
-		Route::get('/','Candidate\CertificationController@index');
-		Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
-	});
-
-
 
 	// after authantication routes
-	Route::group(['middleware' => 'UserAuthenticate'],function()
+	Route::group(['middleware' => 'FrontGeneralMiddleware'],function()
 	{
-		// dash board rotues
-		Route::get('/dashboard', 'Candidate\DashbordController@index');
-
-		// purchase course
-		Route::group(['prefix' => 'purchase'],function()
+		// index 
+		Route::get('/', 'homeController@index');	 
+		// sign up
+		Route::resource('/signup', 'Auth\RegisterController');
+		// login
+		Route::resource('/login', 'Auth\LoginController');
+		// forget password
+		Route::get('/forgot','Auth\ForgotPasswordController@index');
+		Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
+		// reset password
+		Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index');
+		Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
+		
+		// certification rotues
+		Route::group(['prefix' => 'certification'],function()
 		{
-			Route::post('/', 	   'PaymentController@purchase')->name('purchase');
-			Route::get('/response','PaymentController@response')->name('purchase.response');
-			Route::get('/cancel',  'PaymentController@cancel')->name('purchase.cancel');
+			Route::get('/','Candidate\CertificationController@index');
+			Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+		});
+	
+
+		// after authantication routes
+		Route::group(['middleware' => 'UserAuthenticate'],function()
+		{
+			// dash board rotues
+			Route::get('/dashboard', 'Candidate\DashbordController@index');
+
+			// purchase course
+			Route::group(['prefix' => 'purchase'],function()
+			{
+				Route::post('/', 	   'PaymentController@purchase')->name('purchase');
+				Route::get('/response','PaymentController@response')->name('purchase.response');
+				Route::get('/cancel',  'PaymentController@cancel')->name('purchase.cancel');
+			});
+
+			// course routes
+			Route::group(['prefix' => 'course'],function()
+			{
+				Route::get('/details/{id}', 'Candidate\CourseController@index');
+				Route::get('/{token}/varify', 'Candidate\CourseController@varify');
+				Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
+			});
+
+			// course routes
+			Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
+			{
+				Route::get('/',		'ExamController@index')->name('exam');
+				Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
+				Route::get('/exam-book/{id}', 'ExamController@examBook')->name('exam.book');
+				Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
+				Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
+				Route::post('/bookExamSlot', 'ExamController@bookExamSlot')->name('exam.book');
+			});
+			Route::get('/logout', 'Auth\LoginController@logout');			//logout
+			Route::post('/logout', 'Auth\LoginController@logout');
 		});
 
-		// course routes
-		Route::group(['prefix' => 'course'],function()
-		{
-			Route::get('/details/{id}', 'Candidate\CourseController@index');
-			Route::get('/{token}/varify', 'Candidate\CourseController@varify');
-			Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
-		});
-
-		// course routes
-		Route::group(['prefix' => 'exam', 'namespace' => 'Front'],function()
-		{
-			Route::get('/',		'ExamController@index')->name('exam');
-			Route::post('/{user_id}/{course_id}/{exam_id}/submit',		'ExamController@submit')->name('exam.submit');
-			Route::get('/exam-book/{id}', 'ExamController@examBook')->name('exam.book');
-			Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
-			Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
-			Route::post('/bookExamSlot', 'ExamController@bookExamSlot')->name('exam.book');
-		});
-		Route::get('/logout', 'Auth\LoginController@logout');			//logout
-		Route::post('/logout', 'Auth\LoginController@logout');
 	});
 
 /*

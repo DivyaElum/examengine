@@ -47,6 +47,14 @@
 	              			</div>	
 
 	              			<div class="col-md-12">
+			            		<p class="alert" style="background-color: #0aa60036">
+		            				<b>Note : </b><br>
+		            				1. Max video file size limit 2 MB</b><br>	
+		            				2. Max pdf file size limit 2 MB</b><br>	
+		            			</p>
+				            </div>
+
+	              			<div class="col-md-12">
 	              				<label>Video Type <span style="color: red">*</span></label>
 				                <div class="form-group">
 				                  	<label class="radio-inline">
@@ -65,27 +73,23 @@
 	              			</div>	
 
 	              			<div class="options file" style="display: none;">
-				                <div class=" col-md-12 form-group video_file_class " style="display: none">
-				                  	<label for="">Video File</label>
-					                  	<input type="file" value="{{ $object->video_file_original_name }}" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >				                  		
-				                  	</select>
-				                </div>
 				                @if(!empty($object->video_file_original_name))
-				                <div class="old_video_file_class">
-					                <div class="form-group col-md-12">
-				                		<label>Old Video File</label>&nbsp;<a title="delete" onclick="return hideOldVideoFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
-					                  	<input type="text" value="{{ $object->video_file_original_name }}" name="old_video_file" id="old_video_file" class="form-control" readonly>
+					                <div class="old_video_file_class">
+						                <div class="form-group col-md-12">
+					                		<label>Old Video File</label>&nbsp;<a title="delete" onclick="return hideOldVideoFile(this)" ><i style="color: red" class="fa fa-trash-o"></i></a>
+						                  	<input type="text" value="{{ $object->video_file_original_name }}" name="old_video_file" id="old_video_file" class="form-control" readonly>
+						                </div>
 					                </div>
-				                </div>
+					            @else
+						            <div class=" col-md-12 form-group video_file_class ">
+					                  	<label for="">Video File</label>
+						                  	<input type="file" name="video_file" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4" id="video_file" class="form-control option_input" >				                  		
+					                  	</select>
+					                </div>
 				                @endif
 	              			</div>
 
 	              			<div class="options pdf" style="display: none;">
-				                <div class=" col-md-12 form-group pdf_file_class " style="display: none">
-				                  	<label for="">Pdf File</label>
-					                  	<input type="file" value="{{ $object->pdf_file_original_name }}" name="pdf_file" accept=".pdf" id="pdf_file" class="form-control option_input" >				                  		
-				                  	</select>
-				                </div>
 				                @if(!empty($object->pdf_file_original_name))
 				                <div class="old_pdf_file_class">
 					                <div class="form-group col-md-12">
@@ -93,6 +97,12 @@
 					                  	<input type="text" value="{{ $object->pdf_file_original_name }}" name="old_pdf_file" id="old_pdf_file" class="form-control" readonly>
 					                </div>
 				                </div>
+				                @else
+					                <div class=" col-md-12 form-group pdf_file_class ">
+					                  	<label for="">Pdf File</label>
+						                  	<input type="file" name="pdf_file" accept=".pdf" id="pdf_file" class="form-control option_input" >				                  		
+					                  	</select>
+					                </div>	
 				                @endif
 	              			</div>
 
