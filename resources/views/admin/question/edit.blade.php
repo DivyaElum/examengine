@@ -257,7 +257,7 @@
 							              	<div class="input-group">
 							                    <span class="input-group-addon">
 							                    	<label>E</label><br>
-							                      <input type="radio" name="correct[]" @if(in_array('e',$correct_answers)) checked @endif  value="e">
+							                      <input type="checkbox" name="correct[]" @if(in_array('e',$correct_answers)) checked @endif  value="e">
 							                    </span>
 							                	<textarea type="text" class="form-control" name="option5">{{ $object->option5 }}</textarea>
 							      			</div><br>
@@ -274,7 +274,7 @@
 							              	<div class="input-group">
 							                    <span class="input-group-addon">
 							                    	<label>F</label><br>
-							                      <input type="radio" name="correct[]"  @if(in_array('f',$correct_answers)) checked @endif value="f">
+							                      <input type="checkbox" name="correct[]"  @if(in_array('f',$correct_answers)) checked @endif value="f">
 							                    </span>
 							                	<textarea type="text" class="form-control" name="option6">{{ $object->option6 }}</textarea>
 							      			</div><br>
@@ -291,7 +291,7 @@
 							              	<div class="input-group">
 							                    <span class="input-group-addon">
 							                    	<label>G</label><br>
-							                      <input type="radio" name="correct[]"  @if(in_array('g',$correct_answers)) checked @endif  value="g">
+							                      <input type="checkbox" name="correct[]"  @if(in_array('g',$correct_answers)) checked @endif  value="g">
 							                    </span>
 							                	<textarea type="text" class="form-control" name="option7">{{ $object->option7 }}</textarea>
 							      			</div><br>
@@ -308,7 +308,7 @@
 							              	<div class="input-group">
 							                    <span class="input-group-addon">
 							                    	<label>H</label><br>
-							                      <input type="radio" name="correct[]"  @if(in_array('h',$correct_answers)) checked @endif  value="h">
+							                      <input type="checkbox" name="correct[]"  @if(in_array('h',$correct_answers)) checked @endif  value="h">
 							                    </span>
 							                	<textarea type="text" class="form-control" name="option8">{{ $object->option8 }}</textarea>
 							      			</div><br>

@@ -149,13 +149,15 @@ class ExamController extends Controller
 
 	public function submit(Request $request)
 	{
-		$result_id = $request->result_id;
+		$result_id = base64_decode(base64_decode($request->result_id));
 
 		$optionsAnswers = $this->QuestionOptionsAnswer->get();
 
-		if (!empty($user_id) && !empty($course_id) && !empty($exam_id)) 
-		{
-			$resultBag = [];
+		if (!empty($result_id)) 
+		{	
+			$exam_id = base64_decode(base64_decode($request->exam_id));
+						
+			$resultBag = [];	
 			$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
 														     ->pluck('total_question')
 														     ->first();
