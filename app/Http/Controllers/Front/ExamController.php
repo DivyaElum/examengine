@@ -155,8 +155,10 @@ class ExamController extends Controller
 
 		if (!empty($result_id)) 
 		{	
-			$exam_id = base64_decode(base64_decode($request->exam_id));
-						
+			$resultObject = $this->ExamResultModel->find($result_id);
+
+			$exam_id = $resultObject->exam_id;
+
 			$resultBag = [];	
 			$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
 														     ->pluck('total_question')
