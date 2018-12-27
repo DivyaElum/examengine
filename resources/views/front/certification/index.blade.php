@@ -35,10 +35,9 @@
 			@php 
 				}
 			@endphp
-			<div class="loadMore_wraper text-center clearfix">
+			<!-- <div class="loadMore_wraper text-center clearfix">
 				<a href="javascriptVoid(0);" class="small_btn yellow">Load More...</a>				
-			</div>
-			
+			</div> -->
 		</div>
 	</div>
 </div>
