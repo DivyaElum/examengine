@@ -115,6 +115,9 @@ html, body, ul, ol, li, form, fieldest, legend {
 	margin: 0;
 	padding: 0;
 }
+html, body{
+	height: 100%;	
+}
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Poppins', sans-serif;
 }
@@ -345,7 +348,14 @@ li {
 
 
 
-
+.bodyContent{
+	background: url(../images/body_content_bg.jpg) repeat-x 0 0;
+	padding: 100px 0;
+	overflow: hidden;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+}
 
 
 .top-bar {
@@ -552,6 +562,7 @@ li {
 }
 footer {
 	background: #111;
+	width: 100%;
 }
 .footer-top {
 	padding: 65px 0 60px;

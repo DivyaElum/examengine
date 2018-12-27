@@ -89,16 +89,17 @@
     </div>
     <div class="container newsletterForm_wrap">
         <div class="newsletterForm">
-            <form name="frmNewslatter" onsubmit="return saveNewsletter(this)" method="post">
+        <form class="form-horizontal" name="frmNewslatter" id="frmNewslatter" onsubmit="return saveNewsletter(this)" action="{{ url('/newsletter') }}"  method="post">
+                @csrf
                 <h2><span>Sign up for our </span>newsletter!</h2>
                 <div class="form-group">
-                    <input type="email" class="form-control" name="email_id" id="email_id" placeholder="Email Address" required="">
+                    <input type="email" class="form-control" name="email_id" id="email_id" placeholder="Email Address" >
                 </div>
                 <div class="form-group">
                     <img src="{{asset('images/captcha-img.png')}}" class="img-responsive" alt="">
                 </div>
                 
-                <button type="submit" class="btn btn-default">Sign Up Now</button>
+                <button type="submit" class="btn btn-default" id="btnSumit">Sign Up Now</button>
             </form>
         </div>
     </div>
@@ -230,5 +231,8 @@
 
 @stop
 @section('scripts')
-<link href="{{ asset('/js/front/dashboard') }}" rel="stylesheet" type="text/css">
+
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<link href="{{ asset('/js/front/dashboard/newsletter.js') }}" rel="stylesheet" type="text/css">
 @stop
