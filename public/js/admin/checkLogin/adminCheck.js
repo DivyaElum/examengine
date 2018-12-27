@@ -22,7 +22,11 @@ function checkLogin(element)
 	    		$this[0].reset();
     			//toastr.success(data.msg);	
 	    		$('#submit_button').show();
-    			window.location.href = data.url;
+	    		setTimeout(function ()
+	    		{
+	    			window.location.href = data.url;
+	    		}, 1000)
+    			
 	    	}
 	    	else
 	    	{
@@ -109,6 +113,10 @@ function forgotpass(element)
 	    		$this[0].reset();
     			toastr.success(data.msg);	
 	    		$('#submit_button').show();
+	    		setTimeout(function ()
+	    		{
+	    			window.location.href = data.url;
+	    		}, 1000)
 	    	}
 	    	else
 	    	{

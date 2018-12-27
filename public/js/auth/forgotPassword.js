@@ -11,6 +11,7 @@ $('#btn_submit').click(function(){
 			},
 			//submit handler
 		   submitHandler: function(form){
+		   	$('#btn_submit').hide();
 		   	var formData = new FormData(form);
 			   $.ajax({
 					type: "POST", 
@@ -24,6 +25,7 @@ $('#btn_submit').click(function(){
 					   	$('.error').find('.help-block').html('');
 						if(data.status == 'success')
 						{
+							$('#btn_submit').show();
 							form.reset();
 							$('.errorLoginMsgAlrt').hide();
 				    		$('.dangerLoginMessage').html('');
@@ -33,16 +35,18 @@ $('#btn_submit').click(function(){
 				    		setTimeout(function ()
 				    		{
 				    			window.location.href = data.url;
-				    		}, 2000)
+				    		}, 1000)
 						} 
 						else
 						{
+							$('#btn_submit').show();
 					  		$('.errorLoginMsgAlrt').show();
 				    		$('.dangerLoginMessage').html(data.msg);
 						}						
 					},
 					error: function (data)
 				  	{
+				  		$('#submit_button').show();
 				  		$('.errorLoginMsgAlrt').show();
 			    		$('.dangerLoginMessage').html(data.msg);
 				  	}
