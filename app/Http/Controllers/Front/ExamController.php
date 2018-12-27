@@ -61,11 +61,12 @@ class ExamController extends Controller
 			$this->ViewData['course'] = $course;
 			$this->ViewData['exam']   =  $this->BaseModel->find($course->exam_id);
 			$this->ViewData['exam_questions'] = $this->ExamQuestionsModel
-													 ->with('repository')
+													 ->with(['repository','category'])
 													 ->where('exam_id',$course->exam_id)
 													 ->orderBy(DB::raw('RAND()'))
 													 ->limit($this->ViewData['exam']->total_question)
 													 ->get();
+
 			return view('exam', $this->ViewData);			
 		}
 		else

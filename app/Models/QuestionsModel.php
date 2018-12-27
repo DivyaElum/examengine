@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\QuestionTypesModel;
-use App\models\QuestionCategoryModel;
+use App\Models\QuestionCategoryModel;
 
 class QuestionsModel extends Model
 {
