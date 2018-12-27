@@ -1,6 +1,6 @@
 
 <header class="main-header">
-    <a href="{{ url('/') }}" class="logo">
+    <a href="{{ url('/admin/dashboard') }}" class="logo">
       <!-- <span class="logo-mini"><b><?php echo $siteSetting->site_title ?? config('app.name'); ?></span> -->
         @php
         if(!empty($object->site_logo))
