@@ -16,8 +16,8 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        $arrSiteSetting = SiteSetting::find('1');
-        view()->share('siteSetting', $arrSiteSetting);
-        return $next($request);
+        if (! $request->expectsJson()) {
+            return route('login');
+        }
     }
 }

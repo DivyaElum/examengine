@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 use App\User;
 use App\PasswordReset;
+use Session;
+
 class ResetPasswordController extends Controller
 {
 	private $User;
@@ -28,14 +30,19 @@ class ResetPasswordController extends Controller
     //Function for reset password
     public function index($intToken){ 
     	$arrData  = PasswordReset::where('token',$intToken)->first();
-    	$strEmail = $arrData->email;
-		$this->ViewData['arrUserData'] = User::where('email',$strEmail)->first();
-    	
-    	$this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
-        $this->ViewData['moduleAction'] = 'forgot password';
+    	if(!empty($arrData)){
+			$strEmail = $arrData->email;
+			$this->ViewData['arrUserData'] = User::where('email',$strEmail)->first();
 
-        return view($this->ModuleView.'resetpassword', $this->ViewData);
+			$this->ViewData['modulePath'] = $this->ModulePath;
+			$this->ViewData['moduleTitle'] = $this->ModuleTitle;
+			$this->ViewData['moduleAction'] = 'forgot password';
+
+			return view($this->ModuleView.'resetpassword', $this->ViewData);
+    	}else{
+    		Session::flash('errorMsg', 'Ypur Token is expire');
+            return redirect('/signup');
+    	}
     }
     
     public function resetpass(resetPasswordRequest $request){
@@ -58,7 +65,7 @@ class ResetPasswordController extends Controller
 
 				PasswordReset::where('token',$strToken)->delete();
 				$this->JsonData['status'] = 'success';
-	            $this->JsonData['url'] 	  = '/admin/login';
+	            $this->JsonData['url'] 	  = '/signup';
             	$this->JsonData['msg'] 	  = 'Password has been updated successfully.';
 		  	}else{
 		  		$this->JsonData['status'] ='error';

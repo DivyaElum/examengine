@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Mail\ForgotPasswordMail; 
 
 use App\User;
 use App\PasswordReset;
+use Mail;
 
 class ForgotPasswordController extends Controller
 {
@@ -46,18 +48,19 @@ class ForgotPasswordController extends Controller
 		  		$strEmail = $arrUserData->email;
 		  		
 		  		//Mail::to($strEmail)->send(new passwordResetMail);
-				echo $url = url('/resetpassword/'.base64_encode(base64_encode($intId)));
+				// echo $url = url('/resetpassword/'.base64_encode(base64_encode($intId)));
 
+                $data['url'] = url('/resetpassword/'.base64_encode(base64_encode($intId)));
+                $mail        = Mail::to($strEmail)->send(new ForgotPasswordMail($data));
 				//save token 
 				$post = PasswordReset::create([
 					'email' => $strEmail,
 					'token' => base64_encode(base64_encode($intId))
 				]);
-				$this->JsonData['status'] = 'success';
-	            $this->JsonData['url'] 	  = '/admin/login';
-            	$this->JsonData['msg'] 	  =  $url;
-            	//$this->JsonData['msg'] 	  = 'Password has been updated successfully.';
-            	die;
+                $this->JsonData['status'] = 'success';
+				$this->JsonData['url']    = '/signup';
+                $this->JsonData['msg']    = 'Password reset link has sent to your mail address.';
+            	
 		  	}
 		  	return response()->json($this->JsonData);
     	}
