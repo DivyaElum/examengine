@@ -155,7 +155,7 @@ class ExamController extends Controller
 		$optionsAnswers = $this->QuestionOptionsAnswer->get();
 
 		if (!empty($result_id)) 
-		{	
+		{
 			$resultObject = $this->ExamResultModel->find($result_id);
 			$exam_id = $resultObject->exam_id;
 			$resultBag = [];	
@@ -250,7 +250,6 @@ class ExamController extends Controller
 					}	
 				}
 
-
 				$resultBag['total_attempted']  = count($statusBag);
 
 				$resultBag['total_wrong']  = count(
@@ -276,7 +275,9 @@ class ExamController extends Controller
 				$resultBag['percentage'] = (((int)$resultBag['total_right'])/((int)$resultBag['total_questions']))*100;
 
 				$resultBag['exam_status'] =  $resultBag['percentage'] >= 75 ? 'Pass' : 'Fail';
+				
 
+				
 			}
 			else
 			{

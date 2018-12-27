@@ -53,7 +53,8 @@ class PrerequisiteRequest extends FormRequest
     {
         return [
             'title.required'  => 'Title field is required.',
-            'video_file.size' => 'Video file size must be less than 2 MB'
+            'video_file.max' => 'Video file size must be less than 2 MB',
+            'pdf_file.max' => 'Pdf file size must be less than 2 MB'
         ];
     }
 }
