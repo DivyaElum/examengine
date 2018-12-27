@@ -324,8 +324,8 @@
         <script type="text/javascript">
             window.addEventListener('load', function(e)
             {
-                // document.addEventListener('keydown', event => event.preventDefault());
-                // document.addEventListener('contextmenu', event => event.preventDefault());
+                document.addEventListener('keydown', event => event.preventDefault());
+                document.addEventListener('contextmenu', event => event.preventDefault());
 
                 // Set the date we're counting down to
                Date.prototype.addHours = function(h) 
