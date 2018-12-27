@@ -240,11 +240,11 @@ class ExamController extends Controller
 							$result = array_diff($checkbox,  $questionCorrectOptionsCheckbox);
 							if (!empty($result) && sizeof($result) > 0) 
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 1);
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 0);
 							}
 							else
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 0);
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 1);
 							}
 						}
 					}	
