@@ -29,10 +29,10 @@ $('#btn_submit').click(function(){
 							form.reset();
 							$('.successMsgAlrt').show();
 			    			$('.successMessage').html(data.msg);
-				    		// setTimeout(function ()
-				    		// {
-				    		// 	window.location.href = data.url;
-				    		// }, 10000)
+				    		setTimeout(function ()
+				    		{
+				    			window.location.href = data.url;
+				    		}, 2000)
 						} 
 						else
 						{
