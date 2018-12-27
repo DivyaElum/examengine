@@ -39,7 +39,7 @@ class ForgotPasswordController extends Controller
 			//check user exists in db
 		  	$arrUserData = User::where('email',$strEmail)->first();
 		  	//dd($arrUserData);
-		  	if (count($arrUserData)<=0) {
+		  	if (!$arrUserData) {
 		  		//wrong email entered
 			    $this->JsonData['status'] ='error';
             	$this->JsonData['msg'] 	  ='Please enter valid Email Id';
