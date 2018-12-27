@@ -60,7 +60,6 @@
                 border-bottom: 1px solid #ccc;
             }
         </style>
-
     </head>
     <body>
         <div class="container" id="startExam">
@@ -72,11 +71,14 @@
         </div>
         <div class="container" id="exam" style=" display: none; padding: 10px">
             <div class="row">
-                <form method="POST" action="{{ route('exam.submit', [auth()->user()->id, $course->id, $exam->id]) }}">
+                <form method="POST" id="examForm" action="{{ route('exam.submit', [auth()->user()->id, $course->id, $exam->id]) }}">
                     @csrf
 
                     <div id="my-carousel" class="carousel" data-ride="carousel" data-interval="false">
-                    
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="course_id" value="{{ $course->id }}">
+                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+
                         <div class="col-sm-9">
                             <div class="carousel-inner" role="listbox">
 
@@ -333,6 +335,9 @@
 
             function startTimer(element)
             {
+                // adding status to start timer
+                
+
                 var hours = $(element).attr('data-hours');
 
                 document.getElementById('startExam').style.display = 'none';

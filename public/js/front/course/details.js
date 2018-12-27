@@ -39,12 +39,12 @@ function  startExam(element)
 		  		}
 		  		else
 		  		{
-		  			toastr.error('Something went wrong, Please try again later.');
+		  			console.log('Something went wrong, Please try again later.');
 		  		}
 		  	},
 		  	error: function (data)
 		  	{
-		  		toastr.error('Something went wrong, Please try again later.');
+		  		console.log('Something went wrong, Please try again later.');
 		  	}
 		});
 	}
