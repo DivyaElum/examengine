@@ -343,9 +343,9 @@
                 var exam_id     = $('input[name="exam_id"]').val();
 
                 var formData = new FormData();
+                formData.append('user_id',user_id)
                 formData.append('course_id',course_id)
-                formData.append('user_id',course_id)
-                formData.append('exam_id',course_id)
+                formData.append('exam_id',exam_id)
 
                 var action = "{{ url('/exam/updateExamResultStatus') }}"
 
