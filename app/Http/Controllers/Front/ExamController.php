@@ -30,7 +30,7 @@ class ExamController extends Controller
  		BookExamSlotModel 	$BookExamSlotModel,
  		ExamQuestionsModel 	$ExamQuestionsModel,
  		QuestionOptionsAnswer $QuestionOptionsAnswer,
- 		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel,
+ 		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel
  	)
  	{
  		$this->BaseModel 		  = $ExamModel;
@@ -147,15 +147,15 @@ class ExamController extends Controller
 	    return $days;
 	}
 
-	public function submit(Request $request, $user_id, $course_id, $exam_id)
+	public function submit(Request $request)
 	{
+		$result_id = $request->result_id;
 
 		$optionsAnswers = $this->QuestionOptionsAnswer->get();
 
 		if (!empty($user_id) && !empty($course_id) && !empty($exam_id)) 
 		{
 			$resultBag = [];
-
 			$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
 														     ->pluck('total_question')
 														     ->first();
@@ -380,5 +380,40 @@ class ExamController extends Controller
             DB::rollBack();
         }
         return response()->json($this->JsonData);
+	}
+
+	public function updateExamResultStatus(Request $request)
+	{
+		if (!empty($request->user_id) && !empty($request->course_id) && !empty($request->exam_id)) 
+		{
+			$user_id 	= base64_decode(base64_decode($request->user_id));
+			$course_id 	= base64_decode(base64_decode($request->course_id));
+			$exam_id 	= base64_decode(base64_decode($request->exam_id));
+
+			$ExamResultModel = new $this->ExamResultModel;
+			
+			$ExamResultModel->user_id 		= $user_id;
+			$ExamResultModel->course_id 	= $course_id;
+			$ExamResultModel->exam_id 		= $exam_id;
+			$ExamResultModel->exam_status 	= 'Started';
+
+			if ($ExamResultModel->save()) 
+			{
+				$this->JsonData['status'] = 'success';
+				$this->JsonData['result'] = base64_encode(base64_encode($ExamResultModel->id));				
+			}
+			else
+			{
+				$this->JsonData['status'] = 'error';
+				$this->JsonData['status'] = 'Server failure, Please try again later.';
+			}
+		}
+		else
+		{
+			$this->JsonData['status'] = 'error';
+			$this->JsonData['status'] = 'Server failure, Please try again later.';
+		}
+
+		return response()->json($this->JsonData);
 	}
 }

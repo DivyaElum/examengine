@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="base-path" content="{{ url('/') }}">
         <title>{{ $exam->title }}</title>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <style type="text/css">
@@ -65,19 +67,19 @@
         <div class="container" id="startExam">
             <div class="content">
                 <div class="title">
-                    <a href="javascript:void(0)" onclick="startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
+                    <a href="javascript:void(0)" onclick="return startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
                 </div>
             </div>
         </div>
         <div class="container" id="exam" style=" display: none; padding: 10px">
             <div class="row">
-                <form method="POST" id="examForm" action="{{ route('exam.submit', [auth()->user()->id, $course->id, $exam->id]) }}">
+                <form method="POST" id="examForm" action="{{ route('exam.submit') }}">
                     @csrf
 
                     <div id="my-carousel" class="carousel" data-ride="carousel" data-interval="false">
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="course_id" value="{{ $course->id }}">
-                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+                        <input type="hidden" name="user_id" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
+                        <input type="hidden" name="course_id" value="{{ base64_encode(base64_encode($course->id)) }}">
+                        <input type="hidden" name="exam_id" value="{{ base64_encode(base64_encode($exam->id)) }}">
 
                         <div class="col-sm-9">
                             <div class="carousel-inner" role="listbox">
@@ -336,7 +338,52 @@
             function startTimer(element)
             {
                 // adding status to start timer
-                
+                var course_id   = $('input[name="course_id"]').val();
+                var user_id     = $('input[name="user_id"]').val();
+                var exam_id     = $('input[name="exam_id"]').val();
+
+                var formData = new FormData();
+                formData.append('course_id',course_id)
+                formData.append('user_id',course_id)
+                formData.append('exam_id',course_id)
+
+                var action = "{{ url('/exam/updateExamResultStatus') }}"
+
+                $dbdata = [];
+                $.ajax(
+                {
+                    headers: {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: 'POST',
+                    url: action,
+                    data: formData,
+                    global: false,
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function(data)
+                    {
+                        $dbdata = data;
+                    }
+                });
+
+                if (!$.isEmptyObject($dbdata)) 
+                {
+                    if ($dbdata.status == 'error') 
+                    {
+                        alert('Server failure, Please try again later.');
+                        return false;
+                    }
+
+                    $('#examForm').append('<input type="hidden" name="result_id" value="'+$dbdata.result+'">');
+                }
+                else
+                {
+                    alert('Server failure, Please try again later.');
+                    return false;
+                }
 
                 var hours = $(element).attr('data-hours');
 
