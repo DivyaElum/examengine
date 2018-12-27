@@ -124,6 +124,7 @@ class LoginController extends Controller
 				]);
 				
 				$this->JsonData['status'] = 'success';
+				$this->JsonData['url'] 	  = '/admin/login';
             	$this->JsonData['msg'] 	  = 'Password reset link has sent to your mail address.';
 		  	}
 		  	

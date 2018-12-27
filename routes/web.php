@@ -12,7 +12,10 @@
 	Route::group(['middleware' => 'FrontGeneralMiddleware'],function()
 	{
 		// index 
-		Route::get('/', 'homeController@index');	 
+		Route::get('/', 'homeController@index');	
+
+		Route::post('/newsletter', 'homeController@saveNewsLetter');	
+
 		// sign up
 		Route::resource('/signup', 'Auth\RegisterController');
 		// login
