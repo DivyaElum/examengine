@@ -44,11 +44,6 @@
 											<h4>Learn More <span>with a premium membership</span></h4>
 											<p>Sign up for a Premium Membership to learn courses for Internet-free viewing.</p>
 											<h2 class="price"><span>${{ $arrCerficationDetils->discount}}</span> ${{ $arrCerficationDetils->calculated_amount}}</h2>
-											<div class="timeLeft">
-												<i class="fa fa-history" aria-hidden="true"></i>
-												52 minutes 
-												<span>left at this price!</span>
-											</div>
 											<br>
 											@if(!auth()->check())
 												<a href="{{ url('/signup') }}" class="large-btn">Buy Now</a>
