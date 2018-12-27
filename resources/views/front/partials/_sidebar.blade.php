@@ -6,18 +6,19 @@
 		<div class="dashboardTitle">Dashboard view</div>
 		<div class="dashboardUser_bx">
 			@if(auth()->check())
-			<div class="userName">{{$arrUserData->information->first_name}}  {{$arrUserData->information->last_name}}</div>
+			<div class="userName"><a href="/dashboard">{{$arrUserData->information->first_name}}  {{$arrUserData->information->last_name}}</a></div>
 			@endif
-			<div class="userId">User id : #211090</div>
+			<!-- <div class="userId">User id : #211090</div> -->
 		</div>
 		<div class="dbMenus">
 			<ul>
+				<li><a href="/course/course-listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a></li>
 				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> View Profile</a></li>
-				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Account</a></li>
+				<!-- <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Account</a></li>
 				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Video Courses</a></li>
 				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> PDF files</a></li>
 				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Settings</a></li>
-				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Payment</a></li>
+				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Payment</a></li> -->
 			</ul>				
 		</div>
 	</div>

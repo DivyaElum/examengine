@@ -74,6 +74,28 @@ class CourseController extends Controller
 
    	}
 
+    public function courseListing()
+    {
+      $this->ModuleTitle = 'Course Listing';
+      $this->ModuleView  = 'front.course.course_listing';
+      $this->ModulePath  = 'course-details';
+
+      $user_id = auth()->user()->id;  
+      $courses = $this->CourseModel->whereHas('transaction',function($query) use($user_id)
+        {
+           $query->where('user_id', $user_id);
+        })
+      ->get();
+    
+      $this->ViewData['modulePath']      = $this->ModulePath;
+      $this->ViewData['moduleTitle']     = $this->ModuleTitle;
+      $this->ViewData['moduleAction']    = $this->ModuleTitle;
+      $this->ViewData['page_title']      = $this->ModuleTitle;
+      $this->ViewData['arrUsersCourse']  = $courses;
+
+        return view($this->ModuleView, $this->ViewData);
+    }
+
     public function varify(Request $request, $token)
     {
         $object = $this->CourseModel->find($token);
