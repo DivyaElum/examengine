@@ -26,6 +26,7 @@
 						<h3>Course Listing</h3>
 						<hr />
 						<div class="row">
+							@if (count($arrUsersCourse) >= 1)
 							@php 
 							foreach($arrUsersCourse as $row) { @endphp
 								<div class="col-md-4 col-sm-6">
@@ -53,6 +54,9 @@
 							@php 
 								}
 							@endphp
+							@else
+								<h4 class="text-center">No course available</h4>
+							@endif
 						</div>
 					</div>
 				</div>
