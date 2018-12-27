@@ -55,4 +55,13 @@ $(window).resize(function () {
 		$('.newsletterForm').attr('style', 'margin-left:' + newsletterForm_wrap_width + 'px');
 	}
 });
+$(document).ready(function(){
+ $(window).resize(function(){
+  var footerHeight = $('footer').outerHeight();
+  var stickFooterPush = $('.push').height(footerHeight);
+  $('.bodyContent').css({'marginBottom':'-' + footerHeight + 'px'});
+  $('<div class="push"></div>').appendTo('.bodyContent');
+ });
 
+ $(window).resize();
+});

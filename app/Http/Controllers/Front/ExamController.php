@@ -61,11 +61,12 @@ class ExamController extends Controller
 			$this->ViewData['course'] = $course;
 			$this->ViewData['exam']   =  $this->BaseModel->find($course->exam_id);
 			$this->ViewData['exam_questions'] = $this->ExamQuestionsModel
-													 ->with('repository')
+													 ->with(['repository','category'])
 													 ->where('exam_id',$course->exam_id)
 													 ->orderBy(DB::raw('RAND()'))
 													 ->limit($this->ViewData['exam']->total_question)
 													 ->get();
+
 			return view('exam', $this->ViewData);			
 		}
 		else
@@ -239,11 +240,11 @@ class ExamController extends Controller
 							$result = array_diff($checkbox,  $questionCorrectOptionsCheckbox);
 							if (!empty($result) && sizeof($result) > 0) 
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 1);
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 0);
 							}
 							else
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 0);
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 1);
 							}
 						}
 					}	
@@ -286,19 +287,8 @@ class ExamController extends Controller
 				$resultBag['exam_status'] 	= 'Fail';
 			}
 
-
-
 			$resultUpdate = $this->ExamResultModel->where('id', $result_id)->update($resultBag);
-				
 			return view('front.exam.result', ['resultBag' => $resultBag]);
-			
-			// if ($resultUpdate) 
-			// {
-			// }
-			// else
-			// {
-			// 	dd('Server failure. Please try again later');
-			// }
 		}
 	}
 

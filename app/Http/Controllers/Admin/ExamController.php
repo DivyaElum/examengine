@@ -88,7 +88,7 @@ class ExamController extends Controller
         if (count($request->exam_questions) < $request->total_question) 
         {
             $this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Exam question must be greater than total number of questions';
+            $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
              return response()->json($this->JsonData);
              exit;
         }
@@ -298,7 +298,7 @@ class ExamController extends Controller
         if (count($request->exam_questions) < $request->total_question) 
         {
             $this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Exam question must be greater than total number of questions';
+            $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
             return response()->json($this->JsonData);
             exit;
         }
