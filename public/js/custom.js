@@ -44,7 +44,7 @@ $(document).ready(function () {
 		}
 	});
 	
-	$('<a href="certification_list.php" class="btn small-btn">View All</a>').appendTo('#servicesCarousel .owl-nav');
+	$('<a href="/certification" class="btn small-btn">View All</a>').appendTo('#servicesCarousel .owl-nav');
 	
 	var footerHeight = $('footer').outerHeight();	
 	if($('.push').length == 0){

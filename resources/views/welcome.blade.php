@@ -229,7 +229,7 @@
                 
                 <p>Now...What can WE do, for YOU?</p>
                 <br>
-                <a href="#" class="btn small-btn">Read More</a>
+                <!-- <a href="#" class="btn small-btn">Read More</a> -->
             </div>
         </div>
     </div>
