@@ -6,7 +6,6 @@
 
 
 @section('styles')
-<link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
 <style type="text/css">
 .titleWrap h3 a {color: #fff;text-decoration: none;}
 </style>

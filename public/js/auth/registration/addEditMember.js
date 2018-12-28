@@ -46,8 +46,94 @@ function saveMember(element)
 
 	return false
 }
-$('#btn_register').click(function(){
-
+$('#btn_register').click(function()
+{
+	var userRole = $("#customer").val();
+	if(userRole == 'customer')
+	{
+		$("form[name='frmRegister']").validate({
+			onkeyup: false,			
+			//validation rules
+			rules:{
+				organisation_name	:{required:true},
+				organisation_image	:{required:true},
+				first_name			:{required:true},
+				last_name			:{required:true},
+				email				:{required:true},
+				password			:{required:true,},
+				confirm_password	:{required:true},
+				telephone_no		:{required:true},
+			},
+			// validation messages
+			messages:{
+				organisation_name 	: { required:"Please enter organisation name"},
+				organisation_image 	: { required:"Please enter first name"},
+				first_name 			: { required:"Please enter first name"},
+				last_name 			: { required:"Please enter last name"},
+				email 				: { required:"Please enter email Id"},
+				password			: { required:"Please enter password"},
+				confirm_password	: { required:"Please enter confirm password"},
+				telephone_no		: { required:"Please enter telephone number"},
+			},
+			//submit handler
+		   submitHandler: function(form){
+		   	var formData = new FormData(form);
+			   $.ajax({
+					type: "POST", 
+					dataType: "JSON",
+					url: "/signup",
+					data: formData,
+					processData: false,
+	  				contentType: false,
+					success: function(data) {
+						$('.error').removeClass('has-error');
+					   	$('.error').find('.help-block').html('');
+						if(data.status == 'success')
+						{
+							form.reset();
+							$('.successMsgAlrt').show();
+			    			$('.successMessage').html(data.msg);
+				    		// setTimeout(function ()
+				    		// {
+				    		// 	window.location.href = data.url;
+				    		// }, 10000)
+				    		$("html, body").animate({scrollTop : 0},700);
+						} 
+						else
+						{
+							$('.errorMsgAlrt').show();
+			    			$('.dangerMessage').html('Something went wrong, Please try again later.');
+						}						
+					},
+					error: function (data)
+				  	{
+				  		$('.error').removeClass('has-error');
+					   	$('.error').find('.help-block').html('');
+						
+				      	if( data.status === 422 ) 
+				      	{
+					      var errorBag = $.parseJSON(data.responseText);
+					      if (errorBag) 
+					       {
+					        $.each(errorBag.errors, function(row, fields)
+					        {
+					        	$('.error_'+row).closest('.form-group').addClass('has-error');
+					         	$('.error_'+row).html(fields);
+					        });
+					       }
+					    }
+					    else
+					    {
+					    	$('.errorMsgAlrt').show();
+			    			$('.dangerMessage').html('Something went wrong, Please try again later.');
+					    }
+				  	}
+				});
+			}
+		});
+	}
+	else
+	{
 		$("form[name='frmRegister']").validate({
 			onkeyup: false,			
 			//validation rules
@@ -90,6 +176,7 @@ $('#btn_register').click(function(){
 				    		// {
 				    		// 	window.location.href = data.url;
 				    		// }, 10000)
+				    		$("html, body").animate({scrollTop : 0},700);
 						} 
 						else
 						{
@@ -123,10 +210,10 @@ $('#btn_register').click(function(){
 				});
 			}
 		});
+	}
 });
 
 $(document).ready(function() {
-
 	if(getUserType == 'customer'){
     	$('.organisationFiledDiv').show();
     }else{
