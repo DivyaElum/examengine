@@ -11,10 +11,19 @@
         	html, body {
 				display: flex;
 				flex-direction: column;
-				height: 100%;
+				/*height: 100%;*/
 				justify-content: center;
 				align-items: center;
 				text-align: center;
+				width: 100%;
+			}
+			div#startExam {
+				display: flex;
+				width: 100%;
+				height: 100vh;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
 			}
             .question_buttons{
                 height: 50px;
@@ -63,7 +72,12 @@
             }
 
             .option_buttons_div {
-                border-left: 1px solid #ccc;
+                border-left: 0px solid #ccc;
+				display: block;
+				float: left;
+				width: 100%;
+				height: 500px;
+				overflow-y: auto;
             }
 
             .timer { 
@@ -120,7 +134,6 @@
 				line-height: 1;
 				text-align: center;
 				white-space: nowrap;
-				vertical-align: baseline;
 				border-radius: 3px;
 				vertical-align: middle;
 				float: left;
@@ -128,10 +141,16 @@
 			.queTxt{
 				font-size: 24px;
 				display: table-cell;
+				width: 100%;
+				vertical-align: middle;			
+				line-height: normal;
 			}
 			.answers_div {
 				padding: 20px 0;
 				text-align: left;
+				float: left;
+    			margin: 0 0 20px;
+				width: 100%;
 			}
 			
 			/* The container */
@@ -257,7 +276,38 @@
 			  -ms-transform: rotate(45deg);
 			  transform: rotate(45deg);
 			}
-			
+			.status_buttons{
+				padding: 0 15px;				
+			}
+			.status_buttons .buttons{
+				float: left;
+			}
+			.status_buttons .buttons .btn-info{
+				background: #014694;
+				border: 0px;
+				border-radius: 20px;
+				box-shadow: none;
+				padding: 8px 15px;
+			}
+			.status_buttons .buttons .btn-info:hover, .status_buttons .buttons .btn-info:focus{
+				color: #fff;
+				text-decoration: none;
+				background: #003775;
+				border-color: #003775;
+			}
+			.submit_button .button .btn-success{
+				background: #1bb265;
+				border: 0px;
+				border-radius: 20px;
+				box-shadow: none;
+				padding: 8px 15px;
+			}
+			.submit_button .button .btn-success:hover, .submit_button .button .btn-success:focus{
+				color: #fff;
+				text-decoration: none;
+				background: #18a25c;
+				border-color: #18a25c;
+			}
         </style>
     </head>
     <body>
@@ -307,8 +357,8 @@
 													<label><span class="queNumb">{{ $srno }}</span> <span class="queTxt">{{ ucfirst($question->repository->question_text) }}</span></label>
 												</div>
 
-												<div class="col-sm-12 answers_div">
-													<div class="">
+												<div class="col-sm-12">
+													<div class="answers_div">
 
 														<!-- options for radio buttons -->
 														@if($question->repository->option_type == 'radio')
@@ -512,20 +562,22 @@
 													</div>
 												</div>
 
-												<div class="col-sm-12 status_buttons" style="margin-top: 100px">
-													<div class="buttons" style="float: right;">
+												<div class="col-sm-6">
+													<div class="status_buttons">
+														<div class="buttons">
 
-														@if($srno > 1)
-															<a href="javascript:void(0)" class="btn btn-info" onclick="return goPrevious(this)" data-qn="{{$srno}}">Prev Question</a>
-														@endif
+															@if($srno > 1)
+																<a href="javascript:void(0)" class="btn btn-info small-btn" onclick="return goPrevious(this)" data-qn="{{$srno}}">Prev Question</a>
+															@endif
 
-														@if($srno < count($exam_questions))
-															<a href="javascript:void(0)" class="btn btn-info" onclick="return goNext(this)" data-qn="{{$srno}}">Next Question</a>
-														@endif
+															@if($srno < count($exam_questions))
+																<a href="javascript:void(0)" class="btn btn-info" onclick="return goNext(this)" data-qn="{{$srno}}">Next Question</a>
+															@endif
 
+														</div>
 													</div>
 												</div>
-												<div class="col-sm-12 submit_button" style="margin-top: 5px">
+												<div class="col-sm-6 submit_button">
 													<div class="button" style="float: right;">
 														<button class="btn btn-success" >Submit Exam</button>
 													</div>
