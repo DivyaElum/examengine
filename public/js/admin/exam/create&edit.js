@@ -191,7 +191,7 @@ function addNewSlot(element)
 	              			<div class="col-md-4 start_time_wrapper">
                   				<label for="">Start Time <span style="color: red">*</span></label><br>
 	                  			<div class='input-group form-group datetimepicker' >
-				                    <input type='text' onblur="return getEndTime(this)" name="exam_days[${week_days_index}][start_time][]" class="form-control start_time" />
+				                    <input type='text' placeholder="Start Time" onblur="return getEndTime(this)" name="exam_days[${week_days_index}][start_time][]" class="form-control start_time" />
 				                    <span class="input-group-addon" >
 				                        <span class="glyphicon glyphicon-time"></span>
 				                    </span>
@@ -202,7 +202,7 @@ function addNewSlot(element)
 	              				<div class="row">
 	              					<div class="col-md-9">
 	                  					<div class='input-group form-group' >
-						                    <input type='text' readonly name="exam_days[${week_days_index}][end_time][]" class="form-control end_time" />
+						                    <input type='text' placeholder="End Time" readonly name="exam_days[${week_days_index}][end_time][]" class="form-control end_time" />
 						                    <span class="input-group-addon" >
 						                        <span class="glyphicon glyphicon-time"></span>
 						                    </span>
@@ -259,7 +259,7 @@ function addNewDay(element)
           			<div class="col-md-4 start_time_wrapper">
           				<label for="">Start Time <span style="color: red">*</span></label><br>
               			<div class='input-group form-group datetimepicker' >
-		                    <input type='text' onblur="return getEndTime(this)" name="exam_days[${index}][start_time][]" class="form-control start_time" />
+		                    <input type='text' placeholder="Start Time" onblur="return getEndTime(this)" name="exam_days[${index}][start_time][]" class="form-control start_time" />
 		                    <span class="input-group-addon" >
 		                        <span class="glyphicon glyphicon-time"></span>
 		                    </span>
@@ -270,7 +270,7 @@ function addNewDay(element)
           				<div class="row">
           					<div class="col-md-9">
               					<div class='input-group form-group' >
-				                    <input type='text' readonly name="exam_days[${index}][end_time][]" class="form-control end_time" />
+				                    <input type='text' placeholder="End Time" readonly name="exam_days[${index}][end_time][]" class="form-control end_time" />
 				                    <span class="input-group-addon" >
 				                        <span class="glyphicon glyphicon-time"></span>
 				                    </span>

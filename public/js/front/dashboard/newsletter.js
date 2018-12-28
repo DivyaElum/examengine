@@ -19,9 +19,7 @@ function saveNewsletter(element)
 	  	{
 	    	if (data.status == 'success') 
 	    	{
-	    		$this[0].reset();
-    			
-				$('.errorMsgAlrt').hide();
+	    		$('.errorMsgAlrt').hide();
 	    		$('.dangerMessage').html('');
 
 				$('.successMsgAlrt').show();

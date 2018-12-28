@@ -317,7 +317,8 @@ class CourseController extends Controller
                         
                         $data[$key]['amount']       = number_format($row->amount);
 
-                        $data[$key]['discount']     = $row->discount.' '. $row->discount_by != 'Price' ? $row->discount_by : '';
+                                                    $discountBy = $row->discount_by == '%' ? ' AED' : '%';
+                        $data[$key]['discount']     = $row->discount == 0 ? '--' : number_format($row->discount).$discountBy;
 
                         $data[$key]['total']        = number_format($row->calculated_amount);
                         

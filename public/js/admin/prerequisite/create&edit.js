@@ -101,17 +101,59 @@ function setVideoType(flag)
 		
 	$('.options').hide();
 
+	if (checkedType == 'file') 
+	{
+		if ($('#old_video_file').val() == undefined) 
+		{	
+			$('.old_video_file_class').hide();
+			$('.video_file_class').show();
+		}
+		else
+		if ($('#old_video_file').val() == '' ) 
+		{	
+			$('.old_video_file_class').hide();
+			$('.video_file_class').show();
+		}
+		else
+		{
+			$('.old_video_file_class').show();
+			$('.video_file_class').hide();
+		}
+	}
+
+	if (checkedType == 'pdf') 
+	{
+		if ($('#old_pdf_file').val() == undefined) 
+		{	
+			$('.old_pdf_file_class').hide();
+			$('.pdf_file_class').show();
+		}
+		else
+		if ($('#old_pdf_file').val() == '' ) 
+		{	
+			$('.old_pdf_file_class').hide();
+			$('.pdf_file_class').show();
+		}
+		else
+		{
+			$('.old_pdf_file_class').show();
+			$('.pdf_file_class').hide();
+		}
+	}
+
 	$('.'+checkedType).show();
 }
 
-// function hideOldVideoFile()
-// {
-// 	$('.old_video_file_class').hide().find('input').val('');
-// 	$('.video_file_class').show();
-// }
+function hideOldVideoFile()
+{
+	$('.old_video_file_class').hide().find('input').val('');
 
-// function hideOldPdfFile()
-// {
-// 	$('.old_pdf_file_class').hide().find('input').val('');
-// 	$('.pdf_file_class').show();
-// }
+	$('.video_file_class').show();
+}
+
+function hideOldPdfFile()
+{
+	$('.old_pdf_file_class').hide().find('input').val('');
+	
+	$('.pdf_file_class').show();
+}

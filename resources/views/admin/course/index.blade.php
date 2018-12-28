@@ -42,7 +42,7 @@
           						<th>Sr. No.</th>
           						<th>Title</th>
           						<th>Course Fee (AED)</th>
-          						<th>Discount (Flat | %)</th>
+          						<th>Discount</th>
           						<th>Total Fee (AED)</th>
           						<th>Created Date</th>
           						<th>Status</th>

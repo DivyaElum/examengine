@@ -117,7 +117,7 @@
 					              			<div class="col-md-4 start_time_wrapper">
 				                  				<label for="">Start Time <span style="color: red">*</span></label><br>
 					                  			<div class='input-group form-group datetimepicker' >
-								                    <input type='text' onblur="return getEndTime(this)" name="exam_days[0][start_time][]" class="form-control start_time" />
+								                    <input type='text' placeholder="Start Time" onblur="return getEndTime(this)" name="exam_days[0][start_time][]" class="form-control start_time" />
 								                    <span class="input-group-addon" >
 								                        <span class="glyphicon glyphicon-time"></span>
 								                    </span>
@@ -128,7 +128,7 @@
 					              				<div class="row">
 					              					<div class="col-md-9">
 					                  					<div class='input-group form-group' >
-										                    <input type='text' readonly name="exam_days[0][end_time][]" class="form-control end_time" />
+										                    <input type='text' placeholder="End Time" readonly name="exam_days[0][end_time][]" class="form-control end_time" />
 										                    <span class="input-group-addon" >
 										                        <span class="glyphicon glyphicon-time"></span>
 										                    </span>
