@@ -51,12 +51,6 @@ class RegisterController extends Controller
         return view($this->ModuleView.'registration', $this->ViewData);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(RegisterRequest $request)
     {
         //dd($request->all());

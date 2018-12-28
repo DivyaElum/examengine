@@ -54,34 +54,44 @@ class LoginController extends Controller
 			$strPassword  = $request->input('password');
 			$strHashPass  =  Hash::make($strPassword);
 
-			//check user exists in db
-		  	$arrUserData = User::where('email',$strEmail)->first();
-		  	
-		  	$remember_me = $request->has('chkRememberMe') ? 'true' : 'false'; 
-		  	
-		  	if($remember_me == 'true'){
-		  		$strPasswordEncd = base64_encode(base64_encode($strPassword));
-		  		setcookie('setEmail',$strEmail,time() + (10 * 365 * 24 * 60 * 60));
-		  		setcookie('setPassword',$strPasswordEncd,time() + (10 * 365 * 24 * 60 * 60));
-		  	}else{
-		  		unset($_COOKIE['setEmail']);
-    			unset($_COOKIE['setPassword']);
-    			setcookie('setEmail', '', -1, time() + (10 * 365 * 24 * 60 * 60));
-    			setcookie('setPassword', '', -1,time() + (10 * 365 * 24 * 60 * 60));
-		  	}
-
-		  	if (auth()->attempt(['email' => $strEmail, 'password' => $strPassword], $remember_me))
+			//check user role 
+		  	$user = User::where('email',$strEmail)->first();
+		  	if($user->hasRole('admin'))
 		  	{
-	            $this->JsonData['status'] = 'success';
-	            $this->JsonData['url'] 	  = '/admin/dashboard';
-            	$this->JsonData['msg'] 	  = 'login successfully.';
-	        }
-	        else
-	        {
-	        	//wrong email entered
-			    $this->JsonData['status'] ='error';
-            	$this->JsonData['msg'] 	  ='Entered  credentials is incorrect.';
-	        }
+			  	$remember_me = $request->has('chkRememberMe') ? 'true' : 'false'; 
+			  	
+			  	if($remember_me == 'true')
+			  	{
+			  		$strPasswordEncd = base64_encode(base64_encode($strPassword));
+			  		setcookie('setEmail',$strEmail,time() + (10 * 365 * 24 * 60 * 60));
+			  		setcookie('setPassword',$strPasswordEncd,time() + (10 * 365 * 24 * 60 * 60));
+			  	}
+			  	else
+			  	{
+			  		unset($_COOKIE['setEmail']);
+	    			unset($_COOKIE['setPassword']);
+	    			setcookie('setEmail', '', -1, time() + (10 * 365 * 24 * 60 * 60));
+	    			setcookie('setPassword', '', -1,time() + (10 * 365 * 24 * 60 * 60));
+			  	}
+
+			  	if (auth()->attempt(['email' => $strEmail, 'password' => $strPassword], $remember_me))
+			  	{
+		            $this->JsonData['status'] = 'success';
+		            $this->JsonData['url'] 	  = '/admin/dashboard';
+	            	$this->JsonData['msg'] 	  = 'login successfully.';
+		        }
+		        else
+		        {
+		        	//wrong email entered
+				    $this->JsonData['status'] ='error';
+	            	$this->JsonData['msg'] 	  ='Entered credentials is incorrect.';
+		        }
+		    }
+		    else
+		    {
+		    	$this->JsonData['status'] ='error';
+	            $this->JsonData['msg'] 	  ='Entered credentials is incorrect.';
+		    }
 		}
 		else{
 			$this->JsonData['status'] ='error';
@@ -110,7 +120,6 @@ class LoginController extends Controller
 		  	}
 		  	else
 		  	{
-
 		  		$intId = $arrUserData->id;
 		  		$strEmail = $arrUserData->email;
 		  						

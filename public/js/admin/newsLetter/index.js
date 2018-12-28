@@ -6,6 +6,7 @@ $(document).ready(function()
 
     $('#listingTable').DataTable( 
     {
+        
         responsive: 'true',
         serverSide: 'true',
         processing: 'true',
@@ -14,6 +15,9 @@ $(document).ready(function()
             { "data": "id",         "ordereble": "true"},
             { "data": "email_id",   "ordereble": "true"},
             { "data": "status",     "ordereble": "true"}
+        ],
+        columnDefs: [
+            { "width": "20%", "targets": 0 }
         ],
         aoColumnDefs: [{ "bSortable": false, "aTargets": [ 0, 2 ] }],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
