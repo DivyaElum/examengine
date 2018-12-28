@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\ForgotPasswordMail; 
 
+use Mail;
 use App\User;
 use App\PasswordReset;
-use Mail;
 
 class ForgotPasswordController extends Controller
 {

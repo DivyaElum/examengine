@@ -8,9 +8,11 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 
+use Mail;
 use App\User;
 use App\Models\UserInfoModels;
 use App\Models\Auth\RegisterModel;
+use App\Mail\RegisterdMail; 
 
 // others
 use Validator;
@@ -53,7 +55,6 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request)
     {
-        //dd($request->all());
         DB::beginTransaction();
         
         $User               = new $this->User;
@@ -80,9 +81,19 @@ class RegisterController extends Controller
             $UserInfoModels->phone              = $request->telephone_no;
             $UserInfoModels->organisation_name  = $request->organisation_name;
             $UserInfoModels->organisation_image = $strImgName;
+            $UserInfoModels->status             = '0';
 
             if ($UserInfoModels->save()) 
             {
+                // $endId                = base64_encode(base64_encode(base64_encode($UserInfoModels->id)));
+                // $data['url']          = url('/active-member/'.$endId);
+                // $data['first_name']   = $request->first_name;
+                // $data['last_name']    = $request->last_name;
+                // $data['siteName']     = $siteSetting->site_title;
+                // $data['email_id']     = $request->email;
+                // dd($data);
+                // $mail        = Mail::to($strEmail)->send(new RegisterdMail($data));
+
                 DB::commit();
                 $this->JsonData['status']   = 'success';
                 $this->JsonData['url']      = '/sign-up?type='.$request->user_role;
@@ -90,14 +101,14 @@ class RegisterController extends Controller
             }else{
                  DB::rollBack();
                 $this->JsonData['status']   ='error';
-                $this->JsonData['msg']      ='Failed to save member, Something went wrong.';
+                $this->JsonData['msg']      = __('messages.ERR_SAVE_MEM_ERROR_MESSAGE');;
             }
         }
         else
         {
              DB::rollBack();
             $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save member, Something went wrong.';
+            $this->JsonData['msg']      = __('messages.ERR_SAVE_MEM_ERROR_MESSAGE');;
         }
         return response()->json($this->JsonData);
     }
@@ -134,8 +145,8 @@ class RegisterController extends Controller
             else
             {
                 //wrong email entered
-                $this->JsonData['status'] ='error';
-                $this->JsonData['msg']    ='Entered  credentials is incorrect...';
+                $this->JsonData['status'] = 'error';
+                $this->JsonData['msg']    = __('messages.ERR_INVALID_USER_PASS');
             }
         }
         else{
