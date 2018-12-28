@@ -43,7 +43,7 @@
 				                </div>
 				                <div class="form-group">
 				                  	<label for="address">Address <span style="color: red">*</span></label>
-				                  	<input type="text" placeholder="Enter Address" name="address" id="address" class="form-control"  value="{{$objectData->site_title}}" >
+				                  	<textarea name="address" id="address" class="form-control" placeholder="Enter Address">{{$objectData->site_title}}</textarea>
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">

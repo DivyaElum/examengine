@@ -89,11 +89,17 @@
     </div>
     <div class="container newsletterForm_wrap">
         <div class="newsletterForm">
-        <form class="form-horizontal" name="frmNewslatter" id="frmNewslatter" onsubmit="return saveNewsletter(this)" action="{{ url('/newsletter') }}"  method="post">
+        <form name="frmNewslatter" id="frmNewslatter" onsubmit="return saveNewsletter(this)" action="{{ url('/newsletter') }}"  method="post">
                 @csrf
                 <h2><span>Sign up for our </span>newsletter!</h2>
+                <div class="alert alert-success alert-dismissible successMsgAlrt">
+                    <strong><span class="successMessage"></span></strong>
+                </div>
+                <div class="alert alert-danger alert-dismissible errorMsgAlrt">
+                    <strong><span class="dangerMessage"></span></strong>
+                </div>
                 <div class="form-group">
-                    <input type="email" class="form-control" name="email_id" id="email_id" placeholder="Email Address" >
+                    <input type="email" class="form-control" name="email_id" id="email_id" placeholder="Email Address" required="" >
                 </div>
                 <div class="form-group">
                     <img src="{{asset('images/captcha-img.png')}}" class="img-responsive" alt="">
@@ -234,5 +240,5 @@
 
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-<link href="{{ asset('/js/front/dashboard/newsletter.js') }}" rel="stylesheet" type="text/css">
+<script src="{{ asset('/js/front/dashboard/newsletter.js') }}" ></script>
 @stop

@@ -42,7 +42,7 @@
 				                </div>
 				                <div class="form-group">
 				                  	<label for="Address">Address <span style="color: red">*</span></label>
-				                  	<input type="text" placeholder="Enter Address" name="address" id="address" class="form-control" >
+				                  	<textarea name="address" id="address" class="form-control" placeholder="Enter Address"></textarea>
 				                  	<span class="help-block err_txtValue"></span>
 				                </div>
 				                <div class="form-group">

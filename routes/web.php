@@ -15,7 +15,6 @@
 		Route::get('/', 'homeController@index');	
 
 		//newsletter
-		Route::get('/newsletter', 'homeController@saveNewsLetter');	
 		Route::post('/newsletter', 'homeController@saveNewsLetter');	
 
 		// sign up
