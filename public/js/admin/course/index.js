@@ -17,6 +17,7 @@ $(document).ready(function()
             { "data": "title",          "ordereble": "true"},
             { "data": "amount",         "ordereble": "true"},
             { "data": "discount",       "ordereble": "true"},
+            { "data": "discount_by",    "ordereble": "true"},
             { "data": "total",          "ordereble": "true"},
             { "data": "created_at",     "ordereble": "true"},
             { "data": "status",         "ordereble": "true"},

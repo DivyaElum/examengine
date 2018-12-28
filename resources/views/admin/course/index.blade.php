@@ -43,6 +43,7 @@
           						<th>Title</th>
           						<th>Course Fee (AED)</th>
           						<th>Discount</th>
+          						<th>Discount By</th>
           						<th>Total Fee (AED)</th>
           						<th>Created Date</th>
           						<th>Status</th>

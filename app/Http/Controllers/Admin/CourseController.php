@@ -153,16 +153,16 @@ class CourseController extends Controller
         else
         if(empty($request->old_image))
         {
-            if (file_exists(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail)) 
+            if(is_file(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail))
             {
                 unlink(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail);
             }
 
-            if (file_exists(storage_path().'/app/public/'.$object->featured_image)) 
+            if(is_file(storage_path().'/app/public/'.$object->featured_image))
             {
                 unlink(storage_path().'/app/public/'.$object->featured_image);
             }
-
+            
             $object->featured_image               = NULL;
             $object->featured_image_thumbnail     = NULL;
             $object->featured_image_original_name = NULL;
@@ -259,10 +259,11 @@ class CourseController extends Controller
                     1 => 'title',
                     2 => 'amount',
                     3 => 'discount',
-                    4 => 'calculated_amount',
-                    5 => 'created_at',
-                    6 => 'status',
-                    7 => 'id'
+                    4 => 'discount_by',
+                    5 => 'calculated_amount',
+                    6 => 'created_at',
+                    7 => 'status',
+                    8 => 'id'
                 );
 
             /*--------------------------------------
@@ -317,10 +318,11 @@ class CourseController extends Controller
                         
                         $data[$key]['amount']       = number_format($row->amount);
 
-                                                    $discountBy = $row->discount_by == '%' ? ' AED' : '%';
-                        $data[$key]['discount']     = $row->discount == 0 ? '--' : number_format($row->discount).$discountBy;
+                        $data[$key]['discount']     = $row->discount == 0 ? '0' : number_format($row->discount);
 
-                        $data[$key]['total']        = number_format($row->calculated_amount);
+                         $data[$key]['discount_by'] = $row->discount != 0 ? $row->discount_by == '%' ? ' AED' : '%' : '--';
+
+                        $data[$key]['total']        = number_format($row->calculated_amount,2);
                         
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         
