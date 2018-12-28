@@ -8,14 +8,36 @@
         <title>{{ $exam->title }}</title>
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
         <style type="text/css">
-        
+        	html, body {
+				display: flex;
+				flex-direction: column;
+				/*height: 100%;*/
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				width: 100%;
+			}
+			div#startExam {
+				display: flex;
+				width: 100%;
+				height: 100vh;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+			}
             .question_buttons{
                 height: 50px;
                 background: #ccc;
-                margin: 4px -11px;
-                padding: 15px 10px 10px 10px;
+                margin: 5px;
+                padding: 10px;
                 position: relative;
                 cursor: pointer;
+				min-width: 50px;
+				box-sizing: border-box;
+				width: auto;
+				max-width: inherit;
+				float: left;
+				line-height: 30px;
             }
 
             .question_buttons h4{
@@ -28,49 +50,275 @@
             }
 
             .activate{
-                background-color: #0095d9;
+                background-color: #1bb265;
+				color: #fff;
             }
 
             .activate h4{
-                color: #fff;
+                color: #ccc;
             }
 
             .question {
-                height: 615px;
-                background:  black;
-                margin: -14px 0;
+                margin: 0;
             }
 
             .question h3{
                 padding: 10px;
-                color: #fff;
+                color: #ccc;
             }
 
             #my-carousel {
-                border: 1px solid #ccc;
                 height: 620px;
             }
 
             .option_buttons_div {
-                border-left: 1px solid #ccc;
-                height: 620px;
+                border-left: 0px solid #ccc;
+				display: block;
+				float: left;
+				width: 100%;
+				height: 500px;
+				overflow-y: auto;
             }
 
             .timer { 
-
-                padding: 10px;
-                border-bottom: 1px solid #ccc;
+				padding: 10px;
+				border-bottom: 0;
+				font-size: 25px;
             }
+			.start-btn{
+				display: inline-block;
+				text-align: center;
+				background: #014694;
+				color: #fff;
+				text-align: center;
+				border: 2px solid #014694;
+				font-size: 14px;
+				font-weight: 400;
+				padding: 10px 30px;
+				border-radius: 40px;
+				min-width: 150px;
+				margin: 0 0 10px;
+			}
+			.start-btn:hover, .start-btn:focus{
+				color: #fff;
+				text-decoration: none;
+				background: #003775;
+				border-color: #003775;
+			}
+			.startText{
+				font-weight: 400;
+				color: #646464;
+				line-height: 36px;
+				margin: 10px 0 0;
+			}
+			.quesiton_title_div label{
+				width: 100%;
+				margin: 0;
+				background: #014694;
+				color: #fff;
+				padding: 35px 15px 35px 50px;
+				border-radius: 55px 0 55px 0;
+				text-align: left;
+				font-weight: normal;
+				display: table;
+				vertical-align: middle;
+			}
+			.queNumb{
+				margin-right: 10px;
+				background-color: #ffffff;
+				color: #014694;				
+				display: block;
+				padding: 5px 10px;
+				font-size: 16px;
+				font-weight: 700;
+				line-height: 1;
+				text-align: center;
+				white-space: nowrap;
+				border-radius: 3px;
+				vertical-align: middle;
+				float: left;
+			}
+			.queTxt{
+				font-size: 24px;
+				display: table-cell;
+				width: 100%;
+				vertical-align: middle;			
+				line-height: normal;
+			}
+			.answers_div {
+				padding: 20px 0;
+				text-align: left;
+				float: left;
+    			margin: 0 0 20px;
+				width: 100%;
+			}
+			
+			/* The container */
+			.radio_box_wrapper {
+			  display: block;
+			  position: relative;
+			  padding-left: 35px;
+			  cursor: pointer;
+			  font-size: 18px;
+			  border-bottom: 1px solid #e4e4e4cc;
+				color: #7d7d7d;
+			  -webkit-user-select: none;
+			  -moz-user-select: none;
+			  -ms-user-select: none;
+			  user-select: none;
+			}
+			.radio_box_wrapper label{
+				display: block;
+				margin: 0;
+			  	padding: 20px 0;
+				cursor: pointer;
+			}
+
+			/* Hide the browser's default radio button */
+			.radio_box_wrapper input {
+			  position: absolute;
+			  opacity: 0;
+			  cursor: pointer;
+			}
+
+			/* Create a custom radio button */
+			.checkmark {
+			  position: absolute;
+			  top: 18px;
+			  left: 0;
+			  height: 25px;
+			  width: 25px;
+			  background-color: #ccc;
+			  border-radius: 50%;
+			}
+
+			/* On mouse-over, add a grey background color */
+			.radio_box_wrapper:hover input ~ .checkmark {
+			  background-color: #ccc;
+			}
+
+			/* When the radio button is checked, add a blue background */
+			.radio_box_wrapper input:checked ~ .checkmark {
+			  background-color: #1bb265;
+			}
+
+			/* Create the indicator (the dot/circle - hidden when not checked) */
+			.checkmark:after {
+			  content: "";
+			  position: absolute;
+			  display: none;
+			}
+
+			/* Show the indicator (dot/circle) when checked */
+			.radio_box_wrapper input:checked ~ .checkmark:after {
+			  display: block;
+			}
+
+			/* Style the indicator (dot/circle) */
+			.radio_box_wrapper .checkmark:after {
+				top: 9px;
+				left: 9px;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background: white;
+			}			
+
+			/* On mouse-over, add a grey background color */
+			.radio_box_wrapper:hover input ~ .checkmark_cb {
+			  background-color: #ccc;
+			}
+
+			/* When the checkbox is checked, add a blue background */
+			.radio_box_wrapper input:checked ~ .checkmark_cb {
+			  background-color: #1bb265;
+			}
+			
+
+
+			/* Create a custom checkbox */
+			.checkmark_cb {
+			  position: absolute;
+			  top: 20px;
+			  left: 0;
+			  height: 25px;
+			  width: 25px;
+			  background-color: #ccc;
+			  border-radius: 2px;
+			}
+
+			/* On mouse-over, add a grey background color */
+			.radio_box_wrapper:hover input ~ .checkmark_cb {
+			  background-color: #1bb265;
+			}
+
+			/* Create the checkmark/indicator (hidden when not checked) */
+			.checkmark_cb:after {
+			  content: "";
+			  position: absolute;
+			  display: none;
+			}
+
+			/* Show the checkmark when checked */
+			.radio_box_wrapper input:checked ~ .checkmark_cb:after {
+			  display: block;
+			}
+
+			/* Style the checkmark/indicator */
+			.radio_box_wrapper .checkmark_cb:after {
+			  left: 9px;
+			  top: 5px;
+			  width: 7px;
+			  height: 13px;
+			  border: solid white;
+			  border-width: 0 3px 3px 0;
+			  -webkit-transform: rotate(45deg);
+			  -ms-transform: rotate(45deg);
+			  transform: rotate(45deg);
+			}
+			.status_buttons{
+				padding: 0 15px;				
+			}
+			.status_buttons .buttons{
+				float: left;
+			}
+			.status_buttons .buttons .btn-info{
+				background: #014694;
+				border: 0px;
+				border-radius: 20px;
+				box-shadow: none;
+				padding: 8px 15px;
+			}
+			.status_buttons .buttons .btn-info:hover, .status_buttons .buttons .btn-info:focus{
+				color: #fff;
+				text-decoration: none;
+				background: #003775;
+				border-color: #003775;
+			}
+			.submit_button .button .btn-success{
+				background: #1bb265;
+				border: 0px;
+				border-radius: 20px;
+				box-shadow: none;
+				padding: 8px 15px;
+			}
+			.submit_button .button .btn-success:hover, .submit_button .button .btn-success:focus{
+				color: #fff;
+				text-decoration: none;
+				background: #18a25c;
+				border-color: #18a25c;
+			}
         </style>
     </head>
     <body>
         <div class="container" id="startExam">
             <div class="content">
                 <div class="title">
-                    <a href="javascript:void(0)" onclick="return startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
+                    <a class="start-btn" href="javascript:void(0)" onclick="return startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
+                    <p class="startText">Lorem Ipsum is ummy text</p>
                 </div>
             </div>
-        </div>
+        </div>        
         <div class="container" id="exam" style=" display: none; padding: 10px">
             <div class="row">
                 <form method="POST" id="examForm" action="{{ route('exam.submit') }}">
@@ -80,8 +328,16 @@
                         <input type="hidden" name="user_id" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
                         <input type="hidden" name="course_id" value="{{ base64_encode(base64_encode($course->id)) }}">
                         <input type="hidden" name="exam_id" value="{{ base64_encode(base64_encode($exam->id)) }}">
+                        
+                        
+						<div class="col-sm-12">
+							<div class="row timer">
+                                <label>Duration : </label>
+                                <span id="demo"></span>
+                            </div>
+						</div>
 
-                        <div class="col-sm-9">
+                        <div class="col-sm-12">
                             <div class="carousel-inner" role="listbox">
 
                                 @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
@@ -98,225 +354,266 @@
                                     ?>
 
                                     <div class="item question {{ $active }}">
-                                        <h3>
-                                            <div class="row ">
+										<div class="row ">
+											
+											<div class="col-sm-8">
 
-                                                <div class="col-sm-12 quesiton_title_div" style="height: 150px; margin-top: 100px ">
-                                                    <label>Q.{{ $srno }}) {{ ucfirst($question->repository->question_text) }}</label>
-                                                </div>
+												<div class="col-sm-12 quesiton_title_div">
+													<label><span class="queNumb">{{ $srno }}</span> <span class="queTxt">{{ ucfirst($question->repository->question_text) }}</span></label>
+												</div>
 
-                                                <div class="col-sm-12 answers_div" style="height: 150px">
-                                                    <div class="row">
-                                                        
-                                                        <div class="col-sm-12">
-                                                            <label>Answer</label>
-                                                            <hr>
-                                                        </div>
+												<div class="col-sm-12">
+													<div class="answers_div">
 
-                                                        <!-- options for radio buttons -->
-                                                        @if($question->repository->option_type == 'radio')
-                                                            
-                                                            @if($question->repository->option1 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
-                                                                        <label for="option1_{{ $srno }}" > {{$question->repository->option1}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+														<!-- options for radio buttons -->
+														@if($question->repository->option_type == 'radio')
 
-                                                            @if($question->repository->option2 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
-                                                                        <label for="option2_{{ $srno }}" > {{$question->repository->option2}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option1 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">
+																		<label for="option1_{{ $srno }}">
+																			{{$question->repository->option1}} 
+																			<input type="radio" checked="checked" name="correct[radio][{{$question->id}}]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option3 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
-                                                                        <label for="option3_{{ $srno }}" > {{$question->repository->option3}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option2 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">
+																		<label for="option2_{{ $srno }}">
+																			{{$question->repository->option2}}
+																			<input type="radio" name="correct[radio][{{$question->id}}]" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option4 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}"> 
-                                                                        <label for="option4_{{ $srno }}" > {{$question->repository->option4}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option3 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">
+																		<label for="option3_{{ $srno }}">
+																			{{$question->repository->option3}} 																			
+																			<input type="radio" name="correct[radio][{{$question->id}}]" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option5 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
-                                                                        <label for="option5_{{ $srno }}" > {{$question->repository->option5}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option4 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper"> 
+																		<label for="option4_{{ $srno }}">
+																			{{$question->repository->option4}}
+																			<input type="radio" name="correct[radio][{{$question->id}}]" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}">
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option6 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}"> 
-                                                                        <label for="option6_{{ $srno }}" > {{$question->repository->option6}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif
+															@if($question->repository->option5 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                                                                        
+																		<label for="option5_{{ $srno }}">
+																			{{$question->repository->option5}}
+																			<input type="radio" name="correct[radio][{{$question->id}}]" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option7 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}"> 
-                                                                        <label for="option7_{{ $srno }}" > {{$question->repository->option7}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option6 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                    
+																		<label for="option6_{{ $srno }}">
+																			{{$question->repository->option6}}
+																			<input type="radio" name="correct[radio][{{$question->id}}]" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}"> 
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif
 
-                                                            @if($question->repository->option8 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="radio" name="correct[radio][{{$question->id}}]" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}"> 
-                                                                        <label for="option8_{{ $srno }}" > {{$question->repository->option8}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
-                                                        @endif 
-                                                        <!-- options for checkbox buttons -->
-                                                        @if($question->repository->option_type == 'checkbox')
-                                                            
-                                                            @if($question->repository->option1 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="radio_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
-                                                                        <label for="option1_{{ $srno }}"> {{$question->repository->option1}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option7 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                                                                                          
+																		<label for="option7_{{ $srno }}">
+																			{{$question->repository->option7}}
+																			<input type="radio" name="correct[radio][{{$question->id}}]" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}"> 
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option2 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
-                                                                        <label for="option2_{{ $srno }}"> {{$question->repository->option2}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option8 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                           
+																		<label for="option8_{{ $srno }}">
+																			{{$question->repository->option8}}
+																			<input type="radio" name="correct[radio][{{$question->id}}]" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}"> 
+																			<span class="checkmark"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
+														@endif 
+														<!-- options for checkbox buttons -->
+														@if($question->repository->option_type == 'checkbox')
 
-                                                            @if($question->repository->option3 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
-                                                                        <label for="option3_{{ $srno }}"> {{$question->repository->option3}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option1 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                                                                                                  
+																		<label for="option1_{{ $srno }}">
+																			{{$question->repository->option1}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option4 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}"> 
-                                                                        <label for="option4_{{ $srno }}" > {{$question->repository->option4}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option2 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                                                                 
+																		<label for="option2_{{ $srno }}">
+																			{{$question->repository->option2}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option2_{{ $srno }}" value="{{ $question->repository->option2 }}"> 
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option5 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
-                                                                        <label for="option5_{{ $srno }}"> {{$question->repository->option5}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option3 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper"> 
+																		<label for="option3_{{ $srno }}">
+																			{{$question->repository->option3}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option3_{{ $srno }}" value="{{ $question->repository->option3 }}"> 
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option6 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}"> 
-                                                                        <label for="option6_{{ $srno }}" > {{$question->repository->option6}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif
+															@if($question->repository->option4 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">
+																		<label for="option4_{{ $srno }}">
+																			{{$question->repository->option4}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option4_{{ $srno }}" value="{{ $question->repository->option4 }}"> 
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option7 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}"> 
-                                                                        <label for="option7_{{ $srno }}"> {{$question->repository->option7}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
+															@if($question->repository->option5 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">
+																		<label for="option5_{{ $srno }}">
+																			{{$question->repository->option5}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option5_{{ $srno }}" value="{{ $question->repository->option5 }}"> 
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                            @if($question->repository->option8 != NULL)
-                                                                <div class="col-sm-6">
-                                                                    <div class="checkbox_box_wrapper">
-                                                                        <input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}"> 
-                                                                        <label for="option8_{{ $srno }}"> {{$question->repository->option8}} </label>
-                                                                    </div>
-                                                                </div>
-                                                            @endif 
-                                                        @endif
+															@if($question->repository->option6 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                                                                        
+																		<label for="option6_{{ $srno }}">
+																			{{$question->repository->option6}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option6_{{ $srno }}" value="{{ $question->repository->option6 }}">
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif
 
-                                                    </div>
-                                                </div>
+															@if($question->repository->option7 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">
+																		<label for="option7_{{ $srno }}">
+																			{{$question->repository->option7}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option7_{{ $srno }}" value="{{ $question->repository->option7 }}">
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
 
-                                                <div class="col-sm-12 status_buttons" style="margin-top: 100px">
-                                                    <div class="buttons" style="float: right;">
-                                                        
-                                                        @if($srno > 1)
-                                                            <a href="javascript:void(0)" class="btn btn-info" onclick="return goPrevious(this)" data-qn="{{$srno}}">Prev Question</a>
-                                                        @endif
+															@if($question->repository->option8 != NULL)
+																<div class="col-sm-12">
+																	<div class="radio_box_wrapper">                                                                        
+																		<label for="option8_{{ $srno }}">
+																			{{$question->repository->option8}}
+																			<input type="checkbox" name="correct[checkbox][{{$question->id}}][]" id="option8_{{ $srno }}" value="{{ $question->repository->option8 }}">
+																			<span class="checkmark_cb"></span>
+																		</label>
+																	</div>
+																</div>
+															@endif 
+														@endif
 
-                                                        @if($srno < count($exam_questions))
-                                                            <a href="javascript:void(0)" class="btn btn-info" onclick="return goNext(this)" data-qn="{{$srno}}">Next Question</a>
-                                                        @endif
+													</div>
+												</div>
 
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 submit_button" style="margin-top: 5px">
-                                                    <div class="button" style="float: right;">
-                                                        <button class="btn btn-success" >Submit Exam</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </h3>
+												<div class="col-sm-6">
+													<div class="status_buttons">
+														<div class="buttons">
+
+															@if($srno > 1)
+																<a href="javascript:void(0)" class="btn btn-info small-btn" onclick="return goPrevious(this)" data-qn="{{$srno}}">Prev Question</a>
+															@endif
+
+															@if($srno < count($exam_questions))
+																<a href="javascript:void(0)" class="btn btn-info" onclick="return goNext(this)" data-qn="{{$srno}}">Next Question</a>
+															@endif
+
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-6 submit_button">
+													<div class="button" style="float: right;">
+														<button class="btn btn-success" >Submit Exam</button>
+													</div>
+												</div>
+											</div>
+											
+											<div class="col-sm-4">
+												<div class="option_buttons_div">
+													 @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
+														@foreach($exam_questions as $key => $question)
+
+															<?php 
+																$buttonActive = $key == 0 ? 'activate' : ''; 
+																$buttonSrno = $key+1;
+															?>
+
+																<div class="question_buttons srno_{{$buttonSrno}} {{ $buttonActive }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
+																	{{ $key+1 }}
+																</div>
+
+														@endforeach    
+													@endif  
+												</div>
+											</div>
+											
+											
+										</div>
                                     </div>
                                 
                                 @endforeach    
                                 @endif  
-
-                            </div>
-                        </div>
-
-                        <div class="col-sm-3 option_buttons_div" >
-                            <div class="row timer">
-                                <label>Duration : </label>
-                                <span id="demo"></span>
-                            </div>
-                            <div class="row">
-                                @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
-                                    @foreach($exam_questions as $key => $question)
-
-                                        <?php 
-                                            $buttonActive = $key == 0 ? 'activate' : ''; 
-                                            $buttonSrno = $key+1;
-                                        ?>
-
-                                        <div class="col-xs-3">
-                                            <div class="question_buttons srno_{{$buttonSrno}} {{ $buttonActive }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
-                                                {{ $key+1 }}
-                                            </div>
-                                        </div>
-                                    
-                                    @endforeach    
-                                @endif    
 
                             </div>
                         </div>
@@ -329,8 +626,8 @@
         <script type="text/javascript">
             window.addEventListener('load', function(e)
             {
-                document.addEventListener('keydown', event => event.preventDefault());
-                document.addEventListener('contextmenu', event => event.preventDefault());
+                //document.addEventListener('keydown', event => event.preventDefault());
+                //document.addEventListener('contextmenu', event => event.preventDefault());
 
                 // Set the date we're counting down to
                Date.prototype.addHours = function(h) 
