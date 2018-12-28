@@ -3,6 +3,7 @@ $(document).ready(function()
     var adminPath = $('meta[name="admin-path"]').attr('content');
     var targetURL = adminPath+'/news-letter/getNewsLetter'; 
 
+
     $('#listingTable').DataTable( 
     {
         responsive: 'true',
@@ -22,3 +23,54 @@ $(document).ready(function()
         }
     });
 });
+
+function rwChanceStatus(element)
+{
+    var $Module     = '/news-letter';
+    var $adminPath  = $('meta[name="admin-path"]').attr('content');
+
+    var $this   = $(element);
+    var id      = $this.attr('data-rwid');
+    var status  = $this.attr('data-rwst');
+     
+    var $Action     = '/changeStatus';
+    var $URL        = $adminPath+$Module+$Action; 
+
+    if (id != '') 
+    {
+        swal({
+          title: "Are you sure !!",
+          text: "You want to change status ?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Change",
+          confirmButtonClass: "btn-warning",
+          closeOnConfirm: false,
+          showLoaderOnConfirm: true
+        }, 
+        function () 
+        {
+            $.ajax({
+                type:'POST',
+                data:{'id':id,'status':status},
+                url:$URL,
+                dataType:'json',
+                success: function(data)
+                {
+                    setTimeout(function () 
+                    {
+                        if (data.status == 'success') 
+                        {
+                            $('#listingTable').DataTable().ajax.reload();
+                            swal("Success", data.msg,'success');
+                        }
+                        else
+                        {
+                            swal("Error",data.msg,'error');
+                        }
+                    }, 1000);
+                }
+            })
+        });
+    } 
+}
