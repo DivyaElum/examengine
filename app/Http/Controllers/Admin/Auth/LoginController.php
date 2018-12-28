@@ -120,7 +120,7 @@ class LoginController extends Controller
 		  	}
 		  	else
 		  	{
-		  		$intId = $arrUserData->id;
+		  		$intId 	  = $arrUserData->id;
 		  		$strEmail = $arrUserData->email;
 		  						
 				$data = [];
