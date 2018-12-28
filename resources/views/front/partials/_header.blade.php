@@ -20,10 +20,6 @@
 <link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet">
 <!-- Style CSS -->
 <link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css">
-
-<link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('/css/index_style.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('/css/certification_list_style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('/css/owl.css') }}" rel="stylesheet" type="text/css">
 <script type="text/javascript">
   $.ajaxSetup({
