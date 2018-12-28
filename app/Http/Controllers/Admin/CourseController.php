@@ -318,9 +318,9 @@ class CourseController extends Controller
                         $data[$key]['amount']       = number_format($row->amount);
 
                                                     $discountBy = $row->discount_by == '%' ? ' AED' : '%';
-                        $data[$key]['discount']     = $row->discount == 0 ? '--' : number_format($row->discount).$discountBy;
+                        $data[$key]['discount']     = $row->discount == 0 ? '0' : number_format($row->discount).$discountBy;
 
-                        $data[$key]['total']        = number_format($row->calculated_amount);
+                        $data[$key]['total']        = number_format($row->calculated_amount,2);
                         
                         $data[$key]['created_at']   = Date('d-m-Y', strtotime($row->created_at));
                         

@@ -85,8 +85,13 @@
                             <div class="carousel-inner" role="listbox">
 
                                 @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
+                                
+                                
                                 @foreach($exam_questions as $key => $question)
 
+                                    <input type="hidden" name="question_id[]" value="{{ $question->id }}">
+
+                                    
                                     <?php 
                                         $active = $key == 0 ? 'active' : ''; 
                                         $srno = $key+1;

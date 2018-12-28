@@ -12,6 +12,7 @@ use App\Models\BookExamSlotModel;
 use App\Models\ExamQuestionsModel;
 use App\Models\ExamResultModel;
 use App\Models\ExamResultCategoryWiseModel;
+use App\Models\QuestionCategoryModel;
 
 use App\Models\QuestionOptionsAnswer;
 use App\Http\Controllers\Controller;
@@ -30,7 +31,8 @@ class ExamController extends Controller
  		BookExamSlotModel 	$BookExamSlotModel,
  		ExamQuestionsModel 	$ExamQuestionsModel,
  		QuestionOptionsAnswer $QuestionOptionsAnswer,
- 		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel
+ 		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel,
+ 		QuestionCategoryModel $QuestionCategoryModel
  	)
  	{
  		$this->BaseModel 		  = $ExamModel;
@@ -40,6 +42,7 @@ class ExamController extends Controller
  		$this->ExamQuestionsModel = $ExamQuestionsModel;
  		$this->QuestionOptionsAnswer = $QuestionOptionsAnswer;
  		$this->ExamResultCategoryWiseModel  = $ExamResultCategoryWiseModel;
+ 		$this->QuestionCategoryModel  = $QuestionCategoryModel;
 
 
  		$this->ViewData = [];
@@ -158,6 +161,7 @@ class ExamController extends Controller
 		{
 			$resultObject = $this->ExamResultModel->find($result_id);
 			$exam_id = $resultObject->exam_id;
+			$statusBag = [];
 			$resultBag = [];	
 			$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
 														     ->pluck('total_question')
@@ -165,21 +169,18 @@ class ExamController extends Controller
 
 			if (!empty($request->correct) && sizeof($request->correct) > 0) 
 			{
-				$statusBag = []; 
-
 				// check answers for radio
 				if (!empty($request->correct['radio']) && sizeof($request->correct['radio']) > 0)
 				{
 					foreach ($request->correct['radio'] as $radioKey => $radio) 
 					{
 						$examQuestionsRadio = $this->ExamQuestionsModel
-								 			  ->with('repository')
+								 			  ->with(['repository','category'])
 								 			  ->find($radioKey);
 
 						if ($examQuestionsRadio) 
 						{
 							$examQuestionsRadio = $examQuestionsRadio->toArray();
-					
 							// find correct answers
 							$correctOptionRadio = '';
 							foreach ($optionsAnswers as $optionAnswerKey => $optionAnswer) 
@@ -193,12 +194,11 @@ class ExamController extends Controller
 							// varify is correct
 							if ($examQuestionsRadio['repository'][$correctOptionRadio] == $radio) 
 							{
-								$statusBag[] = array('exam_id' => $radioKey, 'status' => 1);
+								$statusBag[] = array('exam_id' => $radioKey, 'category_id' => $examQuestionsRadio['category']['id'], 'status' => 1);
 							}
 							else
 							{
-								$statusBag[] = array('exam_id' => $radioKey, 'status' => 0);
-							
+								$statusBag[] = array('exam_id' => $radioKey, 'category_id' => $examQuestionsRadio['category']['id'], 'status' => 0);
 							}
 						}
 					}
@@ -240,15 +240,17 @@ class ExamController extends Controller
 							$result = array_diff($checkbox,  $questionCorrectOptionsCheckbox);
 							if (!empty($result) && sizeof($result) > 0) 
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 0);
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'category_id' => $examQuestionsRadio['category']['id'], 'status' => 0);
 							}
 							else
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'status' => 1);
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'category_id' => $examQuestionsRadio['category']['id'], 'status' => 1);
 							}
 						}
 					}	
 				}
+				
+				$categoryWiseBag = $statusBag;
 
 				$resultBag['total_attempted']  = count($statusBag);
 
@@ -275,9 +277,6 @@ class ExamController extends Controller
 				$resultBag['percentage'] = (((int)$resultBag['total_right'])/((int)$resultBag['total_questions']))*100;
 
 				$resultBag['exam_status'] =  $resultBag['percentage'] >= 75 ? 'Pass' : 'Fail';
-				
-
-				
 			}
 			else
 			{
@@ -288,7 +287,82 @@ class ExamController extends Controller
 				$resultBag['exam_status'] 	= 'Fail';
 			}
 
-			$resultUpdate = $this->ExamResultModel->where('id', $result_id)->update($resultBag);
+			// category wise result
+			if (!empty($statusBag) && sizeof($statusBag) > 0) 
+			{
+				// get each question categroy
+				$ExamQuestions = $this->ExamQuestionsModel->with(['category'])
+														 ->whereIn('id', $request->question_id)
+													   	->get(['category_id', 'id as question_id'])
+													   	->toArray();
+				// find how many categories used 
+				$uniqueExamIdWithCategories = array_unique(array_column($ExamQuestions, 'category_id'));
+
+				// find total question within category
+				$arrCategoriesWithExam = [];
+				foreach ($uniqueExamIdWithCategories as $uniqueExamIdWithCategoryKey => $uniqueExamIdWithCategory) 
+				{	
+					foreach ($ExamQuestions as $ExamQuestionKey => $ExamQuestion) 
+					{
+						if ($uniqueExamIdWithCategory == $ExamQuestion['category_id']) 
+						{
+							$arrCategoriesWithExam[$uniqueExamIdWithCategory]['questions_id'][] = $ExamQuestion['question_id'];
+							$arrCategoriesWithExam[$uniqueExamIdWithCategory]['category_name'] 	  = $ExamQuestion['category']['category_name'];
+						}
+					}	
+				}
+
+				// build category wise result
+				$resultBag['categories'] = [];
+				foreach ($arrCategoriesWithExam as $arrCategoryWithExamKey => $arrCategoryWithExam) 
+				{	
+					$resultBag['categories'][$arrCategoryWithExamKey]['category_name'] 	 = $arrCategoryWithExam['category_name'];
+
+					$resultBag['categories'][$arrCategoryWithExamKey]['category_id'] 	 = $arrCategoryWithExamKey;
+					
+					$resultBag['categories'][$arrCategoryWithExamKey]['total_questions'] = count($arrCategoryWithExam['questions_id']);
+
+					$total_attempted = [];
+					$total_right = [];
+					$total_wrong = [];
+					foreach ($statusBag as $statusKey => $status) 
+					{
+						if ($arrCategoryWithExamKey == $status['category_id']) 
+						{
+							$total_attempted[] = $status;
+						
+							if (!empty($status['status'])) 
+							{
+								$total_right[] = $status;
+							}
+
+							if (empty($status['status'])) 
+							{
+								$total_wrong[] = $status;
+							}
+						}
+					}
+
+					$resultBag['categories'][$arrCategoryWithExamKey]['total_attempted'] = count($total_attempted);
+					$resultBag['categories'][$arrCategoryWithExamKey]['total_right']  	 = count($total_right);
+					$resultBag['categories'][$arrCategoryWithExamKey]['total_wrong']  	 = count($total_wrong);	
+				}
+			}
+
+			$arrResult = array_except($resultBag, 'categories');
+			$updatedExamStatus = $this->ExamResultModel->where('id', $result_id)->update($arrResult);
+			if ($updatedExamStatus) 
+			{
+				$arrResultCategoryWise = array_only($resultBag, 'categories')['categories'];
+				foreach ($arrResultCategoryWise as $key => $value) 
+				{
+					$tmp = array_except($value, 'category_name'); 
+					$tmp['exam_result_id'] = $result_id; 
+
+					$this->ExamResultCategoryWiseModel->insert($tmp);
+				}
+			}
+			
 			return view('front.exam.result', ['resultBag' => $resultBag]);
 		}
 	}
