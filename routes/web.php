@@ -15,7 +15,6 @@
 		Route::get('/', 'homeController@index');	
 
 		//newsletter
-		Route::get('/newsletter', 'homeController@saveNewsLetter');	
 		Route::post('/newsletter', 'homeController@saveNewsLetter');	
 
 		// sign up
@@ -143,4 +142,8 @@
 		Route::get('question-category/getQuestionCategory', 'QuestionCategoryController@getQuestionCategory');
 		Route::post('question-category/changeStatus', 'QuestionCategoryController@changeStatus');
 		Route::resource('question-category', 'QuestionCategoryController');	
+
+		// news-letter routes
+		Route::get('news-letter/getNewsLetter', 'NewsLetterController@getNewsLetter');
+		Route::resource('news-letter', 'NewsLetterController');	
 	});

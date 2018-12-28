@@ -76,6 +76,12 @@
           </a>
         </li>
 
+        <li class="{{ active(['admin/council-member','admin/news-letter/*']) }}">
+          <a href="{{ url('/admin/news-letter') }}">
+            <i class="fa fa-id-badge" aria-hidden="true"></i> <span>News Letter</span>
+          </a>
+        </li>
+
         <li>
           <a href="{{ url('/admin/logout') }}">
             <i class="fa fa-sign-out"></i><span>Logout</span>

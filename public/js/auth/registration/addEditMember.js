@@ -126,8 +126,16 @@ $('#btn_register').click(function(){
 });
 
 $(document).ready(function() {
+
+	if(getUserType == 'customer'){
+    	$('.organisationFiledDiv').show();
+    }else{
+    	$('.organisationFiledDiv').hide();
+    }
+	 
 	$("input[name$='user_role']").click(function() {
 	    var userRole = $(this).val();
+
 	    if(userRole == 'customer'){
 	    	$('.organisationFiledDiv').show();
 	    }else{

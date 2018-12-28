@@ -29,9 +29,9 @@
 	    <section class="content">
 	      	<div class="box">
 	        	<div class="box-header with-border">
-		          	<h3 class="box-title"></h3>
+		          	<h3 class="box-title">
+		          	</h3>
 		          	<div class="box-tools pull-right">
-		          		<a title="{{'Add New'}}" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>
 		          	</div>
 	        	</div>
 
@@ -40,13 +40,8 @@
           				<table id="listingTable" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
           					<thead>
           						<th>Sr. No.</th>
-          						<th>Title</th>
-          						<th>Course Fee (AED)</th>
-          						<th>Discount</th>
-          						<th>Total Fee (AED)</th>
-          						<th>Created Date</th>
+          						<th>Email Id</th>
           						<th>Status</th>
-          						<th>Action</th>
           					</thead>
           					<tbody>
           						
@@ -75,5 +70,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.print.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datatable/buttons.colVis.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/admin/course/index.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/admin/newsLetter/index.js') }}"></script>
 @stop

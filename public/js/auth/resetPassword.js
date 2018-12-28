@@ -3,16 +3,21 @@ $('#btn_submit').click(function(){
 			onkeyup: false,			
 			//validation rules
 			rules:{
-				password   :{
-					  required:true,
-					  minlength: 8,
-									 maxlength: 20,
-					  },
-				confirm_password :{required:true,
-						equalTo : "#password",
-						minlength: 8,
-										maxlength: 20
-					   }
+				password			:{
+										required:true,
+										minlength: 8,
+                    					maxlength: 20,
+									 },
+				confirm_password	:{required:true,
+									  	equalTo : "#password",
+									  	minlength: 8,
+                     				  	maxlength: 20
+									  }
+			},
+			// validation messages
+			messages:{
+				password			: { required:"Please enter password"},
+				confirm_password	: { required:"Please enter confirm password"}
 			},
 			//submit handler
 		   submitHandler: function(form){
@@ -45,9 +50,8 @@ $('#btn_submit').click(function(){
 					},
 					error: function (data)
 				  	{
-				  		
-					    $('.errorMsgAlrt').show();
-			    		$('.dangerMessage').html('Something went wrong, Please try again later.');
+				    	$('.errorMsgAlrt').show();
+		    			$('.dangerMessage').html('Something went wrong, Please try again later.');
 				  	}
 				});
 			}

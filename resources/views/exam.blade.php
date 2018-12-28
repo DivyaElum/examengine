@@ -19,10 +19,15 @@
             .question_buttons{
                 height: 50px;
                 background: #ccc;
-                margin: 4px -11px;
-                padding: 15px 10px 10px 10px;
+                margin: 5px;
+                padding: 10px;
                 position: relative;
                 cursor: pointer;
+				min-width: 50px;
+				box-sizing: border-box;
+				width: auto;
+				max-width: inherit;
+				float: left;
             }
 
             .question_buttons h4{
@@ -35,7 +40,8 @@
             }
 
             .activate{
-                background-color: #0095d9;
+                background-color: #1bb265;
+				color: #fff;
             }
 
             .activate h4{
@@ -97,17 +103,16 @@
 				color: #fff;
 				padding: 35px 15px 35px 50px;
 				border-radius: 55px 0 55px 0;
-				height: 100px;
 				text-align: left;
 				font-weight: normal;
-				display: block;
+				display: table;
 				vertical-align: middle;
 			}
 			.queNumb{
 				margin-right: 10px;
 				background-color: #ffffff;
 				color: #014694;				
-				display: inline;
+				display: block;
 				padding: 5px 10px;
 				font-size: 16px;
 				font-weight: 700;
@@ -117,9 +122,11 @@
 				vertical-align: baseline;
 				border-radius: 3px;
 				vertical-align: middle;
+				float: left;
 			}
 			.queTxt{
 				font-size: 24px;
+				display: table-cell;
 			}
 			.answers_div {
 				padding: 20px 0;
