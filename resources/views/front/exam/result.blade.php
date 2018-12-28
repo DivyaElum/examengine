@@ -67,7 +67,7 @@
       <td colspan="5">
         <label style="float: left;font-size:17px;color: <?php echo $resultBag['exam_status'] == 'Fail' ? 'red' : 'green'; ?> " >{{ $resultBag['exam_status'] }}</label>
         <button class="btn btn-success" onclick="window.print();"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
-        <button class="btn btn-success" onclick="window.close()" ><i class="fa fa-times-circle" aria-hidden="true"></i> close</button>
+        <button class="btn btn-success" onclick="window.close()" ><i class="fa fa-times-circle" aria-hidden="true"></i> Close</button>
       </td>
     </tr>
       
