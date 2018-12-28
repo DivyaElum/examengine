@@ -106,7 +106,7 @@
 	              			<div class="col-md-2">
 				                <div class="form-group">
 				                  	<label for="">Discount</label>
-				                  	<input type="text"  oninput="return calculateAmount(this)" placeholder="Course Discount" name="discount" id="discount" class="form-control">
+				                  	<input type="text" value="0"  oninput="return calculateAmount(this)" placeholder="Course Discount" name="discount" id="discount" class="form-control">
 				                	<span class="err_discount " style="color: red"></span>
 				                </div>
 	              			</div>	

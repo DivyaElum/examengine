@@ -31,7 +31,7 @@ class CourseRequest extends FormRequest
             'exam'              => 'required_without_all:prerequisites',
             'amount'            => 'required|numeric|gt:0',
             'description'       => 'required',
-            'discount'          => 'numeric|lt:100',
+            'discount'          => 'numeric',
             'calculated_amount' => 'required|numeric|gt:0',
             'featured_image'    => 'mimes:jpeg,jpg,png,gif',
         ];
