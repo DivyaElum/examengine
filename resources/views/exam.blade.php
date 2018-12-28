@@ -28,6 +28,7 @@
 				width: auto;
 				max-width: inherit;
 				float: left;
+				line-height: 30px;
             }
 
             .question_buttons h4{
@@ -168,7 +169,7 @@
 			  left: 0;
 			  height: 25px;
 			  width: 25px;
-			  background-color: #eee;
+			  background-color: #ccc;
 			  border-radius: 50%;
 			}
 
@@ -223,7 +224,8 @@
 			  left: 0;
 			  height: 25px;
 			  width: 25px;
-			  background-color: #eee;
+			  background-color: #ccc;
+			  border-radius: 2px;
 			}
 
 			/* On mouse-over, add a grey background color */
@@ -247,8 +249,8 @@
 			.radio_box_wrapper .checkmark_cb:after {
 			  left: 9px;
 			  top: 5px;
-			  width: 5px;
-			  height: 10px;
+			  width: 7px;
+			  height: 13px;
 			  border: solid white;
 			  border-width: 0 3px 3px 0;
 			  -webkit-transform: rotate(45deg);
