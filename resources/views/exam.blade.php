@@ -29,20 +29,20 @@
                 <form method="POST" id="examForm" action="{{ route('exam.submit') }}">
                     @csrf
 
-                    <div id="my-carousel" class="carousel" data-ride="carousel" data-interval="false">
-                        <input type="hidden" name="user_id" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
-                        <input type="hidden" name="course_id" value="{{ base64_encode(base64_encode($course->id)) }}">
-                        <input type="hidden" name="exam_id" value="{{ base64_encode(base64_encode($exam->id)) }}">
-                        
-                        
-						<div class="col-sm-12">
-							<div class="row timer">
-                                <label>Duration : </label>
-                                <span id="demo"></span>
-                            </div>
-						</div>
+                    <input type="hidden" name="user_id" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
+                    <input type="hidden" name="course_id" value="{{ base64_encode(base64_encode($course->id)) }}">
+                    <input type="hidden" name="exam_id" value="{{ base64_encode(base64_encode($exam->id)) }}">
+                    
+                    
+					<div class="col-sm-12">
+						<div class="row timer">
+                            <label>Duration : </label>
+                            <span id="demo"></span>
+                        </div>
+					</div>
 
-                        <div class="col-sm-12">
+                    <div id="my-carousel" class="carousel" data-ride="carousel" data-interval="false">
+                        <div class="col-sm-8">
                             <div class="carousel-inner" role="listbox">
 
                                 @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
@@ -61,7 +61,7 @@
                                     <div class="item question {{ $active }}">
 										<div class="row ">
 											
-											<div class="col-sm-8">
+											<div class="col-sm-12">
 
 												<div class="col-sm-12 quesiton_title_div">
 													<label><span class="queNumb">{{ $srno }}</span> <span class="queTxt">{{ ucfirst($question->repository->question_text) }}</span></label>
@@ -292,27 +292,7 @@
 														<button class="btn btn-success" >Submit Exam</button>
 													</div>
 												</div>
-											</div>
-											
-											<div class="col-sm-4">
-												<div class="option_buttons_div">
-													 @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
-														@foreach($exam_questions as $key => $question)
-
-															<?php 
-																$buttonActive = $key == 0 ? 'activate' : ''; 
-																$buttonSrno = $key+1;
-															?>
-
-																<div class="question_buttons srno_{{$buttonSrno}} {{ $buttonActive }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
-																	{{ $key+1 }}
-																</div>
-
-														@endforeach    
-													@endif  
-												</div>
-											</div>
-											
+											</div>											
 											
 										</div>
                                     </div>
@@ -322,6 +302,24 @@
 
                             </div>
                         </div>
+                        <div class="col-sm-4">
+							<div class="option_buttons_div">
+								 @if(!empty($exam_questions) && sizeof($exam_questions) > 0)
+									@foreach($exam_questions as $key => $question)
+
+										<?php 
+											$buttonActive = $key == 0 ? 'activate' : ''; 
+											$buttonSrno = $key+1;
+										?>
+
+											<div class="question_buttons srno_{{$buttonSrno}} {{ $buttonActive }}" data-target="#my-carousel" data-slide-to="{{ $key }}">
+												{{ $key+1 }}
+											</div>
+
+									@endforeach    
+								@endif  
+							</div>
+						</div>
                     </div>
                 </form>
             </div>
