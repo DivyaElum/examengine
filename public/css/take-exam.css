@@ -1,0 +1,299 @@
+	html, body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+}
+div#startExam {
+	display: flex;
+	width: 100%;
+	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.question_buttons{
+    height: 50px;
+    background: #ccc;
+    margin: 5px;
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+	min-width: 50px;
+	box-sizing: border-box;
+	width: auto;
+	max-width: inherit;
+	float: left;
+	line-height: 30px;
+}
+
+.question_buttons h4{
+    position: absolute;
+    left: 5%;
+    top: 60%;
+    color: #0095d9;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.activate{
+    background-color: #1bb265;
+	color: #fff;
+}
+
+.activate h4{
+    color: #ccc;
+}
+
+.question {
+    margin: 0;
+}
+
+.question h3{
+    padding: 10px;
+    color: #ccc;
+}
+
+#my-carousel {
+    height: 620px;
+}
+
+.option_buttons_div {
+    border-left: 0px solid #ccc;
+	display: block;
+	float: left;
+	width: 100%;
+	height: 500px;
+	overflow-y: auto;
+}
+
+.timer { 
+	padding: 10px;
+	border-bottom: 0;
+	font-size: 25px;
+}
+.start-btn{
+	display: inline-block;
+	text-align: center;
+	background: #014694;
+	color: #fff;
+	text-align: center;
+	border: 2px solid #014694;
+	font-size: 14px;
+	font-weight: 400;
+	padding: 10px 30px;
+	border-radius: 40px;
+	min-width: 150px;
+	margin: 0 0 10px;
+}
+.start-btn:hover, .start-btn:focus{
+	color: #fff;
+	text-decoration: none;
+	background: #003775;
+	border-color: #003775;
+}
+.startText{
+	font-weight: 400;
+	color: #646464;
+	line-height: 36px;
+	margin: 10px 0 0;
+}
+.quesiton_title_div label{
+	width: 100%;
+	margin: 0;
+	background: #014694;
+	color: #fff;
+	padding: 35px 15px 35px 50px;
+	border-radius: 55px 0 55px 0;
+	text-align: left;
+	font-weight: normal;
+	display: table;
+	vertical-align: middle;
+}
+.queNumb{
+	margin-right: 10px;
+	background-color: #ffffff;
+	color: #014694;				
+	display: block;
+	padding: 5px 10px;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	border-radius: 3px;
+	vertical-align: middle;
+	float: left;
+}
+.queTxt{
+	font-size: 24px;
+	display: table-cell;
+	width: 100%;
+	vertical-align: middle;			
+	line-height: normal;
+}
+.answers_div {
+	padding: 20px 0;
+	text-align: left;
+	float: left;
+	margin: 0 0 20px;
+	width: 100%;
+}
+
+/* The container */
+.radio_box_wrapper {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  font-size: 18px;
+  border-bottom: 1px solid #e4e4e4cc;
+	color: #7d7d7d;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.radio_box_wrapper label{
+	display: block;
+	margin: 0;
+  	padding: 20px 0;
+	cursor: pointer;
+}
+
+/* Hide the browser's default radio button */
+.radio_box_wrapper input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radio_box_wrapper:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio_box_wrapper input:checked ~ .checkmark {
+  background-color: #1bb265;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio_box_wrapper input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio_box_wrapper .checkmark:after {
+	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}			
+
+/* On mouse-over, add a grey background color */
+.radio_box_wrapper:hover input ~ .checkmark_cb {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.radio_box_wrapper input:checked ~ .checkmark_cb {
+  background-color: #1bb265;
+}
+
+
+
+/* Create a custom checkbox */
+.checkmark_cb {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #ccc;
+  border-radius: 2px;
+}
+
+/* On mouse-over, add a grey background color */
+.radio_box_wrapper:hover input ~ .checkmark_cb {
+  background-color: #1bb265;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark_cb:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.radio_box_wrapper input:checked ~ .checkmark_cb:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.radio_box_wrapper .checkmark_cb:after {
+  left: 9px;
+  top: 5px;
+  width: 7px;
+  height: 13px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.status_buttons{
+	padding: 0 15px;				
+}
+.status_buttons .buttons{
+	float: left;
+}
+.status_buttons .buttons .btn-info{
+	background: #014694;
+	border: 0px;
+	border-radius: 20px;
+	box-shadow: none;
+	padding: 8px 15px;
+}
+.status_buttons .buttons .btn-info:hover, .status_buttons .buttons .btn-info:focus{
+	color: #fff;
+	text-decoration: none;
+	background: #003775;
+	border-color: #003775;
+}
+.submit_button .button .btn-success{
+	background: #1bb265;
+	border: 0px;
+	border-radius: 20px;
+	box-shadow: none;
+	padding: 8px 15px;
+}
+.submit_button .button .btn-success:hover, .submit_button .button .btn-success:focus{
+	color: #fff;
+	text-decoration: none;
+	background: #18a25c;
+	border-color: #18a25c;
+}

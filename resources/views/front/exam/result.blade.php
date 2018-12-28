@@ -37,55 +37,42 @@
   <table class="table table-bordered examResultTable">
     <tbody>
     <tr class="tableMainHeading">
-    <td>Features</td>
-    <td>Result</td>
+      <th>Categories</th>
+      <th>Total Questions</th>
+      <th>Total Attempted</th>
+      <th>Total Right</th>
+      <th>Total Wrong</th>
     </tr>
-      @if(!empty($resultBag) && sizeof($resultBag) > 0)
-        @foreach($resultBag as $key => $result)          
-          <tr>            
-            <th class="tableSubheading"> <?php echo ucfirst(str_replace('_', ' ', $key))  ?> : </th> 
-            <td>{{ $result }}</td>
-          </tr>
-          @endif
-        @endforeach
-      @endif
-      
-    <tr class="tableFooter">
-    <td colspan="2">
-      <button class="btn btn-success" ><i class="fa fa-print" aria-hidden="true"></i> Print</button>
-      <button class="btn btn-success" ><i class="fa fa-times-circle" aria-hidden="true"></i> close</button>
-    </td>
-    </tr>
-      
-    </tbody>
-  </table>
-  <hr>
+    
+    @if(!empty($resultBag['categories'] && sizeof($resultBag['categories']) > 0))
+      @foreach($resultBag['categories'] as $categoryKey => $category)
+        <tr>
+          <th class="tableSubheading" >{{ $category['category_name'] }}</th>
+          <td>{{ $category['total_questions'] }}</td>
+          <td>{{ $category['total_attempted'] }}</td>
+          <td>{{ $category['total_right'] }}</td>
+          <td>{{ $category['total_wrong'] }}</td>
+        </tr>
+      @endforeach
+    @endif
 
-  @if(!empty($resultBag['categories'] && sizeof($resultBag['categories']) > 0))
-   <table class="table">
-    <thead>
-      <center><h3>Category Wise Result</h3></center>
-    </thead>
-      @if(!empty($resultBag) && sizeof($resultBag) > 0)
-        @foreach($resultBag as $key => $result)
-          @if( $key == 'categories')
-            @foreach($result as $categoryKey => $category)
-              <tbody>
-                @foreach($category as $key => $value)
-                  @if($key != 'category_id')
-                  <tr>
-                    <th> <?php echo ucfirst(str_replace('_', ' ', $key))  ?> : </th> <td>{{ $value }}</td>
-                  </tr>
-                  @endif
-                @endforeach
-              </tbody>
-            @endforeach
-          @endif 
-        @endforeach
-      @endif
+    <tr >
+      <td colspan="3" ></td>
+      <th class="tableSubheading" >Percentage</th>
+      <td>{{ $resultBag['percentage'] }}%</td>
+    </tr>
+
+    
+    <tr class="tableFooter">
+      <td colspan="5">
+        <label style="float: left;font-size:17px;color: <?php echo $resultBag['exam_status'] == 'Fail' ? 'red' : 'green'; ?> " >{{ $resultBag['exam_status'] }}</label>
+        <button class="btn btn-success" onclick="window.print();"><i class="fa fa-print" aria-hidden="true"></i> Print</button>
+        <button class="btn btn-success" onclick="window.close()" ><i class="fa fa-times-circle" aria-hidden="true"></i> close</button>
+      </td>
+    </tr>
+      
     </tbody>
   </table>
-  @endif
 </div>
 
 </body>

@@ -1,321 +1,26 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="base-path" content="{{ url('/') }}">
+        
         <title>{{ $exam->title }}</title>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <style type="text/css">
-        	html, body {
-				display: flex;
-				flex-direction: column;
-				/*height: 100%;*/
-				justify-content: center;
-				align-items: center;
-				text-align: center;
-				width: 100%;
-			}
-			div#startExam {
-				display: flex;
-				width: 100%;
-				height: 100vh;
-				justify-content: center;
-				align-items: center;
-				flex-direction: column;
-			}
-            .question_buttons{
-                height: 50px;
-                background: #ccc;
-                margin: 5px;
-                padding: 10px;
-                position: relative;
-                cursor: pointer;
-				min-width: 50px;
-				box-sizing: border-box;
-				width: auto;
-				max-width: inherit;
-				float: left;
-				line-height: 30px;
-            }
 
-            .question_buttons h4{
-                position: absolute;
-                left: 5%;
-                top: 60%;
-                color: #0095d9;
-                font-size: 16px;
-                font-weight: bold;
-            }
-
-            .activate{
-                background-color: #1bb265;
-				color: #fff;
-            }
-
-            .activate h4{
-                color: #ccc;
-            }
-
-            .question {
-                margin: 0;
-            }
-
-            .question h3{
-                padding: 10px;
-                color: #ccc;
-            }
-
-            #my-carousel {
-                height: 620px;
-            }
-
-            .option_buttons_div {
-                border-left: 0px solid #ccc;
-				display: block;
-				float: left;
-				width: 100%;
-				height: 500px;
-				overflow-y: auto;
-            }
-
-            .timer { 
-				padding: 10px;
-				border-bottom: 0;
-				font-size: 25px;
-            }
-			.start-btn{
-				display: inline-block;
-				text-align: center;
-				background: #014694;
-				color: #fff;
-				text-align: center;
-				border: 2px solid #014694;
-				font-size: 14px;
-				font-weight: 400;
-				padding: 10px 30px;
-				border-radius: 40px;
-				min-width: 150px;
-				margin: 0 0 10px;
-			}
-			.start-btn:hover, .start-btn:focus{
-				color: #fff;
-				text-decoration: none;
-				background: #003775;
-				border-color: #003775;
-			}
-			.startText{
-				font-weight: 400;
-				color: #646464;
-				line-height: 36px;
-				margin: 10px 0 0;
-			}
-			.quesiton_title_div label{
-				width: 100%;
-				margin: 0;
-				background: #014694;
-				color: #fff;
-				padding: 35px 15px 35px 50px;
-				border-radius: 55px 0 55px 0;
-				text-align: left;
-				font-weight: normal;
-				display: table;
-				vertical-align: middle;
-			}
-			.queNumb{
-				margin-right: 10px;
-				background-color: #ffffff;
-				color: #014694;				
-				display: block;
-				padding: 5px 10px;
-				font-size: 16px;
-				font-weight: 700;
-				line-height: 1;
-				text-align: center;
-				white-space: nowrap;
-				border-radius: 3px;
-				vertical-align: middle;
-				float: left;
-			}
-			.queTxt{
-				font-size: 24px;
-				display: table-cell;
-				width: 100%;
-				vertical-align: middle;			
-				line-height: normal;
-			}
-			.answers_div {
-				padding: 20px 0;
-				text-align: left;
-				float: left;
-    			margin: 0 0 20px;
-				width: 100%;
-			}
-			
-			/* The container */
-			.radio_box_wrapper {
-			  display: block;
-			  position: relative;
-			  padding-left: 35px;
-			  cursor: pointer;
-			  font-size: 18px;
-			  border-bottom: 1px solid #e4e4e4cc;
-				color: #7d7d7d;
-			  -webkit-user-select: none;
-			  -moz-user-select: none;
-			  -ms-user-select: none;
-			  user-select: none;
-			}
-			.radio_box_wrapper label{
-				display: block;
-				margin: 0;
-			  	padding: 20px 0;
-				cursor: pointer;
-			}
-
-			/* Hide the browser's default radio button */
-			.radio_box_wrapper input {
-			  position: absolute;
-			  opacity: 0;
-			  cursor: pointer;
-			}
-
-			/* Create a custom radio button */
-			.checkmark {
-			  position: absolute;
-			  top: 18px;
-			  left: 0;
-			  height: 25px;
-			  width: 25px;
-			  background-color: #ccc;
-			  border-radius: 50%;
-			}
-
-			/* On mouse-over, add a grey background color */
-			.radio_box_wrapper:hover input ~ .checkmark {
-			  background-color: #ccc;
-			}
-
-			/* When the radio button is checked, add a blue background */
-			.radio_box_wrapper input:checked ~ .checkmark {
-			  background-color: #1bb265;
-			}
-
-			/* Create the indicator (the dot/circle - hidden when not checked) */
-			.checkmark:after {
-			  content: "";
-			  position: absolute;
-			  display: none;
-			}
-
-			/* Show the indicator (dot/circle) when checked */
-			.radio_box_wrapper input:checked ~ .checkmark:after {
-			  display: block;
-			}
-
-			/* Style the indicator (dot/circle) */
-			.radio_box_wrapper .checkmark:after {
-				top: 9px;
-				left: 9px;
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-				background: white;
-			}			
-
-			/* On mouse-over, add a grey background color */
-			.radio_box_wrapper:hover input ~ .checkmark_cb {
-			  background-color: #ccc;
-			}
-
-			/* When the checkbox is checked, add a blue background */
-			.radio_box_wrapper input:checked ~ .checkmark_cb {
-			  background-color: #1bb265;
-			}
-			
-
-
-			/* Create a custom checkbox */
-			.checkmark_cb {
-			  position: absolute;
-			  top: 20px;
-			  left: 0;
-			  height: 25px;
-			  width: 25px;
-			  background-color: #ccc;
-			  border-radius: 2px;
-			}
-
-			/* On mouse-over, add a grey background color */
-			.radio_box_wrapper:hover input ~ .checkmark_cb {
-			  background-color: #1bb265;
-			}
-
-			/* Create the checkmark/indicator (hidden when not checked) */
-			.checkmark_cb:after {
-			  content: "";
-			  position: absolute;
-			  display: none;
-			}
-
-			/* Show the checkmark when checked */
-			.radio_box_wrapper input:checked ~ .checkmark_cb:after {
-			  display: block;
-			}
-
-			/* Style the checkmark/indicator */
-			.radio_box_wrapper .checkmark_cb:after {
-			  left: 9px;
-			  top: 5px;
-			  width: 7px;
-			  height: 13px;
-			  border: solid white;
-			  border-width: 0 3px 3px 0;
-			  -webkit-transform: rotate(45deg);
-			  -ms-transform: rotate(45deg);
-			  transform: rotate(45deg);
-			}
-			.status_buttons{
-				padding: 0 15px;				
-			}
-			.status_buttons .buttons{
-				float: left;
-			}
-			.status_buttons .buttons .btn-info{
-				background: #014694;
-				border: 0px;
-				border-radius: 20px;
-				box-shadow: none;
-				padding: 8px 15px;
-			}
-			.status_buttons .buttons .btn-info:hover, .status_buttons .buttons .btn-info:focus{
-				color: #fff;
-				text-decoration: none;
-				background: #003775;
-				border-color: #003775;
-			}
-			.submit_button .button .btn-success{
-				background: #1bb265;
-				border: 0px;
-				border-radius: 20px;
-				box-shadow: none;
-				padding: 8px 15px;
-			}
-			.submit_button .button .btn-success:hover, .submit_button .button .btn-success:focus{
-				color: #fff;
-				text-decoration: none;
-				background: #18a25c;
-				border-color: #18a25c;
-			}
-        </style>
+       	<script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
+		<script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+		<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
+       	<link href="{{ asset('/css/take-exam.css') }}" rel="stylesheet">
     </head>
+    
     <body>
         <div class="container" id="startExam">
             <div class="content">
                 <div class="title">
-                    <a class="start-btn" href="javascript:void(0)" onclick="return startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
-                    <p class="startText">Lorem Ipsum is ummy text</p>
+                    <a class="start-btn" href="javascript:void(0)" onclick="return startTimer(this)"  data-hours="{{ $exam->duration }}" >Start exam</a>
+                    <p class="startText">Once exam started, Please do not refresh page.</p>
                 </div>
             </div>
         </div>        
@@ -373,7 +78,7 @@
 																	<div class="radio_box_wrapper">
 																		<label for="option1_{{ $srno }}">
 																			{{$question->repository->option1}} 
-																			<input type="radio" checked="checked" name="correct[radio][{{$question->id}}]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
+																			<input type="radio"  name="correct[radio][{{$question->id}}]" id="option1_{{ $srno }}" value="{{ $question->repository->option1 }}"> 
 																			<span class="checkmark"></span>
 																		</label>
 																	</div>
@@ -621,134 +326,19 @@
                 </form>
             </div>
         </div>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script type="text/javascript">
             window.addEventListener('load', function(e)
             {
                 //document.addEventListener('keydown', event => event.preventDefault());
                 //document.addEventListener('contextmenu', event => event.preventDefault());
 
-                // Set the date we're counting down to
                Date.prototype.addHours = function(h) 
                {    
                    this.setTime(this.getTime() + (h*60*60*1000)); 
                    return this;   
                 }
             })
-
-            function startTimer(element)
-            {
-                // adding status to start timer
-                var course_id   = $('input[name="course_id"]').val();
-                var user_id     = $('input[name="user_id"]').val();
-                var exam_id     = $('input[name="exam_id"]').val();
-
-                var formData = new FormData();
-                formData.append('user_id',user_id)
-                formData.append('course_id',course_id)
-                formData.append('exam_id',exam_id)
-
-                var action = "{{ url('/exam/updateExamResultStatus') }}"
-
-                $dbdata = [];
-                $.ajax(
-                {
-                    headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: 'POST',
-                    url: action,
-                    data: formData,
-                    global: false,
-                    async: false,
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    success: function(data)
-                    {
-                        $dbdata = data;
-                    }
-                });
-
-                if (!$.isEmptyObject($dbdata)) 
-                {
-                    if ($dbdata.status == 'error') 
-                    {
-                        alert('Server failure, Please try again later.');
-                        return false;
-                    }
-
-                    $('#examForm').append('<input type="hidden" name="result_id" value="'+$dbdata.result+'">');
-                }
-                else
-                {
-                    alert('Server failure, Please try again later.');
-                    return false;
-                }
-
-                var hours = $(element).attr('data-hours');
-
-                document.getElementById('startExam').style.display = 'none';
-                document.getElementById('exam').style.display = 'block';
-
-                var countDownDate = new Date().addHours(hours)
-
-                // Update the count down every 1 second
-                var x = setInterval(function() 
-                {
-
-                    // Get todays date and time
-                    var now = new Date().getTime();
-                    
-                    // Find the distance between now and the count down date
-                    var distance = countDownDate - now;
-                    
-                    // Time calculations for days, hours, minutes and seconds
-                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                    
-                    // Output the result in an element with id="demo"
-
-                    console.log(hours);
-                    console.log(minutes);
-                    console.log(seconds);
-
-                    document.getElementById("demo").innerHTML = hours + " hours : " + minutes + " min : " + seconds + ' sec';
-                    
-                    // If the count down is over, write some text 
-                    if (distance < 0) 
-                    {
-                        clearInterval(x);
-                        document.getElementById("demo").innerHTML = "00 Hours : 00 min : 00 sec";
-                        document.getElementById('startExam2').innerHTML = 'Completed Please wait for you result';
-                    }
-                }, 1000);
-            }
-
-            function goPrevious(element)
-            {
-                var examSrno = parseInt($(element).attr('data-qn')) - 1;
-                $('.srno_'+examSrno).trigger('click');
-            }
-
-            function goNext(element)
-            {
-                var examSrno = parseInt($(element).attr('data-qn')) + 1;
-                $('.srno_'+examSrno).trigger('click');
-            }
-
-            $(document).ready(function()
-            {
-                $('#my-carousel').carousel();
-
-                $('#my-carousel .question_buttons').click(function(e)
-                {
-                    $('.question_buttons').removeClass('activate');
-                    $(this).addClass('activate');
-                });
-            })
         </script>
+        <script type="text/javascript" src="{{ asset('/js/front/exam/takeExam.js') }}"></script>
     </body>
 </html>
