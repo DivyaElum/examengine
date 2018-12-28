@@ -2,8 +2,8 @@
 	<div class="footer-top">
 	<div class="container">
 		<div class="col-md-4 col-sm-4 footer-left-box">
-	    	<img src="images/msc-logo.png" width="216" height="43" alt=""/> 
-			<p>Generate Lorem Ipsum placeholder text for use in your graphic, print and web layouts, and discover plugins for your favorite writing, design and blogging tools.</p>
+	    	<img src="{{asset('images/msc-logo.png')}}" width="216" height="43" alt=""/> 
+			<p>Welcome to MSC <br/>MSPAlliance began in the year 2000 with the vision of becoming the unified voice for the Managed Services Industry. </p>
 			<ul class="social-list">
 				<li><a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
 				<li><a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
@@ -15,7 +15,7 @@
 			<ul class="quick-links">
 				<li>
 					@if(!auth()->check())
-			          <a href="{{ route('signup.index') }}">Home</a> 
+			          <a href="{{ url('/') }}">Home</a> 
 			        @else
 			          <a href="{{url('/dashboard')}}">Home</a>
 			        @endif

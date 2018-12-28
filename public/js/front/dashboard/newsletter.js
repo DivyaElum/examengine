@@ -1,5 +1,7 @@
 var strPath = $('meta[name="base-path"]').attr('content');
 
+$('.successMsgAlrt').hide();
+$('.errorMsgAlrt').hide();
 function saveNewsletter(element)
 {	
 	var $this = $(element);            		
@@ -15,11 +17,13 @@ function saveNewsletter(element)
 	  	contentType: false,
 	  	success: function(data)
 	  	{
-	  		toastr.clear()
 	    	if (data.status == 'success') 
 	    	{
-	    		$this[0].reset();
-    			console.log(data.msg);
+	    		$('.errorMsgAlrt').hide();
+	    		$('.dangerMessage').html('');
+
+				$('.successMsgAlrt').show();
+    			$('.successMessage').html(data.msg);
 	    		setTimeout(function ()
 	    		{
 	    			window.location.href = data.url;
@@ -27,14 +31,15 @@ function saveNewsletter(element)
 	    	}
 	    	else
 	    	{
-	    		console.log(data);
+	    		$('.errorMsgAlrt').show();
+	    		$('.dangerMessage').html(data.msg);
 	    		$('#submit_button').show();
-	    		console.log(data.msg);
 	    	}
 	  	},
 	  	error: function (data)
 	  	{
-	  		console.log('Something went wrong on server, Please try again later.');
+	  		$('.errorMsgAlrt').show();
+	    	$('.dangerMessage').html('Something went wrong on server, Please try again later.');
 	  	}
 	});
 

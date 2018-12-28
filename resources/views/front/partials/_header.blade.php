@@ -65,11 +65,7 @@
   </div>
   <div class="nav-container">
   <div class="container">
-    @if(!auth()->check())
     <a href="{{ url('/') }}" class="navbar-brand"><img src="{{asset('images/msc-logo.png')}}" alt="logo" /></a>
-    @else
-    <a href="{{url('/dashboard')}}" class="navbar-brand"><img src="{{asset('images/msc-logo.png')}}" alt="logo" /></a>
-    @endif
     <ul class="navigation">
       <li class="active">
         @if(!auth()->check())

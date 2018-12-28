@@ -40,7 +40,7 @@ class ResetPasswordController extends Controller
 
 			return view($this->ModuleView.'resetpassword', $this->ViewData);
     	}else{
-    		Session::flash('errorMsg', 'Ypur Token is expire');
+    		Session::flash('errorMsg', 'Your Token is expire');
             return redirect('/signup');
     	}
     }

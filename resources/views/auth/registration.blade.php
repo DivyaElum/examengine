@@ -6,14 +6,10 @@
 
 @section('styles')
 <style type="text/css">
-.error, .help-block {
-	color: red !important;
-	font-weight: 500;
-}
+.error, .help-block {color: red !important;	font-weight: 500;}
 .errorMsgAlrt , .successMsgAlrt , .successLoginMsgAlrt , .errorLoginMsgAlrt{display: none;}
-.radio-inline {
-	color: #000;
-}
+.radio-inline {color: #000;}
+.noteImgText {color: green;}
 </style>
 @stop
 @section('page_title')
@@ -52,6 +48,11 @@ $strUser = app('request')->input('type');
 				  <div class="alert alert-danger alert-dismissible errorLoginMsgAlrt">
 				    <strong><span class="dangerLoginMessage"></span></strong>
 				  </div>
+				  	@if (session('errorMsg'))
+					 <div class="alert alert-danger">
+							 {{ session('errorMsg') }}
+					 </div>
+				   	@endif
 				  <form class="form-horizontal" onsubmit="return checkLogin(this)" action="{{ route($modulePath.'.index') }}" method="post">
 					<div class="form-group error">
 					  <div class="col-sm-12">
@@ -99,23 +100,22 @@ $strUser = app('request')->input('type');
 					      <input type="radio" name="user_role" id="customer" value="customer" <?php if($strUser == 'customer'){echo 'checked';} ?> />Service provider
 					    </label>
 				  	</div>
-
-					@if($strUser == 'customer')
 					<div class="organisationFiledDiv">
-					<div class="form-group error">
-					  <div class="col-sm-12">          
-						<input type="text" class="form-control" name="organisation_name" id="organisation_name" placeholder="Organisation Name">
-						<span class="error_organisation_name help-block"></span>
-					  </div>
+						<div class="form-group error">
+						  <div class="col-sm-12">          
+							<input type="text" class="form-control" name="organisation_name" id="organisation_name" placeholder="Organisation Name">
+							<span class="error_organisation_name help-block"></span>
+						  </div>
+						</div>
+						<div class="form-group error">
+						  <div class="col-sm-12">          
+							<input type="file" class="form-control" name="organisation_image" id="organisation_image">
+							<span class="error_organisation_image help-block"></span>
+							<span class="noteImgText">Note : Please upload image with dimension 250*250 (Width*Height)</span>
+						  </div>
+						</div>
 					</div>
-					<div class="form-group error">
-					  <div class="col-sm-12">          
-						<input type="file" class="form-control" name="organisation_image" id="organisation_image">
-						<span class="error_organisation_image help-block"></span>
-					  </div>
-					</div>
-					</div>
-					@endif
+
 					<div class="form-group error">
 					  <div class="col-sm-12">
 						<input class="form-control" placeholder="First Name" name="first_name" id="first_name">
@@ -164,7 +164,9 @@ $strUser = app('request')->input('type');
 </div>
 @stop
 @section('scripts')
-
+<script type="text/javascript">
+	var getUserType = '{{ $strUser }}';
+</script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script type="text/javascript" src="{{ asset('js/auth/registration/addEditMember.js') }}"></script>

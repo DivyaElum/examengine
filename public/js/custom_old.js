@@ -44,14 +44,7 @@ $(document).ready(function () {
 		}
 	});
 	
-	$('<a href="/certification" class="btn small-btn">View All</a>').appendTo('#servicesCarousel .owl-nav');
-	
-	var footerHeight = $('footer').outerHeight();	
-	if($('.push').length == 0){
-		$('<div class="push"></div>').appendTo('.bodyContent');			
-	}		
-	$('.bodyContent').css({'marginBottom':'-' + footerHeight + 'px'});
-	$('.push').css('height', footerHeight + 'px');
+	$('<a href="certification_list.php" class="btn small-btn">View All</a>').appendTo('#servicesCarousel .owl-nav');
 	
 });
 
@@ -61,14 +54,4 @@ $(window).resize(function () {
 		//$('.newsletterForm').attr('style', 'margin-left:' + newsletterForm_wrap_width + 'px; margin-left:' + newsletterForm_wrap_width)
 		$('.newsletterForm').attr('style', 'margin-left:' + newsletterForm_wrap_width + 'px');
 	}
-	
-	
-	var footerHeight = $('footer').outerHeight();	
-	if($('.push').length == 0){
-		$('<div class="push"></div>').appendTo('.bodyContent');			
-	}		
-	$('.bodyContent').css({'marginBottom':'-' + footerHeight + 'px'});
-	$('.push').css('height', footerHeight + 'px');
-	
 });
-

@@ -3,8 +3,16 @@ $('#btn_submit').click(function(){
 			onkeyup: false,			
 			//validation rules
 			rules:{
-				password			:{required:true},
-				confirm_password	:{required:true,equalTo : "#password"}
+				password			:{
+										required:true,
+										minlength: 8,
+                    					maxlength: 20,
+									 },
+				confirm_password	:{required:true,
+									  	equalTo : "#password",
+									  	minlength: 8,
+                     				  	maxlength: 20
+									  }
 			},
 			// validation messages
 			messages:{
@@ -42,26 +50,8 @@ $('#btn_submit').click(function(){
 					},
 					error: function (data)
 				  	{
-				  		$('.error').removeClass('has-error');
-					   	$('.error').find('.help-block').html('');
-						
-				      	if( data.status === 422 ) 
-				      	{
-					      var errorBag = $.parseJSON(data.responseText);
-					      if (errorBag) 
-					       {
-					        $.each(errorBag.errors, function(row, fields)
-					        {
-					        	$('.error_'+row).closest('.form-group').addClass('has-error');
-					         	$('.error_'+row).html(fields);
-					        });
-					       }
-					    }
-					    else
-					    {
-					    	$('.errorMsgAlrt').show();
-			    			$('.dangerMessage').html('Something went wrong, Please try again later.');
-					    }
+				    	$('.errorMsgAlrt').show();
+		    			$('.dangerMessage').html('Something went wrong, Please try again later.');
 				  	}
 				});
 			}

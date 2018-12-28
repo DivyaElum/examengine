@@ -96,4 +96,5 @@
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
 	<script src="https://www.youtube.com/iframe_api"></script>
 	<script type="text/javascript" src="{{ asset('/js/front/course/details.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/js/front/course/video.js') }}"></script>
 @stop

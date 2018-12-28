@@ -44,11 +44,16 @@ $.ajaxSetup({
   	<div class="login-logo">
     	<p><b><?php echo $siteSetting->site_title ?? 'Managed Services Council'; ?></b></p>
   	</div>
-	   @if (session('login_error'))
+	    @if (session('login_error'))
 		 <div class="alert alert-danger">
 				 {{ session('login_error') }}
 		 </div>
-	   @endif
+	    @endif
+	   	@if (session('errorMsg'))
+		 <div class="alert alert-danger">
+				 {{ session('errorMsg') }}
+		 </div>
+	   	@endif
 	   @php 	   
 	   	if(isset($_COOKIE['setEmail'])){
 	   		$strEmail 	 = $_COOKIE['setEmail'];
