@@ -109,7 +109,7 @@ $strUser = app('request')->input('type');
 						</div>
 						<div class="form-group error">
 						  <div class="col-sm-12">          
-							<input type="file" class="form-control" name="organisation_image" id="organisation_image">
+							<input type="file" class="form-control" name="organisation_image" id="organisation_image" accept="image/*">
 							<span class="error_organisation_image help-block"></span>
 							<span class="noteImgText">Note : Please upload image with dimension 250*250 (Width*Height)</span>
 						  </div>
