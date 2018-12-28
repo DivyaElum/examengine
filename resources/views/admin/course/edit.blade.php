@@ -7,6 +7,12 @@
 @section('styles')
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/multiselect/bootstrap-multiselect.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+	<style type="text/css">
+		.alert
+		{
+			background-color: #00c0ef75 !important;
+		}
+	</style>
 @stop
 
 @section('content')
