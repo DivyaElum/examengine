@@ -48,6 +48,11 @@ $strUser = app('request')->input('type');
 				  <div class="alert alert-danger alert-dismissible errorLoginMsgAlrt">
 				    <strong><span class="dangerLoginMessage"></span></strong>
 				  </div>
+				  	@if (session('errorMsg'))
+					 <div class="alert alert-danger">
+							 {{ session('errorMsg') }}
+					 </div>
+				   	@endif
 				  <form class="form-horizontal" onsubmit="return checkLogin(this)" action="{{ route($modulePath.'.index') }}" method="post">
 					<div class="form-group error">
 					  <div class="col-sm-12">
