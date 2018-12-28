@@ -6,6 +6,12 @@
 
 @section('styles')
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+	<style type="text/css">
+		.alert
+		{
+			background-color: #00c0ef75 !important;
+		}
+	</style>
 @stop
 
 @section('content')
@@ -70,6 +76,13 @@
 		                  		</div>
 
 	                  			@if($object->questionFormat->option == 'radio')
+
+	                  				<div class="col-md-11">
+						             	<p class="alert" style="background-color: #0aa60036">        				 
+							                <b>Note : </b> &nbsp; Please select respective radio button for right answer.
+							            </p>
+									</div>
+
 	                  				<div class="multiple_choice">
 
 			              			<div class="options">
@@ -200,6 +213,13 @@
 		              				@php 
 		              					$correct_answers = explode(',', $object->correct_answer); 
 		              				@endphp
+
+		              				<div class="col-md-11">
+						             	<p class="alert" style="background-color: #0aa60036">        				 
+							                <b>Note : </b> &nbsp; Please select respective checkbox(s) for right answer(s)
+							            </p>
+									</div>
+
 		              				<div class="multiple_response">
 			                  		
 			              			<div class="options">
