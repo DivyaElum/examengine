@@ -145,5 +145,6 @@
 
 		// news-letter routes
 		Route::get('news-letter/getNewsLetter', 'NewsLetterController@getNewsLetter');
+		Route::post('news-letter/changeStatus', 'NewsLetterController@changeStatus');
 		Route::resource('news-letter', 'NewsLetterController');	
 	});

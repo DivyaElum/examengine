@@ -37,96 +37,115 @@ class NewsLetterController extends Controller
     /*-----------------------------------------------------
     |  Ajax Calls
     */
-        public function getNewsLetter(Request $request)
-        {
-            /*--------------------------------------
-            |  Variables
-            ------------------------------*/
-                
-                // skip and limit
-                $start  = $request->start;
-                $length = $request->length;
+    public function getNewsLetter(Request $request)
+    {
+        /*--------------------------------------
+        |  Variables
+        ------------------------------*/
+            
+            // skip and limit
+            $start  = $request->start;
+            $length = $request->length;
 
-                // serach value
-                $search = $request->search['value']; 
+            // serach value
+            $search = $request->search['value']; 
 
-                // order
-                $column = $request->order[0]['column'];
-                $dir = $request->order[0]['dir'];
+            // order
+            $column = $request->order[0]['column'];
+            $dir = $request->order[0]['dir'];
 
-                // filter columns
-                $filter = array(
-                    0 => 'id',
-                    1 => 'email_id',
-                    2 => 'status',
-                );
+            // filter columns
+            $filter = array(
+                0 => 'id',
+                1 => 'email_id',
+                2 => 'status',
+            );
 
-            /*--------------------------------------
-            |  Model query and filter
-            ------------------------------*/
+        /*--------------------------------------
+        |  Model query and filter
+        ------------------------------*/
 
-                // start model query
-                $modelQuery =  $this->NewsLetterModel;
-                
-                // get total count 
-                $countQuery = clone($modelQuery);            
-                $totalData  = $countQuery->count();
+            // start model query
+            $modelQuery =  $this->NewsLetterModel;
 
-                // filter options
-                if (!empty($search)) 
+            // get total count 
+            $countQuery = clone($modelQuery);            
+            $totalData  = $countQuery->count();
+
+            // filter options
+            if (!empty($search)) 
+            {
+            
+                $modelQuery = $modelQuery->where(function ($query) use($search)
+                        {
+                            $query->orwhere('id', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('email_id', 'LIKE', '%'.$search.'%');   
+                            $query->orwhere('status', 'LIKE', '%'.$search.'%');   
+                        });
+            }
+
+            // get total filtered
+            $filteredQuery = clone($modelQuery);            
+            $totalFiltered  = $filteredQuery->count();
+            
+            // offset and limit
+            $object = $modelQuery->orderBy($filter[$column], $dir)
+                                 ->skip($start)
+                                 ->take($length)
+                                 ->get();            
+
+        /*--------------------------------------
+        |  data binding
+        ------------------------------*/
+            $data = [];
+            if (!empty($object) && sizeof($object) > 0) 
+            {
+                foreach ($object as $key => $row) 
                 {
-                
-                    $modelQuery = $modelQuery->where(function ($query) use($search)
-                            {
-                                $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('email_id', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('status', 'LIKE', '%'.$search.'%');   
-                            });
-                }
-
-                // get total filtered
-                $filteredQuery = clone($modelQuery);            
-                $totalFiltered  = $filteredQuery->count();
-                
-                // offset and limit
-                $object = $modelQuery->orderBy($filter[$column], $dir)
-                                     ->skip($start)
-                                     ->take($length)
-                                     ->get();            
-
-            /*--------------------------------------
-            |  data binding
-            ------------------------------*/
-                $data = [];
-                if (!empty($object) && sizeof($object) > 0) 
-                {
-                    foreach ($object as $key => $row) 
+                    $data[$key]['id']           = ($key+$start+1);
+                    $data[$key]['email_id']     = $row->email_id;
+                    
+                    if (!empty($row->status)) 
                     {
-                        $data[$key]['id']           = ($key+$start+1);
-                        $data[$key]['email_id']     = $row->email_id;
-                        
-                        if (!empty($row->status)) 
-                        {
-                            $data[$key]['status'] = '<a title="Click to Change Status" onclick="return rwChanceStatus(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" data-rwst="0"  class="btn btn-default btn-circle stsActiveClass" href="javascript:void(0)" ><i class="fa fa-check" aria-hidden="true"></i></a>&nbsp';
-                        }
-                        else
-                        {
-                            $data[$key]['status'] = '<a title="Click to Change Status" onclick="return rwChanceStatus(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" data-rwst="1"  class="btn btn-default btn-circle stsInactiveClass" href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>&nbsp';
-                        }
-
-                        $view   = '';
-                        $edit   = '';
-
-                        $data[$key]['actions'] = $view.$edit;
+                        $data[$key]['status'] = '<a title="Click to Change Status" onclick="return rwChanceStatus(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" data-rwst="0"  class="btn btn-default btn-circle stsActiveClass" href="javascript:void(0)" ><i class="fa fa-check" aria-hidden="true"></i></a>&nbsp';
                     }
+                    else
+                    {
+                        $data[$key]['status'] = '<a title="Click to Change Status" onclick="return rwChanceStatus(this)" data-rwid="'.base64_encode(base64_encode($row->id)).'" data-rwst="1"  class="btn btn-default btn-circle stsInactiveClass" href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>&nbsp';
+                    }
+
+                    $view   = '';
+                    $edit   = '';
+
+                    $data[$key]['actions'] = $view.$edit;
                 }
+            }
 
-                // wrapping up
-                $this->JsonData['draw']             = intval($request->draw);
-                $this->JsonData['recordsTotal']     = intval($totalData);
-                $this->JsonData['recordsFiltered']  = intval($totalFiltered);
-                $this->JsonData['data']             = $data;
+            // wrapping up
+            $this->JsonData['draw']             = intval($request->draw);
+            $this->JsonData['recordsTotal']     = intval($totalData);
+            $this->JsonData['recordsFiltered']  = intval($totalFiltered);
+            $this->JsonData['data']             = $data;
 
-            return response()->json($this->JsonData);
+        return response()->json($this->JsonData);
+    }   
+    public function changeStatus(Request $request)
+    {
+        $this->JsonData['status']   = 'error';
+        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+
+        if ($request->has('id') && $request->has('status') ) 
+        {
+            $id = base64_decode(base64_decode($request->id));
+            $status = $request->status;
+
+            if($this->NewsLetterModel->where('id', $id)->update(['status' => $status]))
+            {
+                $this->JsonData['status'] = 'success';
+                $this->JsonData['msg']    = 'Status changed successfully.';
+            } 
         }
+        
+        return response()->json($this->JsonData);
+    }
 }
