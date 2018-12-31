@@ -78,7 +78,13 @@
 
         <li class="{{ active(['admin/council-member','admin/news-letter/*']) }}">
           <a href="{{ url('/admin/news-letter') }}">
-            <i class="fa fa-id-badge" aria-hidden="true"></i> <span>News Letter</span>
+            <i class="fa fa-address-card-o" aria-hidden="true"></i> <span>News Letter</span>
+          </a>
+        </li>
+
+        <li class="{{ active(['admin/voucher','admin/voucher/*']) }}">
+          <a href="{{ url('/admin/voucher') }}">
+            <i class="fa fa-barcode" aria-hidden="true"></i> <span>Voucher</span>
           </a>
         </li>
 
