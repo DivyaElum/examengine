@@ -69,9 +69,12 @@ $strUser = app('request')->input('type');
 					<div class="form-group">        
 					  <div class="col-sm-12">
 						<div class="checkbox">
-						  <label><input type="checkbox" name="remember" <?php if($chkRememberMe == '1')echo 'checked'; ?>> Remember me</label>
-						<a href="{{url('/forgot')}}" class="forgot-password">Forget Password?</a>
-						</div>
+							<label class="checkbox-inline">
+							  <input type="checkbox" name="remember" <?php if($chkRememberMe == '1')echo 'checked'; ?>> Remember me
+							  <span class="checkmark_bx"></span>
+							</label>
+							<a href="{{url('/forgot')}}" class="forgot-password">Forget Password?</a>
+					  	</div>
 					  </div>
 					</div>
 					<div class="form-group">        
@@ -92,13 +95,17 @@ $strUser = app('request')->input('type');
 				    <strong><span class="dangerMessage"></span></strong>
 				  </div>
 				  <form class="form-horizontal" name="frmRegister" id="frmRegister" action="{{ route($modulePath.'.index') }}"  method="post" enctype="multipart/form-data">
-				  	<div class="form-group error col-md-8">
-				  		<label class="radio-inline">
-					      	<input type="radio" name="user_role" id="canditate" value="candidate" <?php if($strUser == 'candidate'){echo 'checked';}else{ echo 'checked';} ?> /> Canditate
-					    </label>
-					    <label class="radio-inline">
-					      <input type="radio" name="user_role" id="customer" value="customer" <?php if($strUser == 'customer'){echo 'checked';} ?> />Service provider
-					    </label>
+				  	<div class="form-group error">
+				    	<div class="containerRadio">
+							<label class="radio-inline">
+							  <input type="radio" name="user_role" id="canditate" value="candidate" <?php if($strUser == 'candidate'){echo 'checked';}else{ echo 'checked';} ?> /> Canditate
+							  <span class="checkmark"></span>
+							</label>					    
+							<label class="radio-inline">
+							  <input type="radio" name="user_role" id="customer" value="customer" <?php if($strUser == 'customer'){echo 'checked';} ?> />Service provider
+							  <span class="checkmark"></span>
+							</label>
+					    </div>
 				  	</div>
 					<div class="organisationFiledDiv">
 						<div class="form-group error">

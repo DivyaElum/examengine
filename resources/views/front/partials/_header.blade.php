@@ -29,11 +29,7 @@
   });
 </script>
 @yield('styles')
-<style type="text/css">
-.login-banner h1 {font-size: 50px !important;}
-.userName a {color: #fff;text-decoration: none;}
-.userText{color: red;}
-</style>
+
 </head>
 <body class="drawer drawer--right drawer--navbarTopGutter">
 <div class="first-header">
