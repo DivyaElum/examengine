@@ -9,7 +9,7 @@ return [
     'ERR_RESET_PASSWORD_MESSAGE'            => 'Password reset link has sent to your mail address.',
     'ERR_STR_ERR_FROM_EMAIL_MESSAGE'        => 'Please enter from email',
     'ERR_STR_LOGIN_SUCCESSFULLY_MESSAGE'    => 'Login successfully.',
-    'ERR_STR_EMAIL_ERROR_MESSAGE'           => 'Invalid Email Id and Password',
+    'ERR_STR_EMAIL_ERROR_MESSAGE'           => 'Invalid Email Id or Password',
     'ERR_STR_EMPTY_FIELD_ERROR_MESSAGE'     => 'Please enter a data',
     'ERR_STR_TOKEN_ERROR_MESSAGE'           => 'Token is invalid',
     'ERR_STR_PASSWORD_SUCCESS_MESSAGE'      => 'Password has been updated successfully.',
