@@ -414,7 +414,6 @@ class ExamController extends Controller
 			}
 		}
 
-		//return \Response::json($events);
 		return response()->json($events);
 	}
 
@@ -450,12 +449,12 @@ class ExamController extends Controller
         {
         	DB::commit();
         	$this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Exam slot booked successfully';
+            $this->JsonData['msg']      = __('messages.ERR_EXAM_BOOK_MESSAGE');
         }
         else
         {
         	$this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Failed to save exam slot, Something went wrong.';
+            $this->JsonData['msg']      = __('messages.ERR_SAVE_EXM_ERROR_MESSAGE');
             DB::rollBack();
         }
         return response()->json($this->JsonData);
@@ -484,13 +483,13 @@ class ExamController extends Controller
 			else
 			{
 				$this->JsonData['status'] = 'error';
-				$this->JsonData['status'] = 'Server failure, Please try again later.';
+				$this->JsonData['status'] = __('messages.ERR_SAVE_EXM_ERROR_MESSAGE');
 			}
 		}
 		else
 		{
 			$this->JsonData['status'] = 'error';
-			$this->JsonData['status'] = 'Server failure, Please try again later.';
+			$this->JsonData['status'] = __('messages.ERR_SAVE_EXM_ERROR_MESSAGE');
 		}
 
 		return response()->json($this->JsonData);

@@ -78,30 +78,29 @@ class LoginController extends Controller
 			  	{
 		            $this->JsonData['status'] = 'success';
 		            $this->JsonData['url'] 	  = '/admin/dashboard';
-	            	$this->JsonData['msg'] 	  = 'login successfully.';
+	            	$this->JsonData['msg'] 	  = __('messages.ERR_STR_LOGIN_SUCCESSFULLY_MESSAGE');
 		        }
 		        else
 		        {
 		        	//wrong email entered
 				    $this->JsonData['status'] ='error';
-	            	$this->JsonData['msg'] 	  ='Entered credentials is incorrect.';
+	            	$this->JsonData['msg'] 	  = __('messages.ERR_STR_CREDENTIALS_ERROR_MESSAGE');
 		        }
 		    }
 		    else
 		    {
 		    	$this->JsonData['status'] ='error';
-	            $this->JsonData['msg'] 	  ='Entered credentials is incorrect.';
+	            $this->JsonData['msg'] 	  = __('messages.ERR_STR_CREDENTIALS_ERROR_MESSAGE');
 		    }
 		}
 		else{
 			$this->JsonData['status'] ='error';
-            $this->JsonData['msg'] 	  ='Please enter a data';
+            $this->JsonData['msg'] 	  = __('messages.ERR_STR_EMPTY_FIELD_ERROR_MESSAGE');
 		}
     	return response()->json($this->JsonData);
     }
 
     public function forgotpassword(){
-    	// dd(Hash::make('admin123'));
     	return view('admin.auth.forgotPassword');
     }
 
@@ -116,7 +115,7 @@ class LoginController extends Controller
 		  	if (empty($arrUserData) && sizeof($arrUserData) == 0) 
 		  	{
 			    $this->JsonData['status'] ='error';
-            	$this->JsonData['msg'] 	  ='Please enter valid Email Id';
+            	$this->JsonData['msg'] 	  = __('messages.ERR_STR_EMAILID_ERROR_MESSAGE');
 		  	}
 		  	else
 		  	{
@@ -134,7 +133,7 @@ class LoginController extends Controller
 				
 				$this->JsonData['status'] = 'success';
 				$this->JsonData['url'] 	  = '/admin/login';
-            	$this->JsonData['msg'] 	  = 'Password reset link has sent to your mail address.';
+            	$this->JsonData['msg'] 	  =  __('messages.ERR_RESET_PASSWORD_MESSAGE');
 		  	}
 		  	
 		  	return response()->json($this->JsonData);
@@ -183,10 +182,10 @@ class LoginController extends Controller
 				PasswordReset::where('token',$strToken)->delete();
 				$this->JsonData['status'] = 'success';
 	            $this->JsonData['url'] 	  = '/admin/login';
-            	$this->JsonData['msg'] 	  = 'Password has been updated successfully.';
+            	$this->JsonData['msg'] 	  = __('messages.ERR_STR_PASSWORD_SUCCESS_MESSAGE');
 		  	}else{
 		  		$this->JsonData['status'] ='error';
-            	$this->JsonData['msg']    ='Token is invalid';
+            	$this->JsonData['msg']    = __('messages.ERR_STR_TOKEN_ERROR_MESSAGE');
 		  	}
 
 		}
