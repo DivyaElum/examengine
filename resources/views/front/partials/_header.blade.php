@@ -8,9 +8,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="base-path" content="{{ url('/') }}">
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-<title>@yield('title') | <?php echo $siteSetting->site_title ?? 'MSC | Managed Services Council'; ?></title>
-<!-- <title>@yield('title') | <?php echo $siteSetting->site_title ?? config('app.name'); ?></title> -->
-<!-- <title></title> -->
+<title>@yield('title') | <?php echo $siteSetting->site_title ?? config('app.name'); ?></title>
 
 <script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
@@ -19,8 +17,9 @@
 <!-- Bootstrap core CSS -->
 <link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet">
 <!-- Style CSS -->
-<link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('/css/owl.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('/css/style.css') }}" rel="stylesheet" type="text/css">
+
 <script type="text/javascript">
   $.ajaxSetup({
     headers: {
@@ -28,15 +27,17 @@
     }
   });
 </script>
+
 @yield('styles')
+
 <style type="text/css">
-.login-banner h1 {font-size: 50px !important;}
-.userName a {color: #fff;text-decoration: none;}
-.userText{color: red;}
+  .login-banner h1 {font-size: 50px !important;}
+  .userName a {color: #fff;text-decoration: none;}
+  .userText{color: red;}
 </style>
 </head>
 <body class="drawer drawer--right drawer--navbarTopGutter">
-<div class="first-header">
+  <div class="first-header">
   <div class="top-bar">
     <div class="container">
       <div class="top-left">
@@ -85,7 +86,4 @@
     <div class="toggle-menu"> <span></span> </div>
   </div>
   </div>
-</div>
-<!--/  Header End  -->  
-
-<!--/ login banner end  --->
+  </div>

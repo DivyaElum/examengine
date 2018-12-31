@@ -6,7 +6,7 @@
 		<div class="dashboardTitle">Dashboard view</div>
 		<div class="dashboardUser_bx">
 			@if(auth()->check())
-			<div class="userName"><a href="/dashboard">{{$arrUserData->information->first_name}}  {{$arrUserData->information->last_name}}</a></div>
+			<div class="userName"><a href="/dashboard">{{ ucfirst($arrUserData->information->first_name) }} {{ucfirst($arrUserData->information->last_name)}}</a></div>
 			@endif
 			<!-- <div class="userId">User id : #211090</div> -->
 		</div>
