@@ -41,8 +41,8 @@ class ForgotPasswordController extends Controller
 		  	//dd($arrUserData);
 		  	if (!$arrUserData) {
 		  		//wrong email entered
-			    $this->JsonData['status'] ='error';
-            	$this->JsonData['msg'] 	  ='Please enter valid Email Id';
+			    $this->JsonData['status'] = 'error';
+            	$this->JsonData['msg'] 	  = __('messages.ERR_STR_ERR_FROM_EMAIL_MESSAGE');
 		  	}else{
 		  		$intId = $arrUserData->id;
 		  		$strEmail = $arrUserData->email;
@@ -59,7 +59,7 @@ class ForgotPasswordController extends Controller
 				]);
                 $this->JsonData['status'] = 'success';
 				$this->JsonData['url']    = '/signup';
-                $this->JsonData['msg']    = 'Password reset link has sent to your mail address.';
+                $this->JsonData['msg']    = __('messages.ERR_RESET_PASSWORD_MESSAGE');
             	
 		  	}
 		  	return response()->json($this->JsonData);

@@ -101,14 +101,14 @@ class RegisterController extends Controller
             }else{
                  DB::rollBack();
                 $this->JsonData['status']   ='error';
-                $this->JsonData['msg']      = __('messages.ERR_SAVE_MEM_ERROR_MESSAGE');;
+                $this->JsonData['msg']      = __('messages.ERR_SAVE_MEM_ERROR_MESSAGE');
             }
         }
         else
         {
              DB::rollBack();
             $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      = __('messages.ERR_SAVE_MEM_ERROR_MESSAGE');;
+            $this->JsonData['msg']      = __('messages.ERR_SAVE_MEM_ERROR_MESSAGE');
         }
         return response()->json($this->JsonData);
     }
@@ -140,7 +140,7 @@ class RegisterController extends Controller
             {
                 $this->JsonData['status'] = 'success';
                 $this->JsonData['url']    = '/admin/dashboard';
-                $this->JsonData['msg']    = 'login successfully.';
+                $this->JsonData['msg']    = '';
             }
             else
             {
@@ -151,7 +151,7 @@ class RegisterController extends Controller
         }
         else{
             $this->JsonData['status'] ='error';
-            $this->JsonData['msg'] ='Please enter a data';
+            $this->JsonData['msg'] = __('messages.ERR_STR_EMPTY_FIELD_ERROR_MESSAGE');
         }
         return response()->json($this->JsonData);
 
