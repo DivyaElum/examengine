@@ -19,13 +19,19 @@ $(document).ready(function()
 	{ 	
 		enableFiltering: true, 
 	 	buttonWidth: '100%',
+	 	nonSelectedText: 'Select Categories',
 	 	onChange: function(option, checked, select) 
 	 	{
        		setDynamicQuesions();
     	}
 	});
 
-	$('#exam_questions').multiselect({ enableFiltering: true, buttonWidth: '100%' });
+	$('#exam_questions').multiselect(
+	{ 
+		enableFiltering: true, 
+		buttonWidth: '100%', 
+		nonSelectedText: 'Select Questions' 
+	});
 })
 
 
