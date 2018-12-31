@@ -12,8 +12,18 @@
 		</div>
 		<div class="dbMenus">
 			<ul>
-				<li><a href="/course/course-listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a></li>
-				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> View Profile</a></li>
+				<li class="{{ active('dashboard') }}" >
+					<a href="/dashboard"><i class="fa fa-caret-right" aria-hidden="true"></i> Dashboard</a>
+				</li>
+				
+				<li class="{{ active('course/course-listing') }}" >
+					<a href="/course/course-listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a>
+				</li>
+				
+				<li class="" >
+					<a href="javascript:void(0)"><i class="fa fa-caret-right" aria-hidden="true"></i> View Profile</a>
+				</li>
+
 				<!-- <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Account</a></li>
 				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Video Courses</a></li>
 				<li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> PDF files</a></li>
