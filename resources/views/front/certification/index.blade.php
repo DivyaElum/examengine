@@ -22,7 +22,8 @@
 <div class="bodyContent clearfix">
 	<div class="container">
 		<div class="row">
-			@php 
+			@if(count($arrCerficationList) > 0)
+			@php
 			foreach ($arrCerficationList as $key => $row) {@endphp
 				<div class="col-md-4 col-sm-6">
 					<div class="card">
@@ -42,6 +43,9 @@
 			@php 
 				}
 			@endphp
+			@else
+				<h2 class="text-center">Course Not Available</h2>
+			@endif
 			<!-- <div class="loadMore_wraper text-center clearfix">
 				<a href="javascriptVoid(0);" class="small_btn yellow">Load More...</a>				
 			</div> -->
