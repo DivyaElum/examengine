@@ -66,10 +66,10 @@ class ResetPasswordController extends Controller
 				PasswordReset::where('token',$strToken)->delete();
 				$this->JsonData['status'] = 'success';
 	            $this->JsonData['url'] 	  = '/signup';
-            	$this->JsonData['msg'] 	  = 'Password has been updated successfully.';
+            	$this->JsonData['msg'] 	  = __('messages.ERR_STR_PASSWORD_SUCCESS_MESSAGE');
 		  	}else{
 		  		$this->JsonData['status'] ='error';
-            	$this->JsonData['msg']    ='Token is invalid';
+            	$this->JsonData['msg']    = __('messages.ERR_STR_TOKEN_ERROR_MESSAGE');
 		  	}
 		}
 

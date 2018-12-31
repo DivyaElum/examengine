@@ -52,7 +52,7 @@
 	              			</div>
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Question Category <span style="color: red">*</span></label><br>
+				                  	<label for="">Question Categories <span style="color: red">*</span></label><br>
 					                  	<select name="category[]" multiple="multiple" id="category" class="form-control" data >
 					                  		@if(!empty($categories))
 					                  			@foreach($categories as $key => $category)

@@ -66,10 +66,10 @@
 				Route::post('/submitResult','ExamController@submit')->name('exam.submit');
 				Route::post('/updateExamResultStatus','ExamController@updateExamResultStatus')->name('exam.update.status');
 				
-				Route::get('/exam-book/{id}', 'ExamController@examBook')->name('exam.book');
-				Route::post('/loadEvent', 'ExamController@events')->name('exam.book');
-				Route::post('/getExampSlot', 'ExamController@getExampSlot')->name('exam.book');
-				Route::post('/bookExamSlot', 'ExamController@bookExamSlot')->name('exam.book');
+				Route::get('/exam-book/{id}', 'ExamController@examBook');
+				Route::post('/loadEvent', 'ExamController@events');
+				Route::post('/getExampSlot', 'ExamController@getExampSlot');
+				Route::post('/bookExamSlot', 'ExamController@bookExamSlot');
 			});
 			Route::get('/logout', 'Auth\LoginController@logout');			//logout
 			Route::post('/logout', 'Auth\LoginController@logout');
