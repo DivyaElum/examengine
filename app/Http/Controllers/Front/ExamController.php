@@ -63,6 +63,7 @@ class ExamController extends Controller
 			$course = $exam['object'];
 			$this->ViewData['course'] = $course;
 			$this->ViewData['exam']   =  $this->BaseModel->find($course->exam_id);
+			
 			$this->ViewData['exam_questions'] = $this->ExamQuestionsModel
 													 ->with(['repository','category'])
 													 ->where('exam_id',$course->exam_id)
@@ -315,7 +316,7 @@ class ExamController extends Controller
 				// build category wise result
 				$resultBag['categories'] = [];
 				foreach ($arrCategoriesWithExam as $arrCategoryWithExamKey => $arrCategoryWithExam) 
-				{	
+				{
 					$resultBag['categories'][$arrCategoryWithExamKey]['category_name'] 	 = $arrCategoryWithExam['category_name'];
 
 					$resultBag['categories'][$arrCategoryWithExamKey]['category_id'] 	 = $arrCategoryWithExamKey;

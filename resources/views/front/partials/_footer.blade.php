@@ -55,9 +55,9 @@
 	</div>
 </footer>	
 <!--/  Jquery.min  --> 
-<script src="{{ asset('js/back-to-top.js') }}"></script> 
 <script src="{{asset('js/owl.carousel.min.js')}}"></script>
-<script src="{{asset('js/owl.js')}}"></script>
+{{-- <script src="{{ asset('js/back-to-top.js') }}"></script>  --}}
+{{-- <script src="{{asset('js/owl.js')}}"></script> --}}
 <script src="{{ asset('js/custom.js') }}"></script>
 @yield('scripts')
 </body>
