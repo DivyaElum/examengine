@@ -65,18 +65,18 @@ class LoginController extends Controller
             {
                 $this->JsonData['status'] = 'success';
                 $this->JsonData['url']    = '/dashboard';
-                $this->JsonData['msg']    = 'login successfully.';
+                $this->JsonData['msg']    = 'Login successfully.';
             }
             else
             {
                 //wrong email entered
                 $this->JsonData['status'] ='error';
-                $this->JsonData['msg']    ='Entered  credentials is incorrect...';
+                $this->JsonData['msg']    ='Invalid Email Id and Password';
             }
         }
         else{
-            $this->JsonData['status'] ='error';
-            $this->JsonData['msg'] ='Please enter a data';
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Please enter a data';
         }
         return response()->json($this->JsonData);
     }

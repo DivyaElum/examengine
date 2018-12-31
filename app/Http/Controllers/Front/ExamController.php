@@ -414,8 +414,8 @@ class ExamController extends Controller
 			}
 		}
 
-		return \Response::json($events);
-		// return response()->json($events);
+		//return \Response::json($events);
+		return response()->json($events);
 	}
 
 	public function getExampSlot(Request $request)
