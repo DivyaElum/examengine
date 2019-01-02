@@ -209,7 +209,6 @@ class ExamController extends Controller
 				// check answers for checkbox
 				if (!empty($request->correct['checkbox']) && sizeof($request->correct['checkbox']) > 0) 
 				{
-					dd('checkbox');
 					foreach ($request->correct['checkbox'] as $checkBoxKey => $checkbox) 
 					{
 
