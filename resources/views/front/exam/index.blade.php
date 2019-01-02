@@ -59,7 +59,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
 <script type="">
 $(document).ready(function() {
-	var examId = '{{ $exam_id }}';
+	var examId 	  = '{{ base64_encode(base64_encode($exam_id)) }}';
+	var course_id = '{{ $course_id }}';
 	var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
@@ -67,9 +68,9 @@ $(document).ready(function() {
 		
 	var calendar = $('#calendar').fullCalendar({
 			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
+				left	: 'prev,next today',
+				center 	: 'title',
+				right	: 'month,agendaWeek,agendaDay'
 			},
 			selectable: true,
 			selectHelper: true,
@@ -83,10 +84,10 @@ $(document).ready(function() {
 		eventRender: function (event, element) {
 	        element.click(function() {
 				 $.ajax({
-		            url: '/exam/getExampSlot/',
-		            type: 'GET',
+		            url		: '/exam/getExampSlot/',
+		            type 	: 'GET',
 		            dataType: 'json',
-		            data: {
+		            data : {
 	                	id: event.id
 	            	},
 	            	success: function(response) {
@@ -99,13 +100,13 @@ $(document).ready(function() {
 		editable: false,
 		events: function(start, end, timezone, callback) {
 	        $.ajax({
-	            url: '/exam/loadEvent/',
-	            type: 'GET',
+	            url		: '/exam/loadEvent/',
+	            type 	: 'GET',
 	            dataType: 'json',
-	            data: {
-	                start: start.format(),
-	                end: end.format(),
-	                id: examId
+	            data 	: {
+	                start : start.format(),
+	                end   : end.format(),
+	                id 	  : examId
 	            },
 	            success: function(doc) {
 	                var events = [];
@@ -126,8 +127,9 @@ $(document).ready(function() {
 	
 });
 $(".btnBook").click(function(){
-	var userId = "{{ base64_encode(base64_encode($arrUserData->id)) }}";
-	var examId = '{{ base64_encode(base64_encode($exam_id)) }}';
+	var userId   = "{{ base64_encode(base64_encode($arrUserData->id)) }}";
+	var examId   = '{{ base64_encode(base64_encode($exam_id)) }}';
+	var courseId = '{{ base64_encode(base64_encode($course_id)) }}';
 	var slotTime = $('input[name=slot]:checked').val();
 	if(slotTime){
 		$.ajax({
@@ -137,7 +139,7 @@ $(".btnBook").click(function(){
 		    data: {
 		        exam_id   : examId,
 		        user_id   : userId,
-		        course_id : '1',
+		        course_id : courseId,
 		        slot_time : slotTime
 		    },
 		    success: function(response) {

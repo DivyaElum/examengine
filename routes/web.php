@@ -70,8 +70,8 @@
 				Route::post('/updateExamResultStatus','ExamController@updateExamResultStatus')->name('exam.update.status');
 				
 				Route::get('/exam-book/{id}', 'ExamController@examBook');
-				Route::post('/loadEvent', 'ExamController@events');
-				Route::post('/getExampSlot', 'ExamController@getExampSlot');
+				Route::get('/loadEvent', 'ExamController@events');
+				Route::get('/getExampSlot', 'ExamController@getExampSlot');
 				Route::post('/bookExamSlot', 'ExamController@bookExamSlot');
 			});
 			Route::get('/logout', 'Auth\LoginController@logout');			//logout

@@ -32,7 +32,8 @@ class ExamController extends Controller
  		ExamQuestionsModel 	$ExamQuestionsModel,
  		QuestionOptionsAnswer $QuestionOptionsAnswer,
  		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel,
- 		QuestionCategoryModel $QuestionCategoryModel
+ 		QuestionCategoryModel $QuestionCategoryModel,
+ 		CourseModel $CourseModel
  	)
  	{
  		$this->BaseModel 		  = $ExamModel;
@@ -43,6 +44,7 @@ class ExamController extends Controller
  		$this->QuestionOptionsAnswer = $QuestionOptionsAnswer;
  		$this->ExamResultCategoryWiseModel  = $ExamResultCategoryWiseModel;
  		$this->QuestionCategoryModel  = $QuestionCategoryModel;
+ 		$this->CourseModel  = $CourseModel;
 
 
  		$this->ViewData = [];
@@ -80,50 +82,14 @@ class ExamController extends Controller
 	}
 
 	public function examBook($endId)
-	{
-		// $events = [];
- 		//       $data = ExamSlotModel::with(['exam'])->get();
-  		//       $intI = '0';
-  		//       foreach ($data as $key => $value) 
-  		//       {
-
-  		//       	$strData = json_decode($value->time);
-  		//       	$days = self::getAllDaysInAMonth(date('Y'), date('m'), $value->day);
-
-		// 	foreach ($days as $day) 
-		// 	{
-  		//       		$start_time =  $day->format('Y-m-d').' '.$strData['0']->start_time;
-  		//       		$end_time   =  $day->format('Y-m-d').' '.$strData['0']->end_time;
-				
-		// 		if (Date('Y-m-d') < $day->format('Y-m-d')) 
-		// 		{
-		// 			//$strExamTitle = $value->exam->title;
-		// 			$strExamTitle = 'Examp';
-		// 			$events[] = Calendar::event(
-		//                 $strExamTitle,
-		//                 true,
-		//                 new \DateTime($start_time),
-		//                 new \DateTime($end_time),
-		//                 null,
-		//                 [
-		//                     'color' => '#f05050',
-		//                     'url' 	=> 'pass here url and any route',
-		//                 ]
-		//             );
-		// 		}
-		// 	}
-  		//       }
-  		//       $calendar = Calendar::addEvents($events);
-       
+	{       
 		$this->ViewData['page_title']    = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']   = $this->ModuleTitle;
         $this->ViewData['moduleAction']  = str_plural($this->ModuleTitle);
         $this->ViewData['modulePath']    = $this->ModulePath;
-        $this->ViewData['exam_id']    	 = $endId;
-
-        // $this->ViewData['calendar']      = $calendar;
-        // $this->ViewData['calendarData']  = $data;
-
+        $this->ViewData['course_id']     = $endId;
+        $this->ViewData['exam_id']       = $this->CourseModel->where('id', base64_decode(base64_decode($endId)))->pluck('exam_id')->first();
+        
         return view($this->ModuleView.'index', $this->ViewData);
 	}
 
@@ -375,7 +341,6 @@ class ExamController extends Controller
 		
 		$events = [];
         $data = ExamSlotModel::with(['exam'])->where('exam_id', $intId)->get();
-        
         foreach ($data as $key => $value) 
 	      {
 	      	$strData = json_decode($value->time);

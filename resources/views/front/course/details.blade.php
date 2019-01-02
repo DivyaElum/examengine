@@ -27,7 +27,7 @@
 						<h3>Prerequisites Listing</h3>
 						<hr />
 						<div class="row">
-							<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($exam_id))) }}" class="btn btn-primary">Book Exam</a>
+							<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
 							<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span><br>
 							@php 
 							foreach($arrPrerequisites as $row) { @endphp
