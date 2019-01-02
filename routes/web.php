@@ -150,4 +150,9 @@
 		Route::get('news-letter/getNewsLetter', 'NewsLetterController@getNewsLetter');
 		Route::post('news-letter/changeStatus', 'NewsLetterController@changeStatus');
 		Route::resource('news-letter', 'NewsLetterController');	
+		
+		//Voucher routes
+		Route::get('voucher/getVoucher', 'VoucherController@getVoucher');
+		Route::post('voucher/changeStatus', 'VoucherController@changeStatus');
+		Route::resource('voucher', 'VoucherController');	
 	});

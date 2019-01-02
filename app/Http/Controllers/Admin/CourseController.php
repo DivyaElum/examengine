@@ -218,6 +218,16 @@ class CourseController extends Controller
         $this->JsonData['status']   = 'error';
         $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
 
+        $id = base64_decode(base64_decode($request->id));
+
+        $flag = $this->_checkDependency($id);
+        if ($flag) 
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg']    = 'Can\'t change status, This course has been purchased.';
+            return response()->json($this->JsonData);
+            exit;
+        }
         if ($request->has('id') && $request->has('status') ) 
         {
             $id = base64_decode(base64_decode($request->id));
