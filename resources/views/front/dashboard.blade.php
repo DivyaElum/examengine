@@ -5,46 +5,39 @@
 @stop
 
 @section('styles')
+	{{-- <link href="{{ asset('/css/dashboard_style.css') }}" rel="stylesheet" type="text/css"> --}}
 	<style type="text/css">
 		.titleWrap h3 a {color: #fff;text-decoration: none;}
 
-		#graph{
-		  border-radius: 5px 5px 0 0;
-		  padding-top: 50px;
-		  margin: 25px auto 0;
-		  height: 100%;
-		  background-color: #fff;
-		  svg{width: 100% !important;}
-		  .slice{stroke: white; stroke-width: 5px;}
-		  .slice:hover{opacity: .5;}
-		  .labels text{background-color: #333; width: 200px;}
+	/*
+		D3 styles
+	*/	
+		#chart {
+		  height: 360px;
+		  position: relative;
+		  width: 360px;
 		}
-
-		#adjust{
-		  outline: transparent;
-		  padding: 25px 0;
-		  background-color: #eee;
+		.tooltip {
+		  background: #eee;
+		  box-shadow: 0 0 5px #999999;
+		  color: #333;
+		  display: none;
+		  font-size: 12px;
+		  left: 130px;
+		  padding: 10px;
+		  position: absolute;
 		  text-align: center;
-		  line-height: 50px;
-		  button{padding: 10px 20px; text-transform: uppercase; letter-spacing: 5px; color: #fff; background: #333;   border: none; border-radius: 5px; font: 10px "avenir"; cursor: pointer;}
-		  button:focus{outline:none;}
-		  button:hover{ background: #222;}
-		  box-shadow: 0px 4px 6px #000;
-		  input{font-size: 18px; padding: 10px; width: 50px; text-align: center; color: #30AD63;}
-		}
-		svg{
-		    width: 100%;
-		    height: 100%;
-		}
-		path.slice{
-		    stroke-width:5px;
+		  top: 95px;
+		  width: 80px;
+		  z-index: 10;
 		}
 
-		polyline{
-		    stroke: #333;
-		    stroke-width: 1px;
-		    fill: none;
-		}
+ 	 	.legend {
+		    font-size: 12px;
+	  	}
+	  	rect {
+		    stroke-width: 2;
+		}              
 	</style>
 @stop
 
@@ -70,13 +63,17 @@
 									<hr>
 								</div>
 
+								<div class="col-md-12">
+									<center><div id="AllInOneChart"></div></center>
+								</div>
+
 								<div class="col-md-12" >
-									<h4>Exam Statistics Category Wise</h4>
+									<h4>Exam Statistics Course Wise</h4>
 									<hr>
 
 									<div class="form-group">
 										<label for="">Select Exam</label>
-										<select onchange="return bbuildCourseWiseCharts(this)" name="exam" class="form-control" id="exam">
+										<select onchange="return buildCourseWiseCharts(this)" name="exam" class="form-control" id="exam">
 											@if(!empty($exams) && sizeof($exams) > 0 )
 												<option value="" selected disabled >Please select</option>
 												@foreach($exams as $examKey => $exam)
@@ -84,12 +81,9 @@
 												@endforeach
 											@endif
 										</select>
-
-										<div id="adjust">
-										    Duration  <input type="textbox" id="duration"  value="500"> in milliseconds
-										    <br>
-									    	<button class="randomize">New Data</button> 
-									  	</div>
+									</div>
+									<div class="col-md-12">
+										<center><div id="CourseWiseChart"></div></center>
 									</div>
 								</div>
 							</div>
@@ -102,6 +96,6 @@
 @stop
 
 @section('scripts')
-	<script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 	<script type="text/javascript" src="{{ asset('js/front/dashboard/dashboard.js') }}"></script>
 @stop

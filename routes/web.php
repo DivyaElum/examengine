@@ -42,6 +42,7 @@
 			// dash board rotues
 			Route::get('/dashboard', 'Candidate\DashbordController@index');
 			Route::post('/dashboard/buildCourseWiseCharts', 'Candidate\DashbordController@buildCourseWiseCharts');
+			Route::get('/dashboard/buildAllInOneChart', 'Candidate\DashbordController@buildAllInOneChart');
 
 
 			// purchase course
