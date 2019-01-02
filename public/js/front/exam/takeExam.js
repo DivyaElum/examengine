@@ -87,7 +87,6 @@ function startTimer(element)
         // Output the result in an element with id="demo"
 
         
-
         console.log(hours + " hours : " + minutes + " min : " + seconds + ' sec');
         document.getElementById("demo").innerHTML = hours + " hours : " + minutes + " min : " + seconds + ' sec';
         

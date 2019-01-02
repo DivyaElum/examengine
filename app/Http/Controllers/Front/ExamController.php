@@ -356,34 +356,40 @@ class ExamController extends Controller
 
 			foreach ($days as $day) 
 			{
-				for($i=0;$i<count($strData);$i++)
-				{
-					$start_time =  $day->format('Y-m-d').' '.$strData[$i]->start_time;
-	      			$end_time   =  $day->format('Y-m-d').' '.$strData[$i]->end_time;
+				// for($i=0;$i<count($strData);$i++)
+				// {
+				// 	$start_time =  $day->format('Y-m-d').' '.$strData[$i]->start_time;
+	   //    			$end_time   =  $day->format('Y-m-d').' '.$strData[$i]->end_time;
 
-	      			$cstart_time = Carbon::parse($start_time);
-		      		$cend_time   = Carbon::parse($end_time);
+	   //    			$cstart_time = Carbon::parse($start_time);
+		  //     		$cend_time   = Carbon::parse($end_time);
 					
-					if (Date('Y-m-d') < $day->format('Y-m-d')) 
-					{
-						$eventsTemp['id'] 	 = $value->id;
-						$eventsTemp['title'] = $value->exam->title;
-						$eventsTemp['start'] = $start_time;
-						$eventsTemp['end']   = $end_time;
+				// 	if (Date('Y-m-d') < $day->format('Y-m-d')) 
+				// 	{
+				// 		$eventsTemp['id'] 	 = $value->id;
+				// 		$eventsTemp['title'] = $value->exam->title;
+				// 		$eventsTemp['start'] = $start_time;
+				// 		$eventsTemp['end']   = $end_time;
 						
-						// for($i = 1; $i <= 24; $i++) 
-						// {
-						// 	$tempStart = Carbon::parse($start_time);
-						// 	$tempEnd = Carbon::parse($end_time);
+				// 		// for($i = 1; $i <= 24; $i++) 
+				// 		// {
+				// 		// 	$tempStart = Carbon::parse($start_time);
+				// 		// 	$tempEnd = Carbon::parse($end_time);
 
-						// 	$eventsTemp['id'] 	 = $value->id;
-						// 	$eventsTemp['title'] = $value->exam->title;
-						// 	$eventsTemp['start'] = $tempStart->addWeek($i)->format('Y-m-d H:i:s');
-						// 	$eventsTemp['end']   = $tempEnd->addWeek($i)->format('Y-m-d H:i:s');
-						// }
-						$events[] = $eventsTemp;
-					}
-				}
+				// 		// 	$eventsTemp['id'] 	 = $value->id;
+				// 		// 	$eventsTemp['title'] = $value->exam->title;
+				// 		// 	$eventsTemp['start'] = $tempStart->addWeek($i)->format('Y-m-d H:i:s');
+				// 		// 	$eventsTemp['end']   = $tempEnd->addWeek($i)->format('Y-m-d H:i:s');
+				// 		// }
+				// 		$events[] = $eventsTemp;
+				// 	}
+				// }
+
+				$eventsTemp['id'] 	 = $value->id;
+				$eventsTemp['title'] = $value->exam->title;
+				$eventsTemp['start'] = $day->format('Y-m-d H:i:s');
+				$eventsTemp['end']   = $day->format('Y-m-d H:i:s');
+				$events[] = $eventsTemp;
 			}
 		}
 
