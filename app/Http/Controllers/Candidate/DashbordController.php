@@ -70,15 +70,82 @@ class DashbordController extends Controller
       {
           $courseId = base64_decode(base64_decode($request->course_id));
           
-          $this->JsonData['examResult'] = $this->ExamResultModel
-                                                ->where('course_id', $courseId)
-                                                ->first();
+          $examResult = $this->ExamResultModel
+                             ->where('course_id', $courseId)
+                             ->first()
+                             ->toArray();
 
-          // build pie chart data
+        $this->JsonData['tooltip']['total_questions'] = $examResult['total_questions'];
+        $this->JsonData['tooltip']['total_attemted'] = $examResult['total_attempted'];
+        $this->JsonData['tooltip']['total_right'] = $examResult['total_right'];
+        $this->JsonData['tooltip']['total_wrong'] = $examResult['total_wrong'];
+        $this->JsonData['tooltip']['exam_status'] = ucfirst($examResult['exam_status']);
+
+        $total_pass_percetage = 0;
+        if (!empty($examResult['total_right'])) 
+        {
+          $total_pass_percetage = ($examResult['total_right']/$examResult['total_questions'])*100;
+        }
         
+        $total_fail_percetage = 0;
+        if (!empty($examResult['total_wrong'])) 
+        {
+          $total_fail_percetage = ($examResult['total_wrong']/$examResult['total_questions'])*100;
+        }
 
+        $this->JsonData['graph'] = 'pie';
+        $this->JsonData['dataset'][] = array('label' => 'Total Right', 'count' => $total_pass_percetage);
+        $this->JsonData['dataset'][] = array('label' => 'Total Wrong', 'count' => $total_fail_percetage);
 
-          return response()->json($this->JsonData);
+        return response()->json($this->JsonData);
       }
+    } 
+
+    public function buildAllInOneChart(Request $request)
+    {
+        $userId = auth()->user()->id;
+
+        $examResults = $this->ExamResultModel
+                           ->where('user_id', $userId)
+                           ->whereIn('exam_status', ['Pass', 'Fail'])
+                           ->get()
+                           ->toArray();
+
+        // total course attempted
+        $totalCourses = count($examResults);
+
+        $totalPassed = count(array_filter($examResults, function ($data)
+                            {
+                              if ($data['exam_status'] == 'Pass') 
+                              {
+                                return true;  
+                              }
+                            }));
+
+        $totalFailed = count(array_filter($examResults, function ($data)
+                            {
+                              if ($data['exam_status'] == 'Fail') 
+                              {
+                                return true;  
+                              }
+                            }));
+
+        $totalPassPercetage = 0;
+        if (!empty($totalPassed)) 
+        {
+          $totalPassPercetage = ($totalPassed/$totalCourses)*100;
+        }
+        
+        $totalFailPercetage = 0;
+        if (!empty($totalFailed)) 
+        {
+          $totalFailPercetage = ($totalFailed/$totalCourses)*100;
+        }
+
+        $this->JsonData['graph'] = 'pie';
+        $this->JsonData['dataset'][] = array('label' => 'Total Passed', 'count' => $totalPassPercetage);
+        $this->JsonData['dataset'][] = array('label' => 'Total Failed', 'count' => $totalFailPercetage);
+
+        return response()->json($this->JsonData);
     }
 }
