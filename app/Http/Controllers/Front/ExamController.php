@@ -419,11 +419,12 @@ class ExamController extends Controller
 	public function bookExamSlot(Request $request){
 		DB::beginTransaction();
 
-        $object          	 = new $this->BookExamSlotModel;
-        $object->exam_id   	 = base64_decode(base64_decode($request->exam_id));
-        $object->user_id   	 = base64_decode(base64_decode($request->user_id));
-        $object->course_id   = base64_decode(base64_decode($request->course_id));
-        $object->slot_time   = $request->slot_time;
+        $object          	 		= new $this->BookExamSlotModel;
+        $object->exam_id   	 		= base64_decode(base64_decode($request->exam_id));
+        $object->user_id   	 		= base64_decode(base64_decode($request->user_id));
+        $object->course_id   		= base64_decode(base64_decode($request->course_id));
+        $object->slot_time   		= $request->slot_time;
+        $object->booking_attempt   	= '1';
         
         if($object->save())
         {
