@@ -84,6 +84,7 @@ class ExamController extends Controller
 	public function examBook($endId)
 	{
 		$courseId = base64_decode(base64_decode($endId));
+		
 		$this->ViewData['page_title']    = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']   = $this->ModuleTitle;
         $this->ViewData['moduleAction']  = str_plural($this->ModuleTitle);

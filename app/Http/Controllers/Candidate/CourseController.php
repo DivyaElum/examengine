@@ -11,8 +11,9 @@ use App\Models\CourseModel;
 use App\Models\TransactionModel;
 use App\Models\PrerequisiteModel;
 use App\Models\CoursePreStatus;
-use Illuminate\Support\Facades\Hash;
+use App\Models\BookExamSlotModel;
 
+use Illuminate\Support\Facades\Hash;
 use URL;
 use Session;
 use DB;
@@ -30,7 +31,8 @@ class CourseController extends Controller
         CourseModel       $CourseModel,
         TransactionModel  $TransactionModel,
         PrerequisiteModel $PrerequisiteModel,
-        CoursePreStatus   $CoursePreStatus
+        CoursePreStatus   $CoursePreStatus,
+        BookExamSlotModel   $BookExamSlotModel
     )
     {
 
@@ -38,7 +40,8 @@ class CourseController extends Controller
     	$this->UserModel 		     = $UserModel;
     	$this->TransactionModel  = $TransactionModel;
       $this->PrerequisiteModel = $PrerequisiteModel;
-    	$this->CoursePreStatus   = $CoursePreStatus;
+      $this->CoursePreStatus   = $CoursePreStatus;
+    	$this->BookExamSlotModel   = $BookExamSlotModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -56,6 +59,33 @@ class CourseController extends Controller
     public function index($indEncId)
    	{
       $intId     = base64_decode(base64_decode($indEncId));
+
+      $bookExam = $this->BookExamSlotModel
+                              ->where('user_id' , auth()->user()->id)
+                              ->where('course_id', $intId)
+                              ->first();
+
+      $this->ViewData['bookingStatus'] = [];
+      
+      if (empty($bookExam) && $bookExam != 'null') 
+      {
+          $this->ViewData['bookingStatus'] = 'visible';
+      }
+      if (!empty($bookExam) && $bookExam['pass'] != 1)
+      {
+          $this->ViewData['bookingStatus'] = 'visible';
+      }
+      if (!empty($bookExam) && $bookExam['booking_attempt'] >= 1 && $bookExam['pass'] != 1)
+      {
+          $this->ViewData['bookingStatus'] = 'invisible';
+      }
+      if (!empty($bookExam) && $bookExam['pass'] == 1)
+      {
+          $this->ViewData['bookingStatus'] = 'invisible';
+      }
+
+
+
       $arrCourse = $this->CourseModel->where('id', $intId)->first();
 
       $enc_prerequisites = $this->CourseModel
@@ -64,7 +94,7 @@ class CourseController extends Controller
                                 ->first();
 
       $this->ViewData['arrCourse'] = $arrCourse;
-      $this->ViewData['exam_id']   = $arrCourse->exam_id; 
+      $this->ViewData['exam_id']   = $arrCourse->exam_id;
 
       if(!empty($enc_prerequisites) && ($enc_prerequisites != 'null'))
       {
