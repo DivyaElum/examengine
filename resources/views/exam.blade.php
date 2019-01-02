@@ -24,7 +24,7 @@
         </div>        
         <div class="container" id="exam" style=" display: none; padding: 10px">
             <div class="row">
-                <form method="POST" id="examForm" action="{{ route('exam.submit') }}">
+                <form method="POST" id="examForm"  action="{{ route('exam.submit') }}">
                     @csrf
 
                         <input type="hidden" name="user_id" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
@@ -284,7 +284,7 @@
 												</div>
 												<div class="col-sm-6 submit_button">
 													<div class="button" style="float: right;">
-														<button class="btn btn-success" >Submit Exam</button>
+														<button onclick="return submitResult()" class="btn btn-success" >Submit Exam</button>
 													</div>
 												</div>
 											</div>											
@@ -323,8 +323,8 @@
         <script type="text/javascript">
         	window.addEventListener('load', function ()
         	{
-        		// document.addEventListener('keydown', event=>event.preventDefault());
-        		// document.addEventListener('contextmenu', event=>event.preventDefault());
+        		document.addEventListener('keydown', event=>event.preventDefault());
+        		document.addEventListener('contextmenu', event=>event.preventDefault());
         		
         		Date.prototype.addHours = function(h)
         		{
@@ -333,7 +333,7 @@
         		}
         	})
         </script>
-
-        <script src="{{ asset('/js/front/exam/takeExam.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/front/exam/takeExam.js') }}"></script>
     </body>
 </html>

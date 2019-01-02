@@ -394,6 +394,10 @@ class ExamController extends Controller
 
 			return view('front.exam.result', ['resultBag' => $resultBag]);
 		}
+		else
+		{
+			abort(404);
+		}
 	}
 
 	public function events(Request $request)
