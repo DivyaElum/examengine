@@ -42,7 +42,6 @@
 
 	              							}
 	              						@endphp 
-	              						
 										<div class="title" style="background-image: url({{ $featured }})">
 											<div class="titleWrap">
 												<h3><a href="{{url('/course/details/'.base64_encode(base64_encode($row->id)))}}" target="_blank">{{ $row->title}}</a></h3>
