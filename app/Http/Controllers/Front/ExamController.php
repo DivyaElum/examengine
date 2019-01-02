@@ -121,7 +121,6 @@ class ExamController extends Controller
 
 	public function submit(Request $request)
 	{
-
 		$optionsAnswers = $this->QuestionOptionsAnswer->get();
 
 		if (!empty($request->result_id)) 
@@ -371,20 +370,18 @@ class ExamController extends Controller
 						$eventsTemp['title'] = $value->exam->title;
 						$eventsTemp['start'] = $start_time;
 						$eventsTemp['end']   = $end_time;
-						$events[] 			 = $eventsTemp;
 						
-						for($i = 1; $i <= 24; $i++) 
-						{
-							$tempStart = Carbon::parse($start_time);
-							$tempEnd = Carbon::parse($end_time);
+						// for($i = 1; $i <= 24; $i++) 
+						// {
+						// 	$tempStart = Carbon::parse($start_time);
+						// 	$tempEnd = Carbon::parse($end_time);
 
-							$eventsTemp['id'] 	 = $value->id;
-							$eventsTemp['title'] = $value->exam->title;
-							$eventsTemp['start'] = $tempStart->addWeek($i)->format('Y-m-d H:i:s');
-							$eventsTemp['end']   = $tempEnd->addWeek($i)->format('Y-m-d H:i:s');
-							$events[] = $eventsTemp;
-
-						}
+						// 	$eventsTemp['id'] 	 = $value->id;
+						// 	$eventsTemp['title'] = $value->exam->title;
+						// 	$eventsTemp['start'] = $tempStart->addWeek($i)->format('Y-m-d H:i:s');
+						// 	$eventsTemp['end']   = $tempEnd->addWeek($i)->format('Y-m-d H:i:s');
+						// }
+						$events[] = $eventsTemp;
 					}
 				}
 			}
@@ -416,9 +413,9 @@ class ExamController extends Controller
 		DB::beginTransaction();
 
         $object          	 = new $this->BookExamSlotModel;
-        $object->exam_id   	 = base64_decode(base64_decode(base64_decode(base64_decode($request->exam_id))));
+        $object->exam_id   	 = base64_decode(base64_decode($request->exam_id));
         $object->user_id   	 = base64_decode(base64_decode($request->user_id));
-        $object->course_id   = $request->course_id;
+        $object->course_id   = base64_decode(base64_decode($request->course_id));
         $object->slot_time   = $request->slot_time;
         
         if($object->save())
