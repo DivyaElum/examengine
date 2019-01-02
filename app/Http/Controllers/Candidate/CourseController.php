@@ -60,30 +60,25 @@ class CourseController extends Controller
    	{
       $intId     = base64_decode(base64_decode($indEncId));
 
+      // set book exam visibility status wise
       $bookExam = $this->BookExamSlotModel
                               ->where('user_id' , auth()->user()->id)
                               ->where('course_id', $intId)
                               ->first();
 
-      $this->ViewData['bookingStatus'] = [];
-      
-      if (!empty($bookExam) && $bookExam['booking_attempt'] > 1 && $bookExam['pass'] != 1)
-      {
-          $this->ViewData['bookingStatus'] = 'rescheduled';
-      }
-      if (!empty($bookExam) && $bookExam['booking_attempt'] == 1 && $bookExam['pass'] != 1)
-      {
-          $this->ViewData['bookingStatus'] = 'pending';
-      }
+      $this->ViewData['bookingStatus'] = [];  
       if (!empty($bookExam) && $bookExam['pass'] == 1)
       {
           $this->ViewData['bookingStatus'] = 'completed';
+      }
+      if (!empty($bookExam) && $bookExam['pass'] == 0)
+      {
+          $this->ViewData['bookingStatus'] = 'rescheduled';
       }
       if (empty($bookExam) && $bookExam != 'null') 
       {
           $this->ViewData['bookingStatus'] = 'new';
       }
-
 
 
       $arrCourse = $this->CourseModel->where('id', $intId)->first();

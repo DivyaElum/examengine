@@ -32,9 +32,7 @@
 								<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
 							@endif
 							
-							@if($bookingStatus == 'pending' )
-								<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span>
-							@endif
+							<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span>
 
 							@if(!empty($arrPrerequisites) && sizeof($arrPrerequisites) > 0)
 								@php 
