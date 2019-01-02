@@ -213,8 +213,9 @@ class ExamController extends Controller
 					{
 
 						$examQuestionsCheckbox = $this->ExamQuestionsModel
-								 			  ->with('repository')
+								 			  ->with(['repository','category'])
 								 			  ->find($checkBoxKey);
+						// dd($examQuestionsCheckbox);
 
 						if ($examQuestionsCheckbox) 
 						{
@@ -239,19 +240,26 @@ class ExamController extends Controller
 							}
 
 							//compare correct answers array
-							$result = array_diff($checkbox,  $questionCorrectOptionsCheckbox);
-							if (!empty($result) && sizeof($result) > 0) 
+							if (count($checkbox)==count($questionCorrectOptionsCheckbox))
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'category_id' => $examQuestionsRadio['category']['id'], 'status' => 0);
+								$result = array_diff($checkbox,  $questionCorrectOptionsCheckbox);
+								if (!empty($result) && sizeof($result) > 0) 
+								{
+									$statusBag[] = array('exam_id' => $checkBoxKey, 'category_id' => $examQuestionsCheckbox['category']['id'], 'status' => 0);
+								}
+								else
+								{
+									$statusBag[] = array('exam_id' => $checkBoxKey, 'category_id' => $examQuestionsCheckbox['category']['id'], 'status' => 1);
+								}
 							}
 							else
 							{
-								$statusBag[] = array('exam_id' => $checkBoxKey, 'category_id' => $examQuestionsRadio['category']['id'], 'status' => 1);
+								$statusBag[] = array('exam_id' => $checkBoxKey, 'category_id' => $examQuestionsCheckbox['category']['id'], 'status' => 0);
 							}
 						}
 					}	
 				}
-				
+
 				$categoryWiseBag = $statusBag;
 
 				$resultBag['total_attempted']  = count($statusBag);
