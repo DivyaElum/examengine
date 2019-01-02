@@ -18,7 +18,7 @@
             <div class="content">
                 <div class="title">
                     <a class="start-btn" href="javascript:void(0)" onclick="return startTimer(this)"  data-hours="{{ $exam->duration }}" >Click to start test</a>
-                    <p class="startText">Lorem Ipsum is ummy text</p>
+                    <p class="startText">Please do not refresh or close browser.</p>
                 </div>
             </div>
         </div>        
