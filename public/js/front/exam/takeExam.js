@@ -1,4 +1,4 @@
-var baseUrl = $('meta[name="base-path"]').attr('content')
+ var baseUrl = $('meta[name="base-path"]').attr('content')
 
 $(document).ready(function()
 {
