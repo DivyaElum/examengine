@@ -319,6 +319,7 @@
                 </form>
             </div>
         </div>
+
         <script type="text/javascript">
         	window.addEventListener('load', function ()
         	{
@@ -332,6 +333,7 @@
         		}
         	})
         </script>
+
         <script src="{{ asset('/js/front/exam/takeExam.js') }}"></script>
     </body>
 </html>
