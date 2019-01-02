@@ -83,14 +83,14 @@
 
               							}
               						@endphp 
-              						<img id="preview"  src="{{ $urlPath }}" alt="Featured Image" />
+              						<img id="preview"  src="{{ $urlPath }}" alt="Featured Image" width="10%"/>
               					</div>
               					<div class="form-group">
 				                  	<label for="site_logo">Site logo</label>
               						<input type="hidden" name="old_image" value="{{ $objectData->site_logo_image }}" id="old_image">
 				                  	<input type="file" name="site_logo" id="site_logo" value="" class="form-control">
 				                  	<?php if(isset($objectData->footer_text)){ ?>
-				                  		<img src="">
+				                  		<img src="" width="10%">
 				                  	<?php } ?>
 				                </div>
 	              			</div>

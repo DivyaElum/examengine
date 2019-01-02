@@ -1,11 +1,10 @@
 
 <header class="main-header">
     <a href="{{ url('/admin/dashboard') }}" class="logo">
-      <!-- <span class="logo-mini"><b><?php echo $siteSetting->site_title ?? config('app.name'); ?></span> -->
         @php
-        if(!empty($object->site_logo))
+        if(!empty($siteSetting->site_logo_image))
         {
-          $urlPath = url('/storage/'.$object->site_logo);
+          $urlPath = url('/storage/site-setting/thumbnails/'.$siteSetting->site_logo_image);
         }
         else
         {
@@ -13,7 +12,7 @@
 
         }
       @endphp 
-        <span class="logo-lg"><img id="logo" src="{{ $urlPath }}" alt="Featured Image" class="img-responsive" style="margin: 5px 0px;width: 200px;height: 45px;" /></span>
+        <span class="logo-lg"><img id="logo" src="{{ $urlPath }}" alt="Featured Image" class="img-responsive" style="margin: 4px 0px;" /></span>
     </a>
     <nav class="navbar navbar-static-top">
 
