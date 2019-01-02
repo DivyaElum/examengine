@@ -102,7 +102,8 @@
                     <input type="email" class="form-control" name="email_id" id="email_id" placeholder="Email Address" required="" >
                 </div>
                 <div class="form-group">
-                    <img src="{{asset('images/captcha-img.png')}}" class="img-responsive" alt="">
+                    <!-- <img src="{{asset('images/captcha-img.png')}}" class="img-responsive" alt=""> -->
+                    <div class="g-recaptcha" data-sitekey="6LfNzmEUAAAAAJRjKT7gifK_p5BoT6fdYoehVCNX"></div>
                 </div>
                 
                 <button type="submit" class="btn btn-default" id="btnSumit">Sign Up Now</button>
@@ -237,7 +238,8 @@
 
 @stop
 @section('scripts')
-
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src='https://www.google.com/recaptcha/api.js?render=6LclFYYUAAAAAA5l1pcfIW0oMxJFvac7wzFRstZ1'></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <script src="{{ asset('/js/front/dashboard/newsletter.js') }}" ></script>
