@@ -85,10 +85,10 @@ function startTimer(element)
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
         // Output the result in an element with id="demo"
-        console.log(hours);
-        console.log(minutes);
-        console.log(seconds);
 
+        
+
+        console.log(hours + " hours : " + minutes + " min : " + seconds + ' sec');
         document.getElementById("demo").innerHTML = hours + " hours : " + minutes + " min : " + seconds + ' sec';
         
         // If the count down is over, write some text 
