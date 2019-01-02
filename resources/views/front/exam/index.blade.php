@@ -129,12 +129,12 @@ $(document).ready(function() {
 $(".btnBook").click(function(){
 	var userId   = "{{ base64_encode(base64_encode($arrUserData->id)) }}";
 	var examId   = '{{ base64_encode(base64_encode($exam_id)) }}';
-	var courseId = '{{ base64_encode(base64_encode($course_id)) }}';
+	var courseId = '{{ $course_id }}';
 	var slotTime = $('input[name=slot]:checked').val();
 	if(slotTime){
 		$.ajax({
 		    url: '/exam/bookExamSlot/',
-		    type: 'GET',
+		    type: 'POST',
 		    dataType: 'json',
 		    data: {
 		        exam_id   : examId,
@@ -150,7 +150,7 @@ $(".btnBook").click(function(){
 		    		{
 		    			$('#submit_button').show();
 		    			window.location.href = document.referrer;
-		    		}, 3000)
+		    		}, 2000)
 	    		}else{
 	    			alert(response.msg);
 	    		}

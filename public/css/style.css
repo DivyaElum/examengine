@@ -771,7 +771,7 @@ h2.price span{
  	height: 74px;		
 	position: relative;
 }
-.card .cardContent p::after {
+/*.card .cardContent p::after {
     content: '...';
     position: absolute;
     right: 0;
@@ -780,7 +780,7 @@ h2.price span{
     display: block;
     background: white;
     padding: 0 5px;
-}
+}*/
 .card .cardContent .btnArrow{
 	display: block;
 	width: 100%;
@@ -879,6 +879,7 @@ h2.price span{
 	left: 0;
 	top: 0;
 	z-index: 0;
+	background-image: url('../images/certification_detail/certificaion_cover_img.jpg');
 }
 .certification_detail_container{
 	display: block;
