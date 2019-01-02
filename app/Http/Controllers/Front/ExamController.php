@@ -153,15 +153,16 @@ class ExamController extends Controller
 	}
 
 	public function submit(Request $request)
-	{
-		$result_id = base64_decode(base64_decode($request->result_id));
+	{		
 
 		$optionsAnswers = $this->QuestionOptionsAnswer->get();
 
-		if (!empty($result_id)) 
+		if (!empty($request->result_id)) 
 		{
+			$result_id = base64_decode(base64_decode($request->result_id));
 			$resultObject = $this->ExamResultModel->find($result_id);
 			$exam_id = $resultObject->exam_id;
+
 			$statusBag = [];
 			$resultBag = [];	
 			$resultBag['total_questions'] =  $this->BaseModel->where('id', $exam_id)
@@ -208,6 +209,7 @@ class ExamController extends Controller
 				// check answers for checkbox
 				if (!empty($request->correct['checkbox']) && sizeof($request->correct['checkbox']) > 0) 
 				{
+					dd('checkbox');
 					foreach ($request->correct['checkbox'] as $checkBoxKey => $checkbox) 
 					{
 
@@ -275,6 +277,7 @@ class ExamController extends Controller
 													})
 												);
 
+
 				$resultBag['percentage'] = (((int)$resultBag['total_right'])/((int)$resultBag['total_questions']))*100;
 
 				$resultBag['exam_status'] =  $resultBag['percentage'] >= 75 ? 'Pass' : 'Fail';
@@ -288,72 +291,71 @@ class ExamController extends Controller
 				$resultBag['exam_status'] 	= 'Fail';
 			}
 
-			// category wise result
-			if (!empty($statusBag) && sizeof($statusBag) > 0) 
+			// get each question categroy
+			$ExamQuestions = $this->ExamQuestionsModel->with(['category'])
+													 ->whereIn('id', $request->question_id)
+												   	->get(['category_id', 'id as question_id'])
+												   	->toArray();
+
+			// find how many categories used 
+			$uniqueExamIdWithCategories = array_unique(array_column($ExamQuestions, 'category_id'));
+
+			// find total question within category
+			$arrCategoriesWithExam = [];
+			foreach ($uniqueExamIdWithCategories as $uniqueExamIdWithCategoryKey => $uniqueExamIdWithCategory) 
 			{
-				// get each question categroy
-				$ExamQuestions = $this->ExamQuestionsModel->with(['category'])
-														 ->whereIn('id', $request->question_id)
-													   	->get(['category_id', 'id as question_id'])
-													   	->toArray();
-				// find how many categories used 
-				$uniqueExamIdWithCategories = array_unique(array_column($ExamQuestions, 'category_id'));
-
-				// find total question within category
-				$arrCategoriesWithExam = [];
-				foreach ($uniqueExamIdWithCategories as $uniqueExamIdWithCategoryKey => $uniqueExamIdWithCategory) 
-				{	
-					foreach ($ExamQuestions as $ExamQuestionKey => $ExamQuestion) 
-					{
-						if ($uniqueExamIdWithCategory == $ExamQuestion['category_id']) 
-						{
-							$arrCategoriesWithExam[$uniqueExamIdWithCategory]['questions_id'][] = $ExamQuestion['question_id'];
-							$arrCategoriesWithExam[$uniqueExamIdWithCategory]['category_name'] 	  = $ExamQuestion['category']['category_name'];
-						}
-					}	
-				}
-
-				// build category wise result
-				$resultBag['categories'] = [];
-				foreach ($arrCategoriesWithExam as $arrCategoryWithExamKey => $arrCategoryWithExam) 
+				foreach ($ExamQuestions as $ExamQuestionKey => $ExamQuestion) 
 				{
-					$resultBag['categories'][$arrCategoryWithExamKey]['category_name'] 	 = $arrCategoryWithExam['category_name'];
-
-					$resultBag['categories'][$arrCategoryWithExamKey]['category_id'] 	 = $arrCategoryWithExamKey;
-					
-					$resultBag['categories'][$arrCategoryWithExamKey]['total_questions'] = count($arrCategoryWithExam['questions_id']);
-
-					$total_attempted = [];
-					$total_right = [];
-					$total_wrong = [];
-					foreach ($statusBag as $statusKey => $status) 
+					if ($uniqueExamIdWithCategory == $ExamQuestion['category_id']) 
 					{
-						if ($arrCategoryWithExamKey == $status['category_id']) 
-						{
-							$total_attempted[] = $status;
-						
-							if (!empty($status['status'])) 
-							{
-								$total_right[] = $status;
-							}
+						$arrCategoriesWithExam[$uniqueExamIdWithCategory]['questions_id'][] = $ExamQuestion['question_id'];
+						$arrCategoriesWithExam[$uniqueExamIdWithCategory]['category_name'] 	  = $ExamQuestion['category']['category_name'];
+					}
+				}	
+			}
+			
+			// build category wise result
+			$resultBag['categories'] = [];
+			foreach ($arrCategoriesWithExam as $arrCategoryWithExamKey => $arrCategoryWithExam) 
+			{
+				$resultBag['categories'][$arrCategoryWithExamKey]['category_name'] 	 = $arrCategoryWithExam['category_name'];
 
-							if (empty($status['status'])) 
-							{
-								$total_wrong[] = $status;
-							}
+				$resultBag['categories'][$arrCategoryWithExamKey]['category_id'] 	 = $arrCategoryWithExamKey;
+				
+				$resultBag['categories'][$arrCategoryWithExamKey]['total_questions'] = count($arrCategoryWithExam['questions_id']);
+
+				$total_attempted = [];
+				$total_right = [];
+				$total_wrong = [];
+				foreach ($statusBag as $statusKey => $status) 
+				{
+					if ($arrCategoryWithExamKey == $status['category_id']) 
+					{
+						$total_attempted[] = $status;
+					
+						if (!empty($status['status'])) 
+						{
+							$total_right[] = $status;
+						}
+
+						if (empty($status['status'])) 
+						{
+							$total_wrong[] = $status;
 						}
 					}
-
-					$resultBag['categories'][$arrCategoryWithExamKey]['total_attempted'] = count($total_attempted);
-					$resultBag['categories'][$arrCategoryWithExamKey]['total_right']  	 = count($total_right);
-					$resultBag['categories'][$arrCategoryWithExamKey]['total_wrong']  	 = count($total_wrong);	
 				}
+
+				$resultBag['categories'][$arrCategoryWithExamKey]['total_attempted'] = count($total_attempted);
+				$resultBag['categories'][$arrCategoryWithExamKey]['total_right']  	 = count($total_right);
+				$resultBag['categories'][$arrCategoryWithExamKey]['total_wrong']  	 = count($total_wrong);	
 			}
 
-			$arrResult = array_except($resultBag, 'categories');
+			// update main table
+			$arrResult = array_except($resultBag, 'categories');			
 			$updatedExamStatus = $this->ExamResultModel->where('id', $result_id)->update($arrResult);
 			if ($updatedExamStatus) 
 			{
+				// update ctegory wise table
 				$arrResultCategoryWise = array_only($resultBag, 'categories')['categories'];
 				foreach ($arrResultCategoryWise as $key => $value) 
 				{
@@ -363,7 +365,7 @@ class ExamController extends Controller
 					$this->ExamResultCategoryWiseModel->insert($tmp);
 				}
 			}
-			
+
 			return view('front.exam.result', ['resultBag' => $resultBag]);
 		}
 	}

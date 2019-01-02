@@ -15,7 +15,11 @@ $(document).ready(function()
 	  		if (data.graph == 'pie') 
 	  		{
 	  			createAllInOnePie(data.dataset);
-	  		}	
+	  		}
+	  		else
+	  		{
+	  			$('#AllInOneChart').html(data.msg);
+	  		}
 	  	},
 	  	error: function (data)
 	  	{
@@ -130,11 +134,11 @@ function createCourseWisePie(dataset, tooltipData)
         var total_wrong 	= tooltipData.total_wrong;
         var exam_status 	= tooltipData.exam_status;
 
-        tooltip.select('.total_questions').html(total_questions);                
-        tooltip.select('.total_attemted').html(total_attemted);                
-        tooltip.select('.total_right').html(total_right);             
-        tooltip.select('.total_wrong').html(total_wrong);             
-        tooltip.select('.status').html(exam_status);  
+        tooltip.select('.total_questions').html('Total Questions - '+total_questions);                
+        tooltip.select('.total_attemted').html('Total Attempted - '+total_attemted);                
+        tooltip.select('.total_right').html('Total Right - '+total_right);             
+        tooltip.select('.total_wrong').html('Total Wrong - '+total_wrong);             
+        tooltip.select('.status').html('Exam Status - '+exam_status);  
                    
         tooltip.style('display', 'block');                          
   	});                                                           

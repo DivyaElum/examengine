@@ -114,37 +114,45 @@ class DashbordController extends Controller
         // total course attempted
         $totalCourses = count($examResults);
 
-        $totalPassed = count(array_filter($examResults, function ($data)
-                            {
-                              if ($data['exam_status'] == 'Pass') 
-                              {
-                                return true;  
-                              }
-                            }));
-
-        $totalFailed = count(array_filter($examResults, function ($data)
-                            {
-                              if ($data['exam_status'] == 'Fail') 
-                              {
-                                return true;  
-                              }
-                            }));
-
-        $totalPassPercetage = 0;
-        if (!empty($totalPassed)) 
+        if (!empty($totalCourses)) 
         {
-          $totalPassPercetage = ($totalPassed/$totalCourses)*100;
-        }
-        
-        $totalFailPercetage = 0;
-        if (!empty($totalFailed)) 
-        {
-          $totalFailPercetage = ($totalFailed/$totalCourses)*100;
-        }
+          $totalPassed = count(array_filter($examResults, function ($data)
+                              {
+                                if ($data['exam_status'] == 'Pass') 
+                                {
+                                  return true;  
+                                }
+                              }));
 
-        $this->JsonData['graph'] = 'pie';
-        $this->JsonData['dataset'][] = array('label' => 'Total Passed', 'count' => $totalPassPercetage);
-        $this->JsonData['dataset'][] = array('label' => 'Total Failed', 'count' => $totalFailPercetage);
+          $totalFailed = count(array_filter($examResults, function ($data)
+                              {
+                                if ($data['exam_status'] == 'Fail') 
+                                {
+                                  return true;  
+                                }
+                              }));
+
+          $totalPassPercetage = 0;
+          if (!empty($totalPassed)) 
+          {
+            $totalPassPercetage = ($totalPassed/$totalCourses)*100;
+          }
+          
+          $totalFailPercetage = 0;
+          if (!empty($totalFailed)) 
+          {
+            $totalFailPercetage = ($totalFailed/$totalCourses)*100;
+          }
+
+          $this->JsonData['graph'] = 'pie';
+          $this->JsonData['dataset'][] = array('label' => 'Total Passed', 'count' => $totalPassPercetage);
+          $this->JsonData['dataset'][] = array('label' => 'Total Failed', 'count' => $totalFailPercetage);
+        }
+        else
+        {
+          $this->JsonData['graph'] = '';
+          $this->JsonData['msg'] = 'No course found';
+        }
 
         return response()->json($this->JsonData);
     }

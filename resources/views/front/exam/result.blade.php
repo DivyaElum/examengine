@@ -54,6 +54,7 @@
           <td>{{ $category['total_wrong'] }}</td>
         </tr>
       @endforeach
+
     @endif
 
     <tr >

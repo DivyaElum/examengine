@@ -12,32 +12,31 @@
 	/*
 		D3 styles
 	*/	
-		#chart {
-		  height: 360px;
-		  position: relative;
-		  width: 360px;
-		}
-		.tooltip {
-		  background: #eee;
-		  box-shadow: 0 0 5px #999999;
-		  color: #333;
-		  display: none;
-		  font-size: 12px;
-		  left: 130px;
-		  padding: 10px;
-		  position: absolute;
-		  text-align: center;
-		  top: 95px;
-		  width: 80px;
-		  z-index: 10;
-		}
-
- 	 	.legend {
-		    font-size: 12px;
-	  	}
-	  	rect {
-		    stroke-width: 2;
-		}              
+	  #CourseWiseChart {                                                          /* NEW */
+        height: 360px;                                                  /* NEW */
+        position: relative;                                             /* NEW */
+        width: 360px;                                                   /* NEW */
+      }                                                                 /* NEW */
+      .tooltip {                                                        /* NEW */
+        background: #eee;                                               /* NEW */
+        box-shadow: 0 0 5px #999999;                                    /* NEW */
+        color: #333;                                                    /* NEW */
+        display: none;                                                  /* NEW */
+        font-size: 12px;                                                /* NEW */
+        left: 130px;                                                    /* NEW */
+        padding: 10px;                                                  /* NEW */
+        position: absolute;                                             /* NEW */
+        text-align: center;                                             /* NEW */
+        top: 95px;                                                      /* NEW */
+        width: 80px;                                                    /* NEW */
+        z-index: 10;                                                    /* NEW */
+      }                                                                 /* NEW */
+      .legend {
+        font-size: 12px;
+      }
+      rect {
+        stroke-width: 2;
+      }             
 	</style>
 @stop
 
@@ -59,7 +58,7 @@
 							<div class="row">
 								
 								<div class="col-md-12" >
-									<h4>Exam Statistics All</h4>
+									<h4>Course Statistics</h4>
 									<hr>
 								</div>
 
@@ -67,25 +66,26 @@
 									<center><div id="AllInOneChart"></div></center>
 								</div>
 
-								<div class="col-md-12" >
+								@if(!empty($exams) && sizeof($exams) > 0 )
+									<div class="col-md-12" >
 									<h4>Exam Statistics Course Wise</h4>
 									<hr>
 
 									<div class="form-group">
 										<label for="">Select Exam</label>
 										<select onchange="return buildCourseWiseCharts(this)" name="exam" class="form-control" id="exam">
-											@if(!empty($exams) && sizeof($exams) > 0 )
+											
 												<option value="" selected disabled >Please select</option>
 												@foreach($exams as $examKey => $exam)
 													<option value="{{ base64_encode(base64_encode($exam->course_id)) }}">{{ ucfirst($exam->course->title) }}</option>
 												@endforeach
-											@endif
 										</select>
 									</div>
 									<div class="col-md-12">
 										<center><div id="CourseWiseChart"></div></center>
 									</div>
-								</div>
+									</div>
+								@endif
 							</div>
 						</div>
 					</div>
