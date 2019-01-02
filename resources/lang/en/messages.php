@@ -15,5 +15,8 @@ return [
     'ERR_STR_PASSWORD_SUCCESS_MESSAGE'      => 'Password has been updated successfully.',
     'ERR_STR_EMAILID_ERROR_MESSAGE'         => 'Please enter valid Email Id',
     'ERR_STR_CREDENTIALS_ERROR_MESSAGE'     => 'Entered credentials is incorrect',
+    'ERR_STR_EMPTY_VOUCHER_ERR_MSG'         => 'Please Enter a voucher code',
+    'ERR_STR_INVALID_VOUCHER_ERR_MSG'       => 'Invalid voucher code',
+    'ERR_STR_EXP_VOUCHER_ERR_MSG'           => 'This voucher code is expired',
     
 ];

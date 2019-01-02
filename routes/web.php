@@ -19,27 +19,31 @@
 
 		// sign up
 		Route::resource('/signup', 'Auth\RegisterController');
+		
 		// login
 		Route::resource('/login', 'Auth\LoginController');
+		
 		// forget password
 		Route::get('/forgot','Auth\ForgotPasswordController@index');
 		Route::post('/forgot','Auth\ForgotPasswordController@forgotpassword');
+		
 		// reset password
 		Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index');
-		Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');
+		Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');		
 		
 		// certification rotues
 		Route::group(['prefix' => 'certification'],function()
 		{
 			Route::get('/','Candidate\CertificationController@index');
 			Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
+			Route::post('/applyVoucher','Candidate\CertificationController@applyVoucher'); 
 		});
 	
 
 		// after authantication routes
 		Route::group(['middleware' => 'UserAuthenticate'],function()
 		{
-			// dash board rotues
+			// Dashboard rotues
 			Route::get('/dashboard', 'Candidate\DashbordController@index');
 			Route::post('/dashboard/buildCourseWiseCharts', 'Candidate\DashbordController@buildCourseWiseCharts');
 			Route::get('/dashboard/buildAllInOneChart', 'Candidate\DashbordController@buildAllInOneChart');

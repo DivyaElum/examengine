@@ -6,7 +6,9 @@
 
 
 @section('styles')
-	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
+<style type="text/css">
+	.error_voucher_code.error {color: red;}
+</style>
 @stop
 
 @section('page_title')
@@ -46,13 +48,14 @@
 											<div class="previewtitle">Preview This Certificate</div>
 										</div>
 										<div class="courseBuyDetails">
-											<h4>Learn More <span>with a premium membership</span></h4>
+											<!-- <h4>Learn More <span>with a premium membership</span></h4> -->
 											<p>Sign up for a Premium Membership to learn courses for Internet-free viewing.</p>
 											<h2 class="price"><span>${{ $arrCerficationDetils->discount}}</span> ${{ $arrCerficationDetils->calculated_amount}}</h2>
 											<br>
 											@if(!auth()->check())
 												<a href="{{ url('/signup') }}" class="large-btn">Buy Now</a>
 											@else
+											<p><a href="javascript:void(0)" data-toggle="modal" data-target="#myVoucherModal">Apply Voucher</a></p>
 											<form action="{{ route('purchase') }}" onsubmit="return makePayment(this)">
 												<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
 												<input type="hidden" name="pcd" value="{{ base64_encode(base64_encode($arrCerficationDetils->id)) }}">
@@ -72,8 +75,32 @@
 	</div>
 </div>
 
-
 <!-- Modal -->
+<div class="modal fade" id="myVoucherModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Apply Voucher</h4>
+        </div>
+        <div class="modal-body">
+          <form method="post" name="applyVoucherFrm" id="applyVoucherFrm" method="post" action="{{ url('/certification/applyVoucher') }}" onsubmit="return applyVoucher(this)">
+          	<div class="form-group">
+          		<label>Voucher Code : </label>
+          		<input type="text" name="voucher_code" id="voucher_code" placeholder="Enter a Voucher Code" class="form-control">
+          		<span class="error_voucher_code error"></span>
+          	</div>
+          	<button type="submit" name="btnApply" class="btn btn-primary btnApply" id="btnApply">Apply</button>
+          	<img src="{{asset('images/ajax-loader.gif')}}" class="loadingImg" alt="logo" />
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -89,5 +116,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/front/certification/details.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/front/voucher/applyVoucher.js') }}"></script>
 @stop
