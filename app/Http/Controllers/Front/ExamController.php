@@ -82,13 +82,14 @@ class ExamController extends Controller
 	}
 
 	public function examBook($endId)
-	{       
+	{
+		$courseId = base64_decode(base64_decode($endId));
 		$this->ViewData['page_title']    = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']   = $this->ModuleTitle;
         $this->ViewData['moduleAction']  = str_plural($this->ModuleTitle);
         $this->ViewData['modulePath']    = $this->ModulePath;
         $this->ViewData['course_id']     = $endId;
-        $this->ViewData['exam_id']       = $this->CourseModel->where('id', base64_decode(base64_decode($endId)))->pluck('exam_id')->first();
+        $this->ViewData['exam_id']       = $this->CourseModel->where('id', $courseId)->pluck('exam_id')->first();
         
         return view($this->ModuleView.'index', $this->ViewData);
 	}
@@ -119,7 +120,7 @@ class ExamController extends Controller
 	}
 
 	public function submit(Request $request)
-	{		
+	{
 
 		$optionsAnswers = $this->QuestionOptionsAnswer->get();
 
