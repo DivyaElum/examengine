@@ -363,6 +363,15 @@ class ExamController extends Controller
 							->update(['pass' => 1]);
 				}
 
+				if ($resultBag['exam_status'] == 'Fail') 
+				{
+					$this->BookExamSlotModel
+							->where('user_id', $user_id)
+							->where('course_id', $course_id)
+							->where('exam_id', $exam_id)
+							->update(['pass' => 0]);
+				}
+
 				// get user mail id
 				$email = auth()->user()->email;
 

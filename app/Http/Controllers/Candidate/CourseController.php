@@ -67,21 +67,21 @@ class CourseController extends Controller
 
       $this->ViewData['bookingStatus'] = [];
       
-      if (empty($bookExam) && $bookExam != 'null') 
+      if (!empty($bookExam) && $bookExam['booking_attempt'] > 1 && $bookExam['pass'] != 1)
       {
-          $this->ViewData['bookingStatus'] = 'visible';
+          $this->ViewData['bookingStatus'] = 'rescheduled';
       }
-      if (!empty($bookExam) && $bookExam['pass'] != 1)
+      if (!empty($bookExam) && $bookExam['booking_attempt'] == 1 && $bookExam['pass'] != 1)
       {
-          $this->ViewData['bookingStatus'] = 'visible';
-      }
-      if (!empty($bookExam) && $bookExam['booking_attempt'] >= 1 && $bookExam['pass'] != 1)
-      {
-          $this->ViewData['bookingStatus'] = 'invisible';
+          $this->ViewData['bookingStatus'] = 'pending';
       }
       if (!empty($bookExam) && $bookExam['pass'] == 1)
       {
-          $this->ViewData['bookingStatus'] = 'invisible';
+          $this->ViewData['bookingStatus'] = 'completed';
+      }
+      if (empty($bookExam) && $bookExam != 'null') 
+      {
+          $this->ViewData['bookingStatus'] = 'new';
       }
 
 

@@ -28,11 +28,13 @@
 						<hr />
 						<div class="row">
 							
-							@if($bookingStatus == 'visible' )
+							@if($bookingStatus == 'new' || $bookingStatus == 'rescheduled' )
 								<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
 							@endif
 							
-							<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span><br>
+							@if($bookingStatus == 'pending' )
+								<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span>
+							@endif
 
 							@if(!empty($arrPrerequisites) && sizeof($arrPrerequisites) > 0)
 								@php 
