@@ -84,7 +84,7 @@ $(document).ready(function() {
 	        element.click(function() {
 				 $.ajax({
 		            url: '/exam/getExampSlot/',
-		            type: 'POST',
+		            type: 'GET',
 		            dataType: 'json',
 		            data: {
 	                	id: event.id
@@ -100,7 +100,7 @@ $(document).ready(function() {
 		events: function(start, end, timezone, callback) {
 	        $.ajax({
 	            url: '/exam/loadEvent/',
-	            type: 'POST',
+	            type: 'GET',
 	            dataType: 'json',
 	            data: {
 	                start: start.format(),
@@ -132,7 +132,7 @@ $(".btnBook").click(function(){
 	if(slotTime){
 		$.ajax({
 		    url: '/exam/bookExamSlot/',
-		    type: 'POST',
+		    type: 'GET',
 		    dataType: 'json',
 		    data: {
 		        exam_id   : examId,
