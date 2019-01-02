@@ -13,10 +13,13 @@ use App\Models\ExamQuestionsModel;
 use App\Models\ExamResultModel;
 use App\Models\ExamResultCategoryWiseModel;
 use App\Models\QuestionCategoryModel;
+use App\Mail\ExamResultMail;
+use App\SiteSetting;
 
 use App\Models\QuestionOptionsAnswer;
 use App\Http\Controllers\Controller;
 
+use Mail;
 use DB;
 use Session;
 use Calendar;
@@ -33,7 +36,10 @@ class ExamController extends Controller
  		QuestionOptionsAnswer $QuestionOptionsAnswer,
  		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel,
  		QuestionCategoryModel $QuestionCategoryModel,
- 		CourseModel $CourseModel
+ 		CourseModel $CourseModel,
+ 		ExamSlotModel $ExamSlotModel,
+ 		SiteSetting $SiteSetting
+
  	)
  	{
  		$this->BaseModel 		  = $ExamModel;
@@ -45,6 +51,8 @@ class ExamController extends Controller
  		$this->ExamResultCategoryWiseModel  = $ExamResultCategoryWiseModel;
  		$this->QuestionCategoryModel  = $QuestionCategoryModel;
  		$this->CourseModel  = $CourseModel;
+ 		$this->ExamSlotModel  = $ExamSlotModel;
+ 		$this->SiteSetting  = $SiteSetting;
 
 
  		$this->ViewData = [];
@@ -84,6 +92,7 @@ class ExamController extends Controller
 	public function examBook($endId)
 	{
 		$courseId = base64_decode(base64_decode($endId));
+		
 		$this->ViewData['page_title']    = $this->ModuleTitle;
     	$this->ViewData['moduleTitle']   = $this->ModuleTitle;
         $this->ViewData['moduleAction']  = str_plural($this->ModuleTitle);
@@ -127,7 +136,10 @@ class ExamController extends Controller
 		{
 			$result_id = base64_decode(base64_decode($request->result_id));
 			$resultObject = $this->ExamResultModel->find($result_id);
+			
 			$exam_id = $resultObject->exam_id;
+			$course_id = $resultObject->course_id;
+			$user_id = $resultObject->user_id;
 
 			$statusBag = [];
 			$resultBag = [];	
@@ -339,7 +351,52 @@ class ExamController extends Controller
 				}
 			}
 
+			if (auth()->check()) 
+			{	
+				// update booking slot table 
+				if ($resultBag['exam_status'] == 'Pass') 
+				{
+					$this->BookExamSlotModel
+							->where('user_id', $user_id)
+							->where('course_id', $course_id)
+							->where('exam_id', $exam_id)
+							->update(['pass' => 1]);
+				}
+
+				if ($resultBag['exam_status'] == 'Fail') 
+				{
+					$this->BookExamSlotModel
+							->where('user_id', $user_id)
+							->where('course_id', $course_id)
+							->where('exam_id', $exam_id)
+							->update(['pass' => 0]);
+				}
+
+				// get user mail id
+				$email = auth()->user()->email;
+
+				// getiing sitesetting for site title
+				$siteSetting = $this->SiteSetting->find(1);
+				$siteTitle = $siteSetting->site_title ?? config('app.name');
+
+				// getting course data for course title
+				$course = $this->CourseModel->find($course_id);
+				$courseTitle = $course->title;
+
+				// building subject
+				$subject = ucfirst($siteTitle).' | '.ucfirst($courseTitle).' | Result';
+				
+				// sending mail
+				$mail = Mail::to($email)
+							->send(new ExamResultMail(['resultBag' => $resultBag, 'subject' => $subject]));
+
+			}
+
 			return view('front.exam.result', ['resultBag' => $resultBag]);
+		}
+		else
+		{
+			abort(404);
 		}
 	}
 

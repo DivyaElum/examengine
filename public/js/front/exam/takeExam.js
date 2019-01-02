@@ -85,17 +85,17 @@ function startTimer(element)
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
         // Output the result in an element with id="demo"
-
         
-        console.log(hours + " hours : " + minutes + " min : " + seconds + ' sec');
         document.getElementById("demo").innerHTML = hours + " hours : " + minutes + " min : " + seconds + ' sec';
-        
+       
         // If the count down is over, write some text 
         if (distance < 0) 
         {
             clearInterval(x);
+            submitResult();
             document.getElementById("demo").innerHTML = "00 Hours : 00 min : 00 sec";
-            document.getElementById('startExam2').innerHTML = 'Completed Please wait for you result';
+            document.getElementById('startExam2').innerHTML = 'Exam completed please wait for you result';
+            submitResult()
         }
     }, 1000);
 }
@@ -110,5 +110,23 @@ function goNext(element)
 {
     var examSrno = parseInt($(element).attr('data-qn')) + 1;
     $('.srno_'+examSrno).trigger('click');
+}
+
+function submitResult()
+{
+    $.LoadingOverlay("show", 
+    {
+        image       : "",
+        text        : "Please wait..."
+    });
+    
+    setTimeout(function()
+    {
+        $.LoadingOverlay("text", "Calculating result...");
+        
+        $('#examForm').submit();
+    
+    }, 2500);
+    
 }
 
