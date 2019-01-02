@@ -31,7 +31,13 @@ class CertificationController extends Controller
     	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
         $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
         $this->ViewData['modulePath']           = $this->ModulePath;
-        $this->ViewData['arrCerficationList']   = $this->CourseModel->where('status', '1')->get();
+        $this->ViewData['arrCerficationList']   = $this->CourseModel
+                                                        ->where('status', '1')
+                                                        ->whereHas('exam',function($exam)
+                                                        {
+                                                           $exam->where('is_test', 1);
+                                                        }, '<', 1)
+                                                        ->get();
 
         return view($this->ModuleView.'index', $this->ViewData);
     }
