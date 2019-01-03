@@ -68,7 +68,7 @@ function createCourseWisePie(dataset, tooltipData)
     var radius = Math.min(width, height) / 2;
 
     var color = d3.scaleOrdinal()
-    		.range(["#27ae60", "#e74c3c"]);
+    		.range(["#27ae60", "#e74c3c","#9c9c9c"]);
    
 
     // lagend and react
@@ -90,7 +90,7 @@ function createCourseWisePie(dataset, tooltipData)
 
 	var arc = d3.arc()
          .outerRadius(donutWidth)
-    	 .innerRadius(radius * 0.4);
+    	 .innerRadius(radius * 0.45);
 
     var pie = d3.pie()
       .value(function(d) { return d.count; })

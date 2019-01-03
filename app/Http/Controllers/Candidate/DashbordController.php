@@ -93,9 +93,16 @@ class DashbordController extends Controller
           $total_fail_percetage = ($examResult['total_wrong']/$examResult['total_questions'])*100;
         }
 
+        $total_notattempted_percetage = 0;
+        $total_notattempted = $examResult['total_questions'] - $examResult['total_attempted'];
+        
+        $total_notattempted_percetage = ($total_notattempted/$examResult['total_questions'])*100;
+
+
         $this->JsonData['graph'] = 'pie';
         $this->JsonData['dataset'][] = array('label' => 'Total Right', 'count' => $total_pass_percetage);
         $this->JsonData['dataset'][] = array('label' => 'Total Wrong', 'count' => $total_fail_percetage);
+        $this->JsonData['dataset'][] = array('label' => 'Not Attempted', 'count' => $total_notattempted_percetage);
 
         return response()->json($this->JsonData);
       }
@@ -116,7 +123,7 @@ class DashbordController extends Controller
 
         if (!empty($totalCourses)) 
         {
-          $totalPassed = count(array_filter($examResults, function ($data)
+            $totalPassed = count(array_filter($examResults, function ($data)
                               {
                                 if ($data['exam_status'] == 'Pass') 
                                 {
@@ -124,7 +131,7 @@ class DashbordController extends Controller
                                 }
                               }));
 
-          $totalFailed = count(array_filter($examResults, function ($data)
+            $totalFailed = count(array_filter($examResults, function ($data)
                               {
                                 if ($data['exam_status'] == 'Fail') 
                                 {

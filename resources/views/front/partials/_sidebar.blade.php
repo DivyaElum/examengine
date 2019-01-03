@@ -16,7 +16,7 @@
 					<a href="/dashboard"><i class="fa fa-caret-right" aria-hidden="true"></i> Dashboard</a>
 				</li>
 				
-				<li class="{{ active('course/course-listing') }}" >
+				<li class="{{ active('course/*') }}" >
 					<a href="/course/course-listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a>
 				</li>
 				
