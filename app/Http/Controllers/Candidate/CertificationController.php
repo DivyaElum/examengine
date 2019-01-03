@@ -53,9 +53,22 @@ class CertificationController extends Controller
         $this->ViewData['moduleTitle']          = $this->ModuleTitle;
         $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
         $this->ViewData['modulePath']           = $this->ModulePath;
-        $this->ViewData['arrCerficationDetils'] = $this->CourseModel->find(base64_decode(base64_decode($indId)));
-        
-        return view($this->ModuleView.'detail', $this->ViewData);
+
+        $arrCourseData = $this->CourseModel->where('status','1')->find(base64_decode(base64_decode($indId)));
+
+        if($arrCourseData != 'null' && isset($arrCourseData)){
+            $this->ViewData['arrCerficationDetils'] = $arrCourseData;
+            return view($this->ModuleView.'detail', $this->ViewData);
+        }else{
+            $this->ViewData['arrCerficationList']   = $this->CourseModel
+                                                        ->where('status', '1')
+                                                        ->whereHas('exam',function($exam)
+                                                        {
+                                                           $exam->where('is_test', 1);
+                                                        }, '<', 1)
+                                                        ->get();
+            return view($this->ModuleView.'index', $this->ViewData);
+        }
     }
 
     public function applyVoucher(Request $request)
