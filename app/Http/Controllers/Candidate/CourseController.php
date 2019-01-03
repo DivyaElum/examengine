@@ -75,11 +75,14 @@ class CourseController extends Controller
       {
           $this->ViewData['bookingStatus'] = 'rescheduled';
       }
-      if (empty($bookExam) && $bookExam != 'null') 
+      if (!empty($bookExam) && $bookExam['pass'] == NULL && $bookExam['pass'] != 0) 
+      {
+          $this->ViewData['bookingStatus'] = 'booked';
+      }
+      if ((empty($bookExam) && $bookExam != 'null')) 
       {
           $this->ViewData['bookingStatus'] = 'new';
       }
-
 
       $arrCourse = $this->CourseModel->where('id', $intId)->first();
 
