@@ -16,8 +16,10 @@ use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\PaymentExecution;
 
+
 use App\Models\CourseModel;
 use App\Models\TransactionModel;
+use App\Models\VoucherDiscountModel;
 
 use DB;
 use URL;
@@ -32,13 +34,15 @@ class PaymentController extends Controller
     public function __construct(
     
     	CourseModel $CourseModel,
-    	TransactionModel $TransactionModel
+    	TransactionModel $TransactionModel,
+    	VoucherDiscountModel $VoucherDiscountModel
     )
     {
     	ini_set('max_execution_time', 0);
 
-    	$this->BaseModel 	= $TransactionModel;
-    	$this->CourseModel 	= $CourseModel;	
+    	$this->BaseModel 			= $TransactionModel;
+    	$this->CourseModel 			= $CourseModel;	
+    	$this->VoucherDiscountModel = $VoucherDiscountModel;	
 
     	$this->JsonData = [];
 
@@ -64,7 +68,23 @@ class PaymentController extends Controller
 			$course = $this->CourseModel->find($course_id);
 			$course->user_id = $user_id;
 
-			$this->JsonData = self::_create($course);
+			 //get voucher data with login user details
+            $arrCheckVoc = $this->VoucherDiscountModel->where('user_id', $user_id)
+                                                  ->where('is_use', '1')
+                                                  ->where('course_id', $course_id)
+                                                  ->first();
+            
+            if($arrCheckVoc != 'null' && isset($arrCheckVoc))
+            {
+            	$intDisPrice = $arrCheckVoc->discount_price;
+            }
+            else
+            {
+            	$intDisPrice = $course->calculated_amount;
+            }
+
+			//$intDisPrice
+			$this->JsonData = self::_create($course, $intDisPrice);
 		}
 		else
 		{
@@ -98,7 +118,7 @@ class PaymentController extends Controller
 	/*------------------------------
 	| Sub functions
 	---------------------------------------------*/
-	public function _create($course)
+	public function _create($course, $discountAount = FALSE)
 	{
 		/*------------------------------
 		| 1> Set new Payer
@@ -114,7 +134,7 @@ class PaymentController extends Controller
 			    	->setCurrency('USD')
 			    	->setQuantity(1)
 			    	->setSku($course->id)
-			    	->setPrice($course->calculated_amount);
+			    	->setPrice($discountAount);
 			$itemList = new ItemList();
 			$itemList->setItems(array($item1));
 
@@ -131,7 +151,7 @@ class PaymentController extends Controller
 			
 			$amount = new Amount();
 			$amount->setCurrency("USD")
-			    	->setTotal($course->calculated_amount);
+			    	->setTotal($discountAount);
 			    	// ->setDetails($details);
 		
 		/*------------------------------
