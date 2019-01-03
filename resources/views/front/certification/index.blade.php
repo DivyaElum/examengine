@@ -39,7 +39,7 @@
 							<p><?php echo str_limit($row->description, '100', '...'); ?></p><br />
 							
 							@if(in_array($row->id , $arrTransData))
-								<p>Purchased</p>
+								<p><i class="fa fa-cart-arrow-down" style="font-size:18px;" title="Purchased"></i><b> &nbsp;Purchased</b></p>
 							@else
 								<a href="{{ url('/certification/detail/'.base64_encode(base64_encode($row->id))) }}" class="btnArrow"><span></span></a>
 							@endif
