@@ -456,7 +456,7 @@ class ExamController extends Controller
 	public function getExampSlot(Request $request)
 	{
 		$intId = $request->id;
-		//$data = ExamSlotModel::with(['exam'])->first();
+		$requestedDate  = $request->date;
 
 		$data = ExamSlotModel::with(['exam'])->where('id', $intId)->first();
     	$strData = json_decode($data->time);
@@ -467,7 +467,7 @@ class ExamController extends Controller
 			$start_time =  $strData[$i]->start_time;
   			$end_time   =  $strData[$i]->end_time;
 
-  			$html .= '<input type="radio" name="slot" id="slot_'.$i.'" value="'.$start_time.'/'.$end_time.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
+  			$html .= '<input type="hidden" name="date" value="'.$requestedDate.'"><input type="radio" name="slot" id="slot_'.$i.'" value="'.$start_time.'/'.$end_time.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
   		}
     	return response()->json($html);
 	}
@@ -476,12 +476,35 @@ class ExamController extends Controller
 	{
 		DB::beginTransaction();
 
-        $object          	 		= new $this->BookExamSlotModel;
-        $object->exam_id   	 		= base64_decode(base64_decode($request->exam_id));
-        $object->user_id   	 		= base64_decode(base64_decode($request->user_id));
-        $object->course_id   		= base64_decode(base64_decode($request->course_id));
+		$exam_id   	 		= base64_decode(base64_decode($request->exam_id));
+        $user_id   	 		= base64_decode(base64_decode($request->user_id));
+        $course_id   		= base64_decode(base64_decode($request->course_id));
+
+        $count = $this->BookExamSlotModel->where('exam_id', $exam_id)
+										 ->where('user_id', $user_id)
+										 ->where('course_id', $course_id)
+										 ->count();
+
+		if (empty($count) && $count == 0) 
+		{
+    		$object	= new $this->BookExamSlotModel;
+		}
+		else
+		{
+			$object = $this->BookExamSlotModel->where('exam_id', $exam_id)
+										 ->where('user_id', $user_id)
+										 ->where('course_id', $course_id)
+										 ->first();
+		}
+
+		$booking_attempt = empty($object->booking_attempt) ? 1 : $object->booking_attempt+1; 
+
+        $object->exam_id   	 		= $exam_id;
+        $object->user_id   	 		= $user_id;
+        $object->course_id   		= $course_id;
         $object->slot_time   		= $request->slot_time;
-        $object->booking_attempt   	= '1';
+        $object->slot_date   		= Date('Y-m-d', strtotime($request->date));
+        $object->booking_attempt   	= $booking_attempt;
         
         if($object->save())
         {
