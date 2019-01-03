@@ -24,19 +24,20 @@
 				@include('front.partials._sidebar')
 				<div class="col-md-9 col-sm-12 col-xs-12">
 
-					<div class="row">
-						<div class="col-xs-12">
-							@if($bookingStatus == 'new' || $bookingStatus == 'rescheduled' )
-								<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
-							@else
-								@if($bookingStatus == 'hasExamAccess')
-									<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span>
-								@endif
-							@endif
-						</div>
-					</div>
-
 					<div class="dashbaord_content">
+
+						<div class="row">
+							<div class="col-xs-12">
+								@if($bookingStatus == 'new' || $bookingStatus == 'rescheduled' )
+									<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
+								@else
+									@if($bookingStatus == 'hasExamAccess')
+										<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span>
+									@endif
+								@endif
+							</div>
+						</div>
+
 						@if(!empty($arrPrerequisites) && sizeof($arrPrerequisites) > 0)
 						<h3>Prerequisites Listing</h3>
 						<hr />
@@ -98,7 +99,11 @@
 							<div id="video-placeholder"></div>
 						</div>
 						@else
-					 		<p>No content available</p>
+							<div class="row"><br>
+							<div class="col-xs-12">
+					 			<p>No prerequisite content available.</p>
+							</div>
+						</div>
 						@endif
 					</div>
 				</div>
