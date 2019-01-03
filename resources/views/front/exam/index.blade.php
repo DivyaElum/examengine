@@ -123,8 +123,6 @@ $(document).ready(function() {
 	        });
 	    },
 	});
-
-	
 });
 $(".btnBook").click(function(){
 	var userId   = "{{ base64_encode(base64_encode($arrUserData->id)) }}";

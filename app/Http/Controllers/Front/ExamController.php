@@ -472,7 +472,8 @@ class ExamController extends Controller
     	return response()->json($html);
 	}
 
-	public function bookExamSlot(Request $request){
+	public function bookExamSlot(Request $request)
+	{
 		DB::beginTransaction();
 
         $object          	 		= new $this->BookExamSlotModel;
