@@ -18,5 +18,5 @@ return [
     'ERR_STR_EMPTY_VOUCHER_ERR_MSG'         => 'Please Enter a voucher code',
     'ERR_STR_INVALID_VOUCHER_ERR_MSG'       => 'Invalid voucher code',
     'ERR_STR_EXP_VOUCHER_ERR_MSG'           => 'This voucher code is expired',
-    
+    'ERR_EXPIRED_EXAM'                      => 'This exam has been expired.',
 ];

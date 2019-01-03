@@ -9,9 +9,10 @@
        	
        	<script src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
 		<script src="{{asset('bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+
 		<link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
 		<link href="{{ asset('/css/take-exam.css') }}" rel="stylesheet">
-
+		<link href="{{ asset('plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
     </head>
     <body>
         <div class="container" id="startExam">
@@ -323,8 +324,8 @@
         <script type="text/javascript">
         	window.addEventListener('load', function ()
         	{
-        		document.addEventListener('keydown', event=>event.preventDefault());
-        		document.addEventListener('contextmenu', event=>event.preventDefault());
+        		// document.addEventListener('keydown', event=>event.preventDefault());
+        		// document.addEventListener('contextmenu', event=>event.preventDefault());
         		
         		Date.prototype.addHours = function(h)
         		{
@@ -333,6 +334,7 @@
         		}
         	})
         </script>
+        <script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert.js') }}"></script>
         <script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('/js/front/exam/takeExam.js') }}"></script>
     </body>

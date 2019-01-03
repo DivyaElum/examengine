@@ -67,21 +67,59 @@ class CourseController extends Controller
                               ->first();
 
       $this->ViewData['bookingStatus'] = [];  
-      if (!empty($bookExam) && $bookExam['pass'] == 1)
-      {
-          $this->ViewData['bookingStatus'] = 'completed';
+
+      if (!empty($bookExam)) 
+      { 
+          if ($bookExam['pass'] === NULL) 
+          {
+              $this->ViewData['bookingStatus'] = 'booked';
+          }
+
+          if ($bookExam['pass'] === 0) 
+          {
+              $this->ViewData['bookingStatus'] = 'rescheduled';
+          }
+
+          if ($bookExam['pass'] === 1) 
+          {
+              $this->ViewData['bookingStatus'] = 'completed';
+          }
       }
-      if (!empty($bookExam) && $bookExam['pass'] == 0)
-      {
-          $this->ViewData['bookingStatus'] = 'rescheduled';
-      }
-      if (!empty($bookExam) && $bookExam['pass'] == NULL && $bookExam['pass'] != 0) 
-      {
-          $this->ViewData['bookingStatus'] = 'booked';
-      }
-      if ((empty($bookExam) && $bookExam != 'null')) 
+      else
       {
           $this->ViewData['bookingStatus'] = 'new';
+      }
+
+      // check exam status time check exact time:
+      if ($this->ViewData['bookingStatus'] == 'booked') 
+      {
+          // get times
+          $slotTime = explode('/', $bookExam->slot_time);  
+          $startTime = $slotTime[0];
+          $endTime = $slotTime[1];
+
+          // get date
+          $date = $bookExam->slot_date;
+
+          // mearge date and time 
+          $startTimeStamp = Date('Y-m-d H:i:s', strtotime("$date $startTime"));
+          $endTimeStamp = Date('Y-m-d H:i:s', strtotime("$date $endTime"));
+          $currentDate = Date('Y-m-d H:i:s');
+          
+          // dd($currentDate, $startTimeStamp);
+
+          if(strtotime($currentDate) >= strtotime($startTimeStamp))
+          {
+             $this->ViewData['bookingStatus'] = 'hasExamAccess';
+          }
+
+          $extraTime = Date('Y-m-d H:i:s', strtotime("+15 minutes", strtotime($startTimeStamp)));
+          if(strtotime($currentDate) > strtotime($extraTime))
+          {
+             $this->ViewData['bookingStatus'] = 'NoExamAccess';
+          }
+
+          // dump($startTimeStamp, $extraTime, $currentDate);
       }
 
       $arrCourse = $this->CourseModel->where('id', $intId)->first();
