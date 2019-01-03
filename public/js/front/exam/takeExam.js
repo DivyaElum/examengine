@@ -49,8 +49,20 @@ function startTimer(element)
     if (!$.isEmptyObject($dbdata)) 
     {
         if ($dbdata.status == 'error') 
-        {
-            alert('Server failure, Please try again later.');
+        {    
+            swal(
+            {
+                title: "Error",
+                text: $dbdata.msg,
+                type: "error",
+                confirmButtonText: "Close",
+                confirmButtonClass: "btn-danger",
+            }, 
+            function () 
+            {
+                window.close();
+            });
+
             return false;
         }
 
@@ -58,7 +70,6 @@ function startTimer(element)
     }
     else
     {
-        alert('Server failure, Please try again later.');
         return false;
     }
 

@@ -340,13 +340,13 @@ class ExamController extends Controller
 			$updatedExamStatus = $this->ExamResultModel->where('id', $result_id)->update($arrResult);
 			if ($updatedExamStatus) 
 			{
+				$this->ExamResultCategoryWiseModel->where('exam_result_id', $result_id)->delete();
 				// update ctegory wise table
 				$arrResultCategoryWise = array_only($resultBag, 'categories')['categories'];
 				foreach ($arrResultCategoryWise as $key => $value) 
 				{
 					$tmp = array_except($value, 'category_name'); 
 					$tmp['exam_result_id'] = $result_id; 
-
 					$this->ExamResultCategoryWiseModel->insert($tmp);
 				}
 			}
@@ -356,20 +356,14 @@ class ExamController extends Controller
 				// update booking slot table 
 				if ($resultBag['exam_status'] == 'Pass') 
 				{
-					$this->BookExamSlotModel
-							->where('user_id', $user_id)
-							->where('course_id', $course_id)
-							->where('exam_id', $exam_id)
-							->update(['pass' => 1]);
-				}
+					$BookExamSlotModel = $this->BookExamSlotModel
+										->where('user_id', $user_id)
+										->where('course_id', $course_id)
+										->where('exam_id', $exam_id)
+										->first();
 
-				if ($resultBag['exam_status'] == 'Fail') 
-				{
-					$this->BookExamSlotModel
-							->where('user_id', $user_id)
-							->where('course_id', $course_id)
-							->where('exam_id', $exam_id)
-							->update(['pass' => 0]);
+					$BookExamSlotModel->pass = 1;
+					$BookExamSlotModel->save();
 				}
 
 				// get user mail id
@@ -456,7 +450,7 @@ class ExamController extends Controller
 	public function getExampSlot(Request $request)
 	{
 		$intId = $request->id;
-		//$data = ExamSlotModel::with(['exam'])->first();
+		$requestedDate  = $request->date;
 
 		$data = ExamSlotModel::with(['exam'])->where('id', $intId)->first();
     	$strData = json_decode($data->time);
@@ -467,7 +461,7 @@ class ExamController extends Controller
 			$start_time =  $strData[$i]->start_time;
   			$end_time   =  $strData[$i]->end_time;
 
-  			$html .= '<input type="radio" name="slot" id="slot_'.$i.'" value="'.$start_time.'/'.$end_time.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
+  			$html .= '<input type="hidden" name="date" value="'.$requestedDate.'"><input type="radio" name="slot" id="slot_'.$i.'" value="'.$start_time.'/'.$end_time.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
   		}
     	return response()->json($html);
 	}
@@ -476,12 +470,25 @@ class ExamController extends Controller
 	{
 		DB::beginTransaction();
 
-        $object          	 		= new $this->BookExamSlotModel;
-        $object->exam_id   	 		= base64_decode(base64_decode($request->exam_id));
-        $object->user_id   	 		= base64_decode(base64_decode($request->user_id));
-        $object->course_id   		= base64_decode(base64_decode($request->course_id));
+		$exam_id   	 		= base64_decode(base64_decode($request->exam_id));
+        $user_id   	 		= base64_decode(base64_decode($request->user_id));
+        $course_id   		= base64_decode(base64_decode($request->course_id));
+
+        $ExamResultCompareArray['user_id'] = $user_id;
+  		$ExamResultCompareArray['course_id'] = $course_id;
+  		$ExamResultCompareArray['exam_id'] = $exam_id;
+
+		$object	= $this->BookExamSlotModel->firstOrNew($ExamResultCompareArray);
+
+		$booking_attempt = empty($object->booking_attempt) ? 1 : $object->booking_attempt+1; 
+
+        $object->exam_id   	 		= $exam_id;
+        $object->user_id   	 		= $user_id;
+        $object->course_id   		= $course_id;
+        $object->pass   			= NULL;
         $object->slot_time   		= $request->slot_time;
-        $object->booking_attempt   	= '1';
+        $object->slot_date   		= Date('Y-m-d', strtotime($request->date));
+        $object->booking_attempt   	= $booking_attempt;
         
         if($object->save())
         {
@@ -502,32 +509,84 @@ class ExamController extends Controller
 	{
 		if (!empty($request->user_id) && !empty($request->course_id) && !empty($request->exam_id)) 
 		{
+
+			// check time is it expired or not
 			$user_id 	= base64_decode(base64_decode($request->user_id));
 			$course_id 	= base64_decode(base64_decode($request->course_id));
 			$exam_id 	= base64_decode(base64_decode($request->exam_id));
 
-			$ExamResultModel = new $this->ExamResultModel;
-			
-			$ExamResultModel->user_id 		= $user_id;
-			$ExamResultModel->course_id 	= $course_id;
-			$ExamResultModel->exam_id 		= $exam_id;
-			$ExamResultModel->exam_status 	= 'Started';
+			$ExamResultCompareArray['user_id'] = $user_id;
+      		$ExamResultCompareArray['course_id'] = $course_id;
+      		$ExamResultCompareArray['exam_id'] = $exam_id;
 
-			if ($ExamResultModel->save()) 
+			$bookExam = $this->BookExamSlotModel->where('exam_id', $exam_id)
+												->where('course_id', $course_id)
+												->where('user_id', $user_id)
+												->first();
+
+
+			if (!empty($bookExam)) 
 			{
-				$this->JsonData['status'] = 'success';
-				$this->JsonData['result'] = base64_encode(base64_encode($ExamResultModel->id));				
+			
+				// exam time validation  
+	          	$slotTime = explode('/', $bookExam->slot_time);  
+	          	$startTime = $slotTime[0];
+	          	$endTime = $slotTime[1];
+
+	          	// get date
+	          	$date = $bookExam->slot_date;
+
+	          	// mearge date and time 
+	          	$startTimeStamp = Date('Y-m-d H:i:s', strtotime("$date $startTime"));
+	          	$endTimeStamp = Date('Y-m-d H:i:s', strtotime("$date $endTime"));
+	          	$currentDate = Date('Y-m-d H:i:s');
+	          	$extraTime = Date('Y-m-d H:i:s', strtotime("+15 minutes", strtotime($startTimeStamp)));
+	          	if(strtotime($currentDate) > strtotime($extraTime))
+	          	{
+	          		$ExamResultModel = $this->ExamResultModel->firstOrNew($ExamResultCompareArray);
+					$ExamResultModel->user_id 		= $user_id;
+					$ExamResultModel->course_id 	= $course_id;
+					$ExamResultModel->exam_id 		= $exam_id;
+					$ExamResultModel->exam_status 	= 'Delayed';
+					$ExamResultModel->save();
+
+					$BookExamSlotModel = $this->BookExamSlotModel->where($ExamResultCompareArray)->first();
+	              	$BookExamSlotModel->pass  = 0;
+	              	$BookExamSlotModel->save();
+
+	             	$this->JsonData['status'] = 'error';
+					$this->JsonData['msg'] = __('messages.ERR_EXPIRED_EXAM');
+					return response()->json($this->JsonData);
+					exit;
+	          	}
 			}
 			else
 			{
 				$this->JsonData['status'] = 'error';
-				$this->JsonData['status'] = __('messages.ERR_SAVE_EXM_ERROR_MESSAGE');
+				$this->JsonData['msg'] = __('messages.ERR_EXPIRED_EXAM');
+				return response()->json($this->JsonData);
+				exit;
 			}
+
+
+			$ExamResultModel = $this->ExamResultModel->firstOrNew($ExamResultCompareArray);
+			$ExamResultModel->user_id 		= $user_id;
+			$ExamResultModel->course_id 	= $course_id;
+			$ExamResultModel->exam_id 		= $exam_id;
+			$ExamResultModel->exam_status 	= 'Started';
+			$ExamResultModel->save();			
+
+			$BookExamSlotModel = $this->BookExamSlotModel->where($ExamResultCompareArray)->first();
+          	$BookExamSlotModel->pass  = 0;
+          	$BookExamSlotModel->save();
+
+			$this->JsonData['status'] = 'success';
+			$this->JsonData['result'] = base64_encode(base64_encode($ExamResultModel->id));
 		}
 		else
 		{
 			$this->JsonData['status'] = 'error';
-			$this->JsonData['status'] = __('messages.ERR_SAVE_EXM_ERROR_MESSAGE');
+			$this->JsonData['msg'] = __('messages.ERR_EXPIRED_EXAM');
 		}
 
 		return response()->json($this->JsonData);

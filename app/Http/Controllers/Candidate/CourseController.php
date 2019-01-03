@@ -12,6 +12,7 @@ use App\Models\TransactionModel;
 use App\Models\PrerequisiteModel;
 use App\Models\CoursePreStatus;
 use App\Models\BookExamSlotModel;
+use App\Models\ExamResultModel;
 
 use Illuminate\Support\Facades\Hash;
 use URL;
@@ -32,7 +33,8 @@ class CourseController extends Controller
         TransactionModel  $TransactionModel,
         PrerequisiteModel $PrerequisiteModel,
         CoursePreStatus   $CoursePreStatus,
-        BookExamSlotModel   $BookExamSlotModel
+        BookExamSlotModel   $BookExamSlotModel,
+        ExamResultModel   $ExamResultModel
     )
     {
 
@@ -41,7 +43,8 @@ class CourseController extends Controller
     	$this->TransactionModel  = $TransactionModel;
       $this->PrerequisiteModel = $PrerequisiteModel;
       $this->CoursePreStatus   = $CoursePreStatus;
-    	$this->BookExamSlotModel   = $BookExamSlotModel;
+      $this->BookExamSlotModel   = $BookExamSlotModel;
+    	$this->ExamResultModel   = $ExamResultModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -58,30 +61,91 @@ class CourseController extends Controller
 
     public function index($indEncId)
    	{
-      $intId     = base64_decode(base64_decode($indEncId));
+      $intId   = base64_decode(base64_decode($indEncId));
+      $user_id =  auth()->user()->id;
+
 
       // set book exam visibility status wise
       $bookExam = $this->BookExamSlotModel
-                              ->where('user_id' , auth()->user()->id)
+                              ->where('user_id' , $user_id)
                               ->where('course_id', $intId)
                               ->first();
 
+
+
       $this->ViewData['bookingStatus'] = [];  
-      if (!empty($bookExam) && $bookExam['pass'] == 1)
-      {
-          $this->ViewData['bookingStatus'] = 'completed';
+
+      if (!empty($bookExam)) 
+      { 
+          $exam_id = $bookExam->exam_id;
+          $course_id = $intId;
+
+          $ExamResultCompareArray = [];
+          $ExamResultCompareArray['user_id']   = $user_id;
+          $ExamResultCompareArray['course_id'] = $course_id;
+          $ExamResultCompareArray['exam_id']   = $exam_id;
+
+          if ($bookExam['pass'] === NULL) 
+          {
+              $this->ViewData['bookingStatus'] = 'booked';
+          }
+
+          if ($bookExam['pass'] === 0) 
+          {
+              $this->ViewData['bookingStatus'] = 'rescheduled';
+          }
+
+          if ($bookExam['pass'] === 1) 
+          {
+              $this->ViewData['bookingStatus'] = 'completed';
+          }
       }
-      if (!empty($bookExam) && $bookExam['pass'] == 0)
-      {
-          $this->ViewData['bookingStatus'] = 'rescheduled';
-      }
-      if (!empty($bookExam) && $bookExam['pass'] == NULL && $bookExam['pass'] != 0) 
-      {
-          $this->ViewData['bookingStatus'] = 'booked';
-      }
-      if ((empty($bookExam) && $bookExam != 'null')) 
+      else
       {
           $this->ViewData['bookingStatus'] = 'new';
+      }
+
+      // check exam status time check exact time:
+      if ($this->ViewData['bookingStatus'] == 'booked') 
+      {
+          // get times
+          $slotTime = explode('/', $bookExam->slot_time);  
+          $startTime = $slotTime[0];
+          $endTime = $slotTime[1];
+
+          // get date
+          $date = $bookExam->slot_date;
+
+          // mearge date and time 
+          $startTimeStamp = Date('Y-m-d H:i:s', strtotime("$date $startTime"));
+          $endTimeStamp = Date('Y-m-d H:i:s', strtotime("$date $endTime"));
+          $currentDate = Date('Y-m-d H:i:s');
+          
+          // dd($currentDate, $startTimeStamp);
+
+          if(strtotime($currentDate) >= strtotime($startTimeStamp))
+          {
+             $this->ViewData['bookingStatus'] = 'hasExamAccess';
+          }
+
+          $extraTime = Date('Y-m-d H:i:s', strtotime("+15 minutes", strtotime($startTimeStamp)));
+          if(strtotime($currentDate) > strtotime($extraTime))
+          { 
+              $ExamResultModel = $this->ExamResultModel->firstOrNew($ExamResultCompareArray);
+              $ExamResultModel->user_id     = $user_id;
+              $ExamResultModel->course_id   = $course_id;
+              $ExamResultModel->exam_id     = $exam_id;
+              $ExamResultModel->exam_status   = 'Delayed';
+              $ExamResultModel->save();
+
+              $BookExamSlotModel = $this->BookExamSlotModel->where($ExamResultCompareArray)->first();
+              $BookExamSlotModel->pass = 0;
+              $BookExamSlotModel->save();
+
+            $this->ViewData['bookingStatus'] = 'rescheduled';
+          }
+
+          // dump($startTimeStamp, $extraTime, $currentDate);
       }
 
       $arrCourse = $this->CourseModel->where('id', $intId)->first();

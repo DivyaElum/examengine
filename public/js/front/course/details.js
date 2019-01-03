@@ -1,7 +1,13 @@
 var $Path = $('meta[name="base-path"]').attr('content');
 
 function  startExam(element)
-{
+{	
+	$.LoadingOverlay("show", 
+    {
+        image       : "",
+        text        : "Loading..."
+    });
+
 	var token = $(element).attr('data-token');
 
 	if (token != '') 
@@ -36,14 +42,28 @@ function  startExam(element)
 			          	Params += ', toolbar=no';
 
 	          		var ExamWindow = window.open(data.url,'_blank' , Params);
+
+	          		setTimeout(function()
+	          		{
+						setTimeout(function()
+		          		{
+		          			$.LoadingOverlay("hide");
+
+		          		}, 1000)
+
+						location.reload();
+
+	          		}, 5000)
 		  		}
 		  		else
 		  		{
+		  			$.LoadingOverlay("hide");
 		  			console.log('Something went wrong, Please try again later.');
 		  		}
 		  	},
 		  	error: function (data)
 		  	{
+		  		$.LoadingOverlay("hide");
 		  		console.log('Something went wrong, Please try again later.');
 		  	}
 		});
