@@ -58,11 +58,19 @@ class PaymentController extends Controller
 		$user_id 	= base64_decode(base64_decode($request->pud));
 		$course_id 	= base64_decode(base64_decode($request->pcd));
 
-		// manage data
-		$course = $this->CourseModel->find($course_id);
-		$course->user_id = $user_id;
+		$arrCourseData = $this->CourseModel->where('status','1')->find($course_id);
+		if($arrCourseData != 'null' && isset($arrCourseData)){
+			// manage data
+			$course = $this->CourseModel->find($course_id);
+			$course->user_id = $user_id;
 
-		$this->JsonData = self::_create($course);
+			$this->JsonData = self::_create($course);
+		}
+		else
+		{
+			$this->JsonData['status'] = 'error';	
+			$this->JsonData['msg'] 	  = 'Something went wrong, Please try again later.';
+		}
 
 		return response()->json($this->JsonData);
 	}

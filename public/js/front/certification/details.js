@@ -24,12 +24,12 @@ function makePayment(element)
 	    	}
 	    	else
 	    	{
-	    		toastr.error(data.msg);
+	    		alert(data.msg);
 	    	}
 	  	},
 	  	error: function (data)
 	  	{
-	  		toastr.error('Something went wrong, Please try again later.');
+	  		alert('Something went wrong, Please try again later.');
 	  		$.LoadingOverlay("hide");
 	  	}
 	});

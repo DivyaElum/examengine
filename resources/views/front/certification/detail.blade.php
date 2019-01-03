@@ -117,4 +117,5 @@
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/toastr/toastr.options.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/front/voucher/applyVoucher.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/front/certification/details.js') }}"></script>
 @stop
