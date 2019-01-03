@@ -48,9 +48,16 @@
 											<div class="previewtitle">Preview This Certificate</div>
 										</div>
 										<div class="courseBuyDetails">
-											<!-- <h4>Learn More <span>with a premium membership</span></h4> -->
 											<p>Sign up for a Premium Membership to learn courses for Internet-free viewing.</p>
-											<h2 class="price"><span>${{ $arrCerficationDetils->discount}}</span> ${{ $arrCerficationDetils->calculated_amount}}</h2>
+											<h2 class="price">
+												<span>${{ $arrCerficationDetils->discount}}</span> 
+												
+												@if($intDisAmount)
+													$<?php echo number_format($intDisAmount,2); ?>
+												@else
+													${{ $arrCerficationDetils->calculated_amount}}
+												@endif
+											</h2>
 											<br>
 											@if(!auth()->check())
 												<a href="{{ url('/signup') }}" class="large-btn">Buy Now</a>
@@ -89,6 +96,11 @@
           		<label>Voucher Code : </label>
           		<input type="text" name="voucher_code" id="voucher_code" placeholder="Enter a Voucher Code" class="form-control">
           		<span class="error_voucher_code error"></span>
+          		<input type="hidden" name="courses_id" value="{{$arrCerficationDetils->id}}">
+          		@if(auth()->check())
+          			<input type="hidden" name="user_id" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
+          		@endif
+          		<input type="hidden" name="course_price" value="{{$arrCerficationDetils->calculated_amount}}">
           	</div>
           	<button type="submit" name="btnApply" class="btn btn-primary btnApply" id="btnApply">Apply</button>
           	<img src="{{asset('images/ajax-loader.gif')}}" class="loadingImg" alt="logo" />

@@ -36,9 +36,9 @@ class ExamController extends Controller
  		QuestionOptionsAnswer $QuestionOptionsAnswer,
  		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel,
  		QuestionCategoryModel $QuestionCategoryModel,
- 		CourseModel $CourseModel,
- 		ExamSlotModel $ExamSlotModel,
- 		SiteSetting $SiteSetting
+ 		CourseModel 		$CourseModel,
+ 		ExamSlotModel 		$ExamSlotModel,
+ 		SiteSetting 		$SiteSetting
 
  	)
  	{
@@ -50,9 +50,9 @@ class ExamController extends Controller
  		$this->QuestionOptionsAnswer = $QuestionOptionsAnswer;
  		$this->ExamResultCategoryWiseModel  = $ExamResultCategoryWiseModel;
  		$this->QuestionCategoryModel  = $QuestionCategoryModel;
- 		$this->CourseModel  = $CourseModel;
- 		$this->ExamSlotModel  = $ExamSlotModel;
- 		$this->SiteSetting  = $SiteSetting;
+ 		$this->CourseModel  		= $CourseModel;
+ 		$this->ExamSlotModel  		= $ExamSlotModel;
+ 		$this->SiteSetting  		= $SiteSetting;
 
 
  		$this->ViewData = [];

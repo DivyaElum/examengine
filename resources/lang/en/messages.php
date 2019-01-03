@@ -18,5 +18,8 @@ return [
     'ERR_STR_EMPTY_VOUCHER_ERR_MSG'         => 'Please Enter a voucher code',
     'ERR_STR_INVALID_VOUCHER_ERR_MSG'       => 'Invalid voucher code',
     'ERR_STR_EXP_VOUCHER_ERR_MSG'           => 'This voucher code is expired',
+    'ERR_STR_VOUCHER_SUCC_MSG'              => 'voucher Apply successfully',
+    'ERR_STR_USE_VOUCHER_ERR_MSG'           => 'voucher already used',
+    'ERR_STR_DB_VOUCHER_ERRO_MSG'           => 'Something went wrong on server, Please try again later.',
     
 ];

@@ -26,9 +26,9 @@ function applyVoucher(element)
     			alert(data.msg);
 	    		setTimeout(function()
     			{
-    				window.location.href = data.url;
+    				window.location.href = document.referrer;
 
-    			}, 2000);
+    			}, 1000);
 	    	}
 	    	else
 	    	{
