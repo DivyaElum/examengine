@@ -28,6 +28,7 @@
 				<div class="col-md-4 col-sm-6">
 					<div class="card">
 						<div class="title" style="background-image: url(images/certification_lists/course_img1.jpg)">
+							<!-- <i class="fa fa-check-circle" style="font-size:30px;color:green;position: relative;left: 160px;" title="Purchased"></i> -->
 							<div class="titleWrap">
 								<h3>{{ $row->title}}</h3>
 								<span class="icon"></span>
@@ -35,8 +36,13 @@
 						</div>
 						<div class="cardContent">
 							<h2 class="price"><span>${{ $row->discount}}</span> ${{ $row->calculated_amount}}</h2>
-							<p><?php echo str_limit($row->description, '100', '...'); ?></p>
-							<a href="{{ url('/certification/detail/'.base64_encode(base64_encode($row->id))) }}" class="btnArrow"><span></span></a>
+							<p><?php echo str_limit($row->description, '100', '...'); ?></p><br />
+							
+							@if(in_array($row->id , $arrTransData))
+								<p>Purchased</p>
+							@else
+								<a href="{{ url('/certification/detail/'.base64_encode(base64_encode($row->id))) }}" class="btnArrow"><span></span></a>
+							@endif
 						</div>
 					</div>
 				</div>

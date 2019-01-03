@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Models\CourseModel;
 use App\Models\voucherModel;
+use App\Models\TransactionModel;
 
 
 class CertificationController extends Controller
@@ -17,11 +18,13 @@ class CertificationController extends Controller
     public function __construct(
 
         CourseModel $CourseModel,
-        voucherModel $voucherModel
+        voucherModel $voucherModel,
+        TransactionModel $TransactionModel
     )
     {
-        $this->CourseModel   = $CourseModel;
-        $this->voucherModel  = $voucherModel;
+        $this->CourseModel      = $CourseModel;
+        $this->voucherModel     = $voucherModel;
+        $this->TransactionModel = $TransactionModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -32,18 +35,27 @@ class CertificationController extends Controller
     }
     public function index()
     {
-        $this->ViewData['page_title']           = 'Listings for Certifications';
-    	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
-        $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
-        $this->ViewData['modulePath']           = $this->ModulePath;
-        $this->ViewData['arrCerficationList']   = $this->CourseModel
+        $intId = auth()->user()->id;
+        $arrTemp = [];
+        $arrTransData = $this->TransactionModel->where('user_id', $intId)->get(['course_id'])->toArray();
+        
+        if(!empty($arrTransData) && sizeof($arrTransData) > 0){
+            $arrTemp = array_column($arrTransData, 'course_id');
+        }
+
+            $this->ViewData['page_title']           = 'Listings for Certifications';
+        	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
+            $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
+            $this->ViewData['modulePath']           = $this->ModulePath;
+            $this->ViewData['arrTransData']         = $arrTemp;
+            $this->ViewData['arrCerficationList']   = $this->CourseModel
                                                         ->where('status', '1')
                                                         ->whereHas('exam',function($exam)
                                                         {
                                                            $exam->where('is_test', 1);
                                                         }, '<', 1)
                                                         ->get();
-
+        
         return view($this->ModuleView.'index', $this->ViewData);
     }
     
