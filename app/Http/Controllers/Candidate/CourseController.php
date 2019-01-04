@@ -64,14 +64,11 @@ class CourseController extends Controller
       $intId   = base64_decode(base64_decode($indEncId));
       $user_id =  auth()->user()->id;
 
-
       // set book exam visibility status wise
       $bookExam = $this->BookExamSlotModel
                               ->where('user_id' , $user_id)
                               ->where('course_id', $intId)
                               ->first();
-
-
 
       $this->ViewData['bookingStatus'] = [];  
 
@@ -148,14 +145,14 @@ class CourseController extends Controller
 
       $arrCourse = $this->CourseModel->where('id', $intId)->first();
 
-      $enc_prerequisites = $this->CourseModel
-                                ->where('id', $intId)
-                                ->pluck('prerequisite_id')
-                                ->first();
 
       $this->ViewData['arrCourse'] = $arrCourse;
       $this->ViewData['exam_id']   = $arrCourse->exam_id;
 
+      $enc_prerequisites = $this->CourseModel
+                                ->where('id', $intId)
+                                ->pluck('prerequisite_id')
+                                ->first();
       if(!empty($enc_prerequisites) && ($enc_prerequisites != 'null'))
       {
         $arrPrerequisites = $this->PrerequisiteModel->whereIn('id', json_decode($enc_prerequisites))->get();
@@ -165,7 +162,6 @@ class CourseController extends Controller
       }
       
       return view($this->ModuleView, $this->ViewData);
-
    	}
 
     public function courseListing()

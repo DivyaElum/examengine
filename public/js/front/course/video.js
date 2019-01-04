@@ -45,8 +45,8 @@ function initialize(){
 // This function is called by initialize()
 function updateTimerDisplay(){
     // Update current time text display.
-    console.log(player.getCurrentTime());
-    console.log(player.getDuration());
+    // console.log(player.getCurrentTime());
+    // console.log(player.getDuration());
 
     // $('#current-time').text(formatTime( player.getCurrentTime() ));
     // $('#duration').text(formatTime( player.getDuration() ));
@@ -61,25 +61,25 @@ function updateTimerDisplay(){
     formData.append('course_id', course_id);
     formData.append('prerequisite_id', prerequisite_id);
  
-    $.ajax(
-    {
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        type: 'POST',
-        url: basePath+'/course/updateWatchStatus',
-        data: formData,
-        processData: false,
-        contentType: false,
-        error: function (data)
-        {
-            console.log(data);
-        },
-        error: function (data)
-        {
-            console.log(data);   
-        }
-    });
+    // $.ajax(
+    // {
+    //     headers: {
+    //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //     },
+    //     type: 'POST',
+    //     url: basePath+'/course/updateWatchStatus',
+    //     data: formData,
+    //     processData: false,
+    //     contentType: false,
+    //     error: function (data)
+    //     {
+    //         //console.log(data);
+    //     },
+    //     error: function (data)
+    //     {
+    //         //console.log(data);   
+    //     }
+    // });
 }
 
 

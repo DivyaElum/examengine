@@ -201,7 +201,6 @@ class CertificationController extends Controller
                         }
                         else
                         {
-                            dd('dsa');
                             $this->JsonData['status']   = 'error';
                             $this->JsonData['msg']      = __('messages.ERR_STR_EXP_VOUCHER_ERR_MSG');
                         }
@@ -257,7 +256,7 @@ class CertificationController extends Controller
 
         if ($userName != NULL && $courseName != NULL && $siteName != NULL) 
         {
-
+            $strDate  = date('d-m-Y');
             $html = '
                 <!doctype html>
                 <html >
@@ -285,7 +284,7 @@ class CertificationController extends Controller
                                 position:fixed;
                                 margin:10px 10px 10px 10px;
                                 background-color:white;
-                                background-image:url({{asset('certificate/frame.png')}});
+                                background-image:url({{asset("certificate/frame.png")}});
                                 background-size:880px 650px;
                                 background-repeat:no-repeat;
                                 z-index: 2;
@@ -298,7 +297,7 @@ class CertificationController extends Controller
                                 position:fixed;
                                 left:125px;
                                 top:80px;
-                                background-image:url({{asset('certificate/middle_part.png')}});
+                                background-image:url({{asset("certificate/middle_part.png")}});
                                 background-size:670px 170px;
                                 background-repeat:no-repeat;
                                 z-index: 5;
@@ -311,7 +310,7 @@ class CertificationController extends Controller
                                 position:fixed;
                                 left:415px;
                                 top:420px;
-                                background-image:url({{asset('certificate/sigill.png')}});
+                                background-image:url({{asset("certificate/sigill.png")}});
                                 background-size:90px 90px;
                                 background-repeat:no-repeat;
                                 z-index: 5;
@@ -325,7 +324,7 @@ class CertificationController extends Controller
                                 position:fixed;
                                 left:435px;
                                 top:520px;
-                                background-image:url({{asset('certificate/band.png')}});
+                                background-image:url({{asset("certificate/band.png")}});
                                 background-size:60px 90px;
                                 background-repeat:no-repeat;
                                 z-index: 5;
@@ -338,7 +337,7 @@ class CertificationController extends Controller
                                 position:fixed;
                                 left:582px;
                                 top:517px;
-                                background-image:url({{asset('certificate/signature.png')}});
+                                background-image:url({{asset("certificate/signature.png")}});
                                 background-size:180px 90px;
                                 background-repeat:no-repeat;
                                 z-index: 11;
@@ -505,13 +504,13 @@ class CertificationController extends Controller
 
                         <div id="CompletionDatePanel" class="CompletionDate">
                         
-                        <span id="CompletionDateLabel">'date('d-m-Y')'</span>
+                        <span id="CompletionDateLabel">'.$strDate.'</span>
 
                         </div>
 
                         <div id="StudentNamePanel" class="StudentName">
                         
-                        <span id="StudentNameLabel">{{'Sheshkumar Prajapati'}}</span>
+                        <span id="StudentNameLabel">{{"Sheshkumar Prajapati"}}</span>
 
                         </div>
                     </body>

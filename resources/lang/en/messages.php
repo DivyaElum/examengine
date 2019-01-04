@@ -22,4 +22,7 @@ return [
     'ERR_STR_INVALID_VOUCHER_ERR_MSG'       => 'Invalid voucher code',
     'ERR_STR_EXP_VOUCHER_ERR_MSG'           => 'This voucher code is expired',
     'ERR_EXPIRED_EXAM'                      => 'This exam has been expired.',
+    'ERR_STR_VOUCHER_SUCC_MSG'              => 'Your Voucher added successfully',
+    'ERR_STR_USE_VOUCHER_ERR_MSG'           => 'This voucher has expired',
+    'ERR_STR_DB_VOUCHER_ERRO_MSG'           => 'somthing is worng',
 ];

@@ -24,7 +24,6 @@ class CertificationDetail extends Controller
     }
     public function index($indId)
     {
-
         $this->ViewData['page_title']           = 'Detail page of Certification';
     	$this->ViewData['moduleTitle']          = $this->ModuleTitle;
         $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);

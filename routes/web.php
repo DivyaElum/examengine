@@ -76,7 +76,7 @@
 			// course routes
 			Route::group(['prefix' => 'course'],function()
 			{
-				Route::get('/course-listing', 'Candidate\CourseController@courseListing');
+				Route::get('/listing', 'Candidate\CourseController@courseListing');
 				Route::get('/details/{id}', 'Candidate\CourseController@index');
 				Route::get('/{token}/varify', 'Candidate\CourseController@varify');
 				Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
