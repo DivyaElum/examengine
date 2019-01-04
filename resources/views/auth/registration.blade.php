@@ -108,11 +108,11 @@ $strUser = app('request')->input('type');
 				  	<div class="form-group error">
 				    	<div class="containerRadio">
 							<label class="radio-inline">
-							  <input type="radio" name="user_role" id="customer" value="customer" class="user_role" <?php if($strUser == 'customer'){echo 'checked';}else{ echo 'checked';} ?> /> Customer
+							  <input type="radio" name="user_role" id="canditate" value="canditate" class="user_role" <?php if($strUser == 'candidate'){echo 'checked';}else{ echo 'checked';} ?> /> Candidate
 							  <span class="checkmark"></span>
 							</label>					    
 							<label class="radio-inline">
-							  <input type="radio" name="user_role" id="canditate" value="candidate" class="user_role" <?php if($strUser == 'candidate'){echo 'checked';} ?> />Service provider
+							  <input type="radio" name="user_role" id="customer" value="customer" class="user_role" <?php if($strUser == 'customer'){echo 'checked';} ?> />Service provider
 							  <span class="checkmark"></span>
 							</label>
 					    </div>

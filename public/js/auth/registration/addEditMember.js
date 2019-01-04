@@ -50,7 +50,7 @@ $('#btn_register').click(function()
 {
 	var userRole = $('input[name=user_role]:checked').val();
 	
-	if(userRole == 'candidate')
+	if(userRole == 'customer')
 	{
 		$("form[name='frmRegister']").validate({
 			onkeyup: false,			
@@ -222,7 +222,7 @@ $('#btn_register').click(function()
 });
 
 $(document).ready(function() {
-	if(getUserType == 'candidate'){
+	if(getUserType == 'customer'){
     	$('.organisationFiledDiv').show();
     }else{
     	$('.organisationFiledDiv').hide();
@@ -231,7 +231,7 @@ $(document).ready(function() {
 	$("input[name$='user_role']").click(function() {
 	    var userRole = $(this).val();
 
-	    if(userRole == 'candidate'){
+	    if(userRole == 'customer'){
 	    	$('.organisationFiledDiv').show();
 	    }else{
 	    	$('.organisationFiledDiv').hide();

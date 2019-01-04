@@ -74,8 +74,8 @@
       <li> <a href="#">Contact Us</a> </li>
     </div>
     @if(auth()->check() == '')
-      <li class="become-a-canditate-btn"> <a href="{{ route('signup.index') }}?type=customer">Become A Customer</a> </li>
-      <li class="become-a-service-provider-btn"> <a href="{{ route('signup.index') }}?type=candidate">Become A Service Provider</a> </li>
+      <li class="become-a-canditate-btn"> <a href="{{ route('signup.index') }}?type=candidate">Become A Candidate</a> </li>
+      <li class="become-a-service-provider-btn"> <a href="{{ route('signup.index') }}?type=customer">Become A Service Provider</a> </li>
     @endif
     </ul>
     <div class="toggle-menu"> <span></span> </div>

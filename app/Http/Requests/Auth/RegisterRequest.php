@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     {
         $strUserRoles = $this->request->get('user_role');
 
-        if($strUserRoles != 'candidate'){
+        if($strUserRoles != 'customer'){
             return [
                 'first_name'            => 'required',
                 'last_name'             => 'required',
