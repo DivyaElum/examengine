@@ -23,7 +23,6 @@
 		<div class="container">
 			<div class="row">
 				@include('front.partials._sidebar')
-					<?php $bookingStatus = 'rescheduled'; ?>
 					<div class="col-md-9 col-sm-12 col-xs-12">
 						<div class="dashbaord_content">
 							<div class="row">
