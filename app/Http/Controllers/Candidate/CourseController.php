@@ -144,8 +144,6 @@ class CourseController extends Controller
 
             $this->ViewData['bookingStatus'] = 'rescheduled';
           }
-
-          // dump($startTimeStamp, $extraTime, $currentDate);
       }
 
       $arrCourse = $this->CourseModel->where('id', $intId)->first();

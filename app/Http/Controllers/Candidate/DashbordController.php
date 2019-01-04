@@ -163,4 +163,10 @@ class DashbordController extends Controller
 
         return response()->json($this->JsonData);
     }
+
+    public function dashboardListing()
+    {
+        dd('pass');
+        
+    }
 }

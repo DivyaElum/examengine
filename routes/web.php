@@ -7,6 +7,10 @@
 */
 
 	// test
+	// Route::get('/certificate-demo', function ()
+	// {
+	// 	return view('front.exam.certificate');
+	// });
 
 	// after authantication routes
 	Route::group(['middleware' => 'FrontGeneralMiddleware'],function()
@@ -38,16 +42,24 @@
 			Route::get('/detail/{id}','Candidate\CertificationController@detail'); 
 			Route::post('/applyVoucher','Candidate\CertificationController@applyVoucher'); 
 		});
-	
+		
 
 		// after authantication routes
 		Route::group(['middleware' => 'UserAuthenticate'],function()
 		{
 			// Dashboard rotues
-			Route::get('/dashboard', 'Candidate\DashbordController@index');
-			Route::post('/dashboard/buildCourseWiseCharts', 'Candidate\DashbordController@buildCourseWiseCharts');
-			Route::get('/dashboard/buildAllInOneChart', 'Candidate\DashbordController@buildAllInOneChart');
+			Route::group(['prefix' => 'dashboard'],function()
+			{
+				Route::get('/', 'Candidate\DashbordController@index');
+				Route::post('/buildCourseWiseCharts', 'Candidate\DashbordController@buildCourseWiseCharts');
+				Route::get('/buildAllInOneChart', 'Candidate\DashbordController@buildAllInOneChart');
+			});
 
+			// certificate routing
+			Route::group(['prefix' => 'certificate', 'namespace' => 'Candidate'],function()
+			{
+				Route::get('/','CertificationController@userCertificatesListing')->name('certificate');
+			});
 
 			// purchase course
 			Route::group(['prefix' => 'purchase'],function()
@@ -78,6 +90,7 @@
 				Route::get('/getExampSlot', 'ExamController@getExampSlot');
 				Route::post('/bookExamSlot', 'ExamController@bookExamSlot');
 			});
+
 			Route::get('/logout', 'Auth\LoginController@logout');			//logout
 			Route::post('/logout', 'Auth\LoginController@logout');
 		});

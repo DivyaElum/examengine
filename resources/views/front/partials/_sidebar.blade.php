@@ -19,6 +19,10 @@
 				<li class="{{ active('course/*') }}" >
 					<a href="/course/course-listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a>
 				</li>
+
+				<li class="{{ active('certificate/*') }}" >
+					<a href="{{route('certificate')}}"><i class="fa fa-caret-right" aria-hidden="true"></i> My Certificates</a>
+				</li>
 				
 				<li class="" >
 					<a href="javascript:void(0)"><i class="fa fa-caret-right" aria-hidden="true"></i> View Profile</a>
