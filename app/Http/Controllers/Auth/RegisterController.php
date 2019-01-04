@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Hash;
 
 use Mail;
 use App\User;
+use App\SiteSetting;
+use App\Mail\RegisterMail; 
 use App\Models\UserInfoModels;
 use App\Models\Auth\RegisterModel;
-use App\Mail\RegisterdMail; 
 
 // others
 use Validator;
@@ -27,6 +28,7 @@ class RegisterController extends Controller
     public function __construct(
 
         User $User,
+        SiteSetting $SiteSetting,
         RegisterModel $RegisterModel,
         UserInfoModels $UserInfoModels
     )
@@ -34,6 +36,7 @@ class RegisterController extends Controller
         $this->RegisterModel    = $RegisterModel;
         $this->User             = $User;
         $this->UserInfoModels   = $UserInfoModels;
+        $this->SiteSetting      = $SiteSetting;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -53,10 +56,10 @@ class RegisterController extends Controller
         return view($this->ModuleView.'registration', $this->ViewData);
     }
 
+    //store user data
     public function store(RegisterRequest $request)
     {
         DB::beginTransaction();
-        
         $User               = new $this->User;
         $User->name         = $request->first_name.'_'.$request->last_name;
         $User->email        = $request->email;
@@ -68,13 +71,14 @@ class RegisterController extends Controller
             $User->assignRole($request->user_role);
            
             //Store orignal image
-            if($request->user_role != 'candidate'){
+            if($request->user_role == 'candidate'){
                 $strImage = $request->organisation_image;
                 $strImgName = time().$strImage->getClientOriginalName();
                 $strOriginalImgdesignationPath = public_path().'/upload/organisation-image' ;
                 $strImage->move($strOriginalImgdesignationPath, $strImgName);
             }
             $UserInfoModels                     = new $this->UserInfoModels;
+
             $UserInfoModels->user_id            = $User->id;
             $UserInfoModels->first_name         = $request->first_name;
             $UserInfoModels->last_name          = $request->last_name;
@@ -83,17 +87,19 @@ class RegisterController extends Controller
             $UserInfoModels->organisation_image = $strImgName;
             $UserInfoModels->status             = '0';
 
+            //get site seeting data
+            $arrSiteSetting = SiteSetting::find('1');
             if ($UserInfoModels->save()) 
             {
-                // $endId                = base64_encode(base64_encode(base64_encode($UserInfoModels->id)));
-                // $data['url']          = url('/active-member/'.$endId);
-                // $data['first_name']   = $request->first_name;
-                // $data['last_name']    = $request->last_name;
-                // $data['siteName']     = $siteSetting->site_title;
-                // $data['email_id']     = $request->email;
-                // dd($data);
-                // $mail        = Mail::to($strEmail)->send(new RegisterdMail($data));
-
+                $endId                = base64_encode(base64_encode(base64_encode($UserInfoModels->id)));
+                $token                = Hash::make($endId);
+                $data['url']          = url('/active-member/'.$endId."/".$token);
+                $data['first_name']   = $request->first_name;
+                $data['last_name']    = $request->last_name;
+                $data['siteName']     = $arrSiteSetting->site_title;
+                $data['email_id']     = $request->email;
+                $mail                 = Mail::to($request->email)->send(new RegisterMail($data));
+                
                 DB::commit();
                 $this->JsonData['status']   = 'success';
                 $this->JsonData['url']      = '/sign-up?type='.$request->user_role;
@@ -113,7 +119,8 @@ class RegisterController extends Controller
         return response()->json($this->JsonData);
     }
 
-     public function checkLogin(LoginRequest $request)
+    //check login function
+    public function checkLogin(LoginRequest $request)
     {
         if(!empty($request->input())){
             $strEmail     = $request->input('email');
@@ -122,9 +129,9 @@ class RegisterController extends Controller
             
             //check user exists in db
             $arrUserData = User::where('email',$strEmail)->first();
-            
+        
             $remember_me = $request->has('chkRememberMe') ? 'true' : 'false'; 
-            
+        
             if($remember_me == 'true'){
                 $strPasswordEncd = base64_encode(base64_encode($strPassword));
                 setcookie('setEmail',$strEmail,time() + (10 * 365 * 24 * 60 * 60));
@@ -154,7 +161,6 @@ class RegisterController extends Controller
             $this->JsonData['msg'] = __('messages.ERR_STR_EMPTY_FIELD_ERROR_MESSAGE');
         }
         return response()->json($this->JsonData);
-
     }
 
 }

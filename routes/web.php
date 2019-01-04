@@ -31,6 +31,10 @@
 		Route::get('/resetpassword/{token}','Auth\ResetPasswordController@index');
 		Route::post('/resetpassword','Auth\ResetPasswordController@resetpass');		
 		
+		//active user
+		Route::get('/active-member/{id}/{token}','Auth\VerificationController@index');
+		Route::post('/active-member','Auth\VerificationController@index');		
+
 		// certification rotues
 		Route::group(['prefix' => 'certification'],function()
 		{

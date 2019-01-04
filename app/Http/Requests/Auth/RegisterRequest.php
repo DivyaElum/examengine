@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     {
         $strUserRoles = $this->request->get('user_role');
 
-        if($strUserRoles == 'candidate'){
+        if($strUserRoles != 'candidate'){
             return [
                 'first_name'            => 'required',
                 'last_name'             => 'required',
@@ -57,7 +57,7 @@ class RegisterRequest extends FormRequest
             'password.min'                => 'Please enter atleast 8 digit password',
             'confirm_password.max'        => 'Please enter no more than 20 characters.',
             'confirm_password.required'   => 'Please enter Confirm password',
-            'confirm_password.same'       => 'Confirm Password does not match.',
+            'confirm_password.same'       => 'Your password and confirm password are not same.',
             'email.required'              => 'Email Id field is required.',
             'email.unique'                => 'Please comform this email Id already exits.',
             'telephone_no.required'       => 'Phone number field is required.',

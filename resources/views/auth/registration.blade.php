@@ -42,14 +42,14 @@ $strUser = app('request')->input('type');
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<div class="left-form-box">
 				<h2>Log In</h2>
-				<div class="alert alert-success alert-dismissible successLoginMsgAlrt">
+				<div class="alert alert-success alert-dismissible successLoginMsgAlrt hideAlrtMsg">
 				    <strong><span class="successLoginMessage"></span></strong>
 				  </div>
-				  <div class="alert alert-danger alert-dismissible errorLoginMsgAlrt">
+				  <div class="alert alert-danger alert-dismissible errorLoginMsgAlrt hideAlrtMsg">
 				    <strong><span class="dangerLoginMessage"></span></strong>
 				  </div>
 				  	@if (session('errorMsg'))
-					 <div class="alert alert-danger">
+					 <div class="alert alert-danger hideAlrtMsg">
 							 {{ session('errorMsg') }}
 					 </div>
 				   	@endif
@@ -87,22 +87,32 @@ $strUser = app('request')->input('type');
 		</div>
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<div class="right-form-box">
+				@if (session('errorMessage'))
+				 <div class="alert alert-danger hideAlrtMsg">
+					 {{ session('errorMessage') }}
+				 </div>
+			   	@endif
+				@if (session('successMsg'))
+				 <div class="alert alert-success hideAlrtMsg">
+					{{ session('successMsg') }}
+				 </div>
+			   	@endif
 				<h2>Registration</h2>
-				  <div class="alert alert-success alert-dismissible successMsgAlrt">
+				  <div class="alert alert-success alert-dismissible successMsgAlrt hideAlrtMsg">
 				    <strong><span class="successMessage"></span></strong>
 				  </div>
-				  <div class="alert alert-danger alert-dismissible errorMsgAlrt">
+				  <div class="alert alert-danger alert-dismissible errorMsgAlrt hideAlrtMsg">
 				    <strong><span class="dangerMessage"></span></strong>
 				  </div>
 				  <form class="form-horizontal" name="frmRegister" id="frmRegister" action="{{ route($modulePath.'.index') }}"  method="post" enctype="multipart/form-data">
 				  	<div class="form-group error">
 				    	<div class="containerRadio">
 							<label class="radio-inline">
-							  <input type="radio" name="user_role" id="canditate" value="customer" <?php if($strUser == 'customer'){echo 'checked';}else{ echo 'checked';} ?> /> Canditate
+							  <input type="radio" name="user_role" id="customer" value="customer" class="user_role" <?php if($strUser == 'customer'){echo 'checked';}else{ echo 'checked';} ?> /> Customer
 							  <span class="checkmark"></span>
 							</label>					    
 							<label class="radio-inline">
-							  <input type="radio" name="user_role" id="customer" value="candidate" <?php if($strUser == 'candidate'){echo 'checked';} ?> />Service provider
+							  <input type="radio" name="user_role" id="canditate" value="candidate" class="user_role" <?php if($strUser == 'candidate'){echo 'checked';} ?> />Service provider
 							  <span class="checkmark"></span>
 							</label>
 					    </div>

@@ -48,8 +48,9 @@ function saveMember(element)
 }
 $('#btn_register').click(function()
 {
-	var userRole = $("#customer").val();
-	if(userRole == 'customer')
+	var userRole = $('input[name=user_role]:checked').val();
+	
+	if(userRole == 'candidate')
 	{
 		$("form[name='frmRegister']").validate({
 			onkeyup: false,			
@@ -91,6 +92,9 @@ $('#btn_register').click(function()
 						if(data.status == 'success')
 						{
 							form.reset();
+							$('.errorMsgAlrt').hide();
+			    			$('.dangerMessage').html('');
+			    			
 							$('.successMsgAlrt').show();
 			    			$('.successMessage').html(data.msg);
 				    		// setTimeout(function ()
@@ -170,6 +174,9 @@ $('#btn_register').click(function()
 						if(data.status == 'success')
 						{
 							form.reset();
+							$('.errorMsgAlrt').hide();
+			    			$('.dangerMessage').html('');
+
 							$('.successMsgAlrt').show();
 			    			$('.successMessage').html(data.msg);
 				    		// setTimeout(function ()
@@ -186,6 +193,7 @@ $('#btn_register').click(function()
 					},
 					error: function (data)
 				  	{
+				  		console.log(data);
 				  		$('.error').removeClass('has-error');
 					   	$('.error').find('.help-block').html('');
 						
@@ -214,7 +222,7 @@ $('#btn_register').click(function()
 });
 
 $(document).ready(function() {
-	if(getUserType == 'customer'){
+	if(getUserType == 'candidate'){
     	$('.organisationFiledDiv').show();
     }else{
     	$('.organisationFiledDiv').hide();
@@ -223,7 +231,7 @@ $(document).ready(function() {
 	$("input[name$='user_role']").click(function() {
 	    var userRole = $(this).val();
 
-	    if(userRole == 'customer'){
+	    if(userRole == 'candidate'){
 	    	$('.organisationFiledDiv').show();
 	    }else{
 	    	$('.organisationFiledDiv').hide();
