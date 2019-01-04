@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
 <style type="text/css">
 .fc-content {cursor: pointer;}
+.fc-past {color: #b0b0b0;}
 </style>
 @stop
 @section('page_title')
@@ -73,6 +74,9 @@
 			
 		var calendar = $('#calendar').fullCalendar(
 		{
+			selectConstraint: {
+		        start: $.fullCalendar.moment().subtract(1, 'days'),
+		    },
 			header: 
 			{
 				left	: 'prev,next today',

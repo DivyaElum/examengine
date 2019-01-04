@@ -89,7 +89,7 @@
 				Route::post('/submitResult','ExamController@submit')->name('exam.submit');
 				Route::post('/updateExamResultStatus','ExamController@updateExamResultStatus')->name('exam.update.status');
 				
-				Route::get('/exam-book/{id}', 'ExamController@examBook');
+				Route::get('/book/{id}', 'ExamController@examBook');
 				Route::get('/loadEvent', 'ExamController@events');
 				Route::get('/getExampSlot', 'ExamController@getExampSlot');
 				Route::post('/bookExamSlot', 'ExamController@bookExamSlot');

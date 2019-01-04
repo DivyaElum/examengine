@@ -28,11 +28,12 @@
 							<div class="row">
 								<div class="col-xs-12">
 									@if($bookingStatus == 'new')
-										<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
+										<a href="{{ url('/exam/book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
 									@elseif($bookingStatus == 'rescheduled')
 										<form action="{{ route('purchase') }}" onsubmit="return makePayment(this)">
 											<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
 											<input type="hidden" name="pcd" value="{{base64_encode(base64_encode($arrCourse->id)) }}">
+											<input type="hidden" name="payment_type" value="">
 											<button type="submit" class="btn btn-primary">Book Exam</button>
 											<a href="javascript:void(0)" data-toggle="modal" data-target="#myVoucherModal">Apply Voucher</a>
 										</form>	
