@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 
 use App\User;
+use App\Models\UserInfoModels;
 use App\Models\Auth\CheckLoginModel;
 
 class LoginController extends Controller
@@ -18,6 +19,7 @@ class LoginController extends Controller
 
     public function __construct(
         User $User,
+        UserInfoModels $UserInfoModels,
         CheckLoginModel $CheckLoginModel
     )
     {       
@@ -48,30 +50,51 @@ class LoginController extends Controller
             //check user exists in db
             $arrUserData = User::where('email',$strEmail)->first();
             
-            $remember_me = $request->has('remember') ? 'true' : 'false'; 
-     
-            if($remember_me == 'true'){
-                $strPasswordEncd = base64_encode(base64_encode($strPassword));
-                setcookie('setEmail',$strEmail,time() + (10 * 365 * 24 * 60 * 60));
-                setcookie('setPassword',$strPasswordEncd,time() + (10 * 365 * 24 * 60 * 60));
-            }else{
-                unset($_COOKIE['setEmail']);
-                unset($_COOKIE['setPassword']);
-                setcookie('setEmail', '', -1, time() + (10 * 365 * 24 * 60 * 60));
-                setcookie('setPassword', '', -1,time() + (10 * 365 * 24 * 60 * 60));
-            }
-
-            if (auth()->attempt(['email' => $strEmail, 'password' => $strPassword], $remember_me))
+            if($arrUserData != 'null' && isset($arrUserData))
             {
-                $this->JsonData['status'] = 'success';
-                $this->JsonData['url']    = '/dashboard';
-                $this->JsonData['msg']    = __('messages.ERR_STR_LOGIN_SUCCESSFULLY_MESSAGE');
+                //check user exists in db
+                $arrUserInfoData = UserInfoModels::where('user_id',$arrUserData->id)->first();
+                
+                if($arrUserInfoData->status != '0')
+                {
+                    $remember_me = $request->has('remember') ? 'true' : 'false'; 
+             
+                    if($remember_me == 'true'){
+                        $strPasswordEncd = base64_encode(base64_encode($strPassword));
+                        setcookie('setEmail',$strEmail,time() + (10 * 365 * 24 * 60 * 60));
+                        setcookie('setPassword',$strPasswordEncd,time() + (10 * 365 * 24 * 60 * 60));
+                    }else{
+                        unset($_COOKIE['setEmail']);
+                        unset($_COOKIE['setPassword']);
+                        setcookie('setEmail', '', -1, time() + (10 * 365 * 24 * 60 * 60));
+                        setcookie('setPassword', '', -1,time() + (10 * 365 * 24 * 60 * 60));
+                    }
+
+                    if (auth()->attempt(['email' => $strEmail, 'password' => $strPassword], $remember_me))
+                    {
+                        $this->JsonData['status'] = 'success';
+                        $this->JsonData['url']    = '/dashboard';
+                        $this->JsonData['msg']    = __('messages.ERR_STR_LOGIN_SUCCESSFULLY_MESSAGE');
+                    }
+                    else
+                    {
+                        //wrong email id and password entered
+                        $this->JsonData['status'] = 'error';
+                        $this->JsonData['msg']    = __('messages.ERR_STR_PASSWORD_ERROR_MESSAGE');
+                    }
+                }
+                else
+                {
+                    //inactive user error message
+                    $this->JsonData['status'] = 'error';
+                    $this->JsonData['msg']    = __('messages.ERR_STR_INACTIVE_ERROR_MESSAGE');
+                }
             }
             else
             {
                 //wrong email entered
                 $this->JsonData['status'] = 'error';
-                $this->JsonData['msg']    = __('messages.ERR_STR_EMAIL_ERROR_MESSAGE');
+                $this->JsonData['msg']    = __('messages.ERR_STR_WRN_EMAIL_ERROR_MESSAGE');
             }
         }
         else{

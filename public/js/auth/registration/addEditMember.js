@@ -48,7 +48,8 @@ function saveMember(element)
 }
 $('#btn_register').click(function()
 {
-	var userRole = $("#customer").val();
+	var userRole = $('input[name=user_role]:checked').val();
+	
 	if(userRole == 'customer')
 	{
 		$("form[name='frmRegister']").validate({
@@ -91,6 +92,9 @@ $('#btn_register').click(function()
 						if(data.status == 'success')
 						{
 							form.reset();
+							$('.errorMsgAlrt').hide();
+			    			$('.dangerMessage').html('');
+			    			
 							$('.successMsgAlrt').show();
 			    			$('.successMessage').html(data.msg);
 				    		// setTimeout(function ()
@@ -170,6 +174,9 @@ $('#btn_register').click(function()
 						if(data.status == 'success')
 						{
 							form.reset();
+							$('.errorMsgAlrt').hide();
+			    			$('.dangerMessage').html('');
+
 							$('.successMsgAlrt').show();
 			    			$('.successMessage').html(data.msg);
 				    		// setTimeout(function ()
@@ -186,6 +193,7 @@ $('#btn_register').click(function()
 					},
 					error: function (data)
 				  	{
+				  		console.log(data);
 				  		$('.error').removeClass('has-error');
 					   	$('.error').find('.help-block').html('');
 						

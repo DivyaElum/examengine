@@ -30,7 +30,7 @@ function checkLogin(element)
 			    setTimeout(function ()
 		    	{
 		    		window.location.href = data.url;
-		    	}, 1000)
+		    	}, 500)
 
 	    	}
 	    	else
@@ -63,8 +63,6 @@ function checkLogin(element)
 		  		$('.errorLoginMsgAlrt').show();
 				$('.dangerLoginMessage').html('Something went wrong, Please try again later.');
 		    }
-	  // 		$('.errorLoginMsgAlrt').show();
-			// $('.dangerLoginMessage').html('Login unsuccessful');
 	  	}
 	});
 
