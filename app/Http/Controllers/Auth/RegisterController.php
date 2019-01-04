@@ -71,7 +71,7 @@ class RegisterController extends Controller
             $User->assignRole($request->user_role);
            
             //Store orignal image
-            if($request->user_role == 'candidate'){
+            if($request->user_role != 'candidate'){
                 $strImage = $request->organisation_image;
                 $strImgName = time().$strImage->getClientOriginalName();
                 $strOriginalImgdesignationPath = public_path().'/upload/organisation-image' ;
