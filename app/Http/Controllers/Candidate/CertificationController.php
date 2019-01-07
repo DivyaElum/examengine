@@ -17,6 +17,8 @@ use App\Models\ExamResultModel;
 
 use Browsershot;
 use URL;
+use PDF;
+use View;
 
 class CertificationController extends Controller
 {
@@ -44,7 +46,7 @@ class CertificationController extends Controller
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Certification Listing';
+        $this->ModuleTitle = 'Certification';
         $this->ModuleView  = 'front.certification.';
         $this->ModulePath  = 'CourseModel';
     }
@@ -229,299 +231,321 @@ class CertificationController extends Controller
 
     public function userCertificatesListing(Request $request)
     {
+        $this->ViewData['page_title']           = 'Certificates';
+        $this->ViewData['moduleTitle']          = $this->ModuleTitle;
+        $this->ViewData['moduleAction']         = str_plural($this->ModuleTitle);
+
         $userId = auth()->user()->id;
 
         // find exam results that has completed
 
-        $passExams = $this->ExamResultModel->where('user_id', $userId)
+        $this->ViewData['object'] = $this->ExamResultModel->where('user_id', $userId)
+                                         ->with(['user','course'])
                                          ->where('exam_status', 'Pass')
                                          ->get();
-        
-        if ($passExams) 
+        if ($this->ViewData['object']) 
         {
             // generate certificates
-
-            foreach ($passExams as $passExamKey => $exam) 
-            {
-                $this->ViewData['object'][] =  self::createCertificate($exam);
-            }
+            // foreach ($passExams as $passExamKey => $exam) 
+            // {
+            //     $this->ViewData['object'][] =  self::createCertificate($exam);
+            // }
         }
+
+        return view($this->ModuleView.'certificate', $this->ViewData);
     }
 
-    public function createCertificate($exam)
+    public function createCertificate(Request $request)
     {
-        $userName   = $this->UserModel->find($exam->user_id)->pluck('name')->first();
-        $courseName = $this->CourseModel->find($exam->course_id)->pluck('title')->first();
-        $siteName   = $this->SiteSettingModel->find('1')->pluck('site_title')->first();
-
-
-        if ($userName != NULL && $courseName != NULL && $siteName != NULL) 
+        if (!empty($request->result_id)) 
         {
+            $resultId = base64_decode(base64_decode($request->result_id));
+            
+            $exam = $this->ExamResultModel->with(['user', 'course'])->find($resultId);
 
-            $html = '
-                <!doctype html>
-                <html >
-                    <head>
-                        <title>
-                            Certificate
-                        </title>
+            if ($exam) 
+            {
+                $html = View::make('front.exam.certificate', ['exam' => $exam])->render();
 
-                        <style type="text/css" media="all">
+                $pdf = PDF::loadHTML($html)
+                        ->save('my_stored_file.pdf');
 
-                            #top 
-                            {
-                                height: 100%;
-                            }
+                dd($pdf);
+            }
+            else
+            {
+                $this->JsonData['status'] = 'error';
+                $this->JsonData['msg'] = 'Database error';
+            }
+        }
+        else
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg'] = 'Data not found';
 
-                            #position_me 
-                            {
-                                left: 0;
-                            }
-
-                            .SlideBackGround
-                            {
-                                height:650px;
-                                width:880px;
-                                position:fixed;
-                                margin:10px 10px 10px 10px;
-                                background-color:white;
-                                background-image:url({{asset('certificate/frame.png')}});
-                                background-size:880px 650px;
-                                background-repeat:no-repeat;
-                                z-index: 2;
-                            }
-
-                            .MiddlePart
-                            {
-                                height:170px;
-                                width:670px;
-                                position:fixed;
-                                left:125px;
-                                top:80px;
-                                background-image:url({{asset('certificate/middle_part.png')}});
-                                background-size:670px 170px;
-                                background-repeat:no-repeat;
-                                z-index: 5;
-                            }
-                            
-                            .Seal
-                            {
-                                height:90px;
-                                width:90px;
-                                position:fixed;
-                                left:415px;
-                                top:420px;
-                                background-image:url({{asset('certificate/sigill.png')}});
-                                background-size:90px 90px;
-                                background-repeat:no-repeat;
-                                z-index: 5;
-                            }
-                            
-                            .Ribbon
-                            {
-                            
-                                width:60px;
-                                height:90px;
-                                position:fixed;
-                                left:435px;
-                                top:520px;
-                                background-image:url({{asset('certificate/band.png')}});
-                                background-size:60px 90px;
-                                background-repeat:no-repeat;
-                                z-index: 5;
-                            }
-                            
-                            .Signature
-                            {
-                                width:180px;
-                                height:90px;
-                                position:fixed;
-                                left:582px;
-                                top:517px;
-                                background-image:url({{asset('certificate/signature.png')}});
-                                background-size:180px 90px;
-                                background-repeat:no-repeat;
-                                z-index: 11;
-                            }
-                            
-                            .DateLine
-                            {
-                                width:300px;
-                                position:fixed;
-                                left:112px;
-                                top:570px;
-                                z-index:11;
-                            }
-                            
-                            .ExaminerLine
-                            {
-                                width:300px;
-                                position:fixed;
-                                left:500px;
-                                top:570px;
-                                z-index:11;
-                            }
-                            
-                            .ExaminerText
-                            {
-                                width:270px;
-                                position:fixed;
-                                left:632px;
-                                top:585px;
-                                color:#8B7B67;
-                                z-index:11;
-                            }
-                            
-                            .DateText
-                            {
-                                width:270px;
-                                position:fixed;
-                                left:232px;
-                                top:585px;
-                                z-index:11;
-                                color:#8B7B67;
-                            }
-                            
-                            .ParagraphSmall
-                            {
-                                height:200px;
-                                width:500px;
-                                position:fixed;
-                                left:200px;
-                                top:350px;
-                                font-size:13px;
-                                text-align:center;
-                                z-index:11;
-                                color:#8B7B67;
-                            }
-                            
-                            .ParagraphMedium
-                            {
-                                height:200px;
-                                width:420px;
-                                position:fixed;
-                                left:240px;
-                                top:260px;
-                                font-size:14px;
-                                text-align:center;
-                                z-index:11;
-                                color:#8B7B67;
-                            }
-                            
-                            /*.HeadingLarge
-                            {
-                                height:200px;
-                                width:600px;
-                                position:fixed;
-                                left:330px;
-                                top:130px;
-                                font-size:66px;
-                                z-index:11;
-                                color:#8B7B67;
-                            }*/
-
-                            .HeadingLarge {
-                                height: 200px;
-                                width: 600px;
-                                position: fixed;
-                                left: 170px;
-                                top: 132px;
-                                font-size: 57px;
-                                z-index: 11;
-                                color: #8B7B67;
-                            }
-                            
-                            .MiddleLine
-                            {
-                                width:720px;
-                                position:fixed;
-                                left:100px;
-                                top:330px;
-                                z-index:11;
-                                color:#8B7B67;
-                            }
-                            
-                            .StudentName
-                            {
-                                font-weight:bold;
-                                height:200px;
-                                width:720px;
-                                position:fixed;
-                                left:100px;
-                                top:310px;
-                                font-size:18px;
-                                text-align:center;
-                                z-index:11;
-                                color:#8B7B67;
-                            }
-                            
-                            .CompletionDate
-                            {
-                                position:fixed;
-                                left:225px;
-                                top:555px;
-                                z-index:11;
-                                color:#8B7B67;
-                                text-align:center;
-                            } 
-                        </style>
-                    </head>
-                    <body>
-
-                        <div class="SlideBackGround">
-                        </div>
-
-                        <div class="MiddlePart">
-                        </div>
-
-                        <div class="HeadingLarge">Managed Service Council</div>
-
-                        <div class="ParagraphMedium">
-                            <p>
-                                CERTIFICATE OF COMPLETION. AWARDED TO,
-                            </p>
-                        </div>
-                        
-                        <div class="ParagraphSmall">
-                            For successfully completing the on-line course
-                            "'.strtoupper($siteName).'"
-                        </div>
-
-                        <div class="Seal"></div>
-
-                        <div class="Ribbon"></div>
-
-                        <hr class="DateLine" />
-
-                        <hr class="ExaminerLine" />
-
-                        <hr class="MiddleLine" />
-
-                        <div class="DateText">Date</div>
-
-                        <div class="ExaminerText">Examiner</div>
-
-                        <div class="Signature"></div>
-
-                        <div id="CompletionDatePanel" class="CompletionDate">
-                        
-                        <span id="CompletionDateLabel">'date('d-m-Y')'</span>
-
-                        </div>
-
-                        <div id="StudentNamePanel" class="StudentName">
-                        
-                        <span id="StudentNameLabel">{{'Sheshkumar Prajapati'}}</span>
-
-                        </div>
-                    </body>
-                </html>
-            ';
-
-            $fileWithPath = 'certifications/'.str_replace(' ', '-', $userName).'-'.str_replace(' ', '-', $courseName).'.jpg';
-
-            dd(Browsershot::html($html)->save($fileWithPath));
         }
 
+        // $userName   = $this->UserModel->find($exam->user_id)->pluck('name')->first();
+        // $courseName = $this->CourseModel->find($exam->course_id)->pluck('title')->first();
+        // $siteName   = $this->SiteSettingModel->find('1')->pluck('site_title')->first();
+
+
+        // if ($userName != NULL && $courseName != NULL && $siteName != NULL) 
+        // {
+
+        //     $html = '
+
+        //         <style type="text/css" media="all">
+
+        //             #top 
+        //             {
+        //                 height: 100%;
+        //             }
+
+        //             #position_me 
+        //             {
+        //                 left: 0;
+        //             }
+
+        //             .SlideBackGround
+        //             {
+        //                 height:650px;
+        //                 width:880px;
+        //                 position:fixed;
+        //                 margin:10px 10px 10px 10px;
+        //                 background-color:white;
+        //                 background-image:url('.asset("images/certificate/frame.png").');
+        //                 background-size:880px 650px;
+        //                 background-repeat:no-repeat;
+        //                 z-index: 2;
+        //             }
+
+        //             .MiddlePart
+        //             {
+        //                 height:170px;
+        //                 width:670px;
+        //                 position:fixed;
+        //                 left:125px;
+        //                 top:80px;
+        //                 background-image:url('.asset("images/certificate/middle_part.png").');
+        //                 background-size:670px 170px;
+        //                 background-repeat:no-repeat;
+        //                 z-index: 5;
+        //             }
+                    
+        //             .Seal
+        //             {
+        //                 height:90px;
+        //                 width:90px;
+        //                 position:fixed;
+        //                 left:415px;
+        //                 top:420px;
+        //                 background-image:url('.asset("images/certificate/sigill.png").');
+        //                 background-size:90px 90px;
+        //                 background-repeat:no-repeat;
+        //                 z-index: 5;
+        //             }
+                    
+        //             .Ribbon
+        //             {
+                    
+        //                 width:60px;
+        //                 height:90px;
+        //                 position:fixed;
+        //                 left:435px;
+        //                 top:520px;
+        //                 background-image:url('.asset("images/certificate/band.png").');
+        //                 background-size:60px 90px;
+        //                 background-repeat:no-repeat;
+        //                 z-index: 5;
+        //             }
+                    
+        //             .Signature
+        //             {
+        //                 width:180px;
+        //                 height:90px;
+        //                 position:fixed;
+        //                 left:582px;
+        //                 top:517px;
+        //                 background-image:url('.asset("images/certificate/signature.png").');
+        //                 background-size:180px 90px;
+        //                 background-repeat:no-repeat;
+        //                 z-index: 11;
+        //             }
+                    
+        //             .DateLine
+        //             {
+        //                 width:300px;
+        //                 position:fixed;
+        //                 left:112px;
+        //                 top:570px;
+        //                 z-index:11;
+        //             }
+                    
+        //             .ExaminerLine
+        //             {
+        //                 width:300px;
+        //                 position:fixed;
+        //                 left:500px;
+        //                 top:570px;
+        //                 z-index:11;
+        //             }
+                    
+        //             .ExaminerText
+        //             {
+        //                 width:270px;
+        //                 position:fixed;
+        //                 left:632px;
+        //                 top:585px;
+        //                 color:#8B7B67;
+        //                 z-index:11;
+        //             }
+                    
+        //             .DateText
+        //             {
+        //                 width:270px;
+        //                 position:fixed;
+        //                 left:232px;
+        //                 top:585px;
+        //                 z-index:11;
+        //                 color:#8B7B67;
+        //             }
+                    
+        //             .ParagraphSmall
+        //             {
+        //                 height:200px;
+        //                 width:500px;
+        //                 position:fixed;
+        //                 left:200px;
+        //                 top:350px;
+        //                 font-size:13px;
+        //                 text-align:center;
+        //                 z-index:11;
+        //                 color:#8B7B67;
+        //             }
+                    
+        //             .ParagraphMedium
+        //             {
+        //                 height:200px;
+        //                 width:420px;
+        //                 position:fixed;
+        //                 left:240px;
+        //                 top:260px;
+        //                 font-size:14px;
+        //                 text-align:center;
+        //                 z-index:11;
+        //                 color:#8B7B67;
+        //             }
+                    
+        //             /*.HeadingLarge
+        //             {
+        //                 height:200px;
+        //                 width:600px;
+        //                 position:fixed;
+        //                 left:330px;
+        //                 top:130px;
+        //                 font-size:66px;
+        //                 z-index:11;
+        //                 color:#8B7B67;
+        //             }*/
+
+        //             .HeadingLarge {
+        //                 height: 200px;
+        //                 width: 600px;
+        //                 position: fixed;
+        //                 left: 170px;
+        //                 top: 132px;
+        //                 font-size: 57px;
+        //                 z-index: 11;
+        //                 color: #8B7B67;
+        //             }
+                    
+        //             .MiddleLine
+        //             {
+        //                 width:720px;
+        //                 position:fixed;
+        //                 left:100px;
+        //                 top:330px;
+        //                 z-index:11;
+        //                 color:#8B7B67;
+        //             }
+                    
+        //             .StudentName
+        //             {
+        //                 font-weight:bold;
+        //                 height:200px;
+        //                 width:720px;
+        //                 position:fixed;
+        //                 left:100px;
+        //                 top:310px;
+        //                 font-size:18px;
+        //                 text-align:center;
+        //                 z-index:11;
+        //                 color:#8B7B67;
+        //             }
+                    
+        //             .CompletionDate
+        //             {
+        //                 position:fixed;
+        //                 left:225px;
+        //                 top:555px;
+        //                 z-index:11;
+        //                 color:#8B7B67;
+        //                 text-align:center;
+        //             } 
+        //         </style>
+
+        //         <div class="SlideBackGround">
+        //         </div>
+
+        //         <div class="MiddlePart">
+        //         </div>
+
+        //         <div class="HeadingLarge">Managed Service Council</div>
+
+        //         <div class="ParagraphMedium">
+        //             <p>
+        //                 CERTIFICATE OF COMPLETION. AWARDED TO,
+        //             </p>
+        //         </div>
+                
+        //         <div class="ParagraphSmall">
+        //             For successfully completing the on-line course
+        //             "'.strtoupper($siteName).'"
+        //         </div>
+
+        //         <div class="Seal"></div>
+
+        //         <div class="Ribbon"></div>
+
+        //         <hr class="DateLine" />
+
+        //         <hr class="ExaminerLine" />
+
+        //         <hr class="MiddleLine" />
+
+        //         <div class="DateText">Date</div>
+
+        //         <div class="ExaminerText">Examiner</div>
+
+        //         <div class="Signature"></div>
+
+        //         <div id="CompletionDatePanel" class="CompletionDate">
+                
+        //         <span id="CompletionDateLabel">'.date('d-m-Y').'</span>
+
+        //         </div>
+
+        //         <div id="StudentNamePanel" class="StudentName">
+                
+        //         <span id="StudentNameLabel">Sheshkumar Prajapati</span>
+
+        //         </div>
+        //     ';
+
+        //     $fileWithPath = 'certifications/'.str_replace(' ', '-', $userName).'-'.str_replace(' ', '-', $courseName).'.jpg';
+
+        //     dd(Browsershot::html($html)->save('test.pdf'));
+        // }
     }
 }

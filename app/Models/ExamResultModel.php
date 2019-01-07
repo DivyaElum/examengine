@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CourseModel;
+use App\User;
 
 class ExamResultModel extends Model
 {
@@ -14,5 +15,10 @@ class ExamResultModel extends Model
 	public function course()
 	{	
 		return $this->belongsTo(CourseModel::class, 'course_id', 'id');
+	}
+
+	public function user()
+	{	
+		return $this->belongsTo(User::class, 'user_id', 'id');
 	}
 }

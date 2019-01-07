@@ -176,7 +176,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+
     ],
 
     /*
@@ -228,7 +230,8 @@ return [
         'Active' => Watson\Active\Facades\Active::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
-        'Browsershot' => Spatie\Browsershot\Browsershot::class
+        'Browsershot' => Spatie\Browsershot\Browsershot::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

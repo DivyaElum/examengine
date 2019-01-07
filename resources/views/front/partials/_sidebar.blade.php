@@ -20,7 +20,7 @@
 					<a href="/course/course-listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a>
 				</li>
 
-				<li class="{{ active('certificate/*') }}" >
+				<li class="{{ active(['certificate/*', 'certificate']) }}" >
 					<a href="{{route('certificate')}}"><i class="fa fa-caret-right" aria-hidden="true"></i> My Certificates</a>
 				</li>
 				

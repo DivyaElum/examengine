@@ -7,10 +7,10 @@
 */
 
 	// test
-	// Route::get('/certificate-demo', function ()
-	// {
-	// 	return view('front.exam.certificate');
-	// });
+	Route::get('/certificate-demo', function ()
+	{
+		return view('front.exam.certificate');
+	});
 
 	// after authantication routes
 	Route::group(['middleware' => 'FrontGeneralMiddleware'],function()
@@ -63,6 +63,7 @@
 			Route::group(['prefix' => 'certificate', 'namespace' => 'Candidate'],function()
 			{
 				Route::get('/','CertificationController@userCertificatesListing')->name('certificate');
+				Route::post('/createCertificate','CertificationController@createCertificate')->name('createCertificate');
 			});
 
 			// purchase course

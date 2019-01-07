@@ -24,7 +24,7 @@
                 position:fixed;
                 margin:10px 10px 10px 10px;
                 background-color:white;
-                background-image:url({{asset('certificate/frame.png')}});
+                background-image:url({{asset('images/certificate/frame.png')}});
                 background-size:880px 650px;
                 background-repeat:no-repeat;
                 z-index: 2;
@@ -37,7 +37,7 @@
                 position:fixed;
                 left:125px;
                 top:80px;
-                background-image:url({{asset('certificate/middle_part.png')}});
+                background-image:url({{asset('images/certificate/middle_part.png')}});
                 background-size:670px 170px;
                 background-repeat:no-repeat;
                 z-index: 5;
@@ -50,7 +50,7 @@
                 position:fixed;
                 left:415px;
                 top:420px;
-                background-image:url({{asset('certificate/sigill.png')}});
+                background-image:url({{asset('images/certificate/sigill.png')}});
                 background-size:90px 90px;
                 background-repeat:no-repeat;
                 z-index: 5;
@@ -64,7 +64,7 @@
                 position:fixed;
                 left:435px;
                 top:520px;
-                background-image:url({{asset('certificate/band.png')}});
+                background-image:url({{asset('images/certificate/band.png')}});
                 background-size:60px 90px;
                 background-repeat:no-repeat;
                 z-index: 5;
@@ -77,7 +77,7 @@
                 position:fixed;
                 left:582px;
                 top:517px;
-                background-image:url({{asset('certificate/signature.png')}});
+                background-image:url({{asset('images/certificate/signature.png')}});
                 background-size:180px 90px;
                 background-repeat:no-repeat;
                 z-index: 11;
@@ -224,7 +224,7 @@
         
         <div class="ParagraphSmall">
             For successfully completing the on-line course
-            "{{ 'course' }}"
+            <?php echo !empty($exam->course->title) ? '"'.ucfirst($exam->course->title).'"' : '';  ?>
         </div>
 
         <div class="Seal"></div>
@@ -251,7 +251,7 @@
 
         <div id="StudentNamePanel" class="StudentName">
         
-        <span id="StudentNameLabel">{{'Sheshkumar Prajapati'}}</span>
+        <span id="StudentNameLabel"><?php echo !empty($exam->course->title) ? ucfirst($exam->user->name) : ''; ?></span>
 
         </div>
     </body>
