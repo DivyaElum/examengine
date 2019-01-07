@@ -10,6 +10,7 @@
 <style type="text/css">
 .fc-content {cursor: pointer;}
 .fc-past {color: #b0b0b0;}
+.fc-time {display: none;}
 </style>
 @stop
 @section('page_title')
@@ -92,8 +93,8 @@
 				element.popover(
 	          	{
 	              	animation:true,
-	              	delay: 300,
-	              	trigger: 'hover'
+	              	delay	: 300,
+	              	trigger : 'hover'
 	          	});
 
 		        element.click(function() 
@@ -105,7 +106,7 @@
 			            url		: '/exam/getExampSlot/',
 			            type 	: 'GET',
 			            dataType: 'json',
-			            data : {
+			            data 	: {
 		                	id: event.id,
 		                	date:selectedDate
 		            	},
@@ -134,6 +135,7 @@
 		            success: function(doc) {
 		                var events = [];
 		                $.map( doc, function( r ) {
+		                	console.log(r);
 		                	events.push({
 	                            title: r.title,
 	                            start: r.start,
@@ -145,10 +147,8 @@
 		            }
 		        });
 		    },
-
 		});
 	});
-
 
 
 	$(".btnBook").click(function()
@@ -158,7 +158,8 @@
 		var courseId = '{{ $course_id }}';
 		var slotTime = $('input[name=slot]:checked').val();
 		var requestedDate = $('input[name="date"]').val();
-		if(slotTime){
+		if(slotTime)
+		{
 			$.ajax({
 			    url: '/exam/bookExamSlot/',
 			    type: 'POST',
@@ -184,7 +185,9 @@
 		    		}
 			    }
 			});
-		}else{
+		}
+		else
+		{
 			alert('Please select any one slot');
 			return false;
 		}
