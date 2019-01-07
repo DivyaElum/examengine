@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/tomorrow.min.css">
 	<style type="text/css">
 		.titleWrap h3 a {color: #fff;text-decoration: none;}
+		.error_voucher_code.error {color: red;}
 	</style>
 @stop
 
@@ -17,23 +18,25 @@
 @stop
 
 @section('content')
-	<div class="bodyContent dashboard clearfix">
+<div class="bodyContent dashboard clearfix">
 	<div class="dashboardWraper">
 		<div class="container">
 			<div class="row">
 				@include('front.partials._sidebar')
-				
 					<div class="col-md-9 col-sm-12 col-xs-12">
 						<div class="dashbaord_content">
 							<div class="row">
 								<div class="col-xs-12">
 									@if($bookingStatus == 'new')
-
-										<a href="{{ url('/exam/exam-book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
-									
+										<a href="{{ url('/exam/book/'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
 									@elseif($bookingStatus == 'rescheduled')
-										
-										<a href="{{ url('/exam/book/purchase'.base64_encode(base64_encode($arrCourse->id))) }}" class="btn btn-primary">Book Exam</a>
+										<form action="{{ route('purchase') }}" onsubmit="return makePayment(this)">
+											<input type="hidden" name="pud" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
+											<input type="hidden" name="pcd" value="{{base64_encode(base64_encode($arrCourse->id)) }}">
+											<input type="hidden" name="payment_type" value="">
+											<button type="submit" class="btn btn-primary">Book Exam</button>
+											<a href="javascript:void(0)" data-toggle="modal" data-target="#myVoucherModal">Apply Voucher</a>
+										</form>	
 									@else
 										@if($bookingStatus == 'hasExamAccess')
 											<span><a onclick="return startExam(this)" data-token="{{$arrCourse->id}}" class="btn btn-info">Take Exam</a></span>
@@ -111,19 +114,49 @@
 							@endif
 						</div>
 					</div>
-				
-
 			</div>
 		</div>
 	</div>
-	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myVoucherModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Apply Voucher</h4>
+        </div>
+        <div class="modal-body">
+          <form method="post" name="applyVoucherFrm" id="applyVoucherFrm" method="post" action="{{ url('/certification/applyVoucher') }}" onsubmit="return applyVoucher(this)">
+          	<div class="form-group">
+          		<label>Voucher Code : </label>
+          		<input type="text" name="voucher_code" id="voucher_code" placeholder="Enter a Voucher Code" class="form-control">
+          		<span class="error_voucher_code error"></span>
+          		<input type="hidden" name="courses_id" value="{{$arrCourse->id}}">
+				<input type="hidden" name="user_id" value="{{ base64_encode(base64_encode(auth()->user()->id)) }}">
+				<input type="hidden" name="course_price" value="{{$arrCourse->calculated_amount}}">
+          	</div>
+          	<button type="submit" name="btnApply" class="btn btn-primary btnApply" id="btnApply">Apply</button>
+          	<img src="{{asset('images/ajax-loader.gif')}}" class="loadingImg" alt="logo" />
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 @stop
 
 @section('scripts')
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+	<!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js'></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script> -->
 	<script src="https://www.youtube.com/iframe_api"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/front/course/details.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/front/course/video.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/front/voucher/applyVoucher.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/front/certification/details.js') }}"></script>
 @stop

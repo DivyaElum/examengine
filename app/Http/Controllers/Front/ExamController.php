@@ -28,31 +28,31 @@ use Carbon\Carbon;
 class ExamController extends Controller
 {
  	public function __construct(
- 		ExamModel 			$ExamModel,
- 		UserModel 			$UserModel,
- 		ExamResultModel 	$ExamResultModel,
- 		BookExamSlotModel 	$BookExamSlotModel,
- 		ExamQuestionsModel 	$ExamQuestionsModel,
- 		QuestionOptionsAnswer $QuestionOptionsAnswer,
- 		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel,
- 		QuestionCategoryModel $QuestionCategoryModel,
- 		CourseModel 		$CourseModel,
- 		ExamSlotModel 		$ExamSlotModel,
- 		SiteSetting 		$SiteSetting
+ 		ExamModel 					$ExamModel,
+ 		UserModel 					$UserModel,
+ 		CourseModel 				$CourseModel,
+ 		SiteSetting 				$SiteSetting,
+ 		ExamSlotModel 				$ExamSlotModel,
+ 		ExamResultModel 			$ExamResultModel,
+ 		BookExamSlotModel 			$BookExamSlotModel,
+ 		ExamQuestionsModel 			$ExamQuestionsModel,
+ 		QuestionOptionsAnswer 		$QuestionOptionsAnswer,
+ 		QuestionCategoryModel 		$QuestionCategoryModel,
+ 		ExamResultCategoryWiseModel $ExamResultCategoryWiseModel
 
  	)
  	{
- 		$this->BaseModel 		  = $ExamModel;
- 		$this->UserModel 		  = $UserModel;
- 		$this->ExamResultModel	  = $ExamResultModel;
- 		$this->BookExamSlotModel  = $BookExamSlotModel;
- 		$this->ExamQuestionsModel = $ExamQuestionsModel;
- 		$this->QuestionOptionsAnswer = $QuestionOptionsAnswer;
+ 		$this->BaseModel 		  			= $ExamModel;
+ 		$this->UserModel 		  			= $UserModel;
+ 		$this->CourseModel  				= $CourseModel;
+ 		$this->SiteSetting  				= $SiteSetting;
+ 		$this->ExamSlotModel  				= $ExamSlotModel;
+ 		$this->ExamResultModel	  			= $ExamResultModel;
+ 		$this->BookExamSlotModel  			= $BookExamSlotModel;
+ 		$this->ExamQuestionsModel 			= $ExamQuestionsModel;
+ 		$this->QuestionOptionsAnswer 		= $QuestionOptionsAnswer;
+ 		$this->QuestionCategoryModel  		= $QuestionCategoryModel;
  		$this->ExamResultCategoryWiseModel  = $ExamResultCategoryWiseModel;
- 		$this->QuestionCategoryModel  = $QuestionCategoryModel;
- 		$this->CourseModel  		= $CourseModel;
- 		$this->ExamSlotModel  		= $ExamSlotModel;
- 		$this->SiteSetting  		= $SiteSetting;
 
 
  		$this->ViewData = [];

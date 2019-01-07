@@ -17,7 +17,7 @@
 				</li>
 				
 				<li class="{{ active('course/*') }}" >
-					<a href="/course/course-listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a>
+					<a href="/course/listing"><i class="fa fa-caret-right" aria-hidden="true"></i> My Courses</a>
 				</li>
 
 				<li class="{{ active(['certificate/*', 'certificate']) }}" >

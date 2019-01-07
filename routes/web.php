@@ -77,7 +77,7 @@
 			// course routes
 			Route::group(['prefix' => 'course'],function()
 			{
-				Route::get('/course-listing', 'Candidate\CourseController@courseListing');
+				Route::get('/listing', 'Candidate\CourseController@courseListing');
 				Route::get('/details/{id}', 'Candidate\CourseController@index');
 				Route::get('/{token}/varify', 'Candidate\CourseController@varify');
 				Route::post('/updateWatchStatus', 'Candidate\CourseController@UpdatePreStatus');
@@ -90,7 +90,7 @@
 				Route::post('/submitResult','ExamController@submit')->name('exam.submit');
 				Route::post('/updateExamResultStatus','ExamController@updateExamResultStatus')->name('exam.update.status');
 				
-				Route::get('/exam-book/{id}', 'ExamController@examBook');
+				Route::get('/book/{id}', 'ExamController@examBook');
 				Route::get('/loadEvent', 'ExamController@events');
 				Route::get('/getExampSlot', 'ExamController@getExampSlot');
 				Route::post('/bookExamSlot', 'ExamController@bookExamSlot');
