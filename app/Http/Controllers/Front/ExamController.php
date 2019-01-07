@@ -435,12 +435,14 @@ class ExamController extends Controller
 				// 		$events[] = $eventsTemp;
 				// 	}
 				// }
-
-				$eventsTemp['id'] 	 = $value->id;
-				$eventsTemp['title'] = $value->exam->title;
-				$eventsTemp['start'] = $day->format('Y-m-d H:i:s');
-				$eventsTemp['end']   = $day->format('Y-m-d H:i:s');
-				$events[] = $eventsTemp;
+				if (Date('Y-m-d') < $day->format('Y-m-d')) 
+				{
+					$eventsTemp['id'] 	 = $value->id;
+					$eventsTemp['title'] = $value->exam->title;
+					$eventsTemp['start'] = $day->format('Y-m-d H:i:s');
+					$eventsTemp['end']   = $day->format('Y-m-d H:i:s');
+					$events[] = $eventsTemp;
+				}
 			}
 		}
 
@@ -451,7 +453,6 @@ class ExamController extends Controller
 	{
 		$intId = $request->id;
 		$requestedDate  = $request->date;
-
 		$data = ExamSlotModel::with(['exam'])->where('id', $intId)->first();
     	$strData = json_decode($data->time);
 		
@@ -460,8 +461,20 @@ class ExamController extends Controller
 		{
 			$start_time =  $strData[$i]->start_time;
   			$end_time   =  $strData[$i]->end_time;
+  			
+  			$strBbTime  	= strtotime($start_time);
+  			$strCurentTime 	= date('H:i');
+			$strNowTime  	= strtotime($strCurentTime);
+  			
+  			if($strBbTime >= $strNowTime)
+  			{
+  				$html .= '<input type="hidden" name="date" value="'.$requestedDate.'"><input type="radio" name="slot" id="slot_'.$i.'" value="'.$start_time.'/'.$end_time.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
+  			}
+  			else
+  			{
+  				$html .= "<p><b>No time slot avalilable</b></p>";
+  			}
 
-  			$html .= '<input type="hidden" name="date" value="'.$requestedDate.'"><input type="radio" name="slot" id="slot_'.$i.'" value="'.$start_time.'/'.$end_time.'"> <label for="slot_'.$i.'">'.$start_time.' To '.$end_time.'</label> &nbsp&nbsp;';
   		}
     	return response()->json($html);
 	}
@@ -523,11 +536,8 @@ class ExamController extends Controller
 												->where('course_id', $course_id)
 												->where('user_id', $user_id)
 												->first();
-
-
 			if (!empty($bookExam)) 
 			{
-			
 				// exam time validation  
 	          	$slotTime = explode('/', $bookExam->slot_time);  
 	          	$startTime = $slotTime[0];
@@ -567,7 +577,6 @@ class ExamController extends Controller
 				return response()->json($this->JsonData);
 				exit;
 			}
-
 
 			$ExamResultModel = $this->ExamResultModel->firstOrNew($ExamResultCompareArray);
 			$ExamResultModel->user_id 		= $user_id;
