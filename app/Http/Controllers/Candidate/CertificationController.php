@@ -15,7 +15,6 @@ use App\Models\TransactionModel;
 use App\Models\VoucherDiscountModel;
 use App\Models\ExamResultModel;
 
-use Browsershot;
 use URL;
 use PDF;
 use View;

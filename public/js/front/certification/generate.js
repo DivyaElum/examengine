@@ -64,6 +64,7 @@ function shareFacebook()
     var url         = window.location.href;
     var imgPath     = $('#imgPath').val();
     var image       = __CANVAS.toDataURL();
+    
 
     var facebook    = `http://www.facebook.com/sharer.php?s=100&p[title]=${title}&p[url]=${url}&p[images][0]=${image}`;
     
