@@ -24,6 +24,12 @@
 @stop
 
 @section('content')
+	
+	<meta property="og:title" content="TITLE" /> 
+	<meta property="og:image" content="URL" /> 
+	<meta property="og:description" content="DESCRIPTION" /> 
+	<meta property="og:url" content="URL" />
+
 
 	<div class="bodyContent dashboard clearfix">
 		<div class="dashboardWraper">
@@ -62,20 +68,22 @@
 	  	<div class="modal-dialog" role="document">
 	   	 	<div class="modal-content">
 	      		<div class="modal-body" id="modalBody">
-	      			<embed src="" type="application/pdf" width="100%" height="520px" />
+	      			{{-- <embed src="" type="application/pdf" width="100%" height="520px" /> --}}
+	      			<canvas id="pdf-canvas" width="550" height="500"></canvas>
 		      		<div class="btn-group">
 				        <button class="btn btn-default disabled">Share:</button>
-				        <a class="btn btn-default" target="_blank" title="On Facebook" href="#"><i class="fa fa-facebook fa-lg fb"></i></a>
-			            <a class="btn btn-default" target="_blank" title="On Twitter" href="#"><i class="fa fa-twitter fa-lg tw"></i></a>
-		                <a class="btn btn-default" target="_blank" title="On Google Plus" href="#"><i class="fa fa-google-plus fa-lg google"></i></a>
+				        <a class="btn btn-default" onclick="return shareFacebook(this)" title="On Facebook" ><i class="fa fa-facebook fa-lg fb"></i></a>
+			            <a class="btn btn-default" onclick="return shareTwitter(this)"  title="On Twitter" ><i class="fa fa-twitter fa-lg tw"></i></a>
+		                <a class="btn btn-default" onclick="return shareGoogle(this)"  title="On Google Plus"><i class="fa fa-google-plus fa-lg google"></i></a>
 				    </div>
 	      		</div>
 	    	</div>
-	  	</div>
+	  	</div> 
 	</div>
-	
 @stop
 
 @section('scripts')
+	<script src='{{ asset('/plugins/pdf/pdf.js') }}'></script>
+	<script src='{{ asset('/plugins/pdf/pdf.worker.js') }}'></script>
 	<script src='{{ asset('/js/front/certification/generate.js') }}'></script>
 @stop

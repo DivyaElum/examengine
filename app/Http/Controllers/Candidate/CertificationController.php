@@ -256,7 +256,6 @@ class CertificationController extends Controller
 
     public function createCertificate(Request $request)
     {
-
         if (!empty($request->result_id)) 
         {
             $result_id = base64_decode(base64_decode($request->result_id));
@@ -269,23 +268,26 @@ class CertificationController extends Controller
             $data['updated_at']   = $objResult->updated_at;
 
             $pdf = PDF::setPaper('a4')->loadView('front.pdf.certificate', $data);
-            $pdfPath = 'certifications/pdf/'.str_replace('_', '-', $data['courseName']).'-'.str_replace('_', '-', $data['userName']).'.pdf';
+            $pdfPath = 'certifications/pdf/'.preg_replace('/[ _]+/', '-', $data['courseName']).'-'.preg_replace('/[ _]+/', '-', $data['userName']).'.pdf';
+            $imgPath = 'certifications/img/'.preg_replace('/[ _]+/', '-', $data['courseName']).'-'.preg_replace('/[ _]+/', '-', $data['userName']).'.png';
 
             if ($pdf->save($pdfPath)) 
             {
                 $this->JsonData['status'] = 'success';
                 $this->JsonData['pdf'] = $pdfPath;
+                $this->JsonData['img'] = $imgPath;
+
             }
             else
             {
                 $this->JsonData['status'] = 'error';
-                $this->JsonData['msg'] = 'Request course not found.';
+                $this->JsonData['msg'] = 'Request course data not found.';
             }
         }
         else
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Request course not found.';
+            $this->JsonData['msg'] = 'Requested course not found.';
         }
 
         return response()->json($this->JsonData);
