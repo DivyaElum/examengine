@@ -63,6 +63,12 @@
         <th class="tableSubheading" >Percentage</th>
         <td>{{ $resultBag['percentage'] }}%</td>
       </tr>
+
+      <tr class="tableFooter">
+        <td colspan="5">
+          <label style="float: left;font-size:17px;color: <?php echo $resultBag['exam_status'] == 'Fail' ? 'red' : 'green'; ?> " >{{ $resultBag['exam_status'] }}</label>
+        </td>
+      </tr>
       
       </tbody>
     </table>

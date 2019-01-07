@@ -256,6 +256,38 @@ class CertificationController extends Controller
 
     public function createCertificate(Request $request)
     {
-        dd('pass');
+
+        if (!empty($request->result_id)) 
+        {
+            $result_id = base64_decode(base64_decode($request->result_id));
+            $objResult = $this->ExamResultModel->with('course', 'user')->find($result_id);
+            
+            $data = [];
+            $data['courseName'] = $objResult->course->title; 
+            $data['userName']   = $objResult->user->name;
+            $data['percentage']   = $objResult->percentage;
+            $data['updated_at']   = $objResult->updated_at;
+
+            $pdf = PDF::setPaper('a4')->loadView('front.pdf.certificate', $data);
+            $pdfPath = 'certifications/pdf/'.str_replace('_', '-', $data['courseName']).'-'.str_replace('_', '-', $data['userName']).'.pdf';
+
+            if ($pdf->save($pdfPath)) 
+            {
+                $this->JsonData['status'] = 'success';
+                $this->JsonData['pdf'] = $pdfPath;
+            }
+            else
+            {
+                $this->JsonData['status'] = 'error';
+                $this->JsonData['msg'] = 'Request course not found.';
+            }
+        }
+        else
+        {
+            $this->JsonData['status'] = 'error';
+            $this->JsonData['msg'] = 'Request course not found.';
+        }
+
+        return response()->json($this->JsonData);
     }
 }

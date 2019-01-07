@@ -7,6 +7,15 @@
 @section('styles')
 	<style type="text/css">
 		.titleWrap h3 a {color: #fff;text-decoration: none;}
+		.container{ text-align: center; }
+
+		/* Button styles: */
+		i.fb,       span.fb{         color: #3b5998; }
+		i.tw,       span.tw{     	color: #00aced; }
+		i.google,   span.google{ 	color: #dd4b39; }
+		i.linkin,   span.linkin{ 	color: #007bb6; }
+		i.pinterest,span.pinterest{ color: #cb2027; }
+
 	</style>
 @stop
 
@@ -53,6 +62,13 @@
 	  	<div class="modal-dialog" role="document">
 	   	 	<div class="modal-content">
 	      		<div class="modal-body" id="modalBody">
+	      			<embed src="" type="application/pdf" width="100%" height="520px" />
+		      		<div class="btn-group">
+				        <button class="btn btn-default disabled">Share:</button>
+				        <a class="btn btn-default" target="_blank" title="On Facebook" href="#"><i class="fa fa-facebook fa-lg fb"></i></a>
+			            <a class="btn btn-default" target="_blank" title="On Twitter" href="#"><i class="fa fa-twitter fa-lg tw"></i></a>
+		                <a class="btn btn-default" target="_blank" title="On Google Plus" href="#"><i class="fa fa-google-plus fa-lg google"></i></a>
+				    </div>
 	      		</div>
 	    	</div>
 	  	</div>

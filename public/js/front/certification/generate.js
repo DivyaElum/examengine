@@ -2,8 +2,8 @@ var baseUrl = $('meta[name="base-path"]').attr('content')
 
 function generatePreview(element)
 {
+    $('#myModal').find('embed').attr('');
 	var resultId = $(element).attr('data-rd');
-
 	var formData = new FormData();
 	formData.append('result_id', resultId);
 
@@ -22,7 +22,11 @@ function generatePreview(element)
         contentType: false,
         success: function(data)
         {
-            console.log(data);
+            if (data.status == 'success') 
+            {
+                $('#myModal').find('embed').attr('src',data.pdf);
+                $('#myModal').modal('show');
+            }
         }
     });
 }
