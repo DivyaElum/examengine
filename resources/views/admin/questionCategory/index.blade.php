@@ -32,6 +32,11 @@
 		          	<h3 class="box-title">
 		          	</h3>
 		          	<div class="box-tools pull-right">
+		          		<form method="post" action="{{ url('admin/question-category/excelImport') }}" id="frmImportExcel" enctype="multipart/form-data">
+		          			@csrf
+		          			<input type="file" name="import_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+		          		</form>
+		          		<a href="{{ url('/admin/question-category/exportFile') }}" class="btn btn-social btn-linkedin" id="">Download Excel</a>
 		          		<a title="Add New" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>
 		          	</div>
 	        	</div>

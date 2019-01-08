@@ -1,6 +1,10 @@
 var $Path = $('meta[name="admin-path"]').attr('content');
 var $Module = '/question-category';
 
+document.getElementById("frmImportExcel").onchange = function() {
+    document.getElementById("frmImportExcel").submit();
+};
+
 $(document).ready(function() 
 {
     var adminPath = $('meta[name="admin-path"]').attr('content');

@@ -12,6 +12,8 @@ class QuestionCategoryModel extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $fillable = ['category_name'];
+    
     public function questions()
     {
     	return $this->hasMany(QuestionsModel::class, 'category_id', 'id');
