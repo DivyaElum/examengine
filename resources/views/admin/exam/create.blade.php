@@ -5,12 +5,17 @@
 @stop
 
 @section('styles')
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datepicker/bootstrap-datepicker.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datepicker/bootstrap-datetimepicker.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/multiselect/bootstrap-multiselect.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 	<style>
 		.clear{clear: both;}
 		.exam_days_div { border: 1px solid #ccc; padding: 15px 0; background: #f3f3f3; margin: 15px 0;}
+		
+		.input-daterange input {
+		    text-align: left !important; 
+		}
 	</style>
 @stop
 
@@ -55,30 +60,38 @@
 	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Question Categories <span style="color: red">*</span></label><br>
-					                  	<select name="category[]" multiple="multiple" id="category" class="form-control">
-					                  		@if(!empty($categories))
-					                  			@foreach($categories as $key => $category)
-					                  				<option value="{{ $category->id }}">{{ $category->category_name }}</option>
-					                  			@endforeach
-					                  		@endif
-					                  	</select>
+				                  	<select name="category[]" multiple="multiple" id="category" class="form-control">
+				                  		@if(!empty($categories))
+				                  			@foreach($categories as $key => $category)
+				                  				@if(!empty($category->questions) && sizeof($category->questions)>0)
+				                  					<option value="{{ $category->id }}" >{{ $category->category_name }}</option>
+				                  				@endif
+				                  			@endforeach
+				                  		@endif
 				                  	</select>
+              						
 				                </div>
 	              			</div>
 
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Questions <span style="color: red">*</span></label><br>
+				                  	<label for="">Compulsory Questions </label><br>
 					                  	<select name="exam_questions[]"  multiple="multiple" id="exam_questions" class="form-control">
 					                  	</select>
 				                  	</select>
 				                </div>
 	              			</div>
 
+	              			<div class="col-md-12">
+			            		<p class="alert" style="background-color: #0aa60036">
+		            				<label>Questions Added : &nbsp; </label><span id="questionsCount"> 0</span>
+		            			</p>
+				            </div>
+
 	              			<div class="col-md-6">
 				                <div class="form-group">
-				                  	<label for="">Duration (Hrs) <span style="color: red">*</span></label>
-					                  	<input type="text" oninput="return checkTimeSlots()" maxlength="2" name="duration" id="duration" class="form-control" placeholder="Enter duration (Hrs)" >
+				                  	<label for="">Duration (HH.MM) <span style="color: red">*</span></label>
+					                  	<input type="text" oninput="return checkTimeSlots()" maxlength="2" name="duration" id="duration" class="form-control" placeholder="Duration (HH.MM)" >
 				                  	</select>
 				                </div>
 	              			</div>
@@ -94,7 +107,7 @@
               				<div class="col-md-12">
 	              				<div class="exam_days_wrapper clearfix">
 			              			<div class="exam_days_div clearfix">
-				              			<div class="col-md-12">
+				              			{{-- <div class="col-md-12">
 							                <div class="form-group">
 							                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
 							                  	<div class="row">
@@ -112,6 +125,16 @@
 							                  		</div>
 							                  	</div>
 							                </div>
+				              			</div> --}}
+				              			<div class="input-daterange">
+					              			<div class="col-md-6 form-group">
+					              				<label for="">Start Date <span style="color: red">*</span></label>
+					                  			<input type="text" name="start_date" readonly style="background-color: white" id="start_date" class="form-control start_date"  placeholder="Start Date">
+					                  		</div>
+					                  		<div class="col-md-6 form-group">
+					              				<label for="">End Date <span style="color: red">*</span></label>
+					                  			<input type="text" name="end_date" readonly style="background-color: white" id="end_date" class="form-control end_date" placeholder="End Date">
+					                  		</div>
 				              			</div>
 				              			<div class="time_wrapper">
 					              			<div class="col-md-4 start_time_wrapper">
@@ -172,6 +195,7 @@
 	</script>
 
 	<script type="text/javascript" src="{{ asset('plugins/datepicker/moment.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datepicker/bootstrap-datetimepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>

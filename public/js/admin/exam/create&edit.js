@@ -11,8 +11,7 @@ $(function () {
 $(document).ready(function()
 {	
 	$('#title').focus();
-	
-	$('#duration').mask('99');
+	$('#duration').mask('99.99');
 	$('#total_question').mask('999');
 
 	$('#category').multiselect(
@@ -32,8 +31,9 @@ $(document).ready(function()
 		buttonWidth: '100%', 
 		nonSelectedText: 'Select Questions' 
 	});
+	
+	$('.input-daterange').datepicker({ startDate:new Date() });	
 })
-
 
 function saveFormData(element)
 {
@@ -144,6 +144,7 @@ function setDynamicQuesions()
 	  			
 	  			$('#exam_questions').empty();
 
+	  			var questionCount = 0;
 		  		if (data.questions != '') 
 		  		{
 		  			$.each(data.questions, function (index, question)
@@ -166,7 +167,15 @@ function setDynamicQuesions()
 
 		                $('#exam_questions').multiselect('rebuild');
 		  			})
+
+		  			questionCount = data.questions.length;
 		  		}
+		  		else
+		  		{
+		  			questionCount = data.questions.length;
+		  		}
+
+		  		$('#questionsCount').html(questionCount);
 		  	},
 		  	error: function (data)
 		  	{
@@ -336,15 +345,29 @@ function getEndTime(element)
 
 	if ($.trim(duration) != '' && $.trim(startTime) != '') 
 	{
-		duration = parseInt(duration);
+		res = duration.split(".");
+		durationHours = parseInt(res[0]);
+		durationMin   = parseInt(res[1]);
+
+		durationHours 	= isNaN(durationHours) ? 0 : durationHours;
+		durationMin 	= isNaN(durationMin) ? 0 : durationMin;
 
 		// get time 
 		var date 		= new Date();
 		var arrStartTime = startTime.split(':');
 		var startTimeHour = parseInt(arrStartTime[0]);
-		var calculated 	= date.setHours(startTimeHour + duration);
-		var newDate 	= new Date(calculated);
-		var endTime = newDate.getHours()+':'+arrStartTime[1];
+		var startTimeMin = parseInt(arrStartTime[1]);
+
+		// calculate Hourse
+		var calculatedHour 	= date.setHours(startTimeHour + durationHours);
+
+		// calculate minutes
+		var newDate 	= new Date(calculatedHour);
+		var calculatedMin 	= newDate.setMinutes(startTimeMin + durationMin);
+
+		var final = new Date(calculatedMin);
+
+		var endTime = final.getHours()+':'+final.getMinutes();
 		$this.closest('.time_wrapper').find('.end_time').val(endTime);
 	}
 	else

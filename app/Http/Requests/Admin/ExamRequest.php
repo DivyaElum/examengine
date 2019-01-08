@@ -29,10 +29,11 @@ class ExamRequest extends FormRequest
         return [
             'title'             => 'required|min:1|unique:exam,title,'.$id,
             'category'          => 'required',
-            'exam_questions'    => 'required',
-            'duration'          => 'required|numeric|gt:0',
-            'total_question'   => 'required|numeric|gt:0',
-            'exam_days.*.day'   => 'required',
+            'duration'          => 'required|numeric|between:0.1,9.99',
+            'total_question'    => 'required|numeric|gt:0',
+            // 'exam_days.*.day'   => 'required',
+            'start_date'        => 'required',
+            'end_date'          => 'required',
             'exam_days.*.start_time.*' => 'required',
             'exam_days.*.end_time.*' => 'required',
         ];
@@ -47,8 +48,11 @@ class ExamRequest extends FormRequest
             'duration.required'                 => 'Duration field is required.',
             'total_question.required'           => 'Total question field is required.',
             'exam_days.*.day.required'          => 'Exam days field is required.',
-            'exam_days.*.start_time.*.required' => 'Exam days start time field is required.',
-            'exam_days.*.end_time.*.required'   => 'Exam days end time field is required.',
+            'exam_days.*.start_time.*.required' => 'Start time field is required.',
+            'exam_days.*.end_time.*.required'   => 'End time field is required.',
+            'duration.between'                  => 'Please enter valid duration.',
+            'start_date.required'               => 'Start date field is required.',
+            'end_date.required'                 => 'End date field is required.',
         ];
     }
 }

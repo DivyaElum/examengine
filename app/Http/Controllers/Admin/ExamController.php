@@ -72,26 +72,40 @@ class ExamController extends Controller
     {
         $this->ViewData['moduleAction'] = 'Add '.$this->ModuleTitle;
         $this->ViewData['weekdays'] = $this->getWeekdays();
-        $this->ViewData['categories'] = $this->QuestionCategoryModel->where('status', 1)->get();
+        $this->ViewData['categories'] = $this->QuestionCategoryModel->with(['questions'])->where('status', 1)->get();
+        // dd($this->ViewData['categories']);
 
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
     public function store(ExamRequest $request)
     {
-        // dd($request->all());
-
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to save exam, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
 
-        // validation 
-        if (count($request->exam_questions) < $request->total_question) 
-        {
-            $this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
-             return response()->json($this->JsonData);
-             exit;
-        }
+        // category
+        $formCtegories = $request->category;
+        $compulsoryQuestions = $request->exam_questions;
+
+        /*-------------------------------
+        |    validation 
+        -----------------------------------------*/ 
+            $categoryQuestionsCount = $this->QuestionsModel->whereIn('category_id', $formCtegories)->count();
+            if ($categoryQuestionsCount < $request->total_question) 
+            {
+                $this->JsonData['status']   = 'error';
+                $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
+                 return response()->json($this->JsonData);
+                 exit;
+            }
+
+            if (!empty($request->exam_questions) && $request->exam_questions > $request->total_question) 
+            {
+                $this->JsonData['status']   = 'error';
+                $this->JsonData['msg']      = 'Exam compulsory question must not be greater than total number of questions';
+                 return response()->json($this->JsonData);
+                 exit;
+            }
 
         DB::beginTransaction();
 
@@ -99,6 +113,8 @@ class ExamController extends Controller
         $object->title          = $request->title;
         $object->duration       = $request->duration;
         $object->total_question = $request->total_question;
+        $object->start_date     = Date('Y-m-d', strtotime($request->start_date));
+        $object->end_date       = Date('Y-m-d', strtotime($request->end_date));
         $object->status         = '1';
 
         if ($object->save()) 
@@ -110,22 +126,22 @@ class ExamController extends Controller
                 /*-----------------------------
                 |   Exam days validation
                 ----------------------------------------------*/
-                    $isDuplicateDays = [];
-                    foreach ($request->exam_days as $exam_key => $exam_day) 
-                    {
-                       $isDuplicateDays[] = $exam_day['day'];
-                    }
+                    // $isDuplicateDays = [];
+                    // foreach ($request->exam_days as $exam_key => $exam_day) 
+                    // {
+                    //    $isDuplicateDays[] = $exam_day['day'];
+                    // }
 
-                    $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
+                    // $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
 
-                    if (!empty($validateDate) && sizeof($validateDate) > 0) 
-                    {
-                        DB::rollBack();
-                        $this->JsonData['status']   = 'error';
-                        $this->JsonData['msg']      = 'Exam days must not be same.';
-                        return response()->json($this->JsonData);
-                        exit;
-                    }
+                    // if (!empty($validateDate) && sizeof($validateDate) > 0) 
+                    // {
+                    //     DB::rollBack();
+                    //     $this->JsonData['status']   = 'error';
+                    //     $this->JsonData['msg']      = 'Exam days must not be same.';
+                    //     return response()->json($this->JsonData);
+                    //     exit;
+                    // }
 
                 /*-----------------------------
                 |  Adding Exam days 
@@ -136,7 +152,7 @@ class ExamController extends Controller
                         
                         $exam_slots = new $this->ExamSlotModel;
                         $exam_slots->exam_id = $exam_id;
-                        $exam_slots->day     = $exam_day['day'];
+                        // $exam_slots->day     = $exam_day['day'];
 
                         /*-----------------------------
                         |   Exam days start time validation
@@ -165,9 +181,10 @@ class ExamController extends Controller
                         foreach($exam_day['start_time'] as $key_time => $start_time)
                         {
                             $tmp = [];
-                            $minuts                 = $request->duration*60;
-                            $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
-                            $end_time               = date('H:i', $enc_end_time);
+                            // $minuts                 = $request->duration*60;
+                            // $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
+                            // $end_time               = date('H:i', $enc_end_time);
+                            $end_time               = $exam_day['end_time'][$key_time];
                             $tmp['start_time']      = $start_time;
                             $tmp['end_time']        = $end_time;
                             $out[] = $tmp;
@@ -186,27 +203,40 @@ class ExamController extends Controller
                     }
             }
 
-            // exam questions
-            if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
+            // exam category wise questions
+            if (!empty($request->category) && count($request->category) > 0) 
             {
+                $categoryQuestions = $this->QuestionsModel->whereIn('category_id', $formCtegories)->get();
+                
                 $questions = [];
-                foreach ($request->exam_questions as $key => $question) 
+                if ($categoryQuestions) 
                 {
-                    $category_id = $this->QuestionsModel->where('id', $question)->pluck('category_id')->first();
-                    $exam_question                  = new $this->ExamQuestionsModel;
-                    $exam_question->exam_id         = $exam_id;
-                    $exam_question->category_id     = $category_id;
-                    $exam_question->question_id     = $question;
-                    
-                    if($exam_question->save())
+                    foreach ($categoryQuestions as $key => $question) 
                     {
-                        $questions[] = 1;
-                    }
-                    else
-                    {
-                        $questions[] = 0;
+                        $exam_question                  = new $this->ExamQuestionsModel;
+                        $exam_question->exam_id         = $exam_id;
+                        $exam_question->category_id     = $question->category_id;
+                        $exam_question->question_id     = $question->id;
+                        
+                        if($exam_question->save())
+                        {
+                            $questions[] = 1;
+                        }
+                        else
+                        {
+                            $questions[] = 0;
+                        }
                     }
                 }   
+            }
+
+            // update exam mandatory questions
+            if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
+            {
+                $this->ExamQuestionsModel
+                    ->where('exam_id', $exam_id)
+                    ->whereIn('question_id', $compulsoryQuestions)
+                    ->update(['compulsory' => 1]); 
             }
 
             if (!in_array(0,$questions) && !in_array(0,$slots)) 
@@ -239,8 +269,11 @@ class ExamController extends Controller
         
         $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
         $this->ViewData['weekdays']     = $this->getWeekdays();
-        $this->ViewData['categories']   = $this->QuestionCategoryModel->where('status', 1)->get();
-        $this->ViewData['object']       = $this->BaseModel->with(['slots','questions'])->find($id);
+        $this->ViewData['categories']   = $this->QuestionCategoryModel->with(['questions'])->where('status', 1)->get();
+
+        $this->ViewData['object']       = $this->BaseModel->with(['slots','questions'])
+                                                            ->find($id);
+
 
         /*---------------------------------------------------
         |   Questions 
@@ -251,7 +284,7 @@ class ExamController extends Controller
             {
                 foreach ($this->ViewData['object']->questions as $key => $question) 
                 {
-                    $this->ViewData['object_quesitons'][] = $question->question_id;
+                    $this->ViewData['object_quesitons'][] = !empty($question->compulsory) ? $question->question_id : '' ;
                     $this->ViewData['object_quesitons_categories'][] = $question->category_id;
                 }
 
@@ -267,6 +300,7 @@ class ExamController extends Controller
             if (!empty($this->ViewData['object_quesitons_categories'])) 
             {
                 $this->ViewData['all_categories_questions'] = $this->QuestionsModel->whereIn('category_id', $this->ViewData['object_quesitons_categories'])->get();
+                
             }
 
         /*---------------------------------------------------
@@ -286,22 +320,37 @@ class ExamController extends Controller
 
             $this->ViewData['slots'] = $out;
 
+
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
     public function update(ExamRequest $request, $enc_id)
-    {
-        $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to save exam, Something went wrong.';
+    {$this->JsonData['status']   = 'error';
+        $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
 
-        // validation 
-        if (count($request->exam_questions) < $request->total_question) 
-        {
-            $this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
-            return response()->json($this->JsonData);
-            exit;
-        }
+        // category
+        $formCtegories = $request->category;
+        $compulsoryQuestions = $request->exam_questions;
+
+        /*-------------------------------
+        |    validation 
+        -----------------------------------------*/ 
+            $categoryQuestionsCount = $this->QuestionsModel->whereIn('category_id', $formCtegories)->count();
+            if ($categoryQuestionsCount < $request->total_question) 
+            {
+                $this->JsonData['status']   = 'error';
+                $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
+                 return response()->json($this->JsonData);
+                 exit;
+            }
+
+            if (!empty($request->exam_questions) && $request->exam_questions > $request->total_question) 
+            {
+                $this->JsonData['status']   = 'error';
+                $this->JsonData['msg']      = 'Exam compulsory question must not be greater than total number of questions';
+                 return response()->json($this->JsonData);
+                 exit;
+            }
 
         DB::beginTransaction();
 
@@ -311,6 +360,8 @@ class ExamController extends Controller
         $object->title          = $request->title;
         $object->duration       = $request->duration;
         $object->total_question = $request->total_question;
+        $object->start_date     = Date('Y-m-d', strtotime($request->start_date));
+        $object->end_date       = Date('Y-m-d', strtotime($request->end_date));
         
         if ($object->save()) 
         {
@@ -320,38 +371,38 @@ class ExamController extends Controller
             $this->ExamSlotModel->where('exam_id', $exam_id)->delete();
             $this->ExamQuestionsModel->where('exam_id', $exam_id)->delete();
 
+            $slots = [];
             if (!empty($request->exam_days) && count($request->exam_days) > 0) 
             {
                 /*-----------------------------
                 |   Exam days validation
                 ----------------------------------------------*/
-                    $isDuplicateDays = [];
-                    foreach ($request->exam_days as $exam_key => $exam_day) 
-                    {
-                       $isDuplicateDays[] = $exam_day['day'];
-                    }
+                    // $isDuplicateDays = [];
+                    // foreach ($request->exam_days as $exam_key => $exam_day) 
+                    // {
+                    //    $isDuplicateDays[] = $exam_day['day'];
+                    // }
 
-                    $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
+                    // $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
 
-                    if (!empty($validateDate) && sizeof($validateDate) > 0) 
-                    {
-                        DB::rollBack();
-                        $this->JsonData['status']   = 'error';
-                        $this->JsonData['msg']      = 'Exam days must not be same.';
-                        return response()->json($this->JsonData);
-                        exit;
-                    }
+                    // if (!empty($validateDate) && sizeof($validateDate) > 0) 
+                    // {
+                    //     DB::rollBack();
+                    //     $this->JsonData['status']   = 'error';
+                    //     $this->JsonData['msg']      = 'Exam days must not be same.';
+                    //     return response()->json($this->JsonData);
+                    //     exit;
+                    // }
 
                 /*-----------------------------
                 |  Adding Exam days 
                 ----------------------------------------------*/
-                    $slots = [];
                     foreach ($request->exam_days as $exam_key => $exam_day) 
                     {
                         
                         $exam_slots = new $this->ExamSlotModel;
                         $exam_slots->exam_id = $exam_id;
-                        $exam_slots->day     = $exam_day['day'];
+                        // $exam_slots->day     = $exam_day['day'];
 
                         /*-----------------------------
                         |   Exam days start time validation
@@ -380,9 +431,10 @@ class ExamController extends Controller
                         foreach($exam_day['start_time'] as $key_time => $start_time)
                         {
                             $tmp = [];
-                            $minuts                 = $request->duration*60;
-                            $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
-                            $end_time               = date('H:i', $enc_end_time);
+                            // $minuts                 = $request->duration*60;
+                            // $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
+                            // $end_time               = date('H:i', $enc_end_time);
+                            $end_time               = $exam_day['end_time'][$key_time];
                             $tmp['start_time']      = $start_time;
                             $tmp['end_time']        = $end_time;
                             $out[] = $tmp;
@@ -401,27 +453,40 @@ class ExamController extends Controller
                     }
             }
 
-            // exam questions
-            if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
+            // exam category wise questions
+            $questions = [];
+            if (!empty($request->category) && count($request->category) > 0) 
             {
-                $questions = [];
-                foreach ($request->exam_questions as $key => $question) 
+                $categoryQuestions = $this->QuestionsModel->whereIn('category_id', $formCtegories)->get();
+                
+                if ($categoryQuestions) 
                 {
-                    $category_id = $this->QuestionsModel->where('id', $question)->pluck('category_id')->first();
-                    $exam_question                  = new $this->ExamQuestionsModel;
-                    $exam_question->exam_id         = $exam_id;
-                    $exam_question->category_id     = $category_id;
-                    $exam_question->question_id     = $question;
-                    
-                    if($exam_question->save())
+                    foreach ($categoryQuestions as $key => $question) 
                     {
-                        $questions[] = 1;
-                    }
-                    else
-                    {
-                        $questions[] = 0;
+                        $exam_question                  = new $this->ExamQuestionsModel;
+                        $exam_question->exam_id         = $exam_id;
+                        $exam_question->category_id     = $question->category_id;
+                        $exam_question->question_id     = $question->id;
+                        
+                        if($exam_question->save())
+                        {
+                            $questions[] = 1;
+                        }
+                        else
+                        {
+                            $questions[] = 0;
+                        }
                     }
                 }   
+            }
+
+            // update exam mandatory questions
+            if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
+            {
+                $this->ExamQuestionsModel
+                    ->where('exam_id', $exam_id)
+                    ->whereIn('question_id', $compulsoryQuestions)
+                    ->update(['compulsory' => 1]); 
             }
 
             if (!in_array(0,$questions) && !in_array(0,$slots)) 
