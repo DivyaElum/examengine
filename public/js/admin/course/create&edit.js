@@ -10,6 +10,7 @@ $(document).ready(function()
 	$('#amount').mask('9999999');
 
 	$('.input-daterange').datepicker({ startDate:new Date() });	
+
 	// $('#prerequisites').multiselect({ enableFiltering: true, buttonWidth: '100%' });
 })
 
@@ -286,3 +287,110 @@ function checkTimeSlots()
 		getEndTime(element);
 	})
 }
+
+
+function setVideoType(element)
+{
+	$this = $(element);
+
+	var checkedType = $this.val();
+	$('.options').hide();
+
+	// if (checkedType == 'file') 
+	// {
+	// 	if ($('.old_video_file').val() == undefined) 
+	// 	{	
+	// 		$('.old_video_file_class').hide();
+	// 		$('.video_file_class').show();
+	// 	}
+	// 	else
+	// 	if ($('#old_video_file').val() == '' ) 
+	// 	{	
+	// 		$('.old_video_file_class').hide();
+	// 		$('.video_file_class').show();
+	// 	}
+	// 	else
+	// 	{
+	// 		$('.old_video_file_class').show();
+	// 		$('.video_file_class').hide();
+	// 	}
+	// }
+
+	// if (checkedType == 'pdf') 
+	// {
+	// 	if ($('#old_pdf_file').val() == undefined) 
+	// 	{	
+	// 		$('.old_pdf_file_class').hide();
+	// 		$('.pdf_file_class').show();
+	// 	}
+	// 	else
+	// 	if ($('#old_pdf_file').val() == '' ) 
+	// 	{	
+	// 		$('.old_pdf_file_class').hide();
+	// 		$('.pdf_file_class').show();
+	// 	}
+	// 	else
+	// 	{
+	// 		$('.old_pdf_file_class').show();
+	// 		$('.pdf_file_class').hide();
+	// 	}
+	// }
+
+	$('.'+checkedType).show();
+}
+
+function addNewPrerequisite(element)
+{
+	$this = $(element);
+
+	var $this = $(element);
+	
+	var count = ($this.closest('.prerequisite_wrapper').find('.prerequisite_div').length);
+	var index = $this.closest('.prerequisite_div').index();
+
+
+    var startTimeHtml = `<div class="time_wrapper">
+	              			<div class="col-md-4 start_time_wrapper">
+                  				<label for="">Start Time <span style="color: red">*</span></label><br>
+	                  			<div class='input-group form-group datetimepicker' >
+				                    <input type='text' placeholder="Start Time" onblur="return getEndTime(this)" name="exam_days[${week_days_index}][start_time][]" class="form-control start_time" />
+				                    <span class="input-group-addon" >
+				                        <span class="glyphicon glyphicon-time"></span>
+				                    </span>
+				                </div>
+	              			</div>
+	              			<div class="col-md-5 end_time_wrapper">
+	              				<label for="">End Time <span style="color: red">*</span></label><br>
+	              				<div class="row">
+	              					<div class="col-md-9">
+	                  					<div class='input-group form-group' >
+						                    <input type='text' placeholder="End Time" readonly name="exam_days[${week_days_index}][end_time][]" class="form-control end_time" />
+						                    <span class="input-group-addon" >
+						                        <span class="glyphicon glyphicon-time"></span>
+						                    </span>
+						                </div>
+				                	</div>
+	              					<div class="col-md-3">
+										<a class="btn btn-danger remove_new_slot" title="Remove time slot" onclick="return removeNewSlot(this)"><i class="fa fa-trash"></i></a>
+				              		</div>
+	              				</div>
+	              			</div>
+              			</div>`;
+
+
+	$this.closest('.prerequisite_wrapper').append(startTimeHtml);
+}
+
+// function hideOldVideoFile()
+// {
+// 	$('.old_video_file_class').hide().find('input').val('');
+
+// 	$('.video_file_class').show();
+// }
+
+// function hideOldPdfFile()
+// {
+// 	$('.old_pdf_file_class').hide().find('input').val('');
+	
+// 	$('.pdf_file_class').show();
+// }
