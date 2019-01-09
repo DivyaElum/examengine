@@ -69,6 +69,23 @@
 	              			</div>
 	                  		<div class="html_data">
 	                  		</div>
+	              			<div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Negative Makrs <span style="color: red">*</span></label>&nbsp;&nbsp;
+				                  	<label class="radio-inline">
+								      <input type="radio" name="chk_neg_marks" checked value="1">Yes
+								    </label>
+								    <label class="radio-inline">
+								      <input type="radio" name="chk_neg_marks" value="0">No
+								    </label>
+				                </div>
+	              			</div>
+	              			<div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Negative Makrs <span style="color: red">*</span></label>&nbsp;&nbsp;
+				                  		<input type="text" name="neg_marks" id="neg_marks" class="form-control" value="0">
+				                </div>
+	              			</div>
 	              		</div>
 	              	</div>
 	              	<div class="box-footer">
