@@ -15,6 +15,7 @@ use App\Imports\UsersImport;
 use App\Imports\QuestionCategoryImport;
 use App\Exports\QuestionCategoryExport;
 
+
 class QuestionCategoryController extends Controller
 {
     private $QuestionCategory;
@@ -293,7 +294,20 @@ class QuestionCategoryController extends Controller
         //dd($request->all());
         if($request->hasFile('import_file')){
             $path = $request->file('import_file')->getRealPath();
-            Excel::import(new QuestionCategoryImport,request()->file('import_file'), 's3');
+            try {
+                //$import->import('import-users.xlsx');
+                Excel::import(new QuestionCategoryImport,request()->file('import_file'), 's3');
+            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+                 $failures = $e->failures();
+                 dd($failures);
+                 foreach ($failures as $failure) {
+                     $failure->row(); // row that went wrong
+                     $failure->attribute(); // either heading key (if using heading row concern) or column index
+                     $failure->errors(); // Actual error messages from Laravel validator
+                 }
+            }
+
+
         }
         return back()->with('success', 'All good!');
     }

@@ -36,33 +36,33 @@ class QuestionsController extends Controller
 
     public function __construct(
 
-        QuestionTypesModel $QuestionTypesModel,
-        QuestionOptionsAnswer $QuestionOptionsAnswer,
-        QuestionsModel $QuestionsModel,
-        QuestionTypeStructureModel $QuestionTypeStructureModel,
-        QuestionCategoryModel $QuestionCategoryModel,
-        ExamQuestionsModel $ExamQuestionsModel
+        QuestionsModel              $QuestionsModel,
+        QuestionTypesModel          $QuestionTypesModel,
+        ExamQuestionsModel          $ExamQuestionsModel,
+        QuestionCategoryModel       $QuestionCategoryModel,
+        QuestionOptionsAnswer       $QuestionOptionsAnswer,
+        QuestionTypeStructureModel  $QuestionTypeStructureModel
     )
     {
         $this->BaseModel                    = $QuestionsModel;
-        $this->QuestionOptionsAnswer        = $QuestionOptionsAnswer;
-        $this->QuestionTypesModel           = $QuestionTypesModel;
-        $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
-        $this->QuestionCategoryModel        = $QuestionCategoryModel;
         $this->ExamQuestionsModel           = $ExamQuestionsModel;
+        $this->QuestionTypesModel           = $QuestionTypesModel;
+        $this->QuestionCategoryModel        = $QuestionCategoryModel;
+        $this->QuestionOptionsAnswer        = $QuestionOptionsAnswer;
+        $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Question';
-        $this->ModuleView = 'admin.question.';
-        $this->ModulePath = 'question';
+        $this->ModuleTitle  = 'Question';
+        $this->ModuleView   = 'admin.question.';
+        $this->ModulePath   = 'question';
     }
     
     public function index()
     {
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage Questions';
 
         return view($this->ModuleView.'index', $this->ViewData);
@@ -111,15 +111,15 @@ class QuestionsController extends Controller
         $repository->right_marks        = $request->right_marks;
         
         // options
-        $repository->option1 = $request->option1 ?? NULL;
-        $repository->option2 = $request->option2 ?? NULL;
-        $repository->option3 = $request->option3 ?? NULL;
-        $repository->option4 = $request->option4 ?? NULL;
-        $repository->option5 = $request->option5 ?? NULL;
-        $repository->option6 = $request->option6 ?? NULL;
-        $repository->option7 = $request->option7 ?? NULL;
-        $repository->option8 = $request->option8 ?? NULL;
-        $repository->option9 = $request->option9 ?? NULL;
+        $repository->option1  = $request->option1 ?? NULL;
+        $repository->option2  = $request->option2 ?? NULL;
+        $repository->option3  = $request->option3 ?? NULL;
+        $repository->option4  = $request->option4 ?? NULL;
+        $repository->option5  = $request->option5 ?? NULL;
+        $repository->option6  = $request->option6 ?? NULL;
+        $repository->option7  = $request->option7 ?? NULL;
+        $repository->option8  = $request->option8 ?? NULL;
+        $repository->option9  = $request->option9 ?? NULL;
         $repository->option10 = $request->option10 ?? NULL;
         $repository->option11 = $request->option11 ?? NULL;
         $repository->option12 = $request->option12 ?? NULL;
@@ -130,13 +130,13 @@ class QuestionsController extends Controller
 
         if ($repository->save()) 
         {
-            $this->JsonData['status'] ='success';
-            $this->JsonData['msg'] ='Question saved successfully.';
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = __('messages.ERR_QESTION_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] ='error';
-            $this->JsonData['msg'] ='Failed to save question, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         }   
 
         return response()->json($this->JsonData);
@@ -193,15 +193,15 @@ class QuestionsController extends Controller
         $repository->right_marks        = $request->right_marks;
         
         // options
-        $repository->option1 = $request->option1 ?? NULL;
-        $repository->option2 = $request->option2 ?? NULL;
-        $repository->option3 = $request->option3 ?? NULL;
-        $repository->option4 = $request->option4 ?? NULL;
-        $repository->option5 = $request->option5 ?? NULL;
-        $repository->option6 = $request->option6 ?? NULL;
-        $repository->option7 = $request->option7 ?? NULL;
-        $repository->option8 = $request->option8 ?? NULL;
-        $repository->option9 = $request->option9 ?? NULL;
+        $repository->option1  = $request->option1 ?? NULL;
+        $repository->option2  = $request->option2 ?? NULL;
+        $repository->option3  = $request->option3 ?? NULL;
+        $repository->option4  = $request->option4 ?? NULL;
+        $repository->option5  = $request->option5 ?? NULL;
+        $repository->option6  = $request->option6 ?? NULL;
+        $repository->option7  = $request->option7 ?? NULL;
+        $repository->option8  = $request->option8 ?? NULL;
+        $repository->option9  = $request->option9 ?? NULL;
         $repository->option10 = $request->option10 ?? NULL;
         $repository->option11 = $request->option11 ?? NULL;
         $repository->option12 = $request->option12 ?? NULL;
@@ -212,13 +212,13 @@ class QuestionsController extends Controller
 
         if ($repository->save()) 
         {
-            $this->JsonData['status'] ='success';
-            $this->JsonData['msg'] ='Question saved successfully.';
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = __('messages.ERR_QESTION_UPDATE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] ='error';
-            $this->JsonData['msg'] ='Failed to save question, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         }   
         
         return response()->json($this->JsonData);
@@ -232,20 +232,20 @@ class QuestionsController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t delete, This Question has been used in Exam.';
+            $this->JsonData['msg']    = __('messages.ERR_QESTION_DEL_DEP_ERROR_MSG');
             return response()->json($this->JsonData);
             exit;
         }
 
         if($this->BaseModel->where('id', $id)->delete())
         {
-            $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Question deleted successfully.';
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = __('messages.ERR_QESTION_DELETE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Question, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         }
         
         return response()->json($this->JsonData);
@@ -371,7 +371,7 @@ class QuestionsController extends Controller
             }
             else
             {
-                $this->JsonData = 'Not Found';
+                $this->JsonData = __('messages.ERR_NOT_FOUND_ERROR_MSG');
             }
 
             return response()->json($this->JsonData);
@@ -384,13 +384,13 @@ class QuestionsController extends Controller
             if (!empty($object))
             {
                 $this->JsonData['status'] = 'success';
-                $this->JsonData['value'] = $object->answer;
-                $this->JsonData['name'] = $object->option;
+                $this->JsonData['value']  = $object->answer;
+                $this->JsonData['name']   = $object->option;
             }
             else
             {
-                $this->JsonData['status'] = 'error';
-                $this->JsonData['msg'] = 'Given index was not found.';
+                $this->JsonData['status']   = 'error';
+                $this->JsonData['msg']      = __('messages.ERR_QESTION_INDEX_ERROR_MSG');
             }
             
             return response()->json($this->JsonData);
@@ -453,8 +453,8 @@ class QuestionsController extends Controller
                         
                         if ($formdata[$checkbox_option] == NULL) 
                         {
-                            $this->JsonData['status'] = 'error';
-                            $this->JsonData['msg'] = 'Right answer input filed should not be empty.';                     
+                            $this->JsonData['status']   = 'error';
+                            $this->JsonData['msg']      =  __('messages.ERR_QESTION_INP_EMPTY_ERROR_MSG');
                         }
                         else
                         {
@@ -464,8 +464,8 @@ class QuestionsController extends Controller
                                 $reverse_options = $answers[$i]['option'];
                                 if ($formdata[$reverse_options] == NULL) 
                                 {
-                                    $this->JsonData['status'] = 'error';
-                                    $this->JsonData['msg'] = 'Right answer previous input fileds should not be empty.';                     
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = __('messages.ERR_QESTION_PRE_EMPTY_ERROR_MSG');
                                 }
                             }                   
                         }
@@ -480,7 +480,7 @@ class QuestionsController extends Controller
                         if ($formdata[$radio_option] == NULL) 
                         {
                             $this->JsonData['status'] = 'error';
-                            $this->JsonData['msg'] = 'Right answer input filed should not be empty.';                     
+                            $this->JsonData['msg']    = __('messages.ERR_QESTION_INP_EMPTY_ERROR_MSG');
                         }
                         else
                         {
@@ -491,7 +491,7 @@ class QuestionsController extends Controller
                                 if ($formdata[$reverse_options] == NULL) 
                                 {
                                     $this->JsonData['status'] = 'error';
-                                    $this->JsonData['msg'] = 'Right answer previous input fileds should not be empty.';                     
+                                    $this->JsonData['msg']    = __('messages.ERR_QESTION_PRE_EMPTY_ERROR_MSG');
                                 }
                             }
                         }
