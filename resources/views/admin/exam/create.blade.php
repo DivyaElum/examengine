@@ -50,12 +50,31 @@
 	              		<div class="">
 
 	              			<div class="col-md-12">
+				        		<p class="alert" style="background-color: #d9edf7 !important">
+				        			NOTE : <br>
+				    				<b>Exam fee calculated as : </b><br>
+				    				1. If there is a commercial percentage then <b>Fee = ((Exam Fee*Discount)/100). </b><br>	
+				    				2. If there is a commercial flat then <b>Fee = Commercial Flat Rate. </b>
+				    				<br>
+				    				<b>Featured Image : </b><br>
+				    				1. Only png, gif, jpeg image formats are allowed.
+				    			</p>
+				            </div>
+
+	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="">Title <span style="color: red">*</span></label>
 					                  	<input type="text" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="100">
 				                  	</select>
 				                </div>
 	              			</div>
+
+	              			<div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Description <span style="color: red">*</span></label>
+				                  	<textarea  name="description" id="description" class="form-control" placeholder="Enter Description" ></textarea>
+				                </div>
+				            </div>
 
 	              			<div class="col-md-6">
 				                <div class="form-group">
@@ -83,8 +102,8 @@
 	              			</div>
 
 	              			<div class="col-md-12">
-			            		<p class="alert" style="background-color: #00c0ef75 !important">
-		            				<label>Questions Added : &nbsp; </label><span id="questionsCount"> 0</span>
+			            		<p class="alert" style="background-color: #dff0d8 !important">
+		            				<label>Total Question Available : &nbsp; </label><span id="questionsCount"> 0</span>
 		            			</p>
 				            </div>
 
@@ -102,6 +121,51 @@
 				                  	<input type="text" maxlength="3" name="total_question" id="total_question" class="form-control" placeholder="50" maxlength="6">
 				                </div>
 	              			</div>
+
+	              			<div class="col-md-4">
+				                <div class="form-group">
+				                  	<label for="">Exam Fee<span style="color: red">*</span></label>
+				                  	<input type="text" oninput="return calculateAmount(this)" placeholder="Exam Fee" name="amount" id="amount" class="form-control">
+				                	<span class="err_amount" style="color: red"></span>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Currency</label>
+				                  	<select name="currency" id="currency" class="form-control">
+				                  		<option value="USD">USD</option>
+				                  		<option value="AED">Dirham</option>
+				                  	</select>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Discount</label>
+				                  	<input type="text" value="0"  oninput="return calculateAmount(this)" placeholder="Exam Discount" name="discount" id="discount" class="form-control">
+				                	<span class="err_discount " style="color: red"></span>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Discount By</label>
+				                  	<select name="discount_by" onchange="return calculateAmount(this)" id="discount_by" class="form-control">
+				                  		<option value="Flat">Flat</option>
+				                  		<option value="%">%</option>
+				                  	</select>
+				                  	{{-- <span class="err_calculated_amount " style="color: red"></span> --}}
+				                </div>
+	              			</div>
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Calculated Exam Fee<span style="color: red">*</span></label>
+				                  	<input type="text" readonly placeholder="Calculated Exam Fee" name="calculated_amount" id="calculated_amount" class="form-control">
+				                	<span class="err_calculated_amount " style="color: red"></span>
+				                </div>
+	              			</div>             			
 
               				<div class="clear"></div>
               				<div class="col-md-12">
@@ -167,6 +231,26 @@
 	              				</div>
               				</div>	
 
+              				<div class="col-md-12">
+	              				<div class="row">
+	              					<div class="col-md-2">
+	              						<img id="preview" class="image-responsive" src="{{ url('/images/no-image.png')  }}" alt="Featured Image" width="100%" height="125px" />
+	              					</div>
+	              				</div>
+	              				<div class="row" id="delete_button" style="display: none">
+				                	<div class="col-md-2" > 
+				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" >Delete</a>
+				                	</div>
+	              				</div>
+				                <div class="row">
+					                <div class="form-group col-md-6">
+					                  	<label for="">Featured Image </label>
+					                  	<input type="file" name="featured_image" accept="image/x-png,image/gif,image/jpeg" id="featured_image" onchange="readURL(this)" class="form-control">
+					                	<span class="err_featured_image" style="color: red"></span>
+					                </div>
+				                </div>
+	              			</div>
+
 	              		</div>
 	              	</div>
 
@@ -191,9 +275,10 @@
   				var title = "{{ $day }}";
   				daysOptions = daysOptions + '<option value="'+value+'">'+title+'</option>';
   			@endforeach
-  		@endif	    
-	</script>
+  		@endif	
 
+		var defaultImaage = "{{ url('/images/no-image.png') }}";
+	</script>
 	<script type="text/javascript" src="{{ asset('plugins/datepicker/moment.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/datepicker/bootstrap-datetimepicker.min.js') }}"></script>

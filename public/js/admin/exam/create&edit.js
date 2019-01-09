@@ -2,6 +2,7 @@
 var $Path = $('meta[name="admin-path"]').attr('content');
 var $Module = '/exam';
 
+// initialize timepicker
 $(function () {
     $('.datetimepicker').datetimepicker({
         format: 'HH:mm'
@@ -9,10 +10,12 @@ $(function () {
 });
 
 $(document).ready(function()
-{	
+{
 	$('#title').focus();
 	$('#duration').mask('99.99');
 	$('#total_question').mask('999');
+	$('#discount').mask('9999999');
+	$('#amount').mask('9999999');
 
 	$('#category').multiselect(
 	{ 	
@@ -35,6 +38,7 @@ $(document).ready(function()
 	$('.input-daterange').datepicker({ startDate:new Date() });	
 })
 
+// submit form
 function saveFormData(element)
 {
 	$(element).closest('.box').LoadingOverlay("show", 
@@ -112,6 +116,7 @@ function saveFormData(element)
 	return false
 }
 
+//  add category wise questions 
 function setDynamicQuesions()
 {
 	var categories = $('#category').val();
@@ -190,6 +195,7 @@ function setDynamicQuesions()
 	}
 }
 
+// Add and remove time slots 
 function addNewSlot(element)
 {
 	var $this = $(element);
@@ -243,99 +249,100 @@ function removeNewSlot(element)
 	$this.closest('.time_wrapper').remove();
 }
 
-function addNewDay(element)
-{
-	var $this = $(element);
+// function addNewDay(element)
+// {
+// 	var $this = $(element);
 
-	var index = $('.exam_days_div').length;
-	if (index == 3) 
-	{
-		return false
-	}
+// 	var index = $('.exam_days_div').length;
+// 	if (index == 3) 
+// 	{
+// 		return false
+// 	}
 
-	var htmldata =`
-			<div class="exam_days_div clearfix">
-      			<div class="col-md-12">
-	                <div class="form-group">
-	                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
-	                  	<div class="row">
-	                  		<div class="col-md-11">
-			                  	<select name="exam_days[${index}][day]" class="form-control exam_days">
-			                  		${daysOptions}
-			                  	</select>
-	                  		</div>
-	                  		<div class="col-md-1">
-								<a class="btn btn-danger remove_day" title="Remove exam day" onclick="return removeDay(this)"><i class="fa fa-trash"></i></a>
-	                  		</div>
-	                  	</div>
-	                </div>
-      			</div>
-      			<div class="time_wrapper">
-          			<div class="col-md-4 start_time_wrapper">
-          				<label for="">Start Time <span style="color: red">*</span></label><br>
-              			<div class='input-group form-group datetimepicker' >
-		                    <input type='text' placeholder="Start Time" onblur="return getEndTime(this)" name="exam_days[${index}][start_time][]" class="form-control start_time" />
-		                    <span class="input-group-addon" >
-		                        <span class="glyphicon glyphicon-time"></span>
-		                    </span>
-		                </div>
-          			</div>
-          			<div class="col-md-5 end_time_wrapper">
-          				<label for="">End Time <span style="color: red">*</span></label><br>
-          				<div class="row">
-          					<div class="col-md-9">
-              					<div class='input-group form-group' >
-				                    <input type='text' placeholder="End Time" readonly name="exam_days[${index}][end_time][]" class="form-control end_time" />
-				                    <span class="input-group-addon" >
-				                        <span class="glyphicon glyphicon-time"></span>
-				                    </span>
-				                </div>
-		                	</div>
-          					<div class="col-md-3">
-								<a class="btn btn-info add_new_slot" title="Add new time slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
-          					</div>
-          				</div>
-          			</div>
-      			</div>
-  			</div>`;
+// 	var htmldata =`
+// 			<div class="exam_days_div clearfix">
+//       			<div class="col-md-12">
+// 	                <div class="form-group">
+// 	                  	<label for="">Exam Days <span style="color: red">*</span></label><br>
+// 	                  	<div class="row">
+// 	                  		<div class="col-md-11">
+// 			                  	<select name="exam_days[${index}][day]" class="form-control exam_days">
+// 			                  		${daysOptions}
+// 			                  	</select>
+// 	                  		</div>
+// 	                  		<div class="col-md-1">
+// 								<a class="btn btn-danger remove_day" title="Remove exam day" onclick="return removeDay(this)"><i class="fa fa-trash"></i></a>
+// 	                  		</div>
+// 	                  	</div>
+// 	                </div>
+//       			</div>
+//       			<div class="time_wrapper">
+//           			<div class="col-md-4 start_time_wrapper">
+//           				<label for="">Start Time <span style="color: red">*</span></label><br>
+//               			<div class='input-group form-group datetimepicker' >
+// 		                    <input type='text' placeholder="Start Time" onblur="return getEndTime(this)" name="exam_days[${index}][start_time][]" class="form-control start_time" />
+// 		                    <span class="input-group-addon" >
+// 		                        <span class="glyphicon glyphicon-time"></span>
+// 		                    </span>
+// 		                </div>
+//           			</div>
+//           			<div class="col-md-5 end_time_wrapper">
+//           				<label for="">End Time <span style="color: red">*</span></label><br>
+//           				<div class="row">
+//           					<div class="col-md-9">
+//               					<div class='input-group form-group' >
+// 				                    <input type='text' placeholder="End Time" readonly name="exam_days[${index}][end_time][]" class="form-control end_time" />
+// 				                    <span class="input-group-addon" >
+// 				                        <span class="glyphicon glyphicon-time"></span>
+// 				                    </span>
+// 				                </div>
+// 		                	</div>
+//           					<div class="col-md-3">
+// 								<a class="btn btn-info add_new_slot" title="Add new time slot" onclick="return addNewSlot(this)"><i class="fa fa-plus"></i></a>
+//           					</div>
+//           				</div>
+//           			</div>
+//       			</div>
+//   			</div>`;
 
 
-	$(htmldata).insertAfter($('.exam_days_wrapper').find('.exam_days_div').last());
-	$('.datetimepicker').datetimepicker({
-        format: 'HH:mm'
-    });
+// 	$(htmldata).insertAfter($('.exam_days_wrapper').find('.exam_days_div').last());
+// 	$('.datetimepicker').datetimepicker({
+//         format: 'HH:mm'
+//     });
 
-	return false;
-}
+// 	return false;
+// }
 
-function removeDay(element)
-{
-	var $this = $(element);
-	$this.closest('.exam_days_div').remove();
-	$('.add_new_day').show();
+// function removeDay(element)
+// {
+// 	var $this = $(element);
+// 	$this.closest('.exam_days_div').remove();
+// 	$('.add_new_day').show();
 
-	$('.exam_days_div').each(function(index, html)
-	{		
-		// changing exam days name
-		var exam_days = $(html).find('.exam_days').attr('name');		
-		var temp_name = exam_days.split('][');
-		var new_name  = 'exam_days['+index+']['+temp_name[1];
-		$(html).find('.exam_days').attr('name', new_name);
+// 	$('.exam_days_div').each(function(index, html)
+// 	{		
+// 		// changing exam days name
+// 		var exam_days = $(html).find('.exam_days').attr('name');		
+// 		var temp_name = exam_days.split('][');
+// 		var new_name  = 'exam_days['+index+']['+temp_name[1];
+// 		$(html).find('.exam_days').attr('name', new_name);
 
-		// changing start time name
-		var start_time = $(html).find('.start_time').attr('name');		
-		var temp_name2 = start_time.split('][');
-		var new_name2  = 'exam_days['+index+']['+temp_name2[1]+'][]';
-		$(html).find('.start_time').attr('name', new_name2);
+// 		// changing start time name
+// 		var start_time = $(html).find('.start_time').attr('name');		
+// 		var temp_name2 = start_time.split('][');
+// 		var new_name2  = 'exam_days['+index+']['+temp_name2[1]+'][]';
+// 		$(html).find('.start_time').attr('name', new_name2);
 
-		// changing end time name
-		var start_time = $(html).find('.end_time').attr('name');		
-		var temp_name2 = start_time.split('][');
-		var new_name2  = 'exam_days['+index+']['+temp_name2[1]+'][]';
-		$(html).find('.end_time').attr('name', new_name2);
-	})
-}
+// 		// changing end time name
+// 		var start_time = $(html).find('.end_time').attr('name');		
+// 		var temp_name2 = start_time.split('][');
+// 		var new_name2  = 'exam_days['+index+']['+temp_name2[1]+'][]';
+// 		$(html).find('.end_time').attr('name', new_name2);
+// 	})
+// }
 
+// calculate end time
 function getEndTime(element)
 {
 	$this = $(element);	
@@ -376,10 +383,101 @@ function getEndTime(element)
 	}
 }
 
+// check time slot while adding duration
 function checkTimeSlots()
 {
 	$('.start_time').each(function (index, element)
 	{
 		getEndTime(element);
 	})
+}
+
+// calculate exam
+function calculateAmount(element)
+{
+	$this = $(element);
+	$('.err_calculated_amount').html('');
+	$('.err_amount').html('');
+
+	var amount = $('#amount').val();
+	var discount = $('#discount').val();
+	var discount_by = $('#discount_by').val();
+
+	var totalAmount = 0;
+
+	// amount validation 
+
+	if (amount == '' || isNaN(amount) ) 
+	{
+		$('.err_amount').html('Please enter valid amount.');
+		$('#calculated_amount').val('');
+		return false;
+	}
+
+	totalAmount = amount;
+
+	if(discount != '' && !isNaN(discount))
+	{
+		discount_by = discount_by.toLowerCase();
+
+		switch(discount_by)
+		{
+			case 'flat':
+				totalAmount = amount-discount;
+				console.log(totalAmount);
+			break;
+
+			case '%':
+				discounte_amount = (amount*discount)/100; 
+				totalAmount = amount-discounte_amount;
+			break;
+		} 
+	}
+
+	if (totalAmount > 0 && !isNaN(totalAmount)) 
+	{	
+		$('#calculated_amount').val(totalAmount);
+	}
+	else if(totalAmount != '' || totalAmount == 0) 
+	{
+		$('.err_calculated_amount').html('Invalid calculated amount.');
+		$('#calculated_amount').val(totalAmount);
+	}
+}
+
+// priview image
+function readURL(input) 
+{
+    $('.err_featured_image').html('');
+
+	var value = (input.value).toLowerCase();
+
+	var allowedExtensions = /(\.jpeg|\.jpg|\.png|\.gif)$/i;
+  	if(!allowedExtensions.exec(value))
+  	{
+	    $('.err_featured_image').html('Image format not supported, Image format should be in png, jpg or gif.')
+	    $("#featured_image").val('');
+	    $('#delete_button').hide();
+	    return false;
+  	}
+
+  	if (input.files && input.files[0]) 
+  	{
+    	var reader = new FileReader();
+    	reader.onload = function(e) 
+    	{
+      		$('#preview').attr('src', e.target.result);
+      		$('#delete_button').show();
+    	}
+    	
+    	reader.readAsDataURL(input.files[0]);
+  	}
+}
+
+function deletePreviewImage(element)
+{
+	$('#preview').attr('src', defaultImaage);
+	$("#featured_image").val('');
+	$('#delete_button').hide();
+	$('#old_image').val('');
 }

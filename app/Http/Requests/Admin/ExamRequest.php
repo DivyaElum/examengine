@@ -28,14 +28,22 @@ class ExamRequest extends FormRequest
 
         return [
             'title'             => 'required|min:1|unique:exam,title,'.$id,
+            'description'       => 'required',
             'category'          => 'required',
+            // 'exam_days.*.day'   => 'required',
             'duration'          => 'required|numeric|between:0.1,9.99',
             'total_question'    => 'required|numeric|gt:0',
-            // 'exam_days.*.day'   => 'required',
+
+            'amount'            => 'required|numeric|gt:0',
+            'discount'          => 'numeric',
+            'calculated_amount' => 'required|numeric|gt:0',
+            
             'start_date'        => 'required',
             'end_date'          => 'required',
             'exam_days.*.start_time.*' => 'required',
             'exam_days.*.end_time.*' => 'required',
+
+            'featured_image'    => 'mimes:jpeg,jpg,png,gif',
         ];
     }
 
@@ -53,6 +61,15 @@ class ExamRequest extends FormRequest
             'duration.between'                  => 'Please enter valid duration.',
             'start_date.required'               => 'Start date field is required.',
             'end_date.required'                 => 'End date field is required.',
+
+            'amount.required'             => 'Exam fee field is required.',
+            'amount.numeric'              => 'Exam fee should be in numbers only.',
+            'amount.gt'                   => 'Exam fee should be greater than 0.',
+            'calculated_amount.required'  => 'Calculated exam fee field is required.',
+            'calculated_amount.numeric'   => 'Calculated exam fee should be in numbers only.',
+            'calculated_amount.gt'        => 'Calculated exam fee should be greater than 0.',
+            'discount.numeric'            => 'Discount should be in numbers only.',
+            'description.required'        => 'Description field is required.',
         ];
     }
 }

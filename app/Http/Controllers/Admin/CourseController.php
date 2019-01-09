@@ -77,7 +77,7 @@ class CourseController extends Controller
         $object = new $this->BaseModel;
 
         if (Input::hasFile('featured_image')) 
-        {            
+        {
             $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
             $featured_image     = Storage::disk('local')->put('course/featuredImage', Input::file('featured_image'), 'public');
             
@@ -89,11 +89,10 @@ class CourseController extends Controller
             $object->featured_image               = $featured_image;
             $object->featured_image_thumbnail     = $featured_thumbnail_image;
             $object->featured_image_original_name = $original_name;
-
         }
         
         $object->title              = $request->title;
-        $object->description              = $request->description;
+        $object->description        = $request->description;
         $object->exam_id            = $request->exam;
         $object->prerequisite_id    = json_encode($request->prerequisites);
         $object->amount             = $request->amount;

@@ -20,6 +20,7 @@ use App\Http\Requests\Admin\ExamRequest;
 use Illuminate\Support\Facades\Input;
 use Storage;
 use DB;
+use Image;
 
 class ExamController extends Controller
 {
@@ -80,16 +81,24 @@ class ExamController extends Controller
 
     public function store(ExamRequest $request)
     {
-        $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
+        /*-------------------------------
+        |    Default error message
+        -----------------------------------------*/ 
 
-        // category
-        $formCtegories = $request->category;
-        $compulsoryQuestions = $request->exam_questions;
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
 
         /*-------------------------------
-        |    validation 
+        |    Initialising veriables
         -----------------------------------------*/ 
+
+            $formCtegories = $request->category;
+            $compulsoryQuestions = $request->exam_questions;
+
+        /*-------------------------------
+        |   Extra validation 
+        -----------------------------------------*/ 
+
             $categoryQuestionsCount = $this->QuestionsModel->whereIn('category_id', $formCtegories)->count();
             if ($categoryQuestionsCount < $request->total_question) 
             {
@@ -108,137 +117,175 @@ class ExamController extends Controller
                  exit;
             }
 
+        /*-------------------------------
+        |    Began transaction
+        -----------------------------------------*/ 
+
         DB::beginTransaction();
 
-        $object                 = new $this->BaseModel;
+        $object = new $this->BaseModel;
+
+        /*-------------------------------
+        |    Upload image if user has uploded
+        -----------------------------------------*/ 
+            if (Input::hasFile('featured_image')) 
+            {
+                $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
+                $featured_image     = Storage::disk('local')->put('exam/featuredImage', Input::file('featured_image'), 'public');
+                
+                $featured_thumbnail_image = time().$original_name;
+                $str_thumb_designation_path = storage_path().'/app/public/exam/featuredImageThumbnails' ;
+                $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
+                $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+
+                $object->featured_image               = $featured_image;
+                $object->featured_image_thumbnail     = $featured_thumbnail_image;
+                $object->featured_image_original_name = $original_name;
+            }
+
         $object->title          = $request->title;
         $object->duration       = $request->duration;
         $object->total_question = $request->total_question;
         $object->start_date     = Date('Y-m-d', strtotime($request->start_date));
         $object->end_date       = Date('Y-m-d', strtotime($request->end_date));
+        
+        $object->description    = $request->description;
+        $object->amount         = $request->amount;
+        $object->currency       = $request->currency;
+        $object->discount       = $request->discount;
+        $object->discount_by    = $request->discount_by;
+        $object->calculated_amount    = $request->calculated_amount;
+
         $object->status         = '1';
 
         if ($object->save()) 
         {
             $exam_id = $object->id;
             
-            if (!empty($request->exam_days) && count($request->exam_days) > 0) 
-            {
-                /*-----------------------------
-                |   Exam days validation
-                ----------------------------------------------*/
-                    // $isDuplicateDays = [];
-                    // foreach ($request->exam_days as $exam_key => $exam_day) 
-                    // {
-                    //    $isDuplicateDays[] = $exam_day['day'];
-                    // }
-
-                    // $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
-
-                    // if (!empty($validateDate) && sizeof($validateDate) > 0) 
-                    // {
-                    //     DB::rollBack();
-                    //     $this->JsonData['status']   = 'error';
-                    //     $this->JsonData['msg']      = 'Exam days must not be same.';
-                    //     return response()->json($this->JsonData);
-                    //     exit;
-                    // }
-
-                /*-----------------------------
-                |  Adding Exam days 
-                ----------------------------------------------*/
-                    $slots = [];
-                    foreach ($request->exam_days as $exam_key => $exam_day) 
-                    {
-                        
-                        $exam_slots = new $this->ExamSlotModel;
-                        $exam_slots->exam_id = $exam_id;
-                        // $exam_slots->day     = $exam_day['day'];
-
-                        /*-----------------------------
-                        |   Exam days start time validation
-                        ----------------------------------------------*/
-                            $out = [];
-                            $isDuplicateTime = [];
-                            foreach ($exam_day['start_time'] as $key_time => $start_time) 
-                            {
-                               $isDuplicateTime[] = $start_time;
-                            }
-
-                            $validateTime = array_diff_assoc($isDuplicateTime, array_unique($isDuplicateTime));
-
-                            if (!empty($validateTime) && sizeof($validateTime) > 0) 
-                            {
-                                DB::rollBack();
-                                $this->JsonData['status']   = 'error';
-                                $this->JsonData['msg']      = 'Exam start times must not be same for respective day.';
-                                return response()->json($this->JsonData);
-                                exit;
-                            }
-
-                        /*-----------------------------
-                        |   Adding Exam days start time 
-                        ----------------------------------------------*/
-                        foreach($exam_day['start_time'] as $key_time => $start_time)
-                        {
-                            $tmp = [];
-                            // $minuts                 = $request->duration*60;
-                            // $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
-                            // $end_time               = date('H:i', $enc_end_time);
-                            $end_time               = $exam_day['end_time'][$key_time];
-                            $tmp['start_time']      = $start_time;
-                            $tmp['end_time']        = $end_time;
-                            $out[] = $tmp;
-                        }
-                        
-                        $exam_slots->time    = json_encode($out);
-
-                        if($exam_slots->save())
-                        {
-                            $slots[] = 1;
-                        }
-                        else
-                        {
-                            $slots[] = 0;
-                        }
-                    }
-            }
-
-            // exam category wise questions
-            if (!empty($request->category) && count($request->category) > 0) 
-            {
-                $categoryQuestions = $this->QuestionsModel->whereIn('category_id', $formCtegories)->get();
-                
-                $questions = [];
-                if ($categoryQuestions) 
+            /*-------------------------------
+            |    Add exam days and their slots
+            -----------------------------------------*/
+                if (!empty($request->exam_days) && count($request->exam_days) > 0) 
                 {
-                    foreach ($categoryQuestions as $key => $question) 
-                    {
-                        $exam_question                  = new $this->ExamQuestionsModel;
-                        $exam_question->exam_id         = $exam_id;
-                        $exam_question->category_id     = $question->category_id;
-                        $exam_question->question_id     = $question->id;
-                        
-                        if($exam_question->save())
-                        {
-                            $questions[] = 1;
-                        }
-                        else
-                        {
-                            $questions[] = 0;
-                        }
-                    }
-                }   
-            }
+                    /*-----------------------------
+                    |   Exam days validation
+                    ----------------------------------------------*/
+                        // $isDuplicateDays = [];
+                        // foreach ($request->exam_days as $exam_key => $exam_day) 
+                        // {
+                        //    $isDuplicateDays[] = $exam_day['day'];
+                        // }
 
-            // update exam mandatory questions
-            if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
-            {
-                $this->ExamQuestionsModel
-                    ->where('exam_id', $exam_id)
-                    ->whereIn('question_id', $compulsoryQuestions)
-                    ->update(['compulsory' => 1]); 
-            }
+                        // $validateDate = array_diff_assoc($isDuplicateDays, array_unique($isDuplicateDays));
+
+                        // if (!empty($validateDate) && sizeof($validateDate) > 0) 
+                        // {
+                        //     DB::rollBack();
+                        //     $this->JsonData['status']   = 'error';
+                        //     $this->JsonData['msg']      = 'Exam days must not be same.';
+                        //     return response()->json($this->JsonData);
+                        //     exit;
+                        // }
+
+                    /*-----------------------------
+                    |  Adding Exam days 
+                    ----------------------------------------------*/
+                        $slots = [];
+                        foreach ($request->exam_days as $exam_key => $exam_day) 
+                        {
+                            
+                            $exam_slots = new $this->ExamSlotModel;
+                            $exam_slots->exam_id = $exam_id;
+                            // $exam_slots->day     = $exam_day['day'];
+
+                            /*-----------------------------
+                            |   Exam days start time validation
+                            ----------------------------------------------*/
+                                $out = [];
+                                $isDuplicateTime = [];
+                                foreach ($exam_day['start_time'] as $key_time => $start_time) 
+                                {
+                                   $isDuplicateTime[] = $start_time;
+                                }
+
+                                $validateTime = array_diff_assoc($isDuplicateTime, array_unique($isDuplicateTime));
+
+                                if (!empty($validateTime) && sizeof($validateTime) > 0) 
+                                {
+                                    DB::rollBack();
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = 'Exam start times must not be same for respective day.';
+                                    return response()->json($this->JsonData);
+                                    exit;
+                                }
+
+                            /*-----------------------------
+                            |   Adding Exam days start time 
+                            ----------------------------------------------*/
+                            foreach($exam_day['start_time'] as $key_time => $start_time)
+                            {
+                                $tmp = [];
+                                // $minuts                 = $request->duration*60;
+                                // $enc_end_time           = strtotime("+".$minuts." minutes", strtotime($start_time));
+                                // $end_time               = date('H:i', $enc_end_time);
+                                $end_time               = $exam_day['end_time'][$key_time];
+                                $tmp['start_time']      = $start_time;
+                                $tmp['end_time']        = $end_time;
+                                $out[] = $tmp;
+                            }
+                            
+                            $exam_slots->time    = json_encode($out);
+
+                            if($exam_slots->save())
+                            {
+                                $slots[] = 1;
+                            }
+                            else
+                            {
+                                $slots[] = 0;
+                            }
+                        }
+                }
+
+            /*-------------------------------
+            |    Add selected categories questions 
+            -----------------------------------------*/
+                if (!empty($request->category) && count($request->category) > 0) 
+                {
+                    $categoryQuestions = $this->QuestionsModel->whereIn('category_id', $formCtegories)->get();
+                    
+                    $questions = [];
+                    if ($categoryQuestions) 
+                    {
+                        foreach ($categoryQuestions as $key => $question) 
+                        {
+                            $exam_question                  = new $this->ExamQuestionsModel;
+                            $exam_question->exam_id         = $exam_id;
+                            $exam_question->category_id     = $question->category_id;
+                            $exam_question->question_id     = $question->id;
+                            
+                            if($exam_question->save())
+                            {
+                                $questions[] = 1;
+                            }
+                            else
+                            {
+                                $questions[] = 0;
+                            }
+                        }
+                    }   
+                }
+
+            /*-------------------------------
+            |   Update compulsory question flag 
+            -----------------------------------------*/
+                if (!empty($request->exam_questions) && count($request->exam_questions) > 0) 
+                {
+                    $this->ExamQuestionsModel
+                        ->where('exam_id', $exam_id)
+                        ->whereIn('question_id', $compulsoryQuestions)
+                        ->update(['compulsory' => 1]); 
+                }
 
             if (!in_array(0,$questions) && !in_array(0,$slots)) 
             {
@@ -326,16 +373,25 @@ class ExamController extends Controller
     }
 
     public function update(ExamRequest $request, $enc_id)
-    {$this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
+    {
+        /*-------------------------------
+        |    Default error message
+        -----------------------------------------*/ 
 
-        // category
-        $formCtegories = $request->category;
-        $compulsoryQuestions = $request->exam_questions;
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
 
         /*-------------------------------
-        |    validation 
+        |    Initialising veriables
         -----------------------------------------*/ 
+
+            $formCtegories = $request->category;
+            $compulsoryQuestions = $request->exam_questions;
+
+        /*-------------------------------
+        |   Extra validation 
+        -----------------------------------------*/ 
+
             $categoryQuestionsCount = $this->QuestionsModel->whereIn('category_id', $formCtegories)->count();
             if ($categoryQuestionsCount < $request->total_question) 
             {
@@ -354,17 +410,59 @@ class ExamController extends Controller
                  exit;
             }
 
-
         DB::beginTransaction();
 
         $exam_id = base64_decode(base64_decode($enc_id));
 
         $object                 = $this->BaseModel->find($exam_id);
+
+        /*-------------------------------
+        |    Upload image if user has uploded
+        -----------------------------------------*/ 
+            if (Input::hasFile('featured_image')) 
+            {            
+                $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
+                $featured_image     = Storage::disk('local')->put('exam/featuredImage', Input::file('featured_image'), 'public');
+                
+                $featured_thumbnail_image = time().$original_name;
+                $str_thumb_designation_path = storage_path().'/app/public/exam/featuredImageThumbnails' ;
+                $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
+                $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+
+                $object->featured_image               = $featured_image;
+                $object->featured_image_thumbnail     = $featured_thumbnail_image;
+                $object->featured_image_original_name = $original_name;
+            }
+            else
+            if(empty($request->old_image))
+            {
+                if(is_file(storage_path().'/app/public/exam/featuredImageThumbnails/'.$object->featured_image_thumbnail))
+                {
+                    unlink(storage_path().'/app/public/exam/featuredImageThumbnails/'.$object->featured_image_thumbnail);
+                }
+
+                if(is_file(storage_path().'/app/public/'.$object->featured_image))
+                {
+                    unlink(storage_path().'/app/public/'.$object->featured_image);
+                }
+                
+                $object->featured_image               = NULL;
+                $object->featured_image_thumbnail     = NULL;
+                $object->featured_image_original_name = NULL;
+            }
+
         $object->title          = $request->title;
         $object->duration       = $request->duration;
         $object->total_question = $request->total_question;
         $object->start_date     = Date('Y-m-d', strtotime($request->start_date));
         $object->end_date       = Date('Y-m-d', strtotime($request->end_date));
+        
+        $object->description    = $request->description;
+        $object->amount         = $request->amount;
+        $object->currency       = $request->currency;
+        $object->discount       = $request->discount;
+        $object->discount_by    = $request->discount_by;
+        $object->calculated_amount    = $request->calculated_amount;
         
         if ($object->save()) 
         {
