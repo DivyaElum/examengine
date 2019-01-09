@@ -17,7 +17,6 @@ use App\Imports\UsersImport;
 use App\Imports\QuestionCategoryImport;
 use App\Exports\QuestionCategoryExport;
 
-
 class QuestionCategoryController extends Controller
 {
     private $QuestionCategory;
@@ -29,7 +28,7 @@ class QuestionCategoryController extends Controller
         QuestionCategoryModel $QuestionCategoryModel,
         QuestionsModel $QuestionsModel
     )
-    {
+    {        
         $this->QuestionCategoryModel  = $QuestionCategoryModel;
         $this->QuestionsModel  = $QuestionsModel;
 
@@ -291,13 +290,15 @@ class QuestionCategoryController extends Controller
         return Excel::download(new QuestionCategoryExport, 'Question-category.xlsx');
     }      
 
-    public function excelImport(Request $request){
+    public function excelImport(Request $request)
+    {
         //validate the xls file
         $this->validate($request, array(
            'import_file'      => 'required'
         ));
 
-        if($request->hasFile('import_file')){
+        if($request->hasFile('import_file'))
+        {
             $extension = File::extension($request->import_file->getClientOriginalName());
             if ($extension == "xlsx" || $extension == "xls" || $extension == "csv")
             {
@@ -313,37 +314,38 @@ class QuestionCategoryController extends Controller
                         {
                             if(!in_array($value->category_name , $insert))
                             {
-                                $insert[] = [
-                                  'category_name' => $value->category_name,
-                                ];
+                                $tmp = [];
+                                $tmp  = $this->QuestionCategoryModel->firstOrCreate(['category_name' => $value->category_name]);
+
+                                if (!empty($tmp)) 
+                                {
+                                    $insert[] = 1;
+                                }
+                                else
+                                {
+                                    $insert[] = 0;
+                                }
                             }
                         }
                     }
 
-                    if(!empty($insert))
+                    if(!in_array(0, $insert))
                     {
-                        $checkarr = array_column($insert, 'category_name');
-
-                        $insertData = $this->QuestionCategoryModel->whereNotIn('category_name', $checkarr)->insert($insert);
-                        if ($insertData)
-                        {
-                           Session::flash('success', 'Your Data has successfully imported');
-                        }
-                        else
-                        {                        
-                           Session::flash('error', 'Error inserting the data..');
-                           return back();
-                        }
+                       Session::flash('success', 'Your Data has successfully imported');
+                    }
+                    else
+                    {                        
+                       Session::flash('error', 'Error inserting the data..');
                     }
                 }
-                return back();
             }
             else
             {
                 Session::flash('error', 'File is a '.$extension.' file.!! Please upload a valid xls/csv file..!!');
-                return back();
-            }
+            }    
         }
+
+        return back();
     }
 
     /*-----------------------------------------------------

@@ -33,7 +33,7 @@ function saveMember(element)
     			toastr.success(data.msg);
 	    		setTimeout(function ()
 	    		{
-	    			window.location.href = data.url;
+	    			location.reload();
 	    		}, 2000)
 	    	}
 	    	else

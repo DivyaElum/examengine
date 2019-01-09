@@ -64,7 +64,7 @@
 			          		<form method="post" action="{{ url('admin/question-category/excelImport') }}" id="frmImportExcel" enctype="multipart/form-data">
 			          			@csrf
 			          				<span>Upload</span>
-			          				<input type="file" name="import_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="upload"/>
+			          				<input type="file" name="import_file" accept=".xlsx, .xls, .csv" class="upload"/>
 			          		</form>
 		          		</div>
 		          		<a href="{{ url('/admin/question-category/exportFile') }}" class="btn btn-social btn-linkedin" id=""><i class="fa fa-download"></i>Download Excel</a>

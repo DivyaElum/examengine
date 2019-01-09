@@ -18,6 +18,7 @@ use App\Http\Requests\Admin\CourseRequest;
 use Illuminate\Support\Facades\Input;
 use Storage;
 use Image;
+use DB;
 
 
 class CourseController extends Controller
@@ -71,41 +72,64 @@ class CourseController extends Controller
 
     public function store(CourseRequest $request)
     {
-        $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to save course, Something went wrong.';
 
-        $object = new $this->BaseModel;
+        /*------------------------------
+        |   Default error message
+        -----------------------------------------*/
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
 
-        if (Input::hasFile('featured_image')) 
-        {
-            $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
-            $featured_image     = Storage::disk('local')->put('course/featuredImage', Input::file('featured_image'), 'public');
+        /*------------------------------
+        |   Began transaction
+        -----------------------------------------*/
+
+            DB::beginTransaction();
+
+            $object = new $this->BaseModel;
+
+            /*------------------------------
+            |   Upload featured image
+            -----------------------------------------*/
+                if (Input::hasFile('featured_image')) 
+                {
+                    $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
+                    $featured_image     = Storage::disk('local')->put('course/featuredImage', Input::file('featured_image'), 'public');
+                    
+                    $featured_thumbnail_image = time().$original_name;
+                    $str_thumb_designation_path = storage_path().'/app/public/course/featuredImageThumbnails' ;
+                    $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
+                    $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+
+                    $object->featured_image               = $featured_image;
+                    $object->featured_image_thumbnail     = $featured_thumbnail_image;
+                    $object->featured_image_original_name = $original_name;
+                }
+
+
             
-            $featured_thumbnail_image = time().$original_name;
-            $str_thumb_designation_path = storage_path().'/app/public/course/featuredImageThumbnails' ;
-            $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
-            $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+            $object->title              = $request->title;
+            $object->description        = $request->description;
+            $object->exam_id            = $request->exam;
+            $object->amount             = $request->amount;
+            $object->currency           = $request->currency;
+            $object->discount           = $request->discount;
+            $object->discount_by        = $request->discount_by;
+            $object->calculated_amount  = $request->calculated_amount;            
+            $object->start_date         = Date('Y-m-d',strtotime($request->start_date));
+            $object->end_date           = Date('Y-m-d',strtotime($request->end_date));
 
-            $object->featured_image               = $featured_image;
-            $object->featured_image_thumbnail     = $featured_thumbnail_image;
-            $object->featured_image_original_name = $original_name;
-        }
-        
-        $object->title              = $request->title;
-        $object->description        = $request->description;
-        $object->exam_id            = $request->exam;
-        $object->prerequisite_id    = json_encode($request->prerequisites);
-        $object->amount             = $request->amount;
-        $object->discount           = $request->discount;
-        $object->discount_by        = $request->discount_by;
-        $object->calculated_amount  = $request->calculated_amount;
-        $object->status             = '1';
+            $object->status             = '1';
 
-        if ($object->save()) 
-        {
-            $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Course saved successfully';
-        }
+            if ($object->save()) 
+            {
+                 DB::commit();
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = 'Course saved successfully';
+            }
+            else
+            {
+                 DB::rollBack();
+            }
 
         return response()->json($this->JsonData);
 
@@ -129,60 +153,83 @@ class CourseController extends Controller
 
     public function update(CourseRequest $request, $enc_id)
     {
-        $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to save course, Something went wrong.';
 
-        $id = base64_decode(base64_decode($enc_id));
-        $object = $this->BaseModel->find($id);
+        /*------------------------------
+        |   Default error message
+        -----------------------------------------*/
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
 
-        if (Input::hasFile('featured_image')) 
-        {            
-            $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
-            $featured_image     = Storage::disk('local')->put('course/featuredImage', Input::file('featured_image'), 'public');
+        /*------------------------------
+        |   Began transaction
+        -----------------------------------------*/
+
+            DB::beginTransaction();
+
+            $id = base64_decode(base64_decode($enc_id));
+            $object = $this->BaseModel->find($id);
+
+            /*------------------------------
+            |   Upload featured image
+            -----------------------------------------*/
+                if (Input::hasFile('featured_image')) 
+                {
+                    $original_name      = strtolower(Input::file('featured_image')->getClientOriginalName());
+                    $featured_image     = Storage::disk('local')->put('course/featuredImage', Input::file('featured_image'), 'public');
+                    
+                    $featured_thumbnail_image = time().$original_name;
+                    $str_thumb_designation_path = storage_path().'/app/public/course/featuredImageThumbnails' ;
+                    $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
+                    $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+
+                    $object->featured_image               = $featured_image;
+                    $object->featured_image_thumbnail     = $featured_thumbnail_image;
+                    $object->featured_image_original_name = $original_name;
+                }
+                else
+                if(empty($request->old_image))
+                {
+                    if(is_file(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail))
+                    {
+                        unlink(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail);
+                    }
+
+                    if(is_file(storage_path().'/app/public/'.$object->featured_image))
+                    {
+                        unlink(storage_path().'/app/public/'.$object->featured_image);
+                    }
+                    
+                    $object->featured_image               = NULL;
+                    $object->featured_image_thumbnail     = NULL;
+                    $object->featured_image_original_name = NULL;
+                }
             
-            $featured_thumbnail_image = time().$original_name;
-            $str_thumb_designation_path = storage_path().'/app/public/course/featuredImageThumbnails' ;
-            $thumb_img = Image::make(Input::file('featured_image')->getRealPath())->resize(125, 125);
-            $thumb_img->save($str_thumb_designation_path.'/'.$featured_thumbnail_image,80);
+            $object->title              = $request->title;
+            $object->description        = $request->description;
+            $object->exam_id            = $request->exam;
+            $object->amount             = $request->amount;
+            $object->currency           = $request->currency;
+            $object->discount           = $request->discount;
+            $object->discount_by        = $request->discount_by;
+            $object->calculated_amount  = $request->calculated_amount;            
+            $object->start_date         = Date('Y-m-d',strtotime($request->start_date));
+            $object->end_date           = Date('Y-m-d',strtotime($request->end_date));
 
-            $object->featured_image               = $featured_image;
-            $object->featured_image_thumbnail     = $featured_thumbnail_image;
-            $object->featured_image_original_name = $original_name;
-        }
-        else
-        if(empty($request->old_image))
-        {
-            if(is_file(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail))
+            $object->status             = '1';
+
+            if ($object->save()) 
             {
-                unlink(storage_path().'/app/public/course/featuredImageThumbnails/'.$object->featured_image_thumbnail);
+                 DB::commit();
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = 'Course saved successfully';
             }
-
-            if(is_file(storage_path().'/app/public/'.$object->featured_image))
+            else
             {
-                unlink(storage_path().'/app/public/'.$object->featured_image);
+                 DB::rollBack();
             }
-            
-            $object->featured_image               = NULL;
-            $object->featured_image_thumbnail     = NULL;
-            $object->featured_image_original_name = NULL;
-        }
-
-        $object->title              = $request->title;
-        $object->description        = $request->description;
-        $object->exam_id            = $request->exam;
-        $object->prerequisite_id    = json_encode($request->prerequisites);
-        $object->amount             = $request->amount;
-        $object->discount           = $request->discount;
-        $object->discount_by        = $request->discount_by;
-        $object->calculated_amount  = $request->calculated_amount;
-        
-        if ($object->save()) 
-        {
-            $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Course saved successfully';
-        }
 
         return response()->json($this->JsonData);
+
     }
 
     public function destroy($enc_id)
