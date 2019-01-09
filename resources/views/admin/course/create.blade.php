@@ -11,7 +11,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 	<style>
 		.clear{clear: both;}
-		.exam_days_div { border: 1px solid #ccc; padding: 15px 0; background: #f3f3f3; margin: 15px 0;}
+		.prerequisite_div { border: 1px solid #ccc; padding: 15px 0; background: #f3f3f3; margin: 15px 0;}
+
 		.input-daterange input 
 		{
 		    text-align: left !important; 
@@ -53,6 +54,9 @@
 		            				<b>Course fee calculated as : </b><br>
 		            				1. If there is a commercial percentage then <b>Fee = ((Course Fee*Discount)/100). </b><br>	
 		            				2. If there is a commercial flat then <b>Fee = Commercial Flat Rate. </b>
+		            				<br><b> Video/PDF upload : </b><br>
+		            				1. Max video file size limit 2 MB	
+		            				2. Max pdf file size limit 2 MB	
 		            				<br><b> Featured Image : </b><br>
 		            				1. Only png, gif, jpeg image formats are allowed.
 		            			</p>
@@ -102,6 +106,89 @@
 				                  	</select>
 				                </div>
 	              			</div>	
+
+
+	              			<div class="clear"></div>
+              				<div class="col-md-12">
+	              				<div class="prerequisite_wrapper clearfix">
+			              			<div class="prerequisite_div clearfix">
+
+				              			<div class="col-md-12">
+							                <div class="form-group">
+							                  	<label for="">Title <span style="color: red">*</span></label>
+							                  	<div class="row">
+							                  		<div class="col-md-11">
+								                  		<input type="text" name="title" class="form-control title" placeholder="Enter Title" maxlength="100">
+							                  		</div>
+							                  		<div class="col-md-1">
+				              							<a class="btn btn-info add_new_prerequisite" title="Add new" onclick="return addNewPrerequisite(this)"><i class="fa fa-plus"></i></a>
+							                  		</div>
+							                  	</div>
+							                </div>
+				              			</div>	
+
+				              			<div class="col-md-11">
+				              				<label>Video Type <span style="color: red">*</span></label>
+							                <div class="form-group">
+											    <label class="radio-inline">
+											      <input type="radio" onclick="setVideoType(this)" name="prerequisite[0][type]" checked value="file">Video File
+											    </label>
+											    <label class="radio-inline">
+											      <input type="radio" onclick="setVideoType(this)" name="prerequisite[0][type]" value="pdf">Pdf File
+											    </label>
+											    <label class="radio-inline">
+											      <input type="radio" onclick="setVideoType(this)" name="prerequisite[0][type]" value="url">Video URL
+											    </label>
+											    <label class="radio-inline">
+											      <input type="radio" onclick="setVideoType(this)" name="prerequisite[0][type]" value="youtube">Youtube URL
+											    </label>
+											    <label class="radio-inline">
+											      <input type="radio" onclick="setVideoType(this)" name="prerequisite[0][type]" value="other">Other
+											    </label>
+							                </div>
+				              			</div>	
+
+				              			<div class="col-md-11 options file">
+							                <div class="form-group">
+							                  	<label for="">Video File</label>
+								                  	<input type="file"  name="prerequisite[0][video_file]" accept=".mpg,.mpeg,.avi,.wmv,.mov,.rm,.ram,.swf,.flv,.ogg,.webm,.mp4"  class="video_file form-control option_input" >
+							                  	</select>
+							                </div>
+				              			</div>
+
+				              			<div class="col-md-11 options pdf" style="display: none;">
+							                <div class="form-group">
+							                  	<label for="">Pdf File</label>
+								                  	<input type="file"  name="prerequisite[0][pdf_file]" accept=".pdf" class="pdf_file form-control option_input" >
+							                  	</select>
+							                </div>
+				              			</div>
+
+				              			<div class="col-md-11 options url" style="display: none;">
+							                <div class="form-group">
+							                  	<label for="">Video URL</label>
+								                  	<input type="text" name="prerequisite[0][video_url]" class="video_url form-control option_input" placeholder="Enter Video URL" >
+							                  	</select>
+							                </div>
+				              			</div>	
+				              			
+				              			<div class="col-md-11 options youtube" style="display: none;" >
+							                <div class="form-group">
+							                  	<label for="">Youtube URL</label>
+							                  	<input type="text" name="prerequisite[0][youtube_url]" class="youtube_url form-control option_input" placeholder="Enter Youtube URL">
+							                </div>
+				              			</div>	
+
+				              			<div class="col-md-11 options other" style="display: none;" >
+							                <div class="form-group">
+							                  	<label for="">Other</label>
+							                  	<textarea type="text" name="prerequisite[0][other]" class="other form-control option_input" placeholder="Enter Description"></textarea>
+							                </div>
+				              			</div>	
+
+		              				</div>
+	              				</div>
+	              			</div>
 
 	              			<div class="col-md-4">
 				                <div class="form-group">

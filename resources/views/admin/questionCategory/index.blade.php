@@ -67,7 +67,7 @@
 			          				<input type="file" name="import_file" accept=".xlsx, .xls, .csv" class="upload"/>
 			          		</form>
 		          		</div>
-		          		<a href="{{ url('/admin/question-category/exportFile') }}" class="btn btn-social btn-linkedin" id=""><i class="fa fa-download"></i>Download Excel</a>
+		          		<a href="{{ asset('demoExcelCSV/categories.csv') }}" download class="btn btn-social btn-linkedin" id=""><i class="fa fa-download"></i>Download Excel</a>
 		          		<a title="Add New" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>
 		          	</div>
 	        	</div>
