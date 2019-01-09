@@ -19,8 +19,24 @@ $(document).ready(function()
 	{
 		$('.add_new_response').hide();
 	}	
+	
+	var chkNegMakValue = $('input[name=chk_neg_marks]:checked').val();
+	if(chkNegMakValue == '1'){
+    	$('.divNegMrk').show();
+    }else{
+    	$('.divNegMrk').hide();
+    }
 
-})
+	$("input[name$='chk_neg_marks']").click(function() {
+	    var chkNegValue = $(this).val();
+	    
+	    if(chkNegValue == '1'){
+	    	$('.divNegMrk').show();
+	    }else{
+	    	$('.divNegMrk').hide();
+	    }
+	});
+});
 
 var adminPath = $('meta[name="admin-path"]').attr('content');
 
@@ -128,8 +144,6 @@ function getStructure(element)
 		}
 	
 	}, 'json');  
-
-
 }
 
 function getIndexByCount(index)

@@ -109,6 +109,10 @@ class QuestionsController extends Controller
         $repository->question_text      = $request->question_text;
         
         $repository->right_marks        = $request->right_marks;
+
+        $repository->chk_negative_mark  = $request->chk_neg_marks;
+
+        $repository->negative_mark      = $request->neg_marks;
         
         // options
         $repository->option1  = $request->option1 ?? NULL;
@@ -140,10 +144,6 @@ class QuestionsController extends Controller
         }   
 
         return response()->json($this->JsonData);
-    }
-
-    public function show($id)
-    {
     }
 
     public function edit($enc_id)
@@ -191,6 +191,10 @@ class QuestionsController extends Controller
         $repository->question_text      = $request->question_text;
         
         $repository->right_marks        = $request->right_marks;
+
+        $repository->chk_negative_mark  = $request->chk_neg_marks;
+
+        $repository->negative_mark      = $request->neg_marks;
         
         // options
         $repository->option1  = $request->option1 ?? NULL;

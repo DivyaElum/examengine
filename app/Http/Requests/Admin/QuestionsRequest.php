@@ -26,7 +26,7 @@ class QuestionsRequest extends FormRequest
     {
         $id = base64_decode(base64_decode($this->route('question'))) ?? null;
 
-
+        $strChkNegMarks = $this->request->get('chk_neg_marks');
 
         if(sizeof($this->all()) == 2)
         {
@@ -37,15 +37,24 @@ class QuestionsRequest extends FormRequest
         }
         else
         {
-            return [
-                'type'          => 'required',
-                'category'      => 'required',
-                'question_text' => 'required|min:1|unique:questions,question_text,'.$id,
-                'option1'       => 'required',
-                'option2'       => 'required',
-                'correct'       => 'required',
-                'right_marks'   => 'required|numeric|gt:0'
-            ];
+            if($strChkNegMarks == '1')
+            {
+                return [
+                    'neg_marks'   => 'required|numeric|gt:0'
+                ];
+            }
+            else
+            {
+                return [
+                    'type'          => 'required',
+                    'category'      => 'required',
+                    'question_text' => 'required|min:1|unique:questions,question_text,'.$id,
+                    'option1'       => 'required',
+                    'option2'       => 'required',
+                    'correct'       => 'required',
+                    'right_marks'   => 'required|numeric|gt:0'
+                ];
+            }
         }
     }
 

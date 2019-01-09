@@ -348,9 +348,27 @@
 		              			<div class="col-md-2">
 		                  			<div class="form-group">
 				                  		<label for="">Right Marks</label>
-				                  		<input type="number" class="form-control" placeholder="0" value="{{ $object->right_marks }}" name="right_marks">
+				                  		<input type="text" class="form-control" placeholder="0" value="{{ $object->right_marks }}" name="right_marks">
 				                	</div>
 		                  		</div>
+
+		                  		<div class="col-md-12">
+					                <div class="form-group">
+					                  	<label for="">Negative Makrs <span style="color: red">*</span></label>&nbsp;&nbsp;
+					                  	<label class="radio-inline">
+									      <input type="radio" name="chk_neg_marks" value="1" <?php if($object->chk_negative_mark == '1'){ echo 'checked';} ?> >Yes
+									    </label>
+									    <label class="radio-inline">
+									      <input type="radio" name="chk_neg_marks"  value="0" <?php if($object->chk_negative_mark == '0'){ echo 'checked';} ?> >No
+									    </label>
+					                </div>
+		              			</div>
+		              			<div class="col-md-12 divNegMrk">
+					                <div class="form-group">
+					                  	<label for="">Negative Makrs <span style="color: red">*</span></label>&nbsp;&nbsp;
+					                  		<input type="text" name="neg_marks" id="neg_marks" class="form-control" value="{{ $object->negative_mark }}">
+					                </div>
+		              			</div>
 
 	                  		</div>
 
