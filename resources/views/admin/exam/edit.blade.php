@@ -49,12 +49,32 @@
 	              		<div class="row">
 
 	              			<div class="col-md-12">
+				        		<p class="alert" style="background-color: #d9edf7 !important">
+				        			NOTE : <br>
+				    				<b>Exam fee calculated as : </b><br>
+				    				1. If there is a commercial percentage then <b>Fee = ((Exam Fee*Discount)/100). </b><br>	
+				    				2. If there is a commercial flat then <b>Fee = Commercial Flat Rate. </b>
+				    				<br>
+				    				<b>Featured Image : </b><br>
+				    				1. Only png, gif, jpeg image formats are allowed.
+				    			</p>
+				            </div>
+
+	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="">Title <span style="color: red">*</span></label>
 					                  	<input type="text" name="title" value="{{ $object->title }}" id="title" class="form-control" placeholder="Enter Title" maxlength="100">
 				                  	</select>
 				                </div>
 	              			</div>
+
+	              			<div class="col-md-12">
+				                <div class="form-group">
+				                  	<label for="">Description <span style="color: red">*</span></label>
+				                  	<textarea  name="description" id="description" class="form-control" placeholder="Enter Description" >{{ $object->description }}</textarea>
+				                </div>
+				            </div>
+
 	              			<div class="col-md-6">
 				                <div class="form-group">
 				                  	<label for="">Question Categories <span style="color: red">*</span></label><br>
@@ -87,11 +107,11 @@
 	              			</div>
 
 	              			<div class="col-md-12">
-			            		<p class="alert" style="background-color: #00c0ef75 !important">
+			            		<p class="alert" style="background-color: #dff0d8 !important">
 			            			@php 
 		                  				$questionsAdded = !empty($all_categories_questions) ? count($all_categories_questions) : 0; 
 			                  		@endphp
-		            				<label>Questions Added : &nbsp; </label><span id="questionsCount"> {{ $questionsAdded }}</span>
+		            				<label>Total Question Available : &nbsp; </label><span id="questionsCount"> {{ $questionsAdded }}</span>
 		            			</p>
 				            </div>
 
@@ -109,6 +129,51 @@
 				                  	<input type="text" maxlength="3" value="{{ $object->total_question }}" name="total_question" id="total_question" class="form-control" placeholder="50" maxlength="6">
 				                </div>
 	              			</div>
+
+	              			<div class="col-md-4">
+				                <div class="form-group">
+				                  	<label for="">Exam Fee<span style="color: red">*</span></label>
+				                  	<input type="text" value="{{ $object->amount }}" oninput="return calculateAmount(this)" placeholder="Exam Fee" name="amount" id="amount" class="form-control">
+				                	<span class="err_amount" style="color: red"></span>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Currency</label>
+				                  	<select name="currency" id="currency" class="form-control">
+				                  		<option value="USD" @if($object->currency == 'USD') selected @endif >USD</option>
+				                  		<option value="AED" @if($object->currency == 'AED') selected @endif >Dirham</option>
+				                  	</select>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Discount</label>
+				                  	<input type="text" value="0" value="{{ $object->discount }}"  oninput="return calculateAmount(this)" placeholder="Exam Discount" name="discount" id="discount" class="form-control">
+				                	<span class="err_discount " style="color: red"></span>
+				                </div>
+	              			</div>	
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Discount By</label>
+				                  	<select name="discount_by" onchange="return calculateAmount(this)" id="discount_by" class="form-control">
+				                  		<option value="Flat" @if($object->discount_by == 'Flat') selected @endif >Flat</option>
+				                  		<option value="%" @if($object->discount_by == '%') selected @endif>%</option>
+				                  	</select>
+				                  	{{-- <span class="err_calculated_amount " style="color: red"></span> --}}
+				                </div>
+	              			</div>
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Calculated Exam Fee<span style="color: red">*</span></label>
+				                  	<input type="text" readonly value="{{ $object->calculated_amount }}" placeholder="Calculated Exam Fee" name="calculated_amount" id="calculated_amount" class="form-control">
+				                	<span class="err_calculated_amount " style="color: red"></span>
+				                </div>
+	              			</div> 
 
 	              			<div class="clear"></div>
               				<div class="col-md-12">
@@ -268,6 +333,41 @@
 			              			@endif
 	              				</div>
               				</div>
+
+              				<div class="col-md-12">
+	              				<div class="row">
+	              					<div class="col-md-2">
+	              						@php 
+	              							if(file_exists(storage_path('app/public/exam/featuredImageThumbnails/'.$object->featured_image_thumbnail)) && !empty($object->featured_image_thumbnail))
+	              							{
+	              								$featured = url('/storage/exam/featuredImageThumbnails/'.$object->featured_image_thumbnail);
+	              								$show = 1;
+	              							}
+	              							else
+	              							{
+	              								$featured = url('/images/no-image.png');
+
+	              							}
+	              						@endphp 
+	              						<img id="preview" class="image-responsive"  src="{{ $featured }}" alt="Featured Image" width="100%" height="125px" />
+	              						<input type="hidden" name="old_image" value="{{ $object->featured_image_thumbnail }}" id="old_image">
+	              					</div>
+	              				</div>
+
+	              				<div class="row" id="delete_button" @if(empty($show))style="display: none"@endif>
+				                	<div class="col-md-2" > 
+				                		<a  href="javascript:void(0)" onclick="deletePreviewImage(this)" class="btn btn-danger form-control" >Delete</a>
+				                	</div>
+	              				</div>
+
+				                <div class="row">
+					                <div class="form-group col-md-6">
+					                  	<label for="">Featured Image </label>
+					                  	<input type="file" name="featured_image" accept="image/x-png,image/gif,image/jpeg" id="featured_image" onchange="readURL(this)" class="form-control">
+					                	<span class="err_featured_image" style="color: red"></span>
+				                	</div>
+				                </div>
+	              			</div>
 	              		</div>
 	              	</div>
 
@@ -290,7 +390,9 @@
   				var title = "{{ $day }}";
   				daysOptions = daysOptions + '<option value="'+value+'">'+title+'</option>';
   			@endforeach
-  		@endif	    
+  		@endif	
+
+  		var defaultImaage = "{{ url('/images/no-image.png') }}";    
 	</script>
 
 	<script type="text/javascript" src="{{ asset('plugins/datepicker/moment.js') }}"></script>
