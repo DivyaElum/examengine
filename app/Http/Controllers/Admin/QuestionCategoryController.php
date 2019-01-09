@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 use App\Models\QuestionCategoryModel;
 use App\Models\QuestionsModel;
 use Validator;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
+use App\Imports\UsersImport;
+use App\Imports\QuestionCategoryImport;
+use App\Exports\QuestionCategoryExport;
 
 class QuestionCategoryController extends Controller
 {
@@ -60,12 +65,6 @@ class QuestionCategoryController extends Controller
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(QestionCategoryRequest $request)
     {
         $QuestionCategoryModel = new $this->QuestionCategoryModel;
@@ -77,21 +76,21 @@ class QuestionCategoryController extends Controller
         {
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = 'admin/question-category';
-            $this->JsonData['msg']      = 'Question Category saved successfully.';
+            $this->JsonData['msg']      = __('messages.ERR_QESTION_CAT_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Question Category, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         } 
 
         return response()->json($this->JsonData);
     }
 
-     public function changeStatus(Request $request)
+    public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
 
         if ($request->has('id') && $request->has('status') ) 
         {
@@ -101,7 +100,7 @@ class QuestionCategoryController extends Controller
             if ($flag) 
             {
                 $this->JsonData['status'] = 'error';
-                $this->JsonData['msg']    = 'Can\'t change status, This Question category has been used in questions.';
+                $this->JsonData['msg']    = __('messages.ERR_QESTION_CAT_STS_DEP_ERROR_MSG');
                 return response()->json($this->JsonData);
                 exit;
             }
@@ -110,7 +109,7 @@ class QuestionCategoryController extends Controller
             if($this->QuestionCategoryModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
-                $this->JsonData['msg']    = 'Status changed successfully.';
+                $this->JsonData['msg']    = __('messages.ERR_STATUS_ERROR_MSG');
             } 
         }
         
@@ -218,13 +217,6 @@ class QuestionCategoryController extends Controller
             return response()->json($this->JsonData);
         }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $QuestionCategoryModel = new $this->QuestionCategoryModel;
@@ -238,18 +230,11 @@ class QuestionCategoryController extends Controller
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(QestionCategoryRequest $request, $id)
     {
         $QuestionCategoryModel = new $this->QuestionCategoryModel;
 
-        $intId              = base64_decode(base64_decode($id));
+        $intId = base64_decode(base64_decode($id));
         
         $QuestionCategoryModel = $this->QuestionCategoryModel->find($intId);
 
@@ -259,22 +244,16 @@ class QuestionCategoryController extends Controller
         {
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = '/admin/question-category/';
-            $this->JsonData['msg']      = 'Question Category saved successfully.';
+            $this->JsonData['msg']      = __('messages.ERR_QESTION_CAT_UPDATE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Question Category, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         } 
         return response()->json($this->JsonData);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $intId = base64_decode(base64_decode($id));
@@ -284,7 +263,7 @@ class QuestionCategoryController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t delete, This Question category has been used in questions.';
+            $this->JsonData['msg']    = __('messages.ERR_QESTION_CAT_DEL_DEP_ERROR_MSG');
             return response()->json($this->JsonData);
             exit;
         }
@@ -293,33 +272,47 @@ class QuestionCategoryController extends Controller
         if($this->QuestionCategoryModel->where('id', $intId)->delete())
         {
             $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Council member deleted successfully.';
+            $this->JsonData['msg']    =  __('messages.ERR_QESTION_CAT_DELETE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Council member, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         }
         
         return response()->json($this->JsonData);
     }
 
+    public function exportFile()
+    {     
+        return Excel::download(new QuestionCategoryExport, 'Question-category.xlsx');
+    }      
+
+    public function excelImport(Request $request) 
+    {
+        //dd($request->all());
+        if($request->hasFile('import_file')){
+            $path = $request->file('import_file')->getRealPath();
+            Excel::import(new QuestionCategoryImport,request()->file('import_file'), 's3');
+        }
+        return back()->with('success', 'All good!');
+    }
 
     /*-----------------------------------------------------
     |  sub function Calls
     */
 
-        public function _checkDependency($id)
+    public function _checkDependency($id)
+    {
+        $count  = $this->QuestionsModel->where('category_id', $id)->count();
+               
+        if ($count > 0) 
         {
-            $count  = $this->QuestionsModel->where('category_id', $id)->count();
-                   
-            if ($count > 0) 
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return true;
         }
+        else
+        {
+            return false;
+        }
+    }
 }

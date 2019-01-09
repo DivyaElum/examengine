@@ -164,6 +164,8 @@
 		Route::resource('council-member', 'CouncilMemberController');
 
 		// question category routes
+		Route::get('question-category/exportFile', 'QuestionCategoryController@exportFile');
+		Route::post('question-category/excelImport', 'QuestionCategoryController@excelImport');
 		Route::get('question-category/getQuestionCategory', 'QuestionCategoryController@getQuestionCategory');
 		Route::post('question-category/changeStatus', 'QuestionCategoryController@changeStatus');
 		Route::resource('question-category', 'QuestionCategoryController');	
