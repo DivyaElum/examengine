@@ -87,7 +87,7 @@
 	              			</div>
 
 	              			<div class="col-md-12">
-			            		<p class="alert" style="background-color: #0aa60036">
+			            		<p class="alert" style="background-color: #00c0ef75 !important">
 			            			@php 
 		                  				$questionsAdded = !empty($all_categories_questions) ? count($all_categories_questions) : 0; 
 			                  		@endphp

@@ -83,7 +83,7 @@
 	              			</div>
 
 	              			<div class="col-md-12">
-			            		<p class="alert" style="background-color: #0aa60036">
+			            		<p class="alert" style="background-color: #00c0ef75 !important">
 		            				<label>Questions Added : &nbsp; </label><span id="questionsCount"> 0</span>
 		            			</p>
 				            </div>

@@ -99,7 +99,8 @@ class ExamController extends Controller
                  exit;
             }
 
-            if (!empty($request->exam_questions) && $request->exam_questions > $request->total_question) 
+            $countCompulsoryQuestions = !empty($request->exam_questions) ? count($request->exam_questions) : 0;
+            if ((int)$countCompulsoryQuestions > (int)$request->total_question) 
             {
                 $this->JsonData['status']   = 'error';
                 $this->JsonData['msg']      = 'Exam compulsory question must not be greater than total number of questions';
@@ -344,13 +345,15 @@ class ExamController extends Controller
                  exit;
             }
 
-            if (!empty($request->exam_questions) && $request->exam_questions > $request->total_question) 
+            $countCompulsoryQuestions = !empty($request->exam_questions) ? count($request->exam_questions) : 0;
+            if ((int)$countCompulsoryQuestions > (int)$request->total_question) 
             {
                 $this->JsonData['status']   = 'error';
                 $this->JsonData['msg']      = 'Exam compulsory question must not be greater than total number of questions';
                  return response()->json($this->JsonData);
                  exit;
             }
+
 
         DB::beginTransaction();
 
@@ -644,7 +647,7 @@ class ExamController extends Controller
 
                         $data[$key]['title']  = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
                         
-                        $data[$key]['duration']       = $row->duration;
+                        $data[$key]['duration']       = number_format($row->duration, 2);
 
                         $data[$key]['total_question'] = $row->total_question;
 

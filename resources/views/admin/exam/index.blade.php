@@ -41,7 +41,7 @@
           					<thead>
           						<th>Sr. No.</th>
           						<th>Title</th>
-          						<th>Duration</th>
+          						<th>Duration(HH.MM)</th>
           						<th>Total Questions</th>
           						<th>Created Date</th>
           						<th>Status</th>
