@@ -27,13 +27,18 @@ class CourseRequest extends FormRequest
 
         return [
             'title'             => 'required|min:1|unique:course,title,'.$id,
-            'prerequisites'     => 'required_without_all:exam',
-            'exam'              => 'required_without_all:prerequisites',
-            'amount'            => 'required|numeric|gt:0',
             'description'       => 'required',
+           
+            // 'prerequisites'     => 'required_without_all:exam',
+            // 'exam'              => 'required_without_all:prerequisites',
+           
+            'amount'            => 'required|numeric|gt:0',
             'discount'          => 'numeric',
             'calculated_amount' => 'required|numeric|gt:0',
             'featured_image'    => 'mimes:jpeg,jpg,png,gif',
+
+            'start_date'        => 'required',
+            'end_date'          => 'required',
         ];
     }
 
@@ -41,6 +46,7 @@ class CourseRequest extends FormRequest
     {
         return [
             'title.required'              => 'Title field is required.',
+            'description.required'        => 'Description field is required.',
 
             'amount.required'             => 'Course fee field is required.',
             'amount.numeric'              => 'Course fee should be in numbers only.',
@@ -53,7 +59,9 @@ class CourseRequest extends FormRequest
             'discount.numeric'            => 'Discount should be in numbers only.',
 
             'status.required'             => 'Status field is required.',
-            'description.required'        => 'Description field is required.',
+
+             'start_date.required'               => 'Start date field is required.',
+            'end_date.required'                 => 'End date field is required.',
         ];
     }
 }

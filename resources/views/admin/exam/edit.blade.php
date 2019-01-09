@@ -50,7 +50,7 @@
 
 	              			<div class="col-md-12">
 				        		<p class="alert" style="background-color: #d9edf7 !important">
-				        			NOTE : <br>
+				        			<b>NOTE : </b> <br>
 				    				<b>Exam fee calculated as : </b><br>
 				    				1. If there is a commercial percentage then <b>Fee = ((Exam Fee*Discount)/100). </b><br>	
 				    				2. If there is a commercial flat then <b>Fee = Commercial Flat Rate. </b>

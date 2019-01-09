@@ -5,12 +5,16 @@
 @stop
 
 @section('styles')
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datepicker/bootstrap-datepicker.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datepicker/bootstrap-datetimepicker.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/multiselect/bootstrap-multiselect.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/toastr/toastr.min.css') }}">
-	<style type="text/css">
-		.alert
+	<style>
+		.clear{clear: both;}
+		.exam_days_div { border: 1px solid #ccc; padding: 15px 0; background: #f3f3f3; margin: 15px 0;}
+		.input-daterange input 
 		{
-			background-color: #00c0ef75 !important;
+		    text-align: left !important; 
 		}
 	</style>
 @stop
@@ -46,6 +50,17 @@
 	              		<div class="row">
 
 	              			<div class="col-md-12">
+			            		<p class="alert" style="background-color: #d9edf7 !important">
+		            				<b>NOTE : </b><br>
+		            				<b>Course fee calculated as : </b><br>
+		            				1. If there is a commercial percentage then <b>Fee = ((Course Fee*Discount)/100). </b><br>	
+		            				2. If there is a commercial flat then <b>Fee = Commercial Flat Rate. </b>
+		            				<br><b> Featured Image : </b><br>
+		            				1. Only png, gif, jpeg image formats are allowed.
+		            			</p>
+				            </div>
+
+	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="">Title <span style="color: red">*</span></label>
 					                  	<input type="text" value="{{ $object->title }}" name="title" id="title" class="form-control" placeholder="Enter Title" maxlength="200">
@@ -60,30 +75,7 @@
 				                </div>
 				            </div>
 
-				            <div class="col-md-12">
-			            		<p class="alert" style="background-color: #0aa60036">
-		            				<b>Note : </b> &nbsp;Please select either both prerequisites and exam or at least one of them.	
-		            			</p>
-				            </div>
-
-			                <div class="col-md-6">
-				                <div class="form-group">
-				                  	<label for="">Prerequisites</label>
-				                  		@php
-				                  			$arr_prerequisites = json_decode($object->prerequisite_id);
-				                  		@endphp
-				                  		<select name="prerequisites[]" multiple id="prerequisites" class="form-control">
-				                  			@if(!empty($prerequisites) && sizeof($prerequisites) > 0)
-				                  				@foreach($prerequisites as $pkey => $prerequisite)
-				                  					<option value="{{$prerequisite->id}}" @if(in_array($prerequisite->id, $arr_prerequisites)) selected @endif >{{ ucfirst($prerequisite->title) }}</option>
-				                  				@endforeach
-				                  			@endif
-				                  		</select>
-				                  	</select>
-				                </div>
-	              			</div>	 
-
-	              			<div class="col-md-6">
+	              			<div class="col-md-12">
 				                <div class="form-group">
 				                  	<label for="">Exams</label>
 					                  	<select name="exam" id="exam" class="form-control">
@@ -98,21 +90,23 @@
 				                </div>
 	              			</div>	
 
-	              			<div class="col-md-12">
-			            		<p class="alert" style="background-color: #0aa60036">
-		            				<b>Course fee calculated as : </b><br>
-		            				1. If there is a commercial percentage then <b>Fee = ((Course Fee*Discount)/100). </b><br>	
-		            				2. If there is a commercial flat then <b>Fee = Commercial Flat Rate. </b>
-		            			</p>
-				            </div>
-
-	              			<div class="col-md-6">
+	              			<div class="col-md-4">
 				                <div class="form-group">
-				                  	<label for="">Course Fee (AED)<span style="color: red">*</span></label>
-				                  	<input type="text" oninput="return calculateAmount(this)" value="{{ $object->amount }}" placeholder="Course Fee (AED)" name="amount" id="amount" class="form-control">
+				                  	<label for="">Course Fee<span style="color: red">*</span></label>
+				                  	<input type="text" oninput="return calculateAmount(this)" value="{{ $object->amount }}" placeholder="Course Fee" name="amount" id="amount" class="form-control">
 				                	<span class="err_amount" style="color: red"></span>
 				                </div>
-	              			</div>	
+	              			</div>
+
+	              			<div class="col-md-2">
+				                <div class="form-group">
+				                  	<label for="">Currency</label>
+				                  	<select name="currency" id="currency" class="form-control">
+				                  		<option value="USD" @if($object->currency == 'USD') selected @endif >USD</option>
+				                  		<option value="AED" @if($object->currency == 'AED') selected @endif >Dirham</option>
+				                  	</select>
+				                </div>
+	              			</div>		
 
 	              			<div class="col-md-2">
 				                <div class="form-group">
@@ -136,16 +130,21 @@
 	              			<div class="col-md-2">
 				                <div class="form-group">
 				                  	<label for="">Calculated Course Fee <span style="color: red">*</span></label>
-				                  	<input type="text" readonly placeholder="Calculated Course Fee (AED)" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
+				                  	<input type="text" readonly placeholder="Calculated Course Fee" value="{{ $object->calculated_amount }}" name="calculated_amount" id="calculated_amount" class="form-control">
 				                	<span class="err_calculated_amount" style="color: red"></span>
 				                </div>
 	              			</div>
 
-	              			<div class="col-md-12">
-			            		<p class="alert" style="background-color: #0aa60036">
-		            				<b>Note : </b> Only png, gif, jpeg image formats are allowed.
-		            			</p>
-				            </div>
+	              			<div class="input-daterange">
+		              			<div class="col-md-6 form-group">
+		              				<label for="">Start Date <span style="color: red">*</span></label>
+		                  			<input type="text" name="start_date" value="{{ $object->start_date }}" readonly style="background-color: white" id="start_date" class="form-control start_date"  placeholder="Start Date">
+		                  		</div>
+		                  		<div class="col-md-6 form-group">
+		              				<label for="">End Date <span style="color: red">*</span></label>
+		                  			<input type="text" value="{{ $object->end_date }}" name="end_date" readonly style="background-color: white" id="end_date" class="form-control end_date" placeholder="End Date">
+		                  		</div>       				
+              				</div>
 
 	              			<div class="col-md-12">
 	              				<div class="row">
@@ -210,6 +209,9 @@
 	<script type="text/javascript">
 		var defaultImaage = "{{ url('/images/no-image.png') }}";
 	</script>
+	<script type="text/javascript" src="{{ asset('plugins/datepicker/moment.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('plugins/datepicker/bootstrap-datetimepicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/multiselect/bootstrap-multiselect.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/input-mask/mask.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('plugins/lodingoverlay/loadingoverlay.min.js') }}"></script>
