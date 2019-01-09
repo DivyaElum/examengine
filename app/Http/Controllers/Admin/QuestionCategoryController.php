@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\QestionCategoryRequest;
 use App\Http\Controllers\Controller;
 
+use File;
+use Session;
 use App\Models\QuestionCategoryModel;
 use App\Models\QuestionsModel;
 use Validator;
@@ -289,27 +291,59 @@ class QuestionCategoryController extends Controller
         return Excel::download(new QuestionCategoryExport, 'Question-category.xlsx');
     }      
 
-    public function excelImport(Request $request) 
-    {
-        //dd($request->all());
+    public function excelImport(Request $request){
+        //validate the xls file
+        $this->validate($request, array(
+           'import_file'      => 'required'
+        ));
+
         if($request->hasFile('import_file')){
-            $path = $request->file('import_file')->getRealPath();
-            try {
-                //$import->import('import-users.xlsx');
-                Excel::import(new QuestionCategoryImport,request()->file('import_file'), 's3');
-            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-                 $failures = $e->failures();
-                 dd($failures);
-                 foreach ($failures as $failure) {
-                     $failure->row(); // row that went wrong
-                     $failure->attribute(); // either heading key (if using heading row concern) or column index
-                     $failure->errors(); // Actual error messages from Laravel validator
-                 }
+            $extension = File::extension($request->import_file->getClientOriginalName());
+            if ($extension == "xlsx" || $extension == "xls" || $extension == "csv")
+            {
+                $path = $request->import_file->getRealPath();
+                $data = Excel::load($path, function($reader){
+                })->get();
+                if(!empty($data) && $data->count())
+                {
+                    $insert = [];
+                    foreach ($data as $key => $value)
+                    {
+                        if(!empty($value->category_name))
+                        {
+                            if(!in_array($value->category_name , $insert))
+                            {
+                                $insert[] = [
+                                  'category_name' => $value->category_name,
+                                ];
+                            }
+                        }
+                    }
+
+                    if(!empty($insert))
+                    {
+                        $checkarr = array_column($insert, 'category_name');
+
+                        $insertData = $this->QuestionCategoryModel->whereNotIn('category_name', $checkarr)->insert($insert);
+                        if ($insertData)
+                        {
+                           Session::flash('success', 'Your Data has successfully imported');
+                        }
+                        else
+                        {                        
+                           Session::flash('error', 'Error inserting the data..');
+                           return back();
+                        }
+                    }
+                }
+                return back();
             }
-
-
+            else
+            {
+                Session::flash('error', 'File is a '.$extension.' file.!! Please upload a valid xls/csv file..!!');
+                return back();
+            }
         }
-        return back()->with('success', 'All good!');
     }
 
     /*-----------------------------------------------------

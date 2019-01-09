@@ -48,6 +48,16 @@
 	      	<div class="box">
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title">
+		          		@if (session('error'))
+						 <div class="alert alert-danger">
+								 {{ session('error') }}
+						 </div>
+					   	@endif
+					   	@if (session('success'))
+						 <div class="alert alert-success">
+								 {{ session('success') }}
+						 </div>
+					   	@endif
 		          	</h3>
 		          	<div class="box-tools pull-right">
 			          	<div class="fileUpload btn btn-primary">

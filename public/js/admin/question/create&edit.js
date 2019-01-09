@@ -3,6 +3,8 @@ $(document).ready(function()
 	$('select[name="type"]').focus();
 
 	$('input[name="right_marks"]').mask('99');
+
+	$('input[name="neg_marks"]').mask('99');
 	
 
 	var multiple_choice = $('.multiple_choice').find('.options').length;
@@ -113,6 +115,7 @@ function getStructure(element)
 		{
 			$('.html_data').html(data);
 			$('input[name="right_marks"]').mask('99');
+			$('input[name="neg_marks"]').mask('99');
 		}
 		else
 		{
