@@ -7,12 +7,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 // models
+use File;
+use Session;
 use App\Models\QuestionTypesModel;
 use App\Models\QuestionsModel;
 use App\Models\QuestionTypeStructureModel;
 use App\Models\QuestionOptionsAnswer;
 use App\Models\QuestionCategoryModel;
 use App\Models\ExamQuestionsModel;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\QuestionExport;
 
 // requests
 use App\Http\Requests\Admin\QuestionsRequest;
@@ -155,7 +159,6 @@ class QuestionsController extends Controller
         $this->ViewData['object']       = $this->BaseModel->with(['questionFormat'])->find($id);
         $this->ViewData['types']        = $this->QuestionTypesModel->where('status', 1)->get();
         $this->ViewData['category']     = $this->QuestionCategoryModel->where('status', 1)->get();
-
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
@@ -504,7 +507,188 @@ class QuestionsController extends Controller
                 
             }
             
-
             return $this->JsonData;   
         }
+
+    /*-----------------------------------------------------
+    |  Excel import / export function Calls
+    */
+
+    public function exportFile()
+    {     
+        return Excel::download(new QuestionExport, 'Question-category.xlsx');
+    }      
+
+    public function excelImport(Request $request)
+    {
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
+        $this->ViewData['moduleAction'] = 'Manage Questions';
+
+        //validate the xls file
+        $this->validate($request, array(
+           'import_file'      => 'required'
+        ));
+
+        if($request->hasFile('import_file'))
+        {
+            $extension = File::extension($request->import_file->getClientOriginalName());
+            if ($extension == "xlsx" || $extension == "xls" || $extension == "csv")
+            {
+                $path = $request->import_file->getRealPath();
+                $data = Excel::load($path, function($reader){
+                })->get();
+
+                if(!empty($data) && $data->count())
+                {
+                    $insert     = [];
+                    $arrSkip    = [];
+                    $arrSkipCnt = [];
+                    $intCounter = '2';
+                    foreach ($data as $key => $value)
+                    {
+                        if(!empty($value->question_text))
+                        {
+                            // Check Question Category
+                            $arrResult = $this->QuestionCategoryModel->where('category_name', '=', $value->category_id)->first();
+                            if(!empty($arrResult) && $arrResult != NULL)
+                            {
+                                // Check Question Type
+                                $arrQesTypeResult = $this->QuestionTypesModel->where('slug', '=', $value->question_type)->first();
+
+                                if(!empty($arrQesTypeResult) && $arrQesTypeResult != NULL)
+                                {
+                                    $arrValidation = $this->_validateQuestionAnswers_2($value);
+                                    
+                                    //Check duplicate values
+                                    $arrCount = $this->BaseModel->where('question_text', $value->question_text)->count() > 0;
+                                    if($arrCount == false)
+                                    {
+                                        $tmp = [];
+                                        $tmp  = $this->BaseModel->firstOrCreate([
+                                            'category_id'       => $arrResult->id,
+                                            'question_text'     => $value->question_text,
+                                            'question_type'     => $value->question_type,
+                                            'option_type'       => $value->option_type,
+                                            'option1'           => $value->option1,
+                                            'option2'           => $value->option2,
+                                            'option3'           => $value->option3,
+                                            'option4'           => $value->option4,
+                                            'option5'           => $value->option5,
+                                            'option6'           => $value->option6,
+                                            'option7'           => $value->option7,
+                                            'option8'           => $value->option8,
+                                            'option9'           => $value->option9,
+                                            'option10'          => $value->option10,
+                                            'option11'          => $value->option11,
+                                            'option12'          => $value->option12,
+                                            'option13'          => $value->option13,
+                                            'option14'          => $value->option14,
+                                            'option15'          => $value->option15,
+                                            'option16'          => $value->option16,
+                                            'correct_answer'    => $value->correct_answer,
+                                            'right_marks'       => $value->right_marks,
+                                            'chk_negative_mark' => number_format($value->checkbox_negative_mark),
+                                            'negative_mark'     => number_format($value->negative_mark),
+                                            ]);
+                                    }
+                                    else
+                                    {
+                                        $arrSkipCnt[]  = $intCounter.' : this data alreay exits ';
+                                        $arrSkip[]     = $value;
+                                    }
+                                }
+                                else
+                                {
+                                    $arrSkipCnt[] = $intCounter.' : this is Invalid Question Type';
+                                    $arrSkip[] = $value;
+                                }
+                            } 
+                            else
+                            {
+                                $arrSkipCnt[] = $intCounter.' : this is Invalid Question Category';
+                                $arrSkip[] = $value;
+                            }
+                        }
+                        // Session::flash('error', 'Error inserting the data..');
+                        // return back();
+                        $intCounter++;
+                    }
+                }
+            }
+            else
+            {
+                Session::flash('error', 'File is a '.$extension.' file.!! Please upload a valid xls/csv file..!!');
+            }    
+        }
+        //dd($arrSkipCnt);
+        return back()->with(['arrSkipCnt' => $arrSkipCnt]);
+        //return redirect()->with('question', ['arrSkipCnt' => $arrSkipCnt]);
+    }
+
+    public function _validateQuestionAnswers_2($arrData)
+    {
+        $formdata = $arrData->all();
+        //dd($formdata);
+        $answers = $this->QuestionOptionsAnswer->get();
+
+        // find correct value dont have blank answers
+        foreach ($answers as $key => $answer) 
+        {
+            if (is_array($formdata['correct_answer'])) 
+            {
+                if (in_array($answer->answer, $formdata['correct_answer'])) 
+                {
+                    $checkbox_option = $answer->option;
+                    dd($checkbox_option);
+                    if ($formdata[$checkbox_option] == NULL) 
+                    {
+                        $this->JsonData['status']   = 'error';
+                        $this->JsonData['msg']      =  __('messages.ERR_QESTION_INP_EMPTY_ERROR_MSG');
+                    }
+                    else
+                    {
+                        // check revers order from option 
+                        for ($i=($answer->id-1); $i > 0 ; $i--) 
+                        { 
+                            $reverse_options = $answers[$i]['option'];
+                            if ($formdata[$reverse_options] == NULL) 
+                            {
+                                $this->JsonData['status']   = 'error';
+                                $this->JsonData['msg']      = __('messages.ERR_QESTION_PRE_EMPTY_ERROR_MSG');
+                            }
+                        }                   
+                    }
+                }
+            }
+            else
+            {
+                if ($answer->answer == $formdata['correct_answer']) 
+                {
+                    $radio_option = $answer->option;
+
+                    if ($formdata[$radio_option] == NULL) 
+                    {
+                        $this->JsonData['status'] = 'error';
+                        $this->JsonData['msg']    = __('messages.ERR_QESTION_INP_EMPTY_ERROR_MSG');
+                    }
+                    else
+                    {
+                        // check revers order from option 
+                        for ($i=($answer->id-1); $i > 0 ; $i--) 
+                        { 
+                            $reverse_options = $answers[$i]['option'];
+                            if ($formdata[$reverse_options] == NULL) 
+                            {
+                                $this->JsonData['status'] = 'error';
+                                $this->JsonData['msg']    = __('messages.ERR_QESTION_PRE_EMPTY_ERROR_MSG');
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        return $this->JsonData;   
+    }
 }

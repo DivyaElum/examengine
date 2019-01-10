@@ -11,6 +11,10 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/responsive.bootstrap.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/buttons.dataTables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/sweetalert/sweetalert.css') }}">
+	<style type="text/css">
+		.fileUpload input.upload {position: absolute;top: 0;right: 0;margin: 0;padding: 0;font-size: 20px;cursor: pointer;opacity: 0;filter: alpha(opacity=0);}
+		.alert.alert-danger.dangerErrText {line-height: 21px;}
+	</style>
 @stop
 
 @section('content')
@@ -25,13 +29,43 @@
 	        <li class="active">{{ $moduleAction }}</li>
 	      </ol>
 	    </section>
-	    
+
 	    <section class="content">
 	      	<div class="box">
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title">
+		          		<?php 
+					    $arrResult = $html = '';
+					    if(Session()->has('arrSkipCnt'))
+					    {
+					    	$arrSkipData = Session('arrSkipCnt');
+					    	$html .= '<div class="alert alert-danger dangerErrText">';
+					    	foreach ($arrSkipData as $value) {
+					    		$html .= $value."<br />";
+					    	}
+					    	echo $html .= '</div>';
+				    	}
+					    ?>						 
+		          		@if (session('error'))
+						 <div class="alert alert-danger">
+								 {{ session('error') }}
+						 </div>
+					   	@endif
+					   	@if (session('success'))
+						 <div class="alert alert-success">
+								 {{ session('success') }}
+						 </div>
+					   	@endif
 		          	</h3>
 		          	<div class="box-tools pull-right">
+		          		<div class="fileUpload btn btn-primary">
+			          		<form method="post" action="{{ url('admin/question/excelImport') }}" id="frmImportExcel" enctype="multipart/form-data">
+			          			@csrf
+			          				<span>Upload</span>
+			          				<input type="file" name="import_file" accept=".xlsx, .xls, .csv" class="upload"/>
+			          		</form>
+		          		</div>
+		          		<a href="{{ asset('demoExcelCSV/question.csv') }}" download class="btn btn-social btn-linkedin" id=""><i class="fa fa-download"></i>Download Excel</a>
 		          		<a title="Add New" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>
 		          	</div>
 	        	</div>

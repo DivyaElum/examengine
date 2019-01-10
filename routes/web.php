@@ -133,6 +133,8 @@
 		Route::resource('question-type', 'QuestionTypeController');
 
 		// Repository routes
+		Route::get('question/exportFile', 'QuestionsController@exportFile');
+		Route::post('question/excelImport', 'QuestionsController@excelImport');
 		Route::get('question/getRecords', 'QuestionsController@getRecords');	
 		Route::get('question/getHtmlStructure/{id}', 'QuestionsController@getStructure');	
 		Route::get('question/getOptionsAnswer/{id}', 'QuestionsController@getOptionsAnswer');	

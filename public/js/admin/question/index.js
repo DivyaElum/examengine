@@ -26,6 +26,10 @@ $(document).ready(function()
           processing: "Loading ..."
         }
     } );
+
+    document.getElementById("frmImportExcel").onchange = function() {
+        document.getElementById("frmImportExcel").submit();
+    };
 });
 
 function deleteQuestion(element)

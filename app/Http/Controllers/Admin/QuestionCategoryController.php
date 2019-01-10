@@ -25,8 +25,8 @@ class QuestionCategoryController extends Controller
 
     public function __construct(
 
-        QuestionCategoryModel $QuestionCategoryModel,
-        QuestionsModel $QuestionsModel
+        QuestionsModel        $QuestionsModel,
+        QuestionCategoryModel $QuestionCategoryModel
     )
     {        
         $this->QuestionCategoryModel  = $QuestionCategoryModel;
