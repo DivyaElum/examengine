@@ -41,10 +41,11 @@
           					<thead>
           						<th>Sr. No.</th>
           						<th>Title</th>
-          						<th>Course Fee (AED)</th>
+          						<th>Course Fee</th>
+          						<th>Currency</th>
           						<th>Discount</th>
           						<th>Discount By</th>
-          						<th>Total Fee (AED)</th>
+          						<th>Total Fee</th>
           						<th>Created Date</th>
           						<th>Status</th>
           						<th>Action</th>

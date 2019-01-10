@@ -79,7 +79,7 @@ class PrerequisiteController extends Controller
         $object = new $this->BaseModel;
 
         if (Input::hasFile('video_file')) 
-        {            
+        {
             // getting origin file content
             $originalName   = strtolower(Input::file('video_file')->getClientOriginalName());
             $extension      = strtolower(Input::file('video_file')->getClientOriginalExtension());
@@ -97,7 +97,7 @@ class PrerequisiteController extends Controller
         }
 
         if (Input::hasFile('pdf_file')) 
-        {            
+        {
             // getting origin file content
             $pdf_originalName   = strtolower(Input::file('pdf_file')->getClientOriginalName());
             $pdf_file     = Storage::disk('local')->put('prerequisite_pdf', Input::file('pdf_file'), 'public');
@@ -114,7 +114,7 @@ class PrerequisiteController extends Controller
         }
 
         if (!empty($request->video_url)) 
-        {            
+        {
             $object->video_url      = $request->video_url;
             $object->youtube_url    = NULL;
             $object->video_file     = NULL;
@@ -123,11 +123,10 @@ class PrerequisiteController extends Controller
             
             $object->pdf_file       = NULL;
             $object->pdf_file_original_name = NULL;
-
         }
 
         if (!empty($request->youtube_url)) 
-        {            
+        {
             $object->youtube_url    = $request->youtube_url;
             $object->video_file     = NULL;
             $object->video_url      = NULL;
@@ -136,7 +135,6 @@ class PrerequisiteController extends Controller
 
             $object->pdf_file       = NULL;
             $object->pdf_file_original_name = NULL;
-
         }   
         
         $object->title   = $request->title;

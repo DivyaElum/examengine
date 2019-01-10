@@ -104,8 +104,6 @@ class CourseController extends Controller
                     $object->featured_image_thumbnail     = $featured_thumbnail_image;
                     $object->featured_image_original_name = $original_name;
                 }
-
-
             
             $object->title              = $request->title;
             $object->description        = $request->description;
@@ -122,9 +120,174 @@ class CourseController extends Controller
 
             if ($object->save()) 
             {
-                 DB::commit();
-                $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Course saved successfully';
+                $prerequisites = $request->prerequisite;
+
+                // adding prerequisite
+                $inserted = [];
+                if (!empty($prerequisites) && sizeof($prerequisites) > 0)
+                {
+                    // title validation
+                    $isValid = [];
+                    foreach ($prerequisites as $data) 
+                    {
+                        if (empty($isValid)) 
+                        {
+                            $isValid[] = $data['title'];
+                        }
+                        else
+                        {
+                            if (in_array($data['title'], $isValid)) 
+                            {
+                                DB::rollBack();
+                                $this->JsonData['status']   = 'error';
+                                $this->JsonData['msg']      = 'Prerequisite display name field must not be same.';
+                                return response()->json($this->JsonData); 
+                                exit;
+                            }
+                            else
+                            {
+                                $isValid[] = $data['title'];
+                            }
+                        }
+                    }
+
+                    // creating object
+                    foreach ($prerequisites as $key => $row) 
+                    {
+                        $objPrerequisite = new $this->PrerequisiteModel;  
+
+                        $objPrerequisite->video_file        = NULL;
+                        $objPrerequisite->video_file_mime   = NULL;
+                        $objPrerequisite->video_file_original_name = NULL;
+                        $objPrerequisite->pdf_file       = NULL;
+                        $objPrerequisite->pdf_file_original_name = NULL;
+                        $objPrerequisite->youtube_url    = NULL;
+                        $objPrerequisite->video_url      = NULL;
+                        $objPrerequisite->other          = NULL;
+
+                        // type validation
+                        switch ($row['type']) 
+                        {
+                            case 'file':
+                               if (empty($row['video_file'])) 
+                               {
+                                    DB::rollBack();
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = 'Prerequisite video file field is required if prerequisite type selected for video file.';
+                                    return response()->json($this->JsonData); 
+                                    exit;
+                               }
+                               else if(!empty($row['video_file']))
+                               {
+                                    $video_file = $row['video_file'];
+                                    $originalName   = strtolower($video_file->getClientOriginalName());
+                                    $extension      = strtolower($video_file->getClientOriginalExtension());
+                                    $video_file     = Storage::disk('local')->put('prerequisite_video', $video_file, 'public');
+                                    $objPrerequisite->video_file_original_name   = $originalName;
+                                    $objPrerequisite->video_file_mime            = $extension;
+                                    $objPrerequisite->video_file                 = $video_file;
+                               }
+                            break;
+
+                            case 'pdf':
+                                if (empty($row['pdf_file'])) 
+                                {
+                                    DB::rollBack();
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = 'Prerequisite PDF file field is required if prerequisite type selected for pdf file.';
+                                    return response()->json($this->JsonData);
+                                    exit;
+                                }
+                                else if(!empty($row['pdf_file']))
+                                {
+                                    $pdf_file = $row['pdf_file'];
+                                    $pdf_originalName   = strtolower($pdf_file->getClientOriginalName());
+                                    $pdf_file     = Storage::disk('local')->put('prerequisite_pdf', $pdf_file, 'public');
+                                    $objPrerequisite->pdf_file_original_name   = $pdf_originalName;
+                                    $objPrerequisite->pdf_file                 = $pdf_file;
+                                }
+                            break;
+
+                            case 'url':
+                               if (empty($row['video_url'])) 
+                                {
+                                    DB::rollBack();
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = 'Prerequisite video url field is required if prerequisite type selected for video url.';
+                                    return response()->json($this->JsonData);
+                                    exit; 
+                                }
+                                else if(!empty($row['video_url']))
+                                {
+                                    $objPrerequisite->video_url      = $row['video_url'];
+                                }
+                            break;
+
+                            case 'youtube':
+                               if (empty($row['youtube_url'])) 
+                                {
+                                    DB::rollBack();
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = 'Prerequisite youtube url field is required if prerequisite type selected for youtube url.'; 
+                                    return response()->json($this->JsonData);
+                                    exit;
+                                }
+                                else if(!empty($row['youtube_url']))
+                                {
+                                    $objPrerequisite->youtube_url    = $row['youtube_url'];
+                                }
+                            break;
+
+                            case 'other':
+                                if (empty($row['other'])) 
+                                {
+                                    DB::rollBack();
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = 'Prerequisite other field is required if prerequisite type selected for other.'; 
+                                    return response()->json($this->JsonData);
+                                    exit;
+                                }
+                                else if(!empty($row['other']))
+                                {
+                                    $objPrerequisite->other = $row['other'];
+                                }
+                            break;
+
+                            default:
+                                DB::rollBack();
+                                $this->JsonData['status']   = 'error';
+                                $this->JsonData['msg']      = 'Please select atleast one file type.'; 
+                                return response()->json($this->JsonData);
+                                exit;
+                            break;
+                        }
+
+                        $objPrerequisite->course_id  = $object->id;
+                        $objPrerequisite->title   = $row['title'];
+                        $objPrerequisite->status  = '1';
+
+                        if ($objPrerequisite->save()) 
+                        {
+                            $inserted[] = 1;
+                        }
+                        else
+                        {
+                            
+                            $inserted[] = 0;
+                        }
+                    }
+                }
+
+                if (!in_array(0, $inserted)) 
+                {
+                    DB::commit();
+                    $this->JsonData['status']   = 'success';
+                    $this->JsonData['msg']      = 'Course saved successfully';    
+                }
+                else
+                {
+                    DB::rollBack();
+                }                
             }
             else
             {
@@ -146,7 +309,9 @@ class CourseController extends Controller
         $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
         $this->ViewData['prerequisites'] = $this->PrerequisiteModel->where('status', 1)->get(['title','id']);
         $this->ViewData['exams'] =  $this->ExamModel->where('status', 1)->get(['title','id']);
-        $this->ViewData['object'] = $this->BaseModel->find($id);
+        $this->ViewData['object'] = $this->BaseModel->with(['prerequisites'])->find($id);
+
+        // dd($this->ViewData['object']);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
@@ -219,9 +384,277 @@ class CourseController extends Controller
 
             if ($object->save()) 
             {
-                 DB::commit();
-                $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Course saved successfully';
+                // adding prerequisite
+                $inserted = [];
+                $prerequisites = $request->prerequisite;
+                // dd($prerequisites);
+
+                // deleting previous non seleceted prerequisites
+                $encAllId = array_column($prerequisites, 'pd');
+                if (!empty($encAllId) && sizeof($encAllId) > 0) 
+                {
+                    $allId = array_map(function ($data)
+                        {
+                            return base64_decode(base64_decode($data));
+                        }, $encAllId);
+
+                    $notSelected = $this->PrerequisiteModel->where('course_id', $object->id)
+                                                            ->whereNotIn('id', $allId)->get();
+
+                    if (!empty($notSelected) && sizeof($notSelected) > 0) 
+                    {
+                        foreach ($notSelected as $notKey => $notValue) 
+                        {
+                            if(is_file(storage_path().'/app/public/'.$notValue->video_file))
+                            {
+                                unlink(storage_path().'/app/public/'.$notValue->video_file);
+                            }
+
+                            if(is_file(storage_path().'/app/public/'.$notValue->pdf_file))
+                            {
+                                unlink(storage_path().'/app/public/'.$notValue->pdf_file);
+                            }
+                        }   
+                    }
+
+                    $this->PrerequisiteModel->where('course_id', $object->id)
+                                            ->whereNotIn('id', $allId)->delete();
+                }
+
+                
+                if (!empty($prerequisites) && sizeof($prerequisites) > 0)
+                {
+                    // title validation
+                    $isValid = [];
+                    foreach ($prerequisites as $data) 
+                    {
+                        if (empty($isValid)) 
+                        {
+                            $isValid[] = $data['title'];
+                        }
+                        else
+                        {
+                            if (in_array($data['title'], $isValid)) 
+                            {
+                                DB::rollBack();
+                                $this->JsonData['status']   = 'error';
+                                $this->JsonData['msg']      = 'Prerequisite display name field must not be same.';
+                                return response()->json($this->JsonData); 
+                                exit;
+                            }
+                            else
+                            {
+                                $isValid[] = $data['title'];
+                            }
+                        }
+                    }
+
+                    // creating object
+                    foreach ($prerequisites as $key => $row) 
+                    {
+                        // getting object
+                        $id = !empty($row['pd']) ? base64_decode(base64_decode($row['pd'])) : NULL ;
+
+                        $objPrerequisite = $this->PrerequisiteModel->firstOrCreate(['id' => $id]);  
+
+                        if (!empty($objPrerequisite) && $objPrerequisite != NULL) 
+                        {
+
+                            $objPrerequisite->youtube_url    = NULL;
+                            $objPrerequisite->video_url      = NULL;
+                            $objPrerequisite->other          = NULL;
+
+                            // type validation
+                            switch ($row['type']) 
+                            {
+                                case 'file':
+                                   if (empty($row['video_file'])) 
+                                   {
+                                        if (!empty($row['old_video_file'])) 
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            DB::rollBack();
+                                            $this->JsonData['status']   = 'error';
+                                            $this->JsonData['msg']      = 'Prerequisite video file field is required if prerequisite type selected for video file.';
+                                            return response()->json($this->JsonData); 
+                                            exit;
+                                        }
+                                   }
+                                   else if(!empty($row['video_file']))
+                                   {    
+                                        // removing old file
+                                        if (!empty($row['old_video_file'])) 
+                                        {
+                                            if(is_file(storage_path().'/app/public/'.$objPrerequisite->video_file))
+                                            {
+                                                unlink(storage_path().'/app/public/'.$objPrerequisite->video_file);
+                                            }
+                                        }
+
+                                        $objPrerequisite->video_file        = NULL;
+                                        $objPrerequisite->video_file_mime   = NULL;
+                                        $objPrerequisite->video_file_original_name = NULL;
+                                        $objPrerequisite->pdf_file       = NULL;
+                                        $objPrerequisite->pdf_file_original_name = NULL;
+
+                                        $video_file = $row['video_file'];
+                                        $originalName   = strtolower($video_file->getClientOriginalName());
+                                        $extension      = strtolower($video_file->getClientOriginalExtension());
+                                        $video_file     = Storage::disk('local')->put('prerequisite_video', $video_file, 'public');
+                                        $objPrerequisite->video_file_original_name   = $originalName;
+                                        $objPrerequisite->video_file_mime            = $extension;
+                                        $objPrerequisite->video_file                 = $video_file;
+                                   }
+                                break;
+
+                                case 'pdf':
+                                    if (empty($row['pdf_file'])) 
+                                    {
+                                        if (!empty($row['old_pdf_file'])) 
+                                        {
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            DB::rollBack();
+                                            $this->JsonData['status']   = 'error';
+                                            $this->JsonData['msg']      = 'Prerequisite PDF file field is required if prerequisite type selected for pdf file.';
+                                            return response()->json($this->JsonData);
+                                            exit;
+                                        }
+                                    }
+                                    else if(!empty($row['pdf_file']))
+                                    {
+
+                                        if (!empty($row['old_pdf_file'])) 
+                                        {
+                                            if(is_file(storage_path().'/app/public/'.$objPrerequisite->pdf_file))
+                                            {
+                                                unlink(storage_path().'/app/public/'.$objPrerequisite->pdf_file);
+                                            }
+                                        }
+
+                                        $objPrerequisite->video_file        = NULL;
+                                        $objPrerequisite->video_file_mime   = NULL;
+                                        $objPrerequisite->video_file_original_name = NULL;
+                                        $objPrerequisite->pdf_file       = NULL;
+                                        $objPrerequisite->pdf_file_original_name = NULL;
+
+                                        $pdf_file = $row['pdf_file'];
+                                        $pdf_originalName   = strtolower($pdf_file->getClientOriginalName());
+                                        $pdf_file     = Storage::disk('local')->put('prerequisite_pdf', $pdf_file, 'public');
+                                        $objPrerequisite->pdf_file_original_name   = $pdf_originalName;
+                                        $objPrerequisite->pdf_file                 = $pdf_file;
+                                    }
+                                break;
+
+                                case 'url':
+                                   if (empty($row['video_url'])) 
+                                    {
+                                        DB::rollBack();
+                                        $this->JsonData['status']   = 'error';
+                                        $this->JsonData['msg']      = 'Prerequisite video url field is required if prerequisite type selected for video url.';
+                                        return response()->json($this->JsonData);
+                                        exit; 
+                                    }
+                                    else if(!empty($row['video_url']))
+                                    {
+                                        $objPrerequisite->video_file        = NULL;
+                                        $objPrerequisite->video_file_mime   = NULL;
+                                        $objPrerequisite->video_file_original_name = NULL;
+                                        $objPrerequisite->pdf_file       = NULL;
+                                        $objPrerequisite->pdf_file_original_name = NULL;
+
+                                        $objPrerequisite->video_url      = $row['video_url'];
+                                    }
+                                break;
+
+                                case 'youtube':
+                                   if (empty($row['youtube_url'])) 
+                                    {
+                                        DB::rollBack();
+                                        $this->JsonData['status']   = 'error';
+                                        $this->JsonData['msg']      = 'Prerequisite youtube url field is required if prerequisite type selected for youtube url.'; 
+                                        return response()->json($this->JsonData);
+                                        exit;
+                                    }
+                                    else if(!empty($row['youtube_url']))
+                                    {
+                                        $objPrerequisite->video_file        = NULL;
+                                        $objPrerequisite->video_file_mime   = NULL;
+                                        $objPrerequisite->video_file_original_name = NULL;
+                                        $objPrerequisite->pdf_file       = NULL;
+                                        $objPrerequisite->pdf_file_original_name = NULL;
+
+                                        $objPrerequisite->youtube_url    = $row['youtube_url'];
+                                    }
+                                break;
+
+                                case 'other':
+                                    if (empty($row['other'])) 
+                                    {
+                                        DB::rollBack();
+                                        $this->JsonData['status']   = 'error';
+                                        $this->JsonData['msg']      = 'Prerequisite other field is required if prerequisite type selected for other.'; 
+                                        return response()->json($this->JsonData);
+                                        exit;
+                                    }
+                                    else if(!empty($row['other']))
+                                    {
+                                        $objPrerequisite->video_file        = NULL;
+                                        $objPrerequisite->video_file_mime   = NULL;
+                                        $objPrerequisite->video_file_original_name = NULL;
+                                        $objPrerequisite->pdf_file       = NULL;
+                                        $objPrerequisite->pdf_file_original_name = NULL;
+
+                                        $objPrerequisite->other = $row['other'];
+                                    }
+                                break;
+
+                                default:
+                                    DB::rollBack();
+                                    $this->JsonData['status']   = 'error';
+                                    $this->JsonData['msg']      = 'Please select atleast one file type.'; 
+                                    return response()->json($this->JsonData);
+                                    exit;
+                                break;
+                            }
+
+                            $objPrerequisite->course_id  = $object->id;
+                            $objPrerequisite->title   = $row['title'];
+
+                            if ($objPrerequisite->save()) 
+                            {
+                                $inserted[] = 1;
+                            }
+                            else
+                            {
+                                
+                                $inserted[] = 0;
+                            }
+
+                        }
+                        else
+                        {
+                            $inserted[] = 0;
+                        }
+
+                    }
+                }
+
+                if (!in_array(0, $inserted)) 
+                {
+                    DB::commit();
+                    $this->JsonData['status']   = 'success';
+                    $this->JsonData['msg']      = 'Course saved successfully';    
+                }
+                else
+                {
+                    DB::rollBack();
+                }  
             }
             else
             {
@@ -229,7 +662,6 @@ class CourseController extends Controller
             }
 
         return response()->json($this->JsonData);
-
     }
 
     public function destroy($enc_id)
@@ -314,12 +746,13 @@ class CourseController extends Controller
                     0 => 'id',
                     1 => 'title',
                     2 => 'amount',
-                    3 => 'discount',
-                    4 => 'discount_by',
-                    5 => 'calculated_amount',
-                    6 => 'created_at',
-                    7 => 'status',
-                    8 => 'id'
+                    3 => 'currency',
+                    4 => 'discount',
+                    5 => 'discount_by',
+                    6 => 'calculated_amount',
+                    7 => 'created_at',
+                    8 => 'status',
+                    9 => 'id'
                 );
 
             /*--------------------------------------
@@ -342,6 +775,7 @@ class CourseController extends Controller
                                 $query->orwhere('id', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('title', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('amount', 'LIKE', '%'.$search.'%');   
+                                $query->orwhere('currency', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('discount', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('discount_by', 'LIKE', '%'.$search.'%');   
                                 $query->orwhere('calculated_amount', 'LIKE', '%'.$search.'%');
@@ -373,6 +807,8 @@ class CourseController extends Controller
                         $data[$key]['title']        = '<span title="'.$row->title.'">'.ucfirst(str_limit($row->title, '55', '...')).'</span>';
                         
                         $data[$key]['amount']       = number_format($row->amount);
+                        
+                        $data[$key]['currency']     = $row->currency;
 
                         $data[$key]['discount']     = $row->discount == 0 ? '0' : number_format($row->discount);
 

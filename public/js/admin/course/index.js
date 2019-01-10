@@ -16,6 +16,7 @@ $(document).ready(function()
             { "data": "id",             "ordereble": "true"},
             { "data": "title",          "ordereble": "true"},
             { "data": "amount",         "ordereble": "true"},
+            { "data": "currency",       "ordereble": "true"},
             { "data": "discount",       "ordereble": "true"},
             { "data": "discount_by",    "ordereble": "true"},
             { "data": "total",          "ordereble": "true"},
@@ -23,7 +24,7 @@ $(document).ready(function()
             { "data": "status",         "ordereble": "true"},
             { "data": "actions"}
         ],
-        aoColumnDefs: [{ "bSortable": false, "aTargets": [ 0, 7 ] }],
+        aoColumnDefs: [{ "bSortable": false, "aTargets": [ 0, 9, ] }],
         lengthMenu: [[10, 25, 50, 100, 500], [10, 25, 50, 100, 500]],
         aaSorting: [[0, 'DESC']],
         language: {
