@@ -23,22 +23,30 @@ class CourseRequest extends FormRequest
      */
     public function rules()
     {
+        // dd($this->all());
+
         $id = base64_decode(base64_decode($this->route('course'))) ?? null;
 
         return [
             'title'             => 'required|min:1|unique:course,title,'.$id,
-            'description'       => 'required',
-           
-            // 'prerequisites'     => 'required_without_all:exam',
-            // 'exam'              => 'required_without_all:prerequisites',
-           
+            'description'       => 'required',           
+            
+            'prerequisite.*.title'          => 'required',
+            'prerequisite.*.video_file'     => 'mimes:mpg,mpeg,avi,wmv,mov,rm,ram,swf,flv,ogg,webm,mp4|max:2048',
+            'prerequisite.*.pdf_file'       => 'mimes:pdf|max:2048',
+            'prerequisite.*.youtube_url'    => 'nullable|url',
+            'prerequisite.*.video_url'      => 'nullable|url',
+            'prerequisite.*.other'          => 'nullable',
+
             'amount'            => 'required|numeric|gt:0',
             'discount'          => 'numeric',
             'calculated_amount' => 'required|numeric|gt:0',
-            'featured_image'    => 'mimes:jpeg,jpg,png,gif',
 
             'start_date'        => 'required',
             'end_date'          => 'required',
+
+            'featured_image'    => 'mimes:jpeg,jpg,png,gif',
+
         ];
     }
 
@@ -60,8 +68,18 @@ class CourseRequest extends FormRequest
 
             'status.required'             => 'Status field is required.',
 
-             'start_date.required'               => 'Start date field is required.',
-            'end_date.required'                 => 'End date field is required.',
+            'start_date.required'         => 'Start date field is required.',
+            'end_date.required'           => 'End date field is required.',
+
+            'prerequisite.*.title.required' => 'Prerequisite display name field is required.',
+            'prerequisite.*.video_file.max' => 'Prerequisite video file size must be less than 2 MB.',
+            'prerequisite.*.video_file.mimes' => 'Prerequisite video must be a file of type: mpg, mpeg, avi, wmv, mov, rm, ram, swf, flv, ogg, webm, mp4.',
+            'prerequisite.*.pdf_file.max'   => 'Prerequisite pdf file size must be less than 2 MB.',
+            'prerequisite.*.pdf_file.mimes'   => 'Prerequisite pdf must be a file of type: pdf.',
+            
+            'prerequisite.*.youtube_url.url'   => 'Youtube url format is invalid.',
+            'prerequisite.*.video_url.url'   => 'Video url format is invalid.'
+
         ];
     }
 }
