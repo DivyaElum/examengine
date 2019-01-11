@@ -39,16 +39,24 @@
 					    if(Session()->has('arrSkipCnt'))
 					    {
 					    	$arrSkipData = Session('arrSkipCnt');
-					    	$html .= '<div class="alert alert-danger dangerErrText">';
-					    	foreach ($arrSkipData as $value) {
-					    		$html .= $value."<br />";
+					    	if(!empty($arrSkipData))
+					    	{
+						    	$html .= '<div class="alert alert-danger dangerErrText">';
+						    	foreach ($arrSkipData as $value) {
+						    		$html .= $value."<br />";
+						    	}
+						    	echo $html .= '</div>';
 					    	}
-					    	echo $html .= '</div>';
 				    	}
 					    ?>						 
 		          		@if (session('error'))
 						 <div class="alert alert-danger">
-								 {{ session('error') }}
+							{{ session('error') }}
+						 </div>
+					   	@endif
+					   	@if (session('msg'))
+						 <div class="alert alert-success">
+								 {{ session('msg') }}
 						 </div>
 					   	@endif
 					   	@if (session('success'))

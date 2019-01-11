@@ -622,7 +622,7 @@ class QuestionsController extends Controller
             }    
         }
         //dd($arrSkipCnt);
-        return back()->with(['arrSkipCnt' => $arrSkipCnt]);
+        return back()->with(['arrSkipCnt' => $arrSkipCnt, 'msg' => 'Import Process success']);
         //return redirect()->with('question', ['arrSkipCnt' => $arrSkipCnt]);
     }
 
