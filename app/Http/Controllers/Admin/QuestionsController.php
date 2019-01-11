@@ -610,8 +610,9 @@ class QuestionsController extends Controller
                                 $arrSkip[] = $value;
                             }
                         }
-                        // Session::flash('error', 'Error inserting the data..');
-                        // return back();
+                        Session::flash('error', 'Something is wrong. Please try again later');
+                        return back();
+                        //return back()->with(['arrSkipCnt' => $arrSkipCnt, 'msg' => 'Error inserting the data.']);
                         $intCounter++;
                     }
                 }
@@ -621,9 +622,7 @@ class QuestionsController extends Controller
                 Session::flash('error', 'File is a '.$extension.' file.!! Please upload a valid xls/csv file..!!');
             }    
         }
-        //dd($arrSkipCnt);
         return back()->with(['arrSkipCnt' => $arrSkipCnt, 'msg' => 'Import Process success']);
-        //return redirect()->with('question', ['arrSkipCnt' => $arrSkipCnt]);
     }
 
     public function _validateQuestionAnswers_2($arrData)

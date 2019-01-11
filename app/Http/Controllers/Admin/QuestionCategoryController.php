@@ -285,6 +285,10 @@ class QuestionCategoryController extends Controller
         return response()->json($this->JsonData);
     }
 
+    /*-----------------------------------------------------
+    |  Excel function Calls
+    */
+
     public function exportFile()
     {     
         return Excel::download(new QuestionCategoryExport, 'Question-category.xlsx');
@@ -307,6 +311,8 @@ class QuestionCategoryController extends Controller
                 })->get();
                 if(!empty($data) && $data->count())
                 {
+                    $arrSkipCnt = [];
+                    $intCounter = '2';
                     $insert = [];
                     foreach ($data as $key => $value)
                     {
@@ -315,18 +321,29 @@ class QuestionCategoryController extends Controller
                             if(!in_array($value->category_name , $insert))
                             {
                                 $tmp = [];
-                                $tmp  = $this->QuestionCategoryModel->firstOrCreate(['category_name' => $value->category_name]);
+                                //Check duplicate values
+                                $arrCount = $this->QuestionCategoryModel->where('category_name', $value->category_name)->count() > 0;
+                                if($arrCount == false)
+                                {  
+                                    $tmp  = $this->QuestionCategoryModel->firstOrCreate(['category_name' => $value->category_name]);
 
-                                if (!empty($tmp)) 
-                                {
-                                    $insert[] = 1;
+                                    if (!empty($tmp)) 
+                                    {
+                                        $insert[] = 1;
+                                    }
+                                    else
+                                    {
+                                        $insert[] = 0;
+                                    }
                                 }
                                 else
                                 {
-                                    $insert[] = 0;
+                                    $arrSkipCnt[]  = $intCounter.' : this data alreay exits ';
+                                    $arrSkip[]     = $value;
                                 }
                             }
                         }
+                        $intCounter++;
                     }
 
                     if(!in_array(0, $insert))
@@ -345,7 +362,7 @@ class QuestionCategoryController extends Controller
             }    
         }
 
-        return back();
+       return back()->with(['arrSkipCnt' => $arrSkipCnt, 'msg' => 'Import Process success']);
     }
 
     /*-----------------------------------------------------

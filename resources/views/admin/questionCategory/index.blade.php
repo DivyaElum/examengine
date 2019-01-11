@@ -48,14 +48,34 @@
 	      	<div class="box">
 	        	<div class="box-header with-border">
 		          	<h3 class="box-title">
+		          		<?php 
+					    $arrResult = $html = '';
+					    if(Session()->has('arrSkipCnt'))
+					    {
+					    	$arrSkipData = Session('arrSkipCnt');
+					    	if(!empty($arrSkipData))
+					    	{
+						    	$html .= '<div class="alert alert-danger dangerErrText">';
+						    	foreach ($arrSkipData as $value) {
+						    		$html .= $value."<br />";
+						    	}
+						    	echo $html .= '</div>';
+					    	}
+				    	}
+					    ?>						 
 		          		@if (session('error'))
 						 <div class="alert alert-danger">
-								 {{ session('error') }}
+							{{ session('error') }}
+						 </div>
+					   	@endif
+		          		@if (session('error'))
+						 <div class="alert alert-danger">
+							{{ session('error') }}
 						 </div>
 					   	@endif
 					   	@if (session('success'))
 						 <div class="alert alert-success">
-								 {{ session('success') }}
+							{{ session('success') }}
 						 </div>
 					   	@endif
 		          	</h3>
