@@ -36,6 +36,7 @@ return [
     'ERR_NOT_FOUND_ERROR_MSG'           => 'Not Found',
     'ERR_MAIL_SUCCESS_MSG'              => 'Mail has been sent successfully',
 
+    
     //Concil member
     'ERR_CONCIL_MEM_SUCCESS_MSG'            => 'Concil member saved successfully.',
     'ERR_CONCIL_MEM__UPDATE_SUCCESS_MSG'    => 'Concil member details updated successfully.',
@@ -43,6 +44,7 @@ return [
     'ERR_CONCIL_MEM_STS_ERROR_MSG'          => 'Failed to change status, Something went wrong.',
     'ERR_CONCIL_DELETE_ERROR_MSG'           => 'Failed to delete record, Something went wrong.',
 
+    
     //Course 
     'ERR_COURSE_SUCCESS_MSG'           => 'Course saved successfully.',
     'ERR_COURSE_UPDATE_SUCCESS_MSG'    => 'Course details updated successfully.',
@@ -50,6 +52,7 @@ return [
     'ERR_COURSE_STS_DEP_ERROR_MSG'     => 'Can\'t change status, This course has been purchased.',
     'ERR_COURSE_DEL_DEP_ERROR_MSG'     => 'Can\'t delete, This course has been purchased.',
 
+    
     //Exam
     'ERR_EXAM_SUCCESS_MSG'           => 'Exam saved successfully.',
     'ERR_EXAM_UPDATE_SUCCESS_MSG'    => 'Exam details updated successfully.',
@@ -65,6 +68,7 @@ return [
     'ERR_EXAM_MEM_STS_ERROR_MSG'     => 'Failed to change status, Something went wrong.';
     'ERR_EXAM_STS_DEP_USE_ERROR_MSG' => 'Can\'t change status, This Exam has been used in Course.';
     
+    
     //Prerequisite 
     'ERR_PRERE_SUCCESS_MSG'           => 'Prerequisite saved successfully.',
     'ERR_PRERE_EMPTY_ERR_MSG'         => 'Please select atleast one file or url',
@@ -79,7 +83,11 @@ return [
     'ERR_PRERE_YOUTUBE_ERROR_MSG'     => 'Prerequisite youtube url field is required if prerequisite type selected for youtube url.',
     'ERR_PRERE_OTHER_ERROR_MSG'       => 'Prerequisite other field is required if prerequisite type selected for other.',
     'ERR_PRERE_EMPTY_ERROR_MSG'       => 'Please select atleast one file type.',
+    'ERR_PRERE_FAILD_ERROR_MSG'       => 'Failed to prerequisite, Something went wrong.',
+    'ERR_PRERE_DELETE_ERROR_MSG'      => 'Failed to delete record, Something went wrong.',
+    'ERR_PRERE_STS_ERROR_MSG'         => 'Failed to change status, Something went wrong.',
 
+    
     //Question Category
     'ERR_QESTION_CAT_SUCCESS_MSG'           => 'Question Category saved successfully.',
     'ERR_QESTION_CAT_UPDATE_SUCCESS_MSG'    => 'Question Category details updated successfully.',
@@ -98,20 +106,30 @@ return [
     'ERR_QESTION_INP_EMPTY_ERROR_MSG'       => 'Right answer input filed should not be empty.',
     'ERR_QESTION_PRE_EMPTY_ERROR_MSG'       => 'Right answer previous input fileds should not be empty.',
     
+    
     //Question type
     'ERR_QESTION_TYP_SUCCESS_MSG'           => 'Question type saved successfully.',
     'ERR_QESTION_TYP_UPDATE_SUCCESS_MSG'    => 'Question type details updated successfully.',
     'ERR_QESTION_TYP_DELETE_SUCCESS_MSG'    => 'Question type deleted successfully.',
     'ERR_QESTION_TYP_STS_DEP_ERROR_MSG'     => 'Can\'t change status, This Question type has been used in questions.',
     'ERR_QESTION_TYP_DEL_DEP_ERROR_MSG'     => 'Can\'t delete, This Question type has been used in questions.',
+    'ERR_QESTION_SAVE_ERROR_MSG'            => 'Failed to save question, Something went wrong',
+    'ERR_QESTION_STS_ERROR_MSG'             => 'Failed to change status, Something went wrong.',
+    'ERR_QESTION_DELETE_STS_ERROR_MSG'      => 'Failed to delete Question type, Something went wrong',
 
+    
     //Site setting
     'ERR_SITE_SETTING_SUCCESS_MSG'          => 'Site setting saved successfully.',
-    'ERR_SITE_SETTING_UPDATE_SUCCESS_MSG'    => 'Site setting details updated successfully.',
+    'ERR_SITE_SETTING_UPDATE_SUCCESS_MSG'   => 'Site setting details updated successfully.',
+    'ERR_SITE_SETTING_FAILD_ERR_MSG'        => 'Failed to save Site setting, Something went wrong.',
 
+    
     //Voucher
     'ERR_VOUCHER_SUCCESS_MSG'          => 'Voucher saved successfully.',
     'ERR_VOUCHER_UPDATE_SUCCESS_MSG'   => 'Voucher updated successfully.',
     'ERR_VOUCHER_DELETE_SUCCESS_MSG'   => 'Voucher deleted successfully.',
+    'ERR_VOUCHER_DELETE_ERROR_MSG'     => 'Failed to delete record, Something went wrong.',
     
-];
+    //NewsLetter
+    'ERR_NEWS_LETTER_STS_ERROR_MSG'    => 'Failed to change status, Something went wrong.',
+];  

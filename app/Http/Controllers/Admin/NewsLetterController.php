@@ -12,7 +12,6 @@ class NewsLetterController extends Controller
     private $NewsLetterModel;
 
     public function __construct(
-
         NewsLetterModel $NewsLetterModel
     )
     {
@@ -132,7 +131,7 @@ class NewsLetterController extends Controller
     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_NEWS_LETTER_STS_ERROR_MSG');
 
         if ($request->has('id') && $request->has('status') ) 
         {
@@ -142,7 +141,7 @@ class NewsLetterController extends Controller
             if($this->NewsLetterModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
-                $this->JsonData['msg']    = 'Status changed successfully.';
+                $this->JsonData['msg']    = __('messages.ERR_STATUS_ERROR_MSG');
             } 
         }
         

@@ -19,33 +19,31 @@ use Storage;
 
 class PrerequisiteController extends Controller
 {
-    private $BaseModel;
     private $ViewData;
     private $JsonData;
-    private $ModuleTitle;
-    private $ModuleView;
+    private $BaseModel;
     private $ModulePath;
+    private $ModuleView;
+    private $ModuleTitle;
 
     // use MultiModelTrait;
 
     public function __construct(
-
-        PrerequisiteModel $PrerequisiteModel,
-    	CourseModel $CourseModel
-
+    	CourseModel         $CourseModel,
+        PrerequisiteModel   $PrerequisiteModel
     )
     {
-        $this->BaseModel = $PrerequisiteModel;
-        $this->CourseModel = $CourseModel;
+        $this->CourseModel  = $CourseModel;
+        $this->BaseModel    = $PrerequisiteModel;
 
-        $this->ViewData = [];
-        $this->JsonData = [];
+        $this->ViewData     = [];
+        $this->JsonData     = [];
 
-        $this->ModuleTitle = 'Prerequisite';
-        $this->ModuleView = 'admin.prerequisite.';
-        $this->ModulePath = 'prerequisite';
+        $this->ModuleTitle  = 'Prerequisite';
+        $this->ModuleView   = 'admin.prerequisite.';
+        $this->ModulePath   = 'prerequisite';
     
-        $this->ViewData['modulePath'] = $this->ModulePath;
+        $this->ViewData['modulePath']  = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
     }
     
@@ -67,14 +65,14 @@ class PrerequisiteController extends Controller
         if (empty($request->pdf_file) && empty($request->video_file) && empty($request->video_url) && empty($request->youtube_url)) 
         {
             $this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Please select atleast one file or url';
+            $this->JsonData['msg']      = __('messages.ERR_PRERE_EMPTY_ERR_MSG');
 
             return response()->json($this->JsonData);
             exit;
         }
 
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_PRERE_FAILD_ERROR_MSG');
 
         $object = new $this->BaseModel;
 
@@ -88,53 +86,51 @@ class PrerequisiteController extends Controller
             $object->video_file_original_name   = $originalName;
             $object->video_file_mime            = $extension;
             $object->video_file                 = $video_file;
-
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
-            
-            $object->pdf_file       = NULL;
-            $object->pdf_file_original_name = NULL;
+            $object->youtube_url                = NULL;
+            $object->video_url                  = NULL;
+            $object->pdf_file                   = NULL;
+            $object->pdf_file_original_name     = NULL;
         }
 
         if (Input::hasFile('pdf_file')) 
         {
             // getting origin file content
             $pdf_originalName   = strtolower(Input::file('pdf_file')->getClientOriginalName());
-            $pdf_file     = Storage::disk('local')->put('prerequisite_pdf', Input::file('pdf_file'), 'public');
+            $pdf_file           = Storage::disk('local')->put('prerequisite_pdf', Input::file('pdf_file'), 'public');
 
             $object->pdf_file_original_name   = $pdf_originalName;
             $object->pdf_file                 = $pdf_file;
 
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
+            $object->youtube_url              = NULL;
+            $object->video_url                = NULL;
             
-            $object->video_file     = NULL;
+            $object->video_file               = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
         }
 
         if (!empty($request->video_url)) 
         {
-            $object->video_url      = $request->video_url;
-            $object->youtube_url    = NULL;
-            $object->video_file     = NULL;
+            $object->video_url                = $request->video_url;
+            $object->youtube_url              = NULL;
+            $object->video_file               = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
             
-            $object->pdf_file       = NULL;
-            $object->pdf_file_original_name = NULL;
+            $object->pdf_file                 = NULL;
+            $object->pdf_file_original_name   = NULL;
         }
 
         if (!empty($request->youtube_url)) 
         {
-            $object->youtube_url    = $request->youtube_url;
-            $object->video_file     = NULL;
-            $object->video_url      = NULL;
+            $object->youtube_url              = $request->youtube_url;
+            $object->video_file               = NULL;
+            $object->video_url                = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
 
-            $object->pdf_file       = NULL;
-            $object->pdf_file_original_name = NULL;
+            $object->pdf_file                 = NULL;
+            $object->pdf_file_original_name   = NULL;
         }   
         
         $object->title   = $request->title;
@@ -143,15 +139,9 @@ class PrerequisiteController extends Controller
         if ($object->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+            $this->JsonData['msg']      = __('messages.ERR_PRERE_SUCCESS_MSG');
         }
-
         return response()->json($this->JsonData);
-
-    }
-
-    public function show($id)
-    {
     }
 
     public function edit($enc_id)
@@ -159,7 +149,7 @@ class PrerequisiteController extends Controller
         $id = base64_decode(base64_decode($enc_id));
         
         $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
-        $this->ViewData['object'] = $this->BaseModel->find($id);
+        $this->ViewData['object']       = $this->BaseModel->find($id);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
@@ -169,14 +159,14 @@ class PrerequisiteController extends Controller
         if (empty($request->old_video_file) && empty($request->old_pdf_file) && empty($request->pdf_file) && empty($request->video_file) && empty($request->video_url) && empty($request->youtube_url)) 
         {
             $this->JsonData['status']   = 'error';
-            $this->JsonData['msg']      = 'Please select atleast one file or url';
+            $this->JsonData['msg']      = __('messages.ERR_PRERE_EMPTY_ERR_MSG');
 
             return response()->json($this->JsonData);
             exit;
         }
 
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to prerequisite, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_PRERE_FAILD_ERROR_MSG');
 
         $id = base64_decode(base64_decode($enc_id));
         $object = $this->BaseModel->find($id);
@@ -193,52 +183,49 @@ class PrerequisiteController extends Controller
             $object->video_file_mime            = $extension;
             $object->video_file                 = $video_file;
 
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
+            $object->youtube_url                = NULL;
+            $object->video_url                  = NULL;
             
-            $object->pdf_file       = NULL;
-            $object->pdf_file_original_name = NULL;
+            $object->pdf_file                   = NULL;
+            $object->pdf_file_original_name     = NULL;
         }
 
         if (Input::hasFile('pdf_file')) 
         {            
             $pdf_originalName   = strtolower(Input::file('pdf_file')->getClientOriginalName());
-            $pdf_file     = Storage::disk('local')->put('prerequisite_pdf', Input::file('pdf_file'), 'public');
+            $pdf_file           = Storage::disk('local')->put('prerequisite_pdf', Input::file('pdf_file'), 'public');
 
             $object->pdf_file_original_name   = $pdf_originalName;
             $object->pdf_file                 = $pdf_file;
-
-            $object->youtube_url    = NULL;
-            $object->video_url      = NULL;
-            
-            $object->video_file     = NULL;
+            $object->youtube_url              = NULL;
+            $object->video_url                = NULL;
+            $object->video_file               = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
         }
 
         if (!empty($request->video_url)) 
         {            
-            $object->video_url      = $request->video_url;
-            $object->youtube_url    = NULL;
-            $object->video_file     = NULL;
+            $object->video_url                = $request->video_url;
+            $object->youtube_url              = NULL;
+            $object->video_file               = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
             
-            $object->pdf_file       = NULL;
-            $object->pdf_file_original_name = NULL;
+            $object->pdf_file                 = NULL;
+            $object->pdf_file_original_name   = NULL;
 
         }
 
         if (!empty($request->youtube_url)) 
         {            
-            $object->youtube_url    = $request->youtube_url;
-            $object->video_file     = NULL;
-            $object->video_url      = NULL;
+            $object->youtube_url              = $request->youtube_url;
+            $object->video_file               = NULL;
+            $object->video_url                = NULL;
             $object->video_file_mime          = NULL;
             $object->video_file_original_name = NULL;
-
-            $object->pdf_file       = NULL;
-            $object->pdf_file_original_name = NULL;
+            $object->pdf_file                 = NULL;
+            $object->pdf_file_original_name   = NULL;
 
         } 
         $object->title   = $request->title;
@@ -246,7 +233,7 @@ class PrerequisiteController extends Controller
         if ($object->save()) 
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Prerequisite saved successfully';
+            $this->JsonData['msg']      = __('messages.ERR_PRERE_SUCCESS_MSG');
         }
 
         return response()->json($this->JsonData);
@@ -260,7 +247,7 @@ class PrerequisiteController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t delete, This Prerequisite has been used in Course.';
+            $this->JsonData['msg']    = __('messages.ERR_PRERE_DEL_DEP_ERROR_MSG');
             return response()->json($this->JsonData);
             exit;
         }
@@ -268,12 +255,12 @@ class PrerequisiteController extends Controller
         if($this->BaseModel->where('id', $id)->delete())
         {
             $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Record deleted successfully.';
+            $this->JsonData['msg']    = __('messages.ERR_PRERE_DELETE_SUCCESS_MSG');
         }
         else
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete record, Something went wrong.';
+            $this->JsonData['msg']    = __('messages.ERR_PRERE_DELETE_ERROR_MSG');
         }
         
         return response()->json($this->JsonData);
@@ -282,7 +269,7 @@ class PrerequisiteController extends Controller
     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_PRERE_STS_ERROR_MSG');
 
         if ($request->has('id') && $request->has('status') ) 
         {
@@ -292,7 +279,7 @@ class PrerequisiteController extends Controller
             if ($flag) 
             {
                 $this->JsonData['status'] = 'error';
-                $this->JsonData['msg']    = 'Can\'t change status, This Prerequisite has been used in Course.';
+                $this->JsonData['msg']    = __('messages.ERR_PRERE_STS_DEP_ERROR_MSG');
                 return response()->json($this->JsonData);
                 exit;
             }
@@ -301,8 +288,8 @@ class PrerequisiteController extends Controller
 
             if($this->BaseModel->where('id', $id)->update(['status' => $status]))
             {
-                $this->JsonData['status'] = 'success';
-                $this->JsonData['msg'] = 'Status changed successfully.';
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = __('messages.ERR_STATUS_ERROR_MSG');
             } 
         }
         

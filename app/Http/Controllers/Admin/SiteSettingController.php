@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SiteSettingRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
 
 use App\User;
 use Validator;
 use Session;
 use App\SiteSetting;
-use Illuminate\Support\Facades\Input;
 use Storage;
 use Image;
 
@@ -20,7 +20,6 @@ class SiteSettingController extends Controller
     private $SiteSetting;
 
     public function __construct(
-
         SiteSetting $SiteSetting
     )
     {
@@ -42,11 +41,6 @@ class SiteSettingController extends Controller
         return view($this->ModuleView.'index', $this->ViewData);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
@@ -89,12 +83,12 @@ class SiteSettingController extends Controller
         {
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = '/admin/site-setting/';
-            $this->JsonData['msg']      = 'Site setting saved successfully.';
+            $this->JsonData['msg']      = __('messages.ERR_SITE_SETTING_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Site setting, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_SITE_SETTING_FAILD_ERR_MSG');
         }  
         return response()->json($this->JsonData);
     }
@@ -191,32 +185,19 @@ class SiteSettingController extends Controller
             return response()->json($this->JsonData);
         }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $SiteSetting = new $this->SiteSetting;
 
         $intId = base64_decode(base64_decode($id));
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Edit '. $this->ModuleTitle;
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['objectData'] = $this->SiteSetting->find($intId);
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['objectData']   = $this->SiteSetting->find($intId);
 
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(SiteSettingRequest $request, $id)
     {
         $SiteSetting = new $this->SiteSetting;
@@ -252,25 +233,13 @@ class SiteSettingController extends Controller
         {
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = '/admin/site-setting';
-            $this->JsonData['msg']      = 'Site setting saved successfully.';
+            $this->JsonData['msg']      = __('messages.ERR_SITE_SETTING_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save site setting, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_SITE_SETTING_FAILD_ERR_MSG');
         }  
         return response()->json($this->JsonData);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 }

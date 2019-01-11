@@ -29,12 +29,12 @@ use DB;
 
 class QuestionsController extends Controller
 {
+    private $JsonData;
     private $BaseModel;
     private $ViewData;
-    private $JsonData;
-    private $ModuleTitle;
     private $ModuleView;
     private $ModulePath;
+    private $ModuleTitle;
 
     // use MultiModelTrait;
 

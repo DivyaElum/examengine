@@ -48,8 +48,6 @@ class VoucherController extends Controller
 
     public function store(VoucherRequest $request)
     {
-        //dd($request->all());
-
         $voucherModel = new $this->voucherModel;
 
         DB::beginTransaction();
@@ -78,7 +76,7 @@ class VoucherController extends Controller
             DB::commit();
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = 'create';
-            $this->JsonData['msg']      = 'Exam saved successfully';   
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         }
         else
         {
@@ -87,12 +85,6 @@ class VoucherController extends Controller
         return response()->json($this->JsonData);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $voucherModel = new $this->voucherModel;
@@ -106,25 +98,12 @@ class VoucherController extends Controller
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(VoucherRequest $request, $id)
     {
         $voucherModel = new $this->voucherModel;
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($enc_id)
     {
         $voucherModel = new $this->voucherModel;
@@ -134,12 +113,12 @@ class VoucherController extends Controller
         if($this->voucherModel->where('id', $intId)->delete())
         {
             $this->JsonData['status']   = 'success';
-            $this->JsonData['msg']      = 'Record deleted successfully.';
+            $this->JsonData['msg']      = __('messages.ERR_VOUCHER_DELETE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']      = 'Failed to delete record, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_VOUCHER_DELETE_ERROR_MSG');
         }
         
         return response()->json($this->JsonData);

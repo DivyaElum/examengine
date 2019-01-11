@@ -32,16 +32,16 @@ class QuestionTypeController extends Controller
 
     public function __construct(
 
-        QuestionTypesModel $QuestionTypesModel,
-        QuestionTypeStructureModel $QuestionTypeStructureModel,
-        OptionStructureModel $OptionStructureModel,
-        QuestionsModel $QuestionsModel
+        QuestionsModel              $QuestionsModel,
+        QuestionTypesModel          $QuestionTypesModel,
+        OptionStructureModel        $OptionStructureModel,
+        QuestionTypeStructureModel  $QuestionTypeStructureModel
     )
     {
-        $this->BaseModel                    = $QuestionTypesModel;
-        $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
-        $this->OptionStructureModel         = $OptionStructureModel;
         $this->QuestionsModel               = $QuestionsModel;
+        $this->BaseModel                    = $QuestionTypesModel;
+        $this->OptionStructureModel         = $OptionStructureModel;
+        $this->QuestionTypeStructureModel   = $QuestionTypeStructureModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -50,12 +50,6 @@ class QuestionTypeController extends Controller
         $this->ModuleView  = 'admin.questionType.';
         $this->ModulePath  = 'question-type';
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     public function index()
     {
@@ -66,11 +60,6 @@ class QuestionTypeController extends Controller
         return view($this->ModuleView.'index', $this->ViewData);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $this->ViewData['modulePath']   = $this->ModulePath; 
@@ -80,18 +69,12 @@ class QuestionTypeController extends Controller
         return view($this->ModuleView.'create', $this->ViewData);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(QuestionTypeRequest $request)
     {
         DB::beginTransaction();
 
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to save question, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_QESTION_SAVE_ERROR_MSG');
 
         $structure  = $this->OptionStructureModel->where('option', $request->option)->pluck('structure')->first();
 
@@ -111,7 +94,7 @@ class QuestionTypeController extends Controller
             {
                 DB::commit();
                 $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Question type saved successfully';
+                $this->JsonData['msg']      = __('messages.ERR_QESTION_TYP_SUCCESS_MSG');
             }
             else{
                 DB::rollBack();
@@ -124,24 +107,6 @@ class QuestionTypeController extends Controller
         return response()->json($this->JsonData);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        dd('pending');
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
@@ -154,19 +119,12 @@ class QuestionTypeController extends Controller
         return view($this->ModuleView.'edit', $this->ViewData);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(QuestionTypeRequest $request, $enc_id)
     {
         DB::beginTransaction();
 
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_QESTION_STS_ERROR_MSG');
 
         $structure  = $this->OptionStructureModel->where('option', $request->option)->pluck('structure')->first();
 
@@ -184,7 +142,7 @@ class QuestionTypeController extends Controller
             {
                 DB::commit();
                 $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Question type saved successfully';
+                $this->JsonData['msg']      = __('messages.ERR_QESTION_TYP_SUCCESS_MSG');
             }
             else
             {
@@ -199,12 +157,6 @@ class QuestionTypeController extends Controller
         return response()->json($this->JsonData);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($enc_id)
     {
         $id = base64_decode(base64_decode($enc_id));
@@ -213,20 +165,20 @@ class QuestionTypeController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t delete, This Question type has been used in questions.';
+            $this->JsonData['msg']    = __('messages.ERR_QESTION_TYP_DEL_DEP_ERROR_MSG');
             return response()->json($this->JsonData);
             exit;
         }
 
         if($this->BaseModel->where('id', $id)->delete())
         {
-            $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Question type deleted successfully.';
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      =  __('messages.ERR_QESTION_TYP_DELETE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Question type, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_QESTION_DELETE_STS_ERROR_MSG');
         }
         
         return response()->json($this->JsonData);
@@ -235,7 +187,7 @@ class QuestionTypeController extends Controller
     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_QESTION_STS_ERROR_MSG');
 
         if ($request->has('id') && $request->has('status') ) 
         {
@@ -246,7 +198,7 @@ class QuestionTypeController extends Controller
             if ($flag) 
             {
                 $this->JsonData['status'] = 'error';
-                $this->JsonData['msg']    = 'Can\'t change status, This Question type has been used in questions.';
+                $this->JsonData['msg']    = __('messages.ERR_QESTION_TYP_STS_DEP_ERROR_MSG');
                 return response()->json($this->JsonData);
                 exit;
             }
@@ -256,7 +208,7 @@ class QuestionTypeController extends Controller
             if($this->BaseModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
-                $this->JsonData['msg'] = 'Status changed successfully.';
+                $this->JsonData['msg']    = __('messages.ERR_STATUS_ERROR_MSG');
             } 
         }
         
@@ -308,12 +260,12 @@ class QuestionTypeController extends Controller
                 {
                 
                     $modelQuery = $modelQuery->where(function ($query) use($search)
-                            {
-                                $query->orwhere('id', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('title', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('status', 'LIKE', '%'.$search.'%');   
-                                $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
-                            });
+                    {
+                        $query->orwhere('id', 'LIKE', '%'.$search.'%');   
+                        $query->orwhere('title', 'LIKE', '%'.$search.'%');   
+                        $query->orwhere('status', 'LIKE', '%'.$search.'%');   
+                        $query->orwhere('created_at', 'LIKE', '%'.Date('Y-m-d', strtotime($search)).'%');   
+                    });
                 }
 
                 // get total filtered
