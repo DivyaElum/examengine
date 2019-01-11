@@ -35,11 +35,11 @@ class ExamController extends Controller
 
     public function __construct(
         ExamModel               $ExamModel,
-        CourseModel             $CourseModel
+        CourseModel             $CourseModel,
         ExamSlotModel           $ExamSlotModel,
         QuestionsModel          $QuestionsModel,
         ExamQuestionsModel      $ExamQuestionsModel,
-        QuestionCategoryModel   $QuestionCategoryModel,
+        QuestionCategoryModel   $QuestionCategoryModel
 
     )
     {
