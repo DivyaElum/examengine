@@ -1,5 +1,4 @@
 <?php
-
 return [
     'ERR_INVALID_USER_PASS'                 => 'Invalid username or password entered!',
     'ERR_SAVE_MEM_ERROR_MESSAGE'            => 'Failed to save member, Something went wrong.',
@@ -18,12 +17,7 @@ return [
     'ERR_STR_PASSWORD_SUCCESS_MESSAGE'      => 'Password has been updated successfully.',
     'ERR_STR_EMAILID_ERROR_MESSAGE'         => 'Please enter valid Email Id',
     'ERR_STR_CREDENTIALS_ERROR_MESSAGE'     => 'Entered credentials is incorrect',
-    'ERR_STR_EMPTY_VOUCHER_ERR_MSG'         => 'Please Enter a voucher code',
-    'ERR_STR_INVALID_VOUCHER_ERR_MSG'       => 'Invalid voucher code',
-    'ERR_STR_EXP_VOUCHER_ERR_MSG'           => 'This voucher code is expired',
     'ERR_EXPIRED_EXAM'                      => 'This exam has been expired.',
-    'ERR_STR_VOUCHER_SUCC_MSG'              => 'Your Voucher added successfully',
-    'ERR_STR_USE_VOUCHER_ERR_MSG'           => 'This voucher has expired',
     'ERR_STR_DB_VOUCHER_ERRO_MSG'           => 'somthing is worng',
     'ERR_EMPTY_COURSE_ERRO_MSG'             => 'No course found',
     'ERR_USER_VERIFICATION_ERRO_MSG'        => 'User verification failed',
@@ -125,11 +119,16 @@ return [
 
     
     //Voucher
-    'ERR_VOUCHER_SUCCESS_MSG'          => 'Voucher saved successfully.',
-    'ERR_VOUCHER_UPDATE_SUCCESS_MSG'   => 'Voucher updated successfully.',
-    'ERR_VOUCHER_DELETE_SUCCESS_MSG'   => 'Voucher deleted successfully.',
-    'ERR_VOUCHER_DELETE_ERROR_MSG'     => 'Failed to delete record, Something went wrong.',
+    'ERR_STR_VOUCHER_SUCC_MSG'              => 'Your Voucher added successfully',
+    'ERR_VOUCHER_SUCCESS_MSG'               => 'Voucher saved successfully.',
+    'ERR_VOUCHER_UPDATE_SUCCESS_MSG'        => 'Voucher updated successfully.',
+    'ERR_VOUCHER_DELETE_SUCCESS_MSG'        => 'Voucher deleted successfully.',
+    'ERR_VOUCHER_DELETE_ERROR_MSG'          => 'Failed to delete record, Something went wrong.',
+    'ERR_STR_EMPTY_VOUCHER_ERR_MSG'         => 'Please Enter a voucher code',
+    'ERR_STR_INVALID_VOUCHER_ERR_MSG'       => 'Invalid voucher code',
+    'ERR_STR_EXP_VOUCHER_ERR_MSG'           => 'This voucher code is expired',
+    'ERR_STR_USE_VOUCHER_ERR_MSG'           => 'This voucher has expired',
     
     //NewsLetter
-    'ERR_NEWS_LETTER_STS_ERROR_MSG'    => 'Failed to change status, Something went wrong.',
+    'ERR_NEWS_LETTER_STS_ERROR_MSG'         => 'Failed to change status, Something went wrong.',
 ];  
