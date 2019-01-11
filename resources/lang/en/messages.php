@@ -40,6 +40,8 @@ return [
     'ERR_CONCIL_MEM_SUCCESS_MSG'            => 'Concil member saved successfully.',
     'ERR_CONCIL_MEM__UPDATE_SUCCESS_MSG'    => 'Concil member details updated successfully.',
     'ERR_CONCIL_MEM__DELETE_SUCCESS_MSG'    => 'Council member deleted successfully.',
+    'ERR_CONCIL_MEM_STS_ERROR_MSG'          => 'Failed to change status, Something went wrong.',
+    'ERR_CONCIL_DELETE_ERROR_MSG'           => 'Failed to delete record, Something went wrong.',
 
     //Course 
     'ERR_COURSE_SUCCESS_MSG'           => 'Course saved successfully.',
@@ -52,11 +54,16 @@ return [
     'ERR_EXAM_SUCCESS_MSG'           => 'Exam saved successfully.',
     'ERR_EXAM_UPDATE_SUCCESS_MSG'    => 'Exam details updated successfully.',
     'ERR_EXAM_DELETE_SUCCESS_MSG'    => 'Exam deleted successfully.',
-    'ERR_EXAM_STS_DEP_ERROR_MSG'     => 'Can\'t change status, This course has been purchased.',
+    'ERR_EXAM_STS_DEP_ERROR_MSG'     => 'Can\'t change status, This Exam has been purchased.',
     'ERR_EXAM_DEL_DEP_ERROR_MSG'     => 'Can\'t delete, This Exam has been purchased.',
     'ERR_EXAM_QUE_ERROR_MSG'         => 'Exam question must be greater than or equal to total number of questions',
     'ERR_EXAM_TIME_ERROR_MSG'        => 'Exam start times must not be same for respective day.',
     'ERR_EXAM_DAY_ERROR_MSG'         => 'Exam days must not be same.',
+    'ERR_EXAM_QUES_COM_ERROR_MSG'    => 'Exam compulsory question must not be greater than total number of questions',
+    'ERR_EXAM_DEP_ERROR_MSG'         => 'Can\'t delete, This Exam has been used in Course.',
+    'ERR_EXAM_DELE_ERROR_MSG'        => 'Failed to delete record, Something went wrong.';
+    'ERR_EXAM_MEM_STS_ERROR_MSG'     => 'Failed to change status, Something went wrong.';
+    'ERR_EXAM_STS_DEP_USE_ERROR_MSG' => 'Can\'t change status, This Exam has been used in Course.';
     
     //Prerequisite 
     'ERR_PRERE_SUCCESS_MSG'           => 'Prerequisite saved successfully.',
@@ -65,6 +72,13 @@ return [
     'ERR_PRERE_DELETE_SUCCESS_MSG'    => 'Prerequisite deleted successfully.',
     'ERR_PRERE_STS_DEP_ERROR_MSG'     => 'Can\'t change status, This Prerequisite has been used in Course.',
     'ERR_PRERE_DEL_DEP_ERROR_MSG'     => 'Can\'t delete, This Prerequisite has been used in Course.',
+    'ERR_PRERE_NAME_ERROR_MSG'        => 'Prerequisite display name field must not be same.',
+    'ERR_PRERE_VIDEO_ERROR_MSG'       => 'Prerequisite video file field is required if prerequisite type selected for video file.',
+    'ERR_PRERE_VIDEO_URL_ERROR_MSG'   => 'Prerequisite video url field is required if prerequisite type selected for video url.',
+    'ERR_PRERE_PDF_ERROR_MSG'         => 'Prerequisite PDF file field is required if prerequisite type selected for pdf file.',
+    'ERR_PRERE_YOUTUBE_ERROR_MSG'     => 'Prerequisite youtube url field is required if prerequisite type selected for youtube url.',
+    'ERR_PRERE_OTHER_ERROR_MSG'       => 'Prerequisite other field is required if prerequisite type selected for other.',
+    'ERR_PRERE_EMPTY_ERROR_MSG'       => 'Please select atleast one file type.',
 
     //Question Category
     'ERR_QESTION_CAT_SUCCESS_MSG'           => 'Question Category saved successfully.',

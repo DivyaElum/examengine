@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CouncilMemberRequest;
 
+//model
 use App\Models\CouncilMemberModel;
+
+//other
 use Validator;
 use Storage;
 use Image;
@@ -18,7 +21,6 @@ class CouncilMemberController extends Controller
     // use MultiModelTrait;
 
     public function __construct(
-
         CouncilMemberModel $CouncilMemberModel
     )
     {
@@ -29,7 +31,7 @@ class CouncilMemberController extends Controller
 
         $this->ModuleTitle = 'Council Member';
         $this->ModuleView  = 'admin.councilMember.';
-        $this->ModulePath = 'council-member';
+        $this->ModulePath  = 'council-member';
     }
     /**
      * Display a listing of the resource.
@@ -52,8 +54,8 @@ class CouncilMemberController extends Controller
      */
     public function create()
     {
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
 
         return view($this->ModuleView.'create', $this->ViewData);
@@ -98,12 +100,12 @@ class CouncilMemberController extends Controller
         {
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = '/admin/council-member/';
-            $this->JsonData['msg']      = 'Concil member saved successfully.';
+            $this->JsonData['msg']      = __('messages.ERR_CONCIL_MEM_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Concil member, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         } 
 
         return response()->json($this->JsonData);
@@ -112,7 +114,7 @@ class CouncilMemberController extends Controller
     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_CONCIL_MEM_STS_ERROR_MSG');
 
         if ($request->has('id') && $request->has('status') ) 
         {
@@ -122,7 +124,7 @@ class CouncilMemberController extends Controller
             if($this->CouncilMemberModel->where('id', $id)->update(['status' => $status]))
             {
                 $this->JsonData['status'] = 'success';
-                $this->JsonData['msg']    = 'Status changed successfully.';
+                $this->JsonData['msg']    = __('messages.ERR_STATUS_ERROR_MSG');
             } 
         }
         
@@ -297,12 +299,12 @@ class CouncilMemberController extends Controller
         {
             $this->JsonData['status']   = 'success';
             $this->JsonData['url']      = '/admin/council-member/';
-            $this->JsonData['msg']      = 'Concil member saved successfully.';
+            $this->JsonData['msg']      = __('messages.ERR_COURSE_UPDATE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status']   ='error';
-            $this->JsonData['msg']      ='Failed to save Concil member, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         } 
         return response()->json($this->JsonData);
     }
@@ -320,12 +322,12 @@ class CouncilMemberController extends Controller
         if($this->CouncilMemberModel->where('id', $intId)->delete())
         {
             $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Council member deleted successfully.';
+            $this->JsonData['msg']    = __('messages.ERR_COURSE_DELETE_SUCCESS_MSG');
         }
         else
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete Council member, Something went wrong.';
+            $this->JsonData['msg']    = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
         }
         
         return response()->json($this->JsonData);

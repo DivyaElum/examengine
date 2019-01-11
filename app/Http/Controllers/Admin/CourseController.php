@@ -23,36 +23,36 @@ use DB;
 
 class CourseController extends Controller
 {
-    private $BaseModel;
     private $ViewData;
     private $JsonData;
-    private $ModuleTitle;
-    private $ModuleView;
+    private $BaseModel;
     private $ModulePath;
+    private $ModuleView;
+    private $ModuleTitle;
 
     // use MultiModelTrait;
 
     public function __construct(
 
-    	CourseModel $CourseModel,
-        PrerequisiteModel $PrerequisiteModel,
-        ExamModel $ExamModel,
-        TransactionModel $TransactionModel
+        ExamModel           $ExamModel,
+        CourseModel         $CourseModel,
+        TransactionModel    $TransactionModel,
+        PrerequisiteModel   $PrerequisiteModel
     )
     {
-        $this->BaseModel = $CourseModel;
-        $this->PrerequisiteModel = $PrerequisiteModel;
-        $this->ExamModel = $ExamModel;
-        $this->TransactionModel = $TransactionModel;
+        $this->ExamModel            = $ExamModel;
+        $this->BaseModel            = $CourseModel;
+        $this->TransactionModel     = $TransactionModel;
+        $this->PrerequisiteModel    = $PrerequisiteModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
 
         $this->ModuleTitle = 'Course';
-        $this->ModuleView = 'admin.course.';
-        $this->ModulePath = 'course';
+        $this->ModuleView  = 'admin.course.';
+        $this->ModulePath  = 'course';
     
-        $this->ViewData['modulePath'] = $this->ModulePath;
+        $this->ViewData['modulePath']  = $this->ModulePath;
         $this->ViewData['moduleTitle'] = $this->ModuleTitle;
     }
     
@@ -140,7 +140,7 @@ class CourseController extends Controller
                             {
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
-                                $this->JsonData['msg']      = 'Prerequisite display name field must not be same.';
+                                $this->JsonData['msg']      = __('messages.ERR_PRERE_NAME_ERROR_MSG');
                                 return response()->json($this->JsonData); 
                                 exit;
                             }
@@ -156,14 +156,14 @@ class CourseController extends Controller
                     {
                         $objPrerequisite = new $this->PrerequisiteModel;  
 
-                        $objPrerequisite->video_file        = NULL;
-                        $objPrerequisite->video_file_mime   = NULL;
-                        $objPrerequisite->video_file_original_name = NULL;
-                        $objPrerequisite->pdf_file       = NULL;
-                        $objPrerequisite->pdf_file_original_name = NULL;
-                        $objPrerequisite->youtube_url    = NULL;
-                        $objPrerequisite->video_url      = NULL;
-                        $objPrerequisite->other          = NULL;
+                        $objPrerequisite->video_file                = NULL;
+                        $objPrerequisite->video_file_mime           = NULL;
+                        $objPrerequisite->video_file_original_name  = NULL;
+                        $objPrerequisite->pdf_file                  = NULL;
+                        $objPrerequisite->pdf_file_original_name    = NULL;
+                        $objPrerequisite->youtube_url               = NULL;
+                        $objPrerequisite->video_url                 = NULL;
+                        $objPrerequisite->other                     = NULL;
 
                         // type validation
                         switch ($row['type']) 
@@ -173,13 +173,13 @@ class CourseController extends Controller
                                {
                                     DB::rollBack();
                                     $this->JsonData['status']   = 'error';
-                                    $this->JsonData['msg']      = 'Prerequisite video file field is required if prerequisite type selected for video file.';
+                                    $this->JsonData['msg']      = __('messages.ERR_PRERE_VIDEO_ERROR_MSG');
                                     return response()->json($this->JsonData); 
                                     exit;
                                }
                                else if(!empty($row['video_file']))
                                {
-                                    $video_file = $row['video_file'];
+                                    $video_file     = $row['video_file'];
                                     $originalName   = strtolower($video_file->getClientOriginalName());
                                     $extension      = strtolower($video_file->getClientOriginalExtension());
                                     $video_file     = Storage::disk('local')->put('prerequisite_video', $video_file, 'public');
@@ -194,7 +194,7 @@ class CourseController extends Controller
                                 {
                                     DB::rollBack();
                                     $this->JsonData['status']   = 'error';
-                                    $this->JsonData['msg']      = 'Prerequisite PDF file field is required if prerequisite type selected for pdf file.';
+                                    $this->JsonData['msg']      =  __('messages.ERR_PRERE_PDF_ERROR_MSG');
                                     return response()->json($this->JsonData);
                                     exit;
                                 }
@@ -213,13 +213,13 @@ class CourseController extends Controller
                                 {
                                     DB::rollBack();
                                     $this->JsonData['status']   = 'error';
-                                    $this->JsonData['msg']      = 'Prerequisite video url field is required if prerequisite type selected for video url.';
+                                    $this->JsonData['msg']      =  __('messages.ERR_PRERE_VIDEO_URL_ERROR_MSG');
                                     return response()->json($this->JsonData);
                                     exit; 
                                 }
                                 else if(!empty($row['video_url']))
                                 {
-                                    $objPrerequisite->video_url      = $row['video_url'];
+                                    $objPrerequisite->video_url  = $row['video_url'];
                                 }
                             break;
 
@@ -228,7 +228,7 @@ class CourseController extends Controller
                                 {
                                     DB::rollBack();
                                     $this->JsonData['status']   = 'error';
-                                    $this->JsonData['msg']      = 'Prerequisite youtube url field is required if prerequisite type selected for youtube url.'; 
+                                    $this->JsonData['msg']      = __('messages.ERR_PRERE_YOUTUBE_ERROR_MSG'); 
                                     return response()->json($this->JsonData);
                                     exit;
                                 }
@@ -243,7 +243,7 @@ class CourseController extends Controller
                                 {
                                     DB::rollBack();
                                     $this->JsonData['status']   = 'error';
-                                    $this->JsonData['msg']      = 'Prerequisite other field is required if prerequisite type selected for other.'; 
+                                    $this->JsonData['msg']      =  __('messages.ERR_PRERE_OTHER_ERROR_MSG'); 
                                     return response()->json($this->JsonData);
                                     exit;
                                 }
@@ -256,15 +256,15 @@ class CourseController extends Controller
                             default:
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
-                                $this->JsonData['msg']      = 'Please select atleast one file type.'; 
+                                $this->JsonData['msg']      = __('messages.ERR_PRERE_EMPTY_ERROR_MSG');
                                 return response()->json($this->JsonData);
                                 exit;
                             break;
                         }
 
                         $objPrerequisite->course_id  = $object->id;
-                        $objPrerequisite->title   = $row['title'];
-                        $objPrerequisite->status  = '1';
+                        $objPrerequisite->title      = $row['title'];
+                        $objPrerequisite->status     = '1';
 
                         if ($objPrerequisite->save()) 
                         {
@@ -282,7 +282,7 @@ class CourseController extends Controller
                 {
                     DB::commit();
                     $this->JsonData['status']   = 'success';
-                    $this->JsonData['msg']      = 'Course saved successfully';    
+                    $this->JsonData['msg']      = __('messages.ERR_PRERE_SUCCESS_MSG');
                 }
                 else
                 {
@@ -438,7 +438,7 @@ class CourseController extends Controller
                             {
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
-                                $this->JsonData['msg']      = 'Prerequisite display name field must not be same.';
+                                $this->JsonData['msg']      = __('messages.ERR_PRERE_NAME_ERROR_MSG'); 
                                 return response()->json($this->JsonData); 
                                 exit;
                             }
@@ -478,7 +478,7 @@ class CourseController extends Controller
                                         {
                                             DB::rollBack();
                                             $this->JsonData['status']   = 'error';
-                                            $this->JsonData['msg']      = 'Prerequisite video file field is required if prerequisite type selected for video file.';
+                                            $this->JsonData['msg']      = __('messages.ERR_PRERE_VIDEO_ERROR_MSG'); 
                                             return response()->json($this->JsonData); 
                                             exit;
                                         }
@@ -521,7 +521,7 @@ class CourseController extends Controller
                                         {
                                             DB::rollBack();
                                             $this->JsonData['status']   = 'error';
-                                            $this->JsonData['msg']      = 'Prerequisite PDF file field is required if prerequisite type selected for pdf file.';
+                                            $this->JsonData['msg']      = __('messages.ERR_PRERE_PDF_ERROR_MSG'); 
                                             return response()->json($this->JsonData);
                                             exit;
                                         }
@@ -556,7 +556,7 @@ class CourseController extends Controller
                                     {
                                         DB::rollBack();
                                         $this->JsonData['status']   = 'error';
-                                        $this->JsonData['msg']      = 'Prerequisite video url field is required if prerequisite type selected for video url.';
+                                        $this->JsonData['msg']      = __('messages.ERR_PRERE_VIDEO_URL_ERROR_MSG'); 
                                         return response()->json($this->JsonData);
                                         exit; 
                                     }
@@ -577,19 +577,18 @@ class CourseController extends Controller
                                     {
                                         DB::rollBack();
                                         $this->JsonData['status']   = 'error';
-                                        $this->JsonData['msg']      = 'Prerequisite youtube url field is required if prerequisite type selected for youtube url.'; 
+                                        $this->JsonData['msg']      = __('messages.ERR_PRERE_YOUTUBE_ERROR_MSG'); 
                                         return response()->json($this->JsonData);
                                         exit;
                                     }
                                     else if(!empty($row['youtube_url']))
                                     {
-                                        $objPrerequisite->video_file        = NULL;
-                                        $objPrerequisite->video_file_mime   = NULL;
-                                        $objPrerequisite->video_file_original_name = NULL;
-                                        $objPrerequisite->pdf_file       = NULL;
-                                        $objPrerequisite->pdf_file_original_name = NULL;
-
-                                        $objPrerequisite->youtube_url    = $row['youtube_url'];
+                                        $objPrerequisite->video_file                = NULL;
+                                        $objPrerequisite->video_file_mime           = NULL;
+                                        $objPrerequisite->video_file_original_name  = NULL;
+                                        $objPrerequisite->pdf_file                  = NULL;
+                                        $objPrerequisite->pdf_file_original_name    = NULL;
+                                        $objPrerequisite->youtube_url               = $row['youtube_url'];
                                     }
                                 break;
 
@@ -598,18 +597,17 @@ class CourseController extends Controller
                                     {
                                         DB::rollBack();
                                         $this->JsonData['status']   = 'error';
-                                        $this->JsonData['msg']      = 'Prerequisite other field is required if prerequisite type selected for other.'; 
+                                        $this->JsonData['msg']      = __('messages.ERR_PRERE_OTHER_ERROR_MSG'); 
                                         return response()->json($this->JsonData);
                                         exit;
                                     }
                                     else if(!empty($row['other']))
                                     {
-                                        $objPrerequisite->video_file        = NULL;
-                                        $objPrerequisite->video_file_mime   = NULL;
-                                        $objPrerequisite->video_file_original_name = NULL;
-                                        $objPrerequisite->pdf_file       = NULL;
-                                        $objPrerequisite->pdf_file_original_name = NULL;
-
+                                        $objPrerequisite->video_file                = NULL;
+                                        $objPrerequisite->video_file_mime           = NULL;
+                                        $objPrerequisite->video_file_original_name  = NULL;
+                                        $objPrerequisite->pdf_file                  = NULL;
+                                        $objPrerequisite->pdf_file_original_name    = NULL;
                                         $objPrerequisite->other = $row['other'];
                                     }
                                 break;
@@ -617,7 +615,7 @@ class CourseController extends Controller
                                 default:
                                     DB::rollBack();
                                     $this->JsonData['status']   = 'error';
-                                    $this->JsonData['msg']      = 'Please select atleast one file type.'; 
+                                    $this->JsonData['msg']      = __('messages.ERR_PRERE_EMPTY_ERROR_MSG');
                                     return response()->json($this->JsonData);
                                     exit;
                                 break;
@@ -649,7 +647,7 @@ class CourseController extends Controller
                 {
                     DB::commit();
                     $this->JsonData['status']   = 'success';
-                    $this->JsonData['msg']      = 'Course saved successfully';    
+                    $this->JsonData['msg']      =  __('messages.ERR_PRERE_SUCCESS_MSG');
                 }
                 else
                 {
@@ -672,20 +670,20 @@ class CourseController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t delete, This course has been purchased.';
+            $this->JsonData['msg']    = __('messages.ERR_COURSE_DEL_DEP_ERROR_MSG');
             return response()->json($this->JsonData);
             exit;
         }
 
         if($this->BaseModel->where('id', $id)->delete())
         {
-            $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Record deleted successfully.';
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = __('messages.ERR_COURSE_DELETE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete record, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_CONCIL_DELETE_ERROR_MSG');
         }
         
         return response()->json($this->JsonData);
@@ -694,7 +692,7 @@ class CourseController extends Controller
     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_CONCIL_MEM_STS_ERROR_MSG');
 
         $id = base64_decode(base64_decode($request->id));
 
@@ -702,7 +700,7 @@ class CourseController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t change status, This course has been purchased.';
+            $this->JsonData['msg']    = __('messages.ERR_COURSE_STS_DEP_ERROR_MSG');
             return response()->json($this->JsonData);
             exit;
         }
@@ -713,8 +711,8 @@ class CourseController extends Controller
 
             if($this->BaseModel->where('id', $id)->update(['status' => $status]))
             {
-                $this->JsonData['status'] = 'success';
-                $this->JsonData['msg'] = 'Status changed successfully.';
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = __('messages.ERR_STATUS_ERROR_MSG');
             } 
         }
         

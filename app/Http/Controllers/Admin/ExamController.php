@@ -34,38 +34,36 @@ class ExamController extends Controller
     // use MultiModelTrait;
 
     public function __construct(
-
-        ExamModel $ExamModel,
-    	ExamQuestionsModel $ExamQuestionsModel,
-        QuestionCategoryModel $QuestionCategoryModel,
-        QuestionsModel $QuestionsModel,
-        ExamSlotModel $ExamSlotModel,
-        CourseModel $CourseModel
+        ExamModel               $ExamModel,
+        CourseModel             $CourseModel
+        ExamSlotModel           $ExamSlotModel,
+        QuestionsModel          $QuestionsModel,
+        ExamQuestionsModel      $ExamQuestionsModel,
+        QuestionCategoryModel   $QuestionCategoryModel,
 
     )
     {
         $this->BaseModel             = $ExamModel;
-        $this->ExamQuestionsModel    = $ExamQuestionsModel;
-        $this->ExamSlotModel         = $ExamSlotModel;
-        $this->QuestionCategoryModel = $QuestionCategoryModel;
-        $this->QuestionsModel        = $QuestionsModel;
         $this->CourseModel           = $CourseModel;
+        $this->ExamSlotModel         = $ExamSlotModel;
+        $this->QuestionsModel        = $QuestionsModel;
+        $this->ExamQuestionsModel    = $ExamQuestionsModel;
+        $this->QuestionCategoryModel = $QuestionCategoryModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
 
-        $this->ModuleTitle = 'Exam';
-        $this->ModuleView = 'admin.exam.';
-        $this->ModulePath = 'exam';
+        $this->ModuleTitle  = 'Exam';
+        $this->ModuleView   = 'admin.exam.';
+        $this->ModulePath   = 'exam';
     
-        $this->ViewData['modulePath'] = $this->ModulePath;
-        $this->ViewData['moduleTitle'] = $this->ModuleTitle;
+        $this->ViewData['modulePath']   = $this->ModulePath;
+        $this->ViewData['moduleTitle']  = $this->ModuleTitle;
     }
     
     public function index()
     {
         $this->ViewData['moduleAction'] = 'Manage '.str_plural($this->ModuleTitle);
-
         return view($this->ModuleView.'index', $this->ViewData);
     }
 
@@ -74,7 +72,6 @@ class ExamController extends Controller
         $this->ViewData['moduleAction'] = 'Add '.$this->ModuleTitle;
         $this->ViewData['weekdays'] = $this->getWeekdays();
         $this->ViewData['categories'] = $this->QuestionCategoryModel->with(['questions'])->where('status', 1)->get();
-        // dd($this->ViewData['categories']);
 
         return view($this->ModuleView.'create', $this->ViewData);
     }
@@ -103,7 +100,7 @@ class ExamController extends Controller
             if ($categoryQuestionsCount < $request->total_question) 
             {
                 $this->JsonData['status']   = 'error';
-                $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
+                $this->JsonData['msg']      = __('messages.ERR_EXAM_QUE_ERROR_MSG');
                  return response()->json($this->JsonData);
                  exit;
             }
@@ -112,7 +109,7 @@ class ExamController extends Controller
             if ((int)$countCompulsoryQuestions > (int)$request->total_question) 
             {
                 $this->JsonData['status']   = 'error';
-                $this->JsonData['msg']      = 'Exam compulsory question must not be greater than total number of questions';
+                $this->JsonData['msg']      = __('messages.ERR_EXAM_QUES_COM_ERROR_MSG');
                  return response()->json($this->JsonData);
                  exit;
             }
@@ -143,20 +140,19 @@ class ExamController extends Controller
                 $object->featured_image_original_name = $original_name;
             }
 
-        $object->title          = $request->title;
-        $object->duration       = $request->duration;
-        $object->total_question = $request->total_question;
-        $object->start_date     = Date('Y-m-d', strtotime($request->start_date));
-        $object->end_date       = Date('Y-m-d', strtotime($request->end_date));
+        $object->title              = $request->title;
+        $object->duration           = $request->duration;
+        $object->total_question     = $request->total_question;
+        $object->start_date         = Date('Y-m-d', strtotime($request->start_date));
+        $object->end_date           = Date('Y-m-d', strtotime($request->end_date));
         
-        $object->description    = $request->description;
-        $object->amount         = $request->amount;
-        $object->currency       = $request->currency;
-        $object->discount       = $request->discount;
-        $object->discount_by    = $request->discount_by;
-        $object->calculated_amount    = $request->calculated_amount;
-
-        $object->status         = '1';
+        $object->description        = $request->description;
+        $object->amount             = $request->amount;
+        $object->currency           = $request->currency;
+        $object->discount           = $request->discount;
+        $object->discount_by        = $request->discount_by;
+        $object->calculated_amount  = $request->calculated_amount;
+        $object->status             = '1';
 
         if ($object->save()) 
         {
@@ -194,7 +190,7 @@ class ExamController extends Controller
                         foreach ($request->exam_days as $exam_key => $exam_day) 
                         {
                             
-                            $exam_slots = new $this->ExamSlotModel;
+                            $exam_slots          = new $this->ExamSlotModel;
                             $exam_slots->exam_id = $exam_id;
                             // $exam_slots->day     = $exam_day['day'];
 
@@ -214,7 +210,7 @@ class ExamController extends Controller
                                 {
                                     DB::rollBack();
                                     $this->JsonData['status']   = 'error';
-                                    $this->JsonData['msg']      = 'Exam start times must not be same for respective day.';
+                                    $this->JsonData['msg']      = __('messages.ERR_EXAM_TIME_ERROR_MSG');
                                     return response()->json($this->JsonData);
                                     exit;
                                 }
@@ -291,24 +287,19 @@ class ExamController extends Controller
             {
                 DB::commit();
                 $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Exam saved successfully';   
+                $this->JsonData['msg']      = __('messages.ERR_EXAM_SUCCESS_MSG');
             }
             else
             {
-                 DB::rollBack();
+                DB::rollBack();
             }
         }
         else
         {
             DB::rollBack();
         }
-
         return response()->json($this->JsonData);
 
-    }
-
-    public function show($id)
-    {
     }
 
     public function edit($enc_id)
@@ -318,10 +309,7 @@ class ExamController extends Controller
         $this->ViewData['moduleAction'] = 'Edit '.$this->ModuleTitle;
         $this->ViewData['weekdays']     = $this->getWeekdays();
         $this->ViewData['categories']   = $this->QuestionCategoryModel->with(['questions'])->where('status', 1)->get();
-
-        $this->ViewData['object']       = $this->BaseModel->with(['slots','questions'])
-                                                            ->find($id);
-
+        $this->ViewData['object']       = $this->BaseModel->with(['slots','questions'])->find($id);
 
         /*---------------------------------------------------
         |   Questions 
@@ -360,7 +348,7 @@ class ExamController extends Controller
                 foreach ($this->ViewData['object']->slots as $slot_key => $slot) 
                 {
                     $tmp = [];
-                    $tmp['day'] = $slot->day;
+                    $tmp['day']  = $slot->day;
                     $tmp['time'] = json_decode($slot->time);
                     $out[] = $tmp;
                 }
@@ -396,7 +384,7 @@ class ExamController extends Controller
             if ($categoryQuestionsCount < $request->total_question) 
             {
                 $this->JsonData['status']   = 'error';
-                $this->JsonData['msg']      = 'Exam question must be greater than or equal to total number of questions';
+                $this->JsonData['msg']      = __('messages.ERR_EXAM_QUE_ERROR_MSG');
                  return response()->json($this->JsonData);
                  exit;
             }
@@ -405,7 +393,7 @@ class ExamController extends Controller
             if ((int)$countCompulsoryQuestions > (int)$request->total_question) 
             {
                 $this->JsonData['status']   = 'error';
-                $this->JsonData['msg']      = 'Exam compulsory question must not be greater than total number of questions';
+                $this->JsonData['msg']      = __('messages.ERR_EXAM_QUES_COM_ERROR_MSG');
                  return response()->json($this->JsonData);
                  exit;
             }
@@ -521,7 +509,7 @@ class ExamController extends Controller
                             {
                                 DB::rollBack();
                                 $this->JsonData['status']   = 'error';
-                                $this->JsonData['msg']      = 'Exam start times must not be same for respective day.';
+                                $this->JsonData['msg']      = __('messages.ERR_EXAM_TIME_ERROR_MSG');
                                 return response()->json($this->JsonData);
                                 exit;
                             }
@@ -594,7 +582,7 @@ class ExamController extends Controller
             {
                 DB::commit();
                 $this->JsonData['status']   = 'success';
-                $this->JsonData['msg']      = 'Exam saved successfully';   
+                $this->JsonData['msg']      = __('messages.ERR_EXAM_SUCCESS_MSG');
             }
             else
             {
@@ -617,20 +605,20 @@ class ExamController extends Controller
         if ($flag) 
         {
             $this->JsonData['status'] = 'error';
-            $this->JsonData['msg']    = 'Can\'t delete, This Exam has been used in Course.';
+            $this->JsonData['msg']    = __('messages.ERR_EXAM_DEP_ERROR_MSG');
             return response()->json($this->JsonData);
             exit;
         }
 
         if($this->BaseModel->where('id', $id)->delete())
         {
-            $this->JsonData['status'] = 'success';
-            $this->JsonData['msg'] = 'Record deleted successfully.';
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['msg']      = __('messages.ERR_EXAM_DELETE_SUCCESS_MSG');
         }
         else
         {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Failed to delete record, Something went wrong.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = __('messages.ERR_EXAM_DELE_ERROR_MSG');
         }
         
         return response()->json($this->JsonData);
@@ -639,7 +627,7 @@ class ExamController extends Controller
     public function changeStatus(Request $request)
     {
         $this->JsonData['status']   = 'error';
-        $this->JsonData['msg']      = 'Failed to change status, Something went wrong.';
+        $this->JsonData['msg']      = __('messages.ERR_EXAM_MEM_STS_ERROR_MSG');
 
         if ($request->has('id') && $request->has('status') ) 
         {
@@ -649,7 +637,7 @@ class ExamController extends Controller
             if ($flag) 
             {
                 $this->JsonData['status'] = 'error';
-                $this->JsonData['msg']    = 'Can\'t change status, This Exam has been used in Course.';
+                $this->JsonData['msg']    = __('messages.ERR_EXAM_STS_DEP_USE_ERROR_MSG');
                 return response()->json($this->JsonData);
                 exit;
             }
@@ -658,8 +646,8 @@ class ExamController extends Controller
 
             if($this->BaseModel->where('id', $id)->update(['status' => $status]))
             {
-                $this->JsonData['status'] = 'success';
-                $this->JsonData['msg'] = 'Status changed successfully.';
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['msg']      = __('messages.ERR_STATUS_ERROR_MSG');
             } 
         }
         
