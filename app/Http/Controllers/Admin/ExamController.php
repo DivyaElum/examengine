@@ -70,8 +70,8 @@ class ExamController extends Controller
     public function create()
     {
         $this->ViewData['moduleAction'] = 'Add '.$this->ModuleTitle;
-        $this->ViewData['weekdays'] = $this->getWeekdays();
-        $this->ViewData['categories'] = $this->QuestionCategoryModel->with(['questions'])->where('status', 1)->get();
+        $this->ViewData['weekdays']     = $this->getWeekdays();
+        $this->ViewData['categories']   = $this->QuestionCategoryModel->with(['questions'])->where('status', 1)->get();
 
         return view($this->ModuleView.'create', $this->ViewData);
     }
