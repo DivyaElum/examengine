@@ -24,23 +24,22 @@ class CertificationController extends Controller
 	private $CourseModel;
 
     public function __construct(
-
-        CourseModel $CourseModel,
-        voucherModel $voucherModel,
-        TransactionModel $TransactionModel,
-        VoucherDiscountModel $VoucherDiscountModel,
-        ExamResultModel $ExamResultModel,
-        User $UserModel,
-        SiteSetting $SiteSettingModel
+        User                    $UserModel,
+        CourseModel             $CourseModel,
+        voucherModel            $voucherModel,
+        ExamResultModel         $ExamResultModel,
+        SiteSetting             $SiteSettingModel,
+        TransactionModel        $TransactionModel,
+        VoucherDiscountModel    $VoucherDiscountModel
     )
     {
+        $this->UserModel            = $UserModel;
         $this->CourseModel          = $CourseModel;
         $this->voucherModel         = $voucherModel;
+        $this->ExamResultModel      = $ExamResultModel;
+        $this->SiteSettingModel     = $SiteSettingModel;
         $this->TransactionModel     = $TransactionModel;
         $this->VoucherDiscountModel = $VoucherDiscountModel;
-        $this->ExamResultModel      = $ExamResultModel;
-        $this->UserModel            = $UserModel;
-        $this->SiteSettingModel     = $SiteSettingModel;
 
         $this->ViewData = [];
         $this->JsonData = [];
@@ -174,7 +173,6 @@ class CertificationController extends Controller
 
                             $VoucherDiscountModel                   = new $this->VoucherDiscountModel;
                             $voucherModel                           = new $this->voucherModel;
-
                             $VoucherDiscountModel->user_id          = base64_decode(base64_decode($request->user_id));
                             $VoucherDiscountModel->course_id        = $request->courses_id;
                             $VoucherDiscountModel->voucher_id       = $arrData->id;
@@ -272,21 +270,21 @@ class CertificationController extends Controller
 
             if ($pdf->save($pdfPath)) 
             {
-                $this->JsonData['status'] = 'success';
-                $this->JsonData['pdf'] = $pdfPath;
-                $this->JsonData['img'] = $imgPath;
+                $this->JsonData['status']   = 'success';
+                $this->JsonData['pdf']      = $pdfPath;
+                $this->JsonData['img']      = $imgPath;
 
             }
             else
             {
-                $this->JsonData['status'] = 'error';
-                $this->JsonData['msg'] = 'Request course data not found.';
+                $this->JsonData['status']   = 'error';
+                $this->JsonData['msg']      = 'Request course data not found.';
             }
         }
         else
         {
-            $this->JsonData['status'] = 'error';
-            $this->JsonData['msg'] = 'Requested course not found.';
+            $this->JsonData['status']   = 'error';
+            $this->JsonData['msg']      = 'Requested course not found.';
         }
 
         return response()->json($this->JsonData);

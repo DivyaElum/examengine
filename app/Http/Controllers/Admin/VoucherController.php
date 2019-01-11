@@ -222,5 +222,4 @@ class VoucherController extends Controller
 
         return response()->json($this->JsonData);
     }
-
 }

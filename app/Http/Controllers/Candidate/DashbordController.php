@@ -23,11 +23,11 @@ class DashbordController extends Controller
     private $userId;
  
     public function __construct(
-        UserModel $UserModel,
-        CourseModel $CourseModel,
-        TransactionModel $TransactionModel,
-        SiteSetting $SiteSetting,
-        ExamResultModel $ExamResultModel
+        UserModel         $UserModel,
+        CourseModel       $CourseModel,
+        SiteSetting       $SiteSetting,
+        ExamResultModel   $ExamResultModel,
+        TransactionModel  $TransactionModel
     )
     {
       $this->SiteSetting      = $SiteSetting;
@@ -166,7 +166,6 @@ class DashbordController extends Controller
 
     public function dashboardListing()
     {
-        dd('pass');
-        
+      dd('pass'); 
     }
 }

@@ -28,23 +28,23 @@ class CourseController extends Controller
     private $CoursePreStatus;
 
     public function __construct(
-        UserModel         $UserModel,
-        CourseModel       $CourseModel,
-        TransactionModel  $TransactionModel,
-        PrerequisiteModel $PrerequisiteModel,
-        CoursePreStatus   $CoursePreStatus,
+        UserModel           $UserModel,
+        CourseModel         $CourseModel,
+        ExamResultModel     $ExamResultModel
+        CoursePreStatus     $CoursePreStatus,
+        TransactionModel    $TransactionModel,
+        PrerequisiteModel   $PrerequisiteModel,
         BookExamSlotModel   $BookExamSlotModel,
-        ExamResultModel   $ExamResultModel
     )
     {
 
-    	$this->CourseModel  	   = $CourseModel;
-    	$this->UserModel 		     = $UserModel;
-    	$this->TransactionModel  = $TransactionModel;
-      $this->PrerequisiteModel = $PrerequisiteModel;
-      $this->CoursePreStatus   = $CoursePreStatus;
-      $this->BookExamSlotModel   = $BookExamSlotModel;
-    	$this->ExamResultModel   = $ExamResultModel;
+    	$this->UserModel 		      = $UserModel;
+      $this->CourseModel        = $CourseModel;
+    	$this->ExamResultModel    = $ExamResultModel;
+      $this->CoursePreStatus    = $CoursePreStatus;
+      $this->TransactionModel   = $TransactionModel;
+      $this->PrerequisiteModel  = $PrerequisiteModel;
+      $this->BookExamSlotModel  = $BookExamSlotModel;
 
         $this->ViewData = [];
         $this->JsonData = [];

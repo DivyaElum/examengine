@@ -29,12 +29,12 @@ return [
     'ERR_USER_VERIFICATION_ERRO_MSG'        => 'User verification failed',
 
     //Internal Server error  // __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
-    'ERR_INTERNAL_SERVER_ERRO_MSG'  => 'Failed to process request due to internal server error, Please try again later.',
+    'ERR_INTERNAL_SERVER_ERRO_MSG'          => 'Failed to process request due to internal server error, Please try again later.',
     
     //Comman messages
-    'ERR_STATUS_ERROR_MSG'              => 'Status changed successfully.',
-    'ERR_NOT_FOUND_ERROR_MSG'           => 'Not Found',
-    'ERR_MAIL_SUCCESS_MSG'              => 'Mail has been sent successfully',
+    'ERR_STATUS_ERROR_MSG'                  => 'Status changed successfully.',
+    'ERR_NOT_FOUND_ERROR_MSG'               => 'Not Found',
+    'ERR_MAIL_SUCCESS_MSG'                  => 'Mail has been sent successfully',
 
     
     //Concil member
