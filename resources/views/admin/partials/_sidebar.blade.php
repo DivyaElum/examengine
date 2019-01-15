@@ -52,11 +52,11 @@
           </a>
         </li>
 
-        <li class="{{ active(['admin/prerequisite','admin/prerequisite/*']) }}">
+        <!-- <li class="{{ active(['admin/prerequisite','admin/prerequisite/*']) }}">
           <a href="{{ route('prerequisite.index') }}">
             <i class="fa fa-file-video-o" aria-hidden="true"></i> <span>Prerequisite</span>
           </a>
-        </li>
+        </li> -->
 
         <li class="{{ active(['admin/course','admin/course/*']) }}">
           <a href="{{ route('course.index') }}">
@@ -82,11 +82,11 @@
           </a>
         </li>
 
-        <li class="{{ active(['admin/voucher','admin/voucher/*']) }}">
+       <!--  <li class="{{ active(['admin/voucher','admin/voucher/*']) }}">
           <a href="{{ url('/admin/voucher') }}">
             <i class="fa fa-barcode" aria-hidden="true"></i> <span>Voucher</span>
           </a>
-        </li>
+        </li> -->
 
         <li>
           <a href="{{ url('/admin/logout') }}">
