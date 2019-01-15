@@ -80,14 +80,14 @@
 					   	@endif
 		          	</h3>
 		          	<div class="box-tools pull-right">
-			          	<div class="fileUpload btn btn-primary">
+			          	<div class="fileUpload btn btn-primary ">
 			          		<form method="post" action="{{ url('admin/question-category/excelImport') }}" id="frmImportExcel" enctype="multipart/form-data">
 			          			@csrf
 			          				<span>Upload</span>
 			          				<input type="file" name="import_file" accept=".xlsx, .xls, .csv" class="upload"/>
 			          		</form>
 		          		</div>
-		          		<a href="{{ asset('demoExcelCSV/categories.csv') }}" download class="btn btn-social btn-linkedin" id=""><i class="fa fa-download"></i>Download Excel</a>
+		          		<a href="{{ asset('demoExcelCSV/categories.csv') }}" download class="btn btn-social btn-linkedin" id=""><i class="fa fa-download"></i>Download Sample CSV</a>
 		          		<a title="Add New" href="{{ route($modulePath.'.create') }}" class="btn btn-social btn-linkedin" ><i class="fa fa-plus"></i>{{'Add New'}}</a>
 		          	</div>
 	        	</div>
