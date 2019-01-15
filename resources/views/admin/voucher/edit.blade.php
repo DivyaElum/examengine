@@ -44,7 +44,7 @@
 				                </div>
 				                <div class="form-group col-md-12">
 				                  	<label for="user_count">User Count  <span style="color: red">*</span></label>
-				                  	<input type="text" placeholder="Enter User Count" name="user_count" id="user_count" class="form-control" value="{{$objectData->voucher_code}}" >
+				                  	<input type="text" placeholder="Enter User Count" name="user_count" id="user_count" class="form-control" value="{{$objectData->user_count}}" >
 				                  	<span class="help-block err_site_title"></span>
 				                </div>
 				                <div class="form-group col-md-12">

@@ -58,9 +58,9 @@ return [
     'ERR_EXAM_DAY_ERROR_MSG'         => 'Exam days must not be same.',
     'ERR_EXAM_QUES_COM_ERROR_MSG'    => 'Exam compulsory question must not be greater than total number of questions',
     'ERR_EXAM_DEP_ERROR_MSG'         => 'Can\'t delete, This Exam has been used in Course.',
-    'ERR_EXAM_DELE_ERROR_MSG'        => 'Failed to delete record, Something went wrong.';
-    'ERR_EXAM_MEM_STS_ERROR_MSG'     => 'Failed to change status, Something went wrong.';
-    'ERR_EXAM_STS_DEP_USE_ERROR_MSG' => 'Can\'t change status, This Exam has been used in Course.';
+    'ERR_EXAM_DELE_ERROR_MSG'        => 'Failed to delete record, Something went wrong.',
+    'ERR_EXAM_MEM_STS_ERROR_MSG'     => 'Failed to change status, Something went wrong.',
+    'ERR_EXAM_STS_DEP_USE_ERROR_MSG' => 'Can\'t change status, This Exam has been used in Course.',
     
     
     //Prerequisite 

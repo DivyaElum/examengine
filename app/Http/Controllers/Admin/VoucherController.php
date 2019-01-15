@@ -102,6 +102,43 @@ class VoucherController extends Controller
     {
         $voucherModel = new $this->voucherModel;
 
+        $intId = base64_decode(base64_decode($id));
+        
+        $voucherModel = $this->voucherModel->find($intId);
+        
+        DB::beginTransaction();
+
+        //date differnce
+        $date1 = date_create($request->start_date);
+        $date2 = date_create($request->end_date);
+        $diff  = date_diff($date1,$date2);
+
+        $dateStart = date_create($request->start_date);
+        $dateEnd = date_create($request->end_date);
+        
+
+        $voucherModel->voucher_code   = $request->voucher_code;
+        $voucherModel->user_count     = $request->user_count;
+        $voucherModel->user_type      = $request->user_type;
+        $voucherModel->discount       = $request->discount;
+        $voucherModel->discount_by    = $request->discount_by;
+        $voucherModel->start_date     = date_format($dateStart, 'Y-m-d H:i:s');
+        $voucherModel->end_date       = date_format($dateEnd, 'Y-m-d H:i:s');
+        $voucherModel->days_diff      = $diff->d;
+        $voucherModel->status         = '1';
+
+        if ($voucherModel->save()) 
+        {
+            DB::commit();
+            $this->JsonData['status']   = 'success';
+            $this->JsonData['url']      = 'create';
+            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
+        }
+        else
+        {
+            DB::rollBack();
+        }
+        return response()->json($this->JsonData);
     }
 
     public function destroy($enc_id)

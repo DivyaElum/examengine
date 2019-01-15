@@ -128,9 +128,9 @@ class CertificationController extends Controller
             
             //get voucher data with login user details
             $arrCheckVoc = $this->VoucherDiscountModel->where('user_id', base64_decode(base64_decode($request->user_id)))
-                                                  ->where('is_use', '1')
-                                                  ->where('course_id', $request->courses_id)
-                                                  ->first();
+                                                      ->where('is_use', '1')
+                                                      ->where('course_id', $request->courses_id)
+                                                      ->first();
             
             if($arrCheckVoc != 'null' && count($arrCheckVoc) != '0')      //check voucher use or not
             {
@@ -261,8 +261,8 @@ class CertificationController extends Controller
             $data = [];
             $data['courseName'] = $objResult->course->title; 
             $data['userName']   = $objResult->user->name;
-            $data['percentage']   = $objResult->percentage;
-            $data['updated_at']   = $objResult->updated_at;
+            $data['percentage'] = $objResult->percentage;
+            $data['updated_at'] = $objResult->updated_at;
 
             $pdf = PDF::setPaper('a4')->loadView('front.pdf.certificate', $data);
             $pdfPath = 'certifications/pdf/'.preg_replace('/[ _]+/', '-', $data['courseName']).'-'.preg_replace('/[ _]+/', '-', $data['userName']).'.pdf';
@@ -273,7 +273,6 @@ class CertificationController extends Controller
                 $this->JsonData['status']   = 'success';
                 $this->JsonData['pdf']      = $pdfPath;
                 $this->JsonData['img']      = $imgPath;
-
             }
             else
             {
