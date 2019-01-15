@@ -62,16 +62,21 @@
 						    	echo $html .= '</div>';
 					    	}
 				    	}
-					    ?>
-
-					   	@if (session('success') && !Session()->has('arrSkipCnt') )
+					    ?>						 
+		          		@if (session('error'))
+						 <div class="alert alert-danger">
+							{{ session('error') }}
+						 </div>
+					   	@endif
+		          		@if (session('error'))
+						 <div class="alert alert-danger">
+							{{ session('error') }}
+						 </div>
+					   	@endif
+					   	@if (session('success'))
 						 <div class="alert alert-success">
 							{{ session('success') }}
 						 </div>
-					   	@else
-						 	<div class="alert alert-danger">
-								{{ 'Error while importing file.' }}
-							</div>
 					   	@endif
 		          	</h3>
 		          	<div class="box-tools pull-right">

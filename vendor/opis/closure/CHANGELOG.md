@@ -1,6 +1,17 @@
 CHANGELOG
 ---------
 
+### v3.1.5, 2019.01.14
+
+- Improved parser
+
+### v3.1.4, 2019.01.14
+
+- Added support for static methods that are named using PHP keywords or magic constants.
+Ex: `A::new()`, `A::use()`, `A::if()`, `A::function()`, `A::__DIR__()`, etc.
+- Used `@internal` to mark classes & methods that are for internal use only and
+backward compatibility might be broken at some point.
+
 ### v3.1.3, 2019.01.07
 
 - Fixed a bug that prevented traits to be correctly resolved when used by an
