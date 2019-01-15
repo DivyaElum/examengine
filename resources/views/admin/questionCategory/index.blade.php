@@ -80,7 +80,7 @@
 					   	@endif
 		          	</h3>
 		          	<div class="box-tools pull-right">
-			          	<div class="fileUpload btn btn-primary ">
+			          	<div class="fileUpload btn btn-primary " style="background-color:#007bb6">
 			          		<form method="post" action="{{ url('admin/question-category/excelImport') }}" id="frmImportExcel" enctype="multipart/form-data">
 			          			@csrf
 			          				<span>Upload</span>
