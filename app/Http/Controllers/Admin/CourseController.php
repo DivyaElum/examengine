@@ -282,7 +282,7 @@ class CourseController extends Controller
                 {
                     DB::commit();
                     $this->JsonData['status']   = 'success';
-                    $this->JsonData['msg']      = __('messages.ERR_PRERE_SUCCESS_MSG');
+                    $this->JsonData['msg']      = __('messages.ERR_COURSE_SUCCESS_MSG');
                 }
                 else
                 {
@@ -647,7 +647,7 @@ class CourseController extends Controller
                 {
                     DB::commit();
                     $this->JsonData['status']   = 'success';
-                    $this->JsonData['msg']      =  __('messages.ERR_PRERE_SUCCESS_MSG');
+                    $this->JsonData['msg']      =  __('messages.ERR_COURSE_UPDATE_SUCCESS_MSG');
                 }
                 else
                 {
