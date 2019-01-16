@@ -29,7 +29,7 @@
 	        <li class="active">{{ $moduleAction }}</li>
 	      </ol>
 	    </section>
-
+	    
 	    <section class="content">
 	      	<div class="box">
 	        	<div class="box-header with-border">

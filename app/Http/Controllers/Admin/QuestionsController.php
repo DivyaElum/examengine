@@ -521,6 +521,7 @@ class QuestionsController extends Controller
 
     public function excelImport(Request $request)
     {
+
         $this->ViewData['modulePath']   = $this->ModulePath;
         $this->ViewData['moduleTitle']  = $this->ModuleTitle;
         $this->ViewData['moduleAction'] = 'Manage Questions';
@@ -550,11 +551,11 @@ class QuestionsController extends Controller
                         if(!empty($value->question_text))
                         {
                             // Check Question Category
-                            $arrResult = $this->QuestionCategoryModel->where('category_name', '=', $value->category_id)->first();
+                            $arrResult = $this->QuestionCategoryModel->where('category_name', '=', $value->category_name)->first();
                             if(!empty($arrResult) && $arrResult != NULL)
                             {
                                 // Check Question Type
-                                $arrQesTypeResult = $this->QuestionTypesModel->where('slug', '=', $value->question_type)->first();
+                                $arrQesTypeResult = $this->QuestionTypesModel->where('title', '=', $value->question_type)->first();
 
                                 if(!empty($arrQesTypeResult) && $arrQesTypeResult != NULL)
                                 {
@@ -610,9 +611,6 @@ class QuestionsController extends Controller
                                 $arrSkip[] = $value;
                             }
                         }
-                        Session::flash('error', 'Something is wrong. Please try again later');
-                        return back();
-                        //return back()->with(['arrSkipCnt' => $arrSkipCnt, 'msg' => 'Error inserting the data.']);
                         $intCounter++;
                     }
                 }

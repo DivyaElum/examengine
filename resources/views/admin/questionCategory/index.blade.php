@@ -68,10 +68,7 @@
 						 <div class="alert alert-success">
 							{{ session('success') }}
 						 </div>
-					   	@else
-						 	<div class="alert alert-danger">
-								{{ 'Error while importing file.' }}
-							</div>
+					   	
 					   	@endif
 		          	</h3>
 		          	<div class="box-tools pull-right">
