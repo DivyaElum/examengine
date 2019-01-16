@@ -8,7 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
-    'App\\Exports\\QuestionCategoryExport' => $baseDir . '/app/Exports/QuestionCategoryExport.php',
+    'App\\Exports\\QuestionExport' => $baseDir . '/app/Exports/QuestionExport.php',
     'App\\Http\\Controllers\\Admin\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Admin/Auth/ForgotPasswordController.php',
     'App\\Http\\Controllers\\Admin\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Admin/Auth/LoginController.php',
     'App\\Http\\Controllers\\Admin\\Auth\\RegisterController' => $baseDir . '/app/Http/Controllers/Admin/Auth/RegisterController.php',
@@ -65,6 +65,7 @@ return array(
     'App\\Http\\Requests\\Auth\\RegisterRequest' => $baseDir . '/app/Http/Requests/Auth/RegisterRequest.php',
     'App\\Http\\Requests\\Auth\\resetPasswordRequest' => $baseDir . '/app/Http/Requests/Auth/resetPasswordRequest.php',
     'App\\Imports\\QuestionCategoryImport' => $baseDir . '/app/Imports/QuestionCategoryImport.php',
+    'App\\Imports\\QuestionImport' => $baseDir . '/app/Imports/QuestionImport.php',
     'App\\Mail\\ExamResultMail' => $baseDir . '/app/Mail/ExamResultMail.php',
     'App\\Mail\\ForgotPasswordMail' => $baseDir . '/app/Mail/ForgotPasswordMail.php',
     'App\\Mail\\NewsLetterMail' => $baseDir . '/app/Mail/NewsLetterMail.php',

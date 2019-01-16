@@ -12,28 +12,13 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/datatable/buttons.dataTables.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('plugins/sweetalert/sweetalert.css') }}">
 	<style type="text/css">
-	.fileUpload {
-	    position: relative;
-	    overflow: hidden;
-	    margin: 10px;
-	}
-	.fileUpload input.upload {
-	    position: absolute;
-	    top: 0;
-	    right: 0;
-	    margin: 0;
-	    padding: 0;
-	    font-size: 20px;
-	    cursor: pointer;
-	    opacity: 0;
-	    filter: alpha(opacity=0);
-	}
+	.fileUpload {position: relative;overflow: hidden;margin: 10px;}
+	.fileUpload input.upload {position: absolute;top: 0;right: 0;margin: 0;padding: 0;font-size: 20px;cursor: pointer;opacity: 0;filter: alpha(opacity=0);}
 	</style>
 @stop
 
 @section('content')
 	<div class="content-wrapper">
-
 	    <section class="content-header">
 	      <h1>
 	        {{ $moduleAction }}
@@ -62,17 +47,25 @@
 						    	echo $html .= '</div>';
 					    	}
 				    	}
-					    ?>
-
-					   	@if (session('success') && !Session()->has('arrSkipCnt') )
+					    ?>						 
+		          		@if (session('error'))
+						 <div class="alert alert-danger">
+							{{ session('error') }}
+						 </div>
+					   	@endif
+		          		@if (session('error'))
+						 <div class="alert alert-danger">
+							{{ session('error') }}
+						 </div>
+					   	@endif
+					   	@if (session('success'))
 						 <div class="alert alert-success">
 							{{ session('success') }}
 						 </div>
-					   	
 					   	@endif
 		          	</h3>
 		          	<div class="box-tools pull-right">
-			          	<div class="fileUpload btn btn-primary ">
+			          	<div class="fileUpload btn btn-primary " style="background-color:#007bb6">
 			          		<form method="post" action="{{ url('admin/question-category/excelImport') }}" id="frmImportExcel" enctype="multipart/form-data">
 			          			@csrf
 			          				<span>Upload</span>

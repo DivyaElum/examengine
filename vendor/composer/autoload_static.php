@@ -497,7 +497,7 @@ class ComposerStaticInitfacf883dc4fe310de5f920af8fa1f3ba
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
-        'App\\Exports\\QuestionCategoryExport' => __DIR__ . '/../..' . '/app/Exports/QuestionCategoryExport.php',
+        'App\\Exports\\QuestionExport' => __DIR__ . '/../..' . '/app/Exports/QuestionExport.php',
         'App\\Http\\Controllers\\Admin\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Admin\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Auth/LoginController.php',
         'App\\Http\\Controllers\\Admin\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Auth/RegisterController.php',
@@ -554,6 +554,7 @@ class ComposerStaticInitfacf883dc4fe310de5f920af8fa1f3ba
         'App\\Http\\Requests\\Auth\\RegisterRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/RegisterRequest.php',
         'App\\Http\\Requests\\Auth\\resetPasswordRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/resetPasswordRequest.php',
         'App\\Imports\\QuestionCategoryImport' => __DIR__ . '/../..' . '/app/Imports/QuestionCategoryImport.php',
+        'App\\Imports\\QuestionImport' => __DIR__ . '/../..' . '/app/Imports/QuestionImport.php',
         'App\\Mail\\ExamResultMail' => __DIR__ . '/../..' . '/app/Mail/ExamResultMail.php',
         'App\\Mail\\ForgotPasswordMail' => __DIR__ . '/../..' . '/app/Mail/ForgotPasswordMail.php',
         'App\\Mail\\NewsLetterMail' => __DIR__ . '/../..' . '/app/Mail/NewsLetterMail.php',
