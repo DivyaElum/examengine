@@ -42,7 +42,7 @@ function saveFormData(element)
 	    		setTimeout(function ()
 	    		{
 	    			$('#submit_button').show();
-	    			window.location.href = document.referrer;
+	    			location.reload();
 	    		}, 3000)
 	    	}
 	    	else

@@ -113,8 +113,8 @@ class VoucherController extends Controller
         $date2 = date_create($request->end_date);
         $diff  = date_diff($date1,$date2);
 
-        $dateStart = date_create($request->start_date);
-        $dateEnd = date_create($request->end_date);
+        $dateStart  = date_create($request->start_date);
+        $dateEnd    = date_create($request->end_date);
         
 
         $voucherModel->voucher_code   = $request->voucher_code;
@@ -131,8 +131,8 @@ class VoucherController extends Controller
         {
             DB::commit();
             $this->JsonData['status']   = 'success';
-            $this->JsonData['url']      = 'create';
-            $this->JsonData['msg']      = __('messages.ERR_INTERNAL_SERVER_ERRO_MSG');
+            $this->JsonData['url']      = '';
+            $this->JsonData['msg']      = __('messages.ERR_VOUCHER_UPDATE_SUCCESS_MSG');
         }
         else
         {

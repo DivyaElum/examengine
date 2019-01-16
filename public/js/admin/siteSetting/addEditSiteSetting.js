@@ -38,7 +38,6 @@ function saveSiteSetting(element)
 	    		setTimeout(function()
     			{
     				window.location.href = data.url;
-
     			}, 2000);
 	    	}
 	    	else
