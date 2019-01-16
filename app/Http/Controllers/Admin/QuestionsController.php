@@ -555,8 +555,10 @@ class QuestionsController extends Controller
                             if(!empty($arrResult) && $arrResult != NULL)
                             {
                                 // Check Question Type
-                                $arrQesTypeResult = $this->QuestionTypesModel->where('title', '=', $value->question_type)->first();
+                                $strQuesType = str_slug($value->question_type,'-');
 
+                                $arrQesTypeResult = $this->QuestionTypesModel->where('slug', '=', $strQuesType)->first();
+                                
                                 if(!empty($arrQesTypeResult) && $arrQesTypeResult != NULL)
                                 {
                                     $arrValidation = $this->_validateQuestionAnswers_2($value);
@@ -569,8 +571,8 @@ class QuestionsController extends Controller
                                         $tmp  = $this->BaseModel->firstOrCreate([
                                             'category_id'       => $arrResult->id,
                                             'question_text'     => $value->question_text,
-                                            'question_type'     => $value->question_type,
-                                            'option_type'       => $value->option_type,
+                                            'question_type'     => $arrQesTypeResult->slug,
+                                            'option_type'       => $arrQesTypeResult->option,
                                             'option1'           => $value->option1,
                                             'option2'           => $value->option2,
                                             'option3'           => $value->option3,
